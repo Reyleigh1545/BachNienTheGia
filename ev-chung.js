@@ -210,7 +210,7 @@ return [
     {l:'Nhịn bớt, nhường con nhỏ',f:c=>'Người gầy rộc đi.'+fx(c,{suc:-R(5,10),eq:1,tam:-4})}]},
 {id:'lam_thue_nha_giau',t:'Nhà giàu thuê người',td:1,tier:[0,2],age:[14,60],
  x:c=>`Nhà phú hộ cuối làng cần người ${pick(['khuân thóc','sửa mái nhà','dọn ao','gánh nước cho đám cưới'])}, trả công hậu.`,
- o:[{l:'Nhận làm',f:c=>'Được tiền công, nhưng bị quản gia quát tháo suốt buổi.'+fx(c,{money:R(5,10),suc:-3,tam:-2})},
+ o:[{l:'Nhận làm',f:c=>'Được tiền công, nhưng bị quản gia quát tháo suốt buổi.'+fx(c,{money:m(R(15,30)/10),suc:-3,tam:-2})},
     {l:'Không làm, giữ sĩ diện',f:c=>fx(c,{tam:1})}]},
 {id:'bi_kham_nha',t:'Kẻ lạ hỏi mua đất',td:1,tier:[0,1],age:[18,90],c:()=>G.S().farm.own>0,pcd:60,
  x:'Một tay cò đất đến dụ bán mảnh ruộng nhà với giá rẻ mạt, ngầm đe dọa nếu không bán.',

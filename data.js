@@ -161,7 +161,7 @@ const TRAITS={
   thientai:{n:'Thiên tài',c:'p',gene:'r',p:.06,d:'Mọi chỉ số tăng nhanh 40%, dễ phá giới hạn',growAll:.4,brk:10},
   phuctinh:{n:'Phúc tinh',c:'p',d:'Cơ duyên +30, gặp nhiều kỳ ngộ tốt',duyen:30},
   thanluc:{n:'Thần lực',c:'p',gene:'D',p:.02,d:'Võ lực tăng nhanh 50%, rèn được tới 115',grow:{vo:.5},capUp:{vo:15}},
-  khuynhthanh:{n:'Khuynh thành',c:'p',gene:'D',p:.02,look:1,d:'Tướng mạo bẩm sinh hơn người, mị lực có sẵn ngay từ nhỏ, rèn được tới 115',grow:{mi:.4},capUp:{mi:15}},
+  khuynhthanh:{n:'Khuynh thành',c:'p',gene:'D',p:.02,look:1,d:'Dung nhan bẩm sinh hơn người: sinh ra đã đẹp, lớn lên mị lực không dưới 80, không phai theo năm tháng, rèn được tới 115',grow:{mi:.4},capUp:{mi:15}},
   ythanh:{n:'Y thánh căn cốt',c:'p',d:'Nghề y tăng thông thạo gấp đôi',mmJobs:['y'],mm:1},
   vankhuc:{n:'Văn Khúc tinh',c:'p',d:'Điểm thi +12, Trí rèn được tới 115',exam:12,capUp:{tri:15}},
   satinh:{n:'Sát tinh',c:'p',d:'Chiến công gấp rưỡi, nhưng dễ đổ máu',merit:.5,cond:.03},
