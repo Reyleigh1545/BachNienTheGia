@@ -75,13 +75,13 @@ return [
    ====================================================================== */
 {id:'w631_ho_muon_trau',fixed:1,t:'Mượn trâu cày',k:'Họ khác',
  c:c=>G.S().farm.own>0||G.S().farm.rent>0||G.alive().some(p=>p.job==='nong'),
- x:(c,d)=>{const cl=V().w_clan(d.p,d.cl);return cl?`Đến vụ cày, họ ${esc(cl.sur)} có trâu bị ốm, sang hỏi mượn trâu nhà mình vài ngày, hứa đổi công gặt.`:'Có người sang mượn trâu.'},
+ x:(c,d)=>{const cl=V().w_clan(d.p,d.cl);return cl?`Đến vụ cày, ${esc(G.cname(cl))} có trâu bị ốm, sang hỏi mượn trâu nhà mình vài ngày, hứa đổi công gặt.`:'Có người sang mượn trâu.'},
  o:(c,d)=>{const cl=V().w_clan(d.p,d.cl);if(!cl)return [{l:'Cho mượn',f:()=>''}];return [
   {l:'Cho mượn, hẹn đổi công gặt',f:c=>{cl.rel=Math.min(100,cl.rel+9);cl.last=S().t;return 'Hai nhà đổi công, mùa gặt có thêm người phụ.'+fx(c,{money:m(1),fame:1,tam:2})}},
   {l:'Cho mượn nhưng tính tiền thuê',f:c=>{cl.rel=Math.min(100,cl.rel+2);return 'Họ nhận, mặt hơi sượng nhưng vẫn cảm ơn.'+fx(c,{money:m(2)})}},
   {l:'Từ chối vì đang cần dùng',f:c=>{cl.rel=Math.max(-100,cl.rel-6);return 'Họ ra về, đi hỏi nhà khác.'+fx(c,{tam:-1})}}]}},
 {id:'w631_ho_gop_dinh',fixed:1,t:'Góp tiền sửa đình',k:'Họ khác',
- x:(c,d)=>{const cl=V().w_clan(d.p,d.cl);return cl?`Họ ${esc(cl.sur)} đứng ra quyên góp sửa ${pick(['mái đình','cây cầu đầu làng','con đường ra chợ','giếng làng'])}. Các nhà trong vùng đều được hỏi ý.`:'Có người quyên góp.'},
+ x:(c,d)=>{const cl=V().w_clan(d.p,d.cl);return cl?`${esc(G.cnameU(cl))} đứng ra quyên góp sửa ${pick(['mái đình','cây cầu đầu làng','con đường ra chợ','giếng làng'])}. Các nhà trong vùng đều được hỏi ý.`:'Có người quyên góp.'},
  o:(c,d)=>{const cl=V().w_clan(d.p,d.cl);if(!cl)return [{l:'Bỏ qua',f:()=>''}];const hi=m(4+S().fame/60);return [
   {l:'Góp hậu, ghi tên lên bia',s:`Tốn khoảng ${fm(hi)}`,c:()=>G.money()>=hi,f:c=>{cl.rel=Math.min(100,cl.rel+10);return 'Tên nhà mình khắc trên bia đá, dân làng nể trọng.'+fx(c,{money:-hi,fame:R(3,6),cfame:1})}},
   {l:'Góp vừa phải',s:`Tốn khoảng ${fm(m(1.5))}`,c:()=>G.money()>=m(1.5),f:c=>{cl.rel=Math.min(100,cl.rel+4);return 'Đủ nghĩa với xóm giềng.'+fx(c,{money:-m(1.5),fame:1})}},
@@ -89,7 +89,7 @@ return [
   {l:'Viện cớ nhà đang khó',f:c=>{cl.rel=Math.max(-100,cl.rel-4);return fx(c,{fame:-1})}}]}},
 {id:'w631_ho_dua_dam',fixed:1,t:'Họ khác mời kết bạn hàng',k:'Họ khác',
  c:c=>['tieuphu','hangrong','tieunhi','chu','tho','det','tieu'].some(j=>G.alive().some(p=>p.job===j)),
- x:(c,d)=>{const cl=V().w_clan(d.p,d.cl);return cl?`Gia chủ họ ${esc(cl.sur)}, người ${cl.head.tr}, ngỏ ý hợp sức nhập hàng chung để mua được giá sỉ, chia lãi theo vốn.`:'Có người rủ hùn hàng.'},
+ x:(c,d)=>{const cl=V().w_clan(d.p,d.cl);return cl?`Gia chủ ${esc(G.cname(cl))}, người ${cl.head.tr}, ngỏ ý hợp sức nhập hàng chung để mua được giá sỉ, chia lãi theo vốn.`:'Có người rủ hùn hàng.'},
  o:(c,d)=>{const cl=V().w_clan(d.p,d.cl);if(!cl)return [{l:'Từ chối',f:()=>''}];const pr=clamp(0.78-(cl.head.tr==='tham lam'?0.28:0)+(cl.head.tr==='chính trực'?0.1:0)+(cl.rel/400),0.3,0.92);return [
   {l:'Hùn vốn đủ phần',s:`Tốn khoảng ${fm(m(6))}`,c:()=>G.money()>=m(6),r:[{eq:0.5,tri:0.5},DW(pr,50)],y:c=>{cl.rel=Math.min(100,cl.rel+12);return 'Mua được giá sỉ, chia lãi đúng hẹn.'+fx(c,{money:Math.round(m(6)*0.35),fame:1})},n:c=>{cl.rel=Math.max(-100,cl.rel-12);return 'Họ giữ sổ mập mờ, chia ít hơn thỏa thuận.'+fx(c,{money:-m(4),tam:-3})}},
   {l:'Hùn nửa phần để thử',s:`Tốn khoảng ${fm(m(3))}`,c:()=>G.money()>=m(3),f:c=>{cl.rel=Math.min(100,cl.rel+4);return 'Lãi ít mà an tâm.'+fx(c,{money:m(1)})}},
