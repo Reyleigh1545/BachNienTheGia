@@ -4,7 +4,7 @@ Bản sửa và bổ sung trên nền v6.3.4, theo 14 điểm người chơi bá
 Mã nguồn: GitHub `Reyleigh1545/BachNienTheGia`, nhánh `v6.3.5` (từ `v6.3.4`, chưa gộp vào `main`; `main` vẫn là v6.3).
 Sự kiện: 1.048 (+26 so với v6.3.4), trong đó kỳ ngộ 218 (+3). Còn cách mục tiêu v6.5 (5.000 sự kiện, 500 kỳ ngộ) rất xa, vẫn đi từ từ.
 
-**Về kiểm thử.** Theo lệnh "chỉ test khi được yêu cầu", lượt này không chạy bộ test. Chỉ làm kiểm tra cú pháp toàn bộ tệp, và một lượt khởi động ngắn để chắc game không văng lỗi: 3 ván bot chạy 32 đến 45 năm không lỗi script, từng lựa chọn của 31 sự kiện mới được gọi thử không lỗi, và chuỗi ngã rẽ → sự kiện nhánh chạy được trong vòng chơi thật. Chưa kiểm cân bằng số liệu.
+**Về kiểm thử.** Theo lệnh "chỉ test khi được yêu cầu", lượt này không chạy bộ test. Chỉ làm kiểm tra cú pháp toàn bộ tệp, và một lượt khởi động ngắn để chắc game không văng lỗi: 3 ván bot chạy 32 đến 45 năm không lỗi script, từng lựa chọn của 31 sự kiện mới được gọi thử không lỗi, chuỗi ngã rẽ → sự kiện nhánh chạy được trong vòng chơi thật, và uy gia chủ cộng/trừ đúng khi địa vị gia tộc đổi hoặc đổi gia chủ. Chưa kiểm cân bằng số liệu.
 
 ## 1. Các điểm và kết quả
 
@@ -41,7 +41,7 @@ Sự kiện "đi dự đám" (hỏi lễ làng):
 - **Chuyển giao gia chủ không còn là nút bấm thẳng.** Cơ hội được người nhà chấp thuận tính từ: danh vọng của gia chủ hiện tại, mức người nhà tin tưởng gia chủ (quan hệ trung bình), danh vọng và tài (ăn nói, trí, quản lý) của người nhận, người nhận có muốn gánh việc không, di chúc có chỉ định không. Bị trừ nếu người nhận còn quá trẻ, là con dâu/rể, gia tộc đang bất ổn, còn người cạnh tranh có oán hoặc cũng muốn làm gia chủ, hoặc gia tộc có luật trưởng nam mà người nhận không phải trưởng nam. Hộp thoại cho biết triển vọng bằng chữ, không bằng số. Họp họ không thành thì phải đợi 12 tháng mới bàn lại, kèm ổn định giảm và người nhận buồn; thành công thì 36 tháng sau mới đổi lại được.
 - **Hết lỗ hổng lấy tiền riêng.** Đổi gia chủ không còn kéo tiền riêng của ai vào công quỹ; tiền riêng vẫn là của người đó.
 - **Gia chủ được giữ lại một phần thu nhập** làm tiền riêng để tiêu dùng và làm tài sản: chọn 0%, 10%, 20% hoặc 30% (mặc định 10%) ở trang gia chủ. Phần còn lại vào công quỹ. Gia chủ có thể tự nguyện góp 25%, 50% hoặc toàn bộ tiền riêng vào công quỹ khi muốn, hoặc giữ lại hết.
-- Câu "làm gia chủ sẽ tăng mạnh các chỉ số" tao hiểu là chuyện gia chủ **vơ lấy phần tăng chỉ số của các sự kiện**: chỗ nào bị vậy đã chặn. Không thêm thưởng chỉ số mới cho gia chủ. Nếu mày muốn nói ý khác thì nói lại.
+- **Uy gia chủ (bổ sung sau khi người chơi giải thích ý):** làm gia chủ thì được **cộng thẳng vào cả năm chỉ số** (trí tuệ, võ lực, sức khỏe, mị lực, EQ), mức theo địa vị gia tộc: Bần hộ +0, Thường dân +2, Tiểu hộ khá giả +3, Hương thân +5, Hào phú +7, Thế gia +8, Danh môn vọng tộc và hoàng tộc +10. Cộng cả mức tối đa của từng chỉ số, nên không bị chặn trần. Đó là uy của chức: đổi gia chủ thì người cũ mất phần cộng, người mới có ngay; địa vị gia tộc xuống thì mức cộng cũng giảm. Trang người hiện nhãn "Uy gia chủ +N", bấm vào có giải thích.
 
 ## 5. Tự lo từ 18 tuổi (điểm 4)
 
@@ -128,6 +128,6 @@ Mới có 15 sự kiện (1 ngã rẽ + 14 nhánh); mỗi hướng mới chỉ c
 
 ## 15. Còn lại cần mày biết
 
-- Các điểm tao đã diễn giải: "trên ngũ phẩm" = từ ngũ phẩm trở lên; điểm 3 câu đầu (gia chủ tăng mạnh chỉ số) hiểu là chặn gia chủ vơ lấy phần chỉ số; khuynh thành mị lực tối thiểu 80.
+- Các điểm tao đã diễn giải: "trên ngũ phẩm" = từ ngũ phẩm trở lên; khuynh thành mị lực tối thiểu 80; bảng uy gia chủ (0 đến +10) là mức tao tự đặt, mày muốn đổi thì nói.
 - Chưa có thử nghiệm cân bằng lượt này, nên các con số tiền của sự kiện mới (lễ, góp, phát chẩn) cần mày chơi xem có ổn không.
 - Nhiều chuyện nhờ vả của chuỗi ân oán giờ đòi nhà thế gia phải ở gần; người chơi sống xa cả bốn nhà sẽ ít chỗ dựa hơn trước. Đó là hệ quả trực tiếp của điểm 10.

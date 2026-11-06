@@ -130,6 +130,22 @@ const clanTuoc=()=>alive().reduce((m,p)=>Math.max(m,p.tuoc||0),0);
 function tierScore(){return S.fame+wealth()/1000+clanTuoc()*1500+(S.royal?50000:0)}
 function tierIdx(){const s=tierScore();let i=0;TIERS.forEach(([,v],k)=>{if(s>=v)i=k});return i}
 function tierName(){return S.royal?'Hoàng tộc':TIERS[tierIdx()][0]}
+/* v6.3.5: uy gia chủ. Làm gia chủ thì được cộng thẳng vào cả năm chỉ số, mức theo địa vị gia tộc: Bần hộ 0 đến Danh môn vọng tộc +10.
+   Là phần của chức, không phải của người: đổi gia chủ thì người cũ mất, người mới được; địa vị lên xuống thì mức cộng lên xuống theo. */
+const HEADB=[0,2,3,5,7,8,10];
+const headBonus=()=>S.royal?10:(HEADB[tierIdx()]||0);
+function headBSync(){
+  if(!S||!S.people)return;const hb=headBonus();
+  S.people.forEach(p=>{
+    const cur=p.hb||0;const want=(p.dead==null&&!p.left&&p.id===S.head)?hb:0;
+    if(want===cur)return;
+    p.hb=want;if(!want)delete p.hb;
+    if(p.dead!=null||p.left)return;
+    const d=want-cur;
+    ['tri','vo','mi','eq'].forEach(k=>{p.cap[k]=Math.max(1,p.cap[k]+d);p[k]=Math.max(0,p[k]+d)});
+    p.cap.suc=Math.max(10,p.cap.suc+d);p.suc=clamp(p.suc+d,1,p.cap.suc);
+    if(cur>0&&want>0&&!DRY)log(`Địa vị gia tộc ${d>0?'lên':'xuống'}, uy gia chủ của ${p.given} ${d>0?'thêm':'bớt'} ${Math.abs(d)} mọi chỉ số (nay +${want}).`,d>0?'gd':'hi')
+  })}
 const mm=v=>Math.round(v*60*TK[tierIdx()]);
 const famLuck=()=>{const a=alive();return a.length?a.reduce((s,p)=>s+p.duyen,0)/a.length:50};
 
@@ -2006,7 +2022,7 @@ function headGopPopup(c){
 
 /* ---------- gia chủ mới đang ở riêng thì về nhà chính ---------- */
 function becomeHead(p){
-  const old=mainHH();S.head=p.id;
+  const old=mainHH();S.head=p.id;headBSync();
   if(p.hh===old||!S.hh[old])return;
   const from=p.hh;const sp=spouseOf(p);
   const movers=alive().filter(x=>x.hh===from&&(x===p||x===sp||((x.parents.includes(p.id)||(sp&&x.parents.includes(sp.id)))&&(!married(x)||age(x)<18))));
@@ -2829,6 +2845,7 @@ const INFO={
   rules:['Gia quy','Số điều được giữ tùy gia thế và số người trong họ. Thêm điều mới làm Ổn định giảm 5, mỗi năm chỉ thêm một điều. Bỏ điều cũ cũng làm lòng người xáo động.'],
   region:['Vùng','Mỗi vùng sản vật khác nhau nên giá khác nhau. Mang hàng từ nơi rẻ tới nơi đắt mà bán. Đường càng xa càng lâu, càng nhiều rủi ro.']};
 function infoText(k){
+  if(k.startsWith('hb:')){return ['Uy gia chủ',`Làm gia chủ thì được cộng thẳng +${+k.slice(3)} vào cả năm chỉ số (trí tuệ, võ lực, sức khỏe, mị lực, EQ). Mức cộng theo địa vị gia tộc, hiện là ${tierName().toLowerCase()}: ${TIERS.map(([n],i)=>n+' +'+HEADB[i]).join(', ')}. Đó là uy của chức, không phải của người: không còn làm gia chủ thì mất, địa vị gia tộc xuống thì mức cộng cũng giảm.`]}
   if(k.startsWith('fp:')){const q=FAME_SELF[+k.slice(3)-1];return q?[q[1],'Từ '+q[0]+' danh vọng cá nhân. '+q[2]]:['','']}
   if(k.startsWith('tr:')){const T=TRAITS[k.slice(3)];return [T.n,T.d+'.']}
   if(k.startsWith('org:')){const O0=ORIGINS[k.slice(4)];return [O0.n,O0.d]}
@@ -2898,7 +2915,7 @@ function sheetHTML(c){
   const a=age(c),J=JOBS[c.job],dead=c.dead!=null,out=!inClan(c);
   const deg=['','Cử nhân','Đỗ thi Hội',c.flags.examTitle||'Tiến sĩ'][c.degree];
   let h=`<button class="xclose" data-close aria-label="Đóng">×</button><div class="who">${avatarSVG(c,64)}<div style="min-width:0"><h2>${esc(nameOf(c))}</h2>
-   <div class="chips"><span class="chip ${c.id===S.head?'gold':''}">${relation(c)}</span><span class="chip">${dead?'Đã mất':a+' tuổi'}</span>${selfPerks(c)}${c.tuoc?`<button class="chip gold" data-info="tr:tu_${Math.min(5,c.tuoc)}">${TUOC[c.tuoc]}</button>`:''}${c.degree?`<button class="chip gold" data-info="tr:dg_${Math.min(3,c.degree)}">${deg}</button>`:''}${ctChips(c)}${c.outSp?`<span class="chip">Về nhà họ ${esc(c.outSp.sur)}</span>`:''}${c.preg?'<span class="chip red">Mang thai</span>':''}${c.away?`<span class="chip blue">${awayText(c)}</span>`:''}${c.hh!==mainHH()&&!out?`<span class="chip blue">${esc(HH(c.hh).name)}</span>`:''}</div>
+   <div class="chips"><span class="chip ${c.id===S.head?'gold':''}">${relation(c)}</span><span class="chip">${dead?'Đã mất':a+' tuổi'}</span>${selfPerks(c)}${c.hb?`<button class="chip gold" data-info="hb:${c.hb}">Uy gia chủ +${c.hb}</button>`:''}${c.tuoc?`<button class="chip gold" data-info="tr:tu_${Math.min(5,c.tuoc)}">${TUOC[c.tuoc]}</button>`:''}${c.degree?`<button class="chip gold" data-info="tr:dg_${Math.min(3,c.degree)}">${deg}</button>`:''}${ctChips(c)}${c.outSp?`<span class="chip">Về nhà họ ${esc(c.outSp.sur)}</span>`:''}${c.preg?'<span class="chip red">Mang thai</span>':''}${c.away?`<span class="chip blue">${awayText(c)}</span>`:''}${c.hh!==mainHH()&&!out?`<span class="chip blue">${esc(HH(c.hh).name)}</span>`:''}</div>
    <div class="chips">${realTraits(c).map(traitChip).join('')}${habChips(c)}${viceChips(c)}</div></div></div>
    ${ctNote(c)?`<p class="muted small" style="margin:.3rem 0 .5rem">${ctNote(c)}</p>`:''}
    <div class="dsec tight"><h3>${I('axes','Tính cách')}</h3><div class="chips">${axChips(c)||'<span class="muted small">Chưa có nét nổi bật</span>'}</div></div>
@@ -3490,6 +3507,21 @@ function w_home(){
 function w_jobKind(c){const j=c.job;return ['tieunhi','hangrong','chu','thulai'].includes(j)?'buon':['tho','det','bep'].includes(j)?'tho':['su','diaky'].includes(j)?'hoc':['quan','nguy'].includes(j)?'quan':['y','mo'].includes(j)?'thuoc':['quan_ngu','tieu','hiep','nhadich'].includes(j)?'vo':'nong'}
 /* ---------- v6.3.5: mỗi nơi có một hai danh gia vọng tộc riêng; bốn nơi của bốn thế gia lớn thì chỉ có bốn nhà ấy hùng cứ ---------- */
 const SEATS=['nhan_mon','thien_kinh','duoc_coc','bach_sa'];
+/* v6.3.5: danh gia gọi bằng chữ "Gia" (Hoàng Gia, Đào Gia, Cổ Nguyệt Gia); gia chủ là tên người riêng. Gia chủ giữ ghế 20 đến 50 năm rồi nhường. */
+const cname=c=>c.house?`${c.sur} Gia`:`họ ${c.sur}`;
+const cnameU=c=>c.house?`${c.sur} Gia`:`Họ ${c.sur}`;
+const cHeadFull=c=>`${c.sur} ${c.head.given}`;
+const COMPOUND_SUR=['Cổ Nguyệt','Âu Dương','Thượng Quan','Tư Mã','Hoàng Phủ','Đông Phương','Nam Cung','Bạch Lộc','Lạc Hà','Tây Môn','Mộ Dung','Thiên Phong','Liễu Diệp','Hạ Hầu','Vân Khánh','Trúc Lâm','Thanh Lăng','Lăng Tiêu'];
+function w_houseSur(p,c){
+  if(!chance(0.4)||COMPOUND_SUR.includes(c.sur))return;
+  const used=new Set((S.w.clans[p]||[]).map(x=>x.sur));const free=COMPOUND_SUR.filter(s=>!used.has(s));
+  if(free.length)c.sur=pick(free)}
+const termYears=a=>Math.max(6,Math.min(R(20,50),84-a));
+function clanSucc(o,reg,minKid){
+  const heir=o.kids.filter(k=>k.g==='nam'&&k.age>=minKid).sort((a,b)=>b.age-a.age)[0];
+  if(heir){o.head={given:heir.given,age:heir.age,tr:pick(CTR63)};o.kids=o.kids.filter(k=>k!==heir)}
+  else o.head={given:outsiderName('nam',reg).given,age:R(32,46),tr:pick(CTR63)};
+  o.gen=(o.gen||0)+1;o.end=S.t+12*termYears(o.head.age)}
 const HOUSE_TITLE={vo:['Tổng binh trấn thủ','Quản cơ về hưu'],quan:['Thị lang về hưu','Tri phủ nghỉ việc'],hoc:['Đại nho một vùng','Tế tửu về hưu'],buon:['Hội trưởng thương hội','Đại phú thương'],thuoc:['Ngự y về hưu','Danh y mấy đời'],tho:['Tổ sư nghề thủ công','Chủ xưởng lớn nhất vùng'],nong:['Đại điền chủ','Chủ trang điền']};
 function w_markHouses(p){
   const W=S.w,L=W.clans[p];if(!L)return;const P0=PROV[p];
@@ -3498,7 +3530,7 @@ function w_markHouses(p){
   const n={kinh:2,phu:chance(0.5)?2:1,cang:chance(0.5)?2:1,bien:1,lang:chance(0.3)?2:1}[P0.k]||1;
   L.slice().sort((a,b)=>b.fame-a.fame).slice(0,n).forEach((c,i)=>{
     const t5=i===0&&(P0.k==='kinh'||(P0.k==='phu'&&chance(0.5))||(P0.k==='cang'&&chance(0.4)));const tier=t5?5:4;
-    c.house={tier,title:pick(HOUSE_TITLE[c.job]||HOUSE_TITLE.nong)};
+    c.house={tier,title:pick(HOUSE_TITLE[c.job]||HOUSE_TITLE.nong)};w_houseSur(p,c);
     c.fame=Math.max(c.fame,tier===5?R(215,255):R(150,200));c.wealth=Math.max(c.wealth,R(58,82))})}
 function w_genClan(p){
   const P0=PROV[p],W=S.w;const used=new Set((W.clans[p]||[]).map(c=>c.sur));used.add(S.surname);
@@ -3514,12 +3546,13 @@ function w_clansYear(){
     L.forEach(c=>{c.head.age++;c.kids.forEach(k=>k.age++);
       c.wealth=clamp(c.wealth+R(-9,9)-dmg/25+(chance(0.1)?R(8,20):0),2,100);c.fame=clamp(c.fame+R(-6,8)+(c.wealth-50)/25,0,320);if(SEATS.includes(p))c.fame=Math.min(c.fame,70);if(c.house)c.fame=Math.max(c.fame,c.house.tier===5?200:140);
       c.rel+=(0-c.rel)*0.08;if(c.feud&&chance(0.08))c.feud=0;
-      if(c.head.age>=64&&chance((c.head.age-62)*0.05)){const heir=c.kids.filter(k=>k.g==='nam'&&k.age>=18).sort((a,b)=>b.age-a.age)[0];
-        if(heir){c.head={given:heir.given,age:heir.age,tr:pick(CTR63)};c.kids=c.kids.filter(k=>k!==heir)}else{c.head.age=R(36,48);c.head.given=outsiderName('nam',PROV[p].r).given}}
+      if(c.end==null)c.end=S.t+12*termYears(c.head.age);
+      if(S.t>=c.end||c.head.age>=88){const oa=c.head.age,oh=cHeadFull(c);clanSucc(c,PROV[p].r,18);
+        if(c.house&&S.loc&&(p===S.loc.p||w_mo(S.loc.p,p)<=2))log(`${cname(c)}: gia chủ ${oh} ${oa>=72?'đã mất':'nhường chức'}, ${cHeadFull(c)} nối ngôi.`)}
       c.kids=c.kids.filter(k=>!(k.age>=32&&chance(0.4)));
       while(c.kids.length<R(1,3)&&chance(0.5)){const gg=chance(0.5)?'nam':'nữ';c.kids.push({id:'k'+(W.cid++),g:gg,given:outsiderName(gg,PROV[p].r).given,age:R(0,6)})}});
     /* họ lụi tàn bị thay bằng họ mới */
-    for(let i=L.length-1;i>=0;i--){const c=L[i];if((!c.house&&((c.wealth<8&&chance(0.25))||chance(0.012)))||(c.house&&chance(0.003))){const wasH=c.house;L[i]=w_genClan(p);L[i].fame=Math.round(L[i].fame/2);if(wasH){L[i].house={tier:wasH.tier,title:pick(HOUSE_TITLE[L[i].job]||HOUSE_TITLE.nong)};L[i].fame=Math.max(L[i].fame,wasH.tier===5?R(215,250):R(150,195));L[i].wealth=Math.max(L[i].wealth,60)}}}}
+    for(let i=L.length-1;i>=0;i--){const c=L[i];if((!c.house&&((c.wealth<8&&chance(0.25))||chance(0.012)))||(c.house&&chance(0.003))){const wasH=c.house;L[i]=w_genClan(p);L[i].fame=Math.round(L[i].fame/2);if(wasH){L[i].house={tier:wasH.tier,title:pick(HOUSE_TITLE[L[i].job]||HOUSE_TITLE.nong)};w_houseSur(p,L[i]);L[i].fame=Math.max(L[i].fame,wasH.tier===5?R(215,250):R(150,195));L[i].wealth=Math.max(L[i].wealth,60)}}}}
 }
 const w_clan=(p,id)=>(S.w.clans[p]||[]).find(c=>c.id===id);
 function w_ourKind(){const hd=head();return hd?w_jobKind(hd):'nong'}
@@ -3563,6 +3596,7 @@ function w63Month(mo){
   if(S.war&&S.war.near===0){const hd=head();if(hd&&chance(0.05))enqueue('ev',hd.id,{ev:pick(['w63_giac_tran','w63_giac_tran','w63_chay_loan','w63_thue_luong'])})}
   else if(S.war&&S.war.near===1){const hd=head();if(hd&&chance(0.02))enqueue('ev',hd.id,{ev:pick(['w63_thue_luong','w63_ti_nan'])})}
   w_khoFee();
+  headBSync();
   w633Month(mo);
   /* sự kiện dòng họ khác: thưa, mỗi loại có thời gian nghỉ riêng, "xin vay" chỉ khi họ kia thật sự túng */
   if(chance(0.028)){const hd=head();const L=w_clans();if(hd&&L.length){
@@ -3657,8 +3691,8 @@ function pageHokhac(){
   return `<div class="grid1">${houseCard()}<section class="card"><span class="eyebrow">${esc(locName())}</span><h2>Các họ quanh vùng</h2>
    <p class="kvline">${L.length} dòng họ cùng sống ở ${esc(P0.n)}. Họ nhà mình làm ${CJOB63[ours]}, những họ cùng nghề sẽ là đối thủ làm ăn.</p>
    <div class="clans">${L.map(c=>{const rival=c.job===ours;return `<div class="clanrow">
-     <div><b>Họ ${esc(c.sur)}</b> <span class="chip ${c.house||c.fame>=150?'gold':''}">${c.house?HOUSE_TIER[c.house.tier]:c.fame>=150?'Danh gia':c.fame>=70?'Có tiếng':'Thường dân'}</span> ${rival?'<span class="chip red">cùng nghề</span>':''} ${c.feud?'<span class="chip red">thù oán</span>':''} ${c.mar?`<span class="chip">thông gia ×${c.mar}</span>`:''}
-       <small class="muted">Gia chủ ${esc(c.head.given)} (${c.head.age} tuổi, ${c.head.tr}) · ${CJOB63[c.job]} · ${w_wealthTxt(c.wealth)} · danh vọng ${Math.round(c.fame)}</small>
+     <div><b>${c.house?esc(c.sur)+' Gia':'Họ '+esc(c.sur)}</b> <span class="chip ${c.house||c.fame>=150?'gold':''}">${c.house?HOUSE_TIER[c.house.tier]:c.fame>=150?'Danh gia':c.fame>=70?'Có tiếng':'Thường dân'}</span> ${rival?'<span class="chip red">cùng nghề</span>':''} ${c.feud?'<span class="chip red">thù oán</span>':''} ${c.mar?`<span class="chip">thông gia ×${c.mar}</span>`:''}
+       <small class="muted">Gia chủ ${esc(c.house?cHeadFull(c):c.head.given)} (${c.head.age} tuổi, ${c.head.tr}) · ${CJOB63[c.job]} · ${w_wealthTxt(c.wealth)} · danh vọng ${Math.round(c.fame)}</small>
        <small>Quan hệ với nhà mình: <b class="${c.rel>=25?'up':c.rel<=-15?'down':''}">${relTxt(c.rel)}</b> (${Math.round(c.rel)})</small></div>
      <div class="acts"><button class="btn small" data-w63="gift:${c.id}">Biếu quà</button>${c.feud||c.rel<=-25?`<button class="btn small ghost" data-w63="peace:${c.id}">Hòa giải</button>`:''}${c.kids.some(k=>k.age>=16&&k.age<=32)?`<button class="btn small ghost" data-w63="wed:${c.id}">Hỏi thông gia</button>`:''}</div></div>`}).join('')}</div></section></div>`}
 /* ---------- hành động ---------- */
@@ -3700,8 +3734,8 @@ function giftPopup(o){
     log(`Biếu ${o.who} ${t.n.toLowerCase()} ${money(t.cost)}. ${giftWhy(ratio,o.tr,d,recent)}`);closeModal();save()})}
 function w_gift(id){
   const c=w_clan(S.loc.p,id),hd=head();if(!c||!hd)return;c.gifts=c.gifts||[];
-  giftPopup({title:`Biếu quà họ ${c.sur}`,who:`họ ${c.sur}`,norm:giftNorm(c.fame,c.wealth),gifts:c.gifts,tr:c.head.tr,rel:c.rel,big:c.fame>=110||c.wealth>=70,
-    intro:`Họ ${esc(c.sur)} ${c.fame>=150?'là danh gia':c.fame>=70?'có tiếng':'là nhà thường dân'}, ${w_wealthTxt(c.wealth)}.${c.job===w_ourKind()?' Họ cùng nghề nên lòng người khó đoán.':''}`,
+  giftPopup({title:`Biếu quà ${cname(c)}`,who:cname(c),norm:giftNorm(c.fame,c.wealth),gifts:c.gifts,tr:c.head.tr,rel:c.rel,big:c.fame>=110||c.wealth>=70,
+    intro:`${esc(cnameU(c))} ${c.fame>=150?'là danh gia':c.fame>=70?'có tiếng':'là nhà thường dân'}, ${w_wealthTxt(c.wealth)}.${c.job===w_ourKind()?' Họ cùng nghề nên lòng người khó đoán.':''}`,
     apply:(d,t)=>{if(c.job===w_ourKind())d+=R(-2,1);
       /* nhà nhỏ biếu quà đến mấy cũng chỉ lên tới mức quen biết với nhà lớn */
       const cap=(c.fame>=110&&S.fame<c.fame/4)?45:100;if(d>0&&c.rel+d>cap)d=Math.max(0,cap-c.rel);
@@ -3709,9 +3743,9 @@ function w_gift(id){
 function w_peace(id){
   const c=w_clan(S.loc.p,id),hd=head();if(!c||!hd)return;
   const cost=mm(2+c.fame/60);
-  choicePopup(hd,'Láng giềng',`Hòa giải với họ ${c.sur}`,`Hai họ đang có hiềm khích. Gia chủ ${esc(c.head.given)} ${c.head.tr==='hẹp hòi'||c.head.tr==='ngạo mạn'?'tính khí khó chiều':'tuy còn giận nhưng chịu nghe'}.`,[
+  choicePopup(hd,'Láng giềng',`Hòa giải với ${cname(c)}`,`Hai họ đang có hiềm khích. Gia chủ ${esc(c.head.given)} ${c.head.tr==='hẹp hòi'||c.head.tr==='ngạo mạn'?'tính khí khó chiều':'tuy còn giận nhưng chịu nghe'}.`,[
     {l:`Mang lễ sang tận nhà nhận lỗi (${money(cost)})`,c:()=>S.money>=cost,r:[{eq:1,khau:0.4},45+(c.head.tr==='nhân hậu'||c.head.tr==='phóng khoáng'?20:0)-(c.head.tr==='hẹp hòi'||c.head.tr==='ngạo mạn'?20:0)],
-      y:x=>{S.money-=cost;c.rel=clamp(c.rel+30,-100,100);c.feud=0;return `Họ ${esc(c.sur)} niềm nở tiếp, hai bên bắt tay làm hòa.`+fx(x,{fame:2,tam:4})},n:x=>{S.money-=Math.round(cost*0.5);c.rel=clamp(c.rel-6,-100,100);return `Bị tiếp lạnh nhạt, lễ vật bị trả về.`+fx(x,{tam:-4})}},
+      y:x=>{S.money-=cost;c.rel=clamp(c.rel+30,-100,100);c.feud=0;return `${esc(cnameU(c))} niềm nở tiếp, hai bên bắt tay làm hòa.`+fx(x,{fame:2,tam:4})},n:x=>{S.money-=Math.round(cost*0.5);c.rel=clamp(c.rel-6,-100,100);return `Bị tiếp lạnh nhạt, lễ vật bị trả về.`+fx(x,{tam:-4})}},
     {l:'Nhờ người có tiếng trong vùng đứng ra',c:()=>S.fame>=40,r:[{eq:0.6,fame:0.5},50],y:x=>{c.rel=clamp(c.rel+22,-100,100);c.feud=0;return 'Có người lớn tuổi đứng ra hòa giải, hai họ nguôi giận.'},n:x=>{c.rel=clamp(c.rel-3,-100,100);return 'Người làm chứng chưa đủ trọng, chuyện đâu vẫn còn đó.'}},
     {l:'Thôi, để thời gian trôi',f:x=>''}]);
 }
@@ -3729,14 +3763,14 @@ function w_wed(id){
   ours.slice(0,6).forEach(m=>c.kids.filter(k=>k.g!==m.g&&k.age>=16&&k.age<=32&&Math.abs(k.age-age(m))<=8).slice(0,2).forEach(k=>{
     w_kidProfile(c,k);
     const base=0.3+c.rel/220+(S.fame-c.fame)/500+(c.head.tr==='tham lam'?0.05:0)+(m.mi-50)/300;const pr=clamp(base,0.08,0.9);
-    opts.push({l:`${m.given} (${age(m)} t) hỏi cưới ${k.g==='nữ'?'cô':'cậu'} ${k.given} họ ${c.sur} (${k.age} t, ${w_kidJob(k)})`,s:`Nhà ${CJOB63[c.job]}, danh vọng ${Math.round(c.fame)}. Nhà ${k.g==='nữ'?'gái':'trai'} ${pr>=0.75?'nhiều khả năng nhận lời':pr>=0.5?'có thể nhận lời':pr>=0.3?'còn đắn đo':'khó nhận lời'}`,
-      f:x=>{ if(!chance(pr)){c.rel=clamp(c.rel-5,-100,100);return `Họ ${esc(c.sur)} từ chối khéo, bảo "hai nhà chưa xứng đôi".`+fx(m,{tam:-6})}
+    opts.push({l:`${m.given} (${age(m)} t) hỏi cưới ${k.g==='nữ'?'cô':'cậu'} ${k.given} ${cname(c)} (${k.age} t, ${w_kidJob(k)})`,s:`Nhà ${CJOB63[c.job]}, danh vọng ${Math.round(c.fame)}. Nhà ${k.g==='nữ'?'gái':'trai'} ${pr>=0.75?'nhiều khả năng nhận lời':pr>=0.5?'có thể nhận lời':pr>=0.3?'còn đắn đo':'khó nhận lời'}`,
+      f:x=>{ if(!chance(pr)){c.rel=clamp(c.rel-5,-100,100);return `${esc(cnameU(c))} từ chối khéo, bảo "hai nhà chưa xứng đôi".`+fx(m,{tam:-6})}
         const sp=mkMatch(m,{g:k.g,surname:c.sur,given:k.given,age:k.age,hh:m.hh,stand:k.st,job:k.jb,lv:k.jl});sp.npcClan=c.id;sp.needT=tierIdx();
         c.kids=c.kids.filter(z=>z!==k);c.mar++;c.rel=clamp(c.rel+18,-100,100);
         if(m.g==='nam'){const p2=mkSpouse(m,false,sp);return `Hai nhà thông gia. ${esc(p2.given)} về làm dâu họ ${esc(S.surname)}.`+fx(m,{fame:2})}
-        sp.fee=mm(6+c.fame/12);marryOut(m,sp);return `Hai nhà thông gia. ${esc(m.given)} xuất giá về họ ${esc(c.sur)}.`}}) }));
-  if(!ours.length||!opts.length){infoPopup(hd,'Láng giềng',`Chưa có ai để mai mối`,`Nhà mình không có người đến tuổi lập gia thất, hoặc họ ${esc(c.sur)} không có người hợp tuổi.`);return}
-  opts.push({l:'Thôi',f:()=>''});choicePopup(hd,'Thông gia',`Hỏi thông gia họ ${c.sur}`,`Nhà có tiếng thì cưới gả cũng thành chuyện đáng bàn.`,opts)}
+        sp.fee=mm(6+c.fame/12);marryOut(m,sp);return `Hai nhà thông gia. ${esc(m.given)} xuất giá về ${esc(cname(c))}.`}}) }));
+  if(!ours.length||!opts.length){infoPopup(hd,'Láng giềng',`Chưa có ai để mai mối`,`Nhà mình không có người đến tuổi lập gia thất, hoặc ${esc(cname(c))} không có người hợp tuổi.`);return}
+  opts.push({l:'Thôi',f:()=>''});choicePopup(hd,'Thông gia',`Hỏi thông gia ${cname(c)}`,`Nhà có tiếng thì cưới gả cũng thành chuyện đáng bàn.`,opts)}
 function movePopup(to){
   const hd=head();if(!hd)return;const same=to===S.loc.p;const P0=PROV[to];
   const blk=moveBlock()||(!same&&w_closed(to)?`Đường vào ${P0.n} đang có giặc, không thể đến.`:'');
@@ -4092,7 +4126,7 @@ const HOUSE_DEF=[
 const HOUSE_TIER={4:'Danh gia',5:'Thế gia',6:'Danh môn vọng tộc'};
 const hdef=id=>HOUSE_DEF.find(d=>d.id===id);
 function houseEnsure(st){const W=st.w;if(!W||W.houses)return;W.houses={};
-  HOUSE_DEF.forEach(d=>{W.houses[d.id]={head:{given:d.given,age:d.age,tr:d.tr},kids:d.kids.map(k=>({id:'k'+(W.cid++),given:k[0],g:k[1],age:k[2]})),fame:d.fame,wealth:d.wealth,rel:0,last:-99,gen:0,gT:-99,lT:-99}})}
+  HOUSE_DEF.forEach(d=>{W.houses[d.id]={head:{given:d.given,age:d.age,tr:d.tr},kids:d.kids.map(k=>({id:'k'+(W.cid++),given:k[0],g:k[1],age:k[2]})),fame:d.fame,wealth:d.wealth,rel:0,last:-99,gen:0,gT:-99,lT:-99,end:(st.t||0)+12*termYears(d.age)}})}
 const house=id=>S.w&&S.w.houses?S.w.houses[id]:null;
 const houseName=id=>{const d=hdef(id),h=house(id);return `${d.sur} ${h?h.head.given:d.given}`};
 function houseRel(id,dv){const h=house(id);if(!h)return 0;h.rel=clamp(h.rel+dv,-100,100);h.last=S.t;return h.rel}
@@ -4105,11 +4139,10 @@ function houseYear(){
     h.head.age++;h.kids.forEach(k=>k.age++);
     h.fame=clamp(h.fame+R(-5,6)+(h.wealth-60)/30,40,360);h.wealth=clamp(h.wealth+R(-6,6),20,100);
     if(h.rel>0&&h.rel<50)h.rel-=0.6;else if(h.rel<0)h.rel+=0.6;   /* tình thân nhạt dần nếu không vun đắp; đã là đồng minh thì bền */
-    if(h.head.age>=66&&chance((h.head.age-64)*0.06)){
-      const heir=h.kids.filter(k=>k.g==='nam'&&k.age>=20).sort((a,b)=>b.age-a.age)[0];const old=houseName(d.id);
-      if(heir){h.head={given:heir.given,age:heir.age,tr:pick(CTR63)};h.kids=h.kids.filter(k=>k!==heir)}
-      else{h.head={given:outsiderName('nam',PROV[d.p].r).given,age:R(38,48),tr:pick(CTR63)}}
-      h.gen++;w_news(`Gia chủ ${old} qua đời. ${houseName(d.id)} nối chức, nhà ${d.sur} vẫn giữ nếp cũ.`,true)}
+    if(h.end==null)h.end=S.t+12*termYears(h.head.age);
+    if(S.t>=h.end||h.head.age>=88){
+      const old=houseName(d.id),oa=h.head.age;clanSucc(h,PROV[d.p].r,20);
+      w_news(`Gia chủ ${old} ${oa>=72?'qua đời':'nhường chức, lui về an dưỡng'}. ${houseName(d.id)} nối chức, ${d.sur} Gia vẫn giữ nếp cũ.`,hnear(d.id))}
     h.kids=h.kids.filter(k=>!(k.age>=30&&chance(0.45)));
     if(h.kids.length<3&&h.head.age<58&&chance(0.35)){const gg=chance(0.5)?'nam':'nữ';h.kids.push({id:'k'+(W.cid++),given:outsiderName(gg,PROV[d.p].r).given,g:gg,age:0})}
     if(h.kids.length<2){const gg=chance(0.5)?'nam':'nữ';h.kids.push({id:'k'+(W.cid++),given:outsiderName(gg,PROV[d.p].r).given,g:gg,age:R(3,12)})}})}
@@ -4126,9 +4159,9 @@ function houseRefs(){
 function hinfo(r){
   if(!r)return null;
   if(r.t==='H'){const d=hdef(r.id),h=house(r.id);if(!d||!h)return null;
-    return {t:'H',id:r.id,p:d.p,name:houseName(r.id),sur:d.sur,kind:d.kind,job:d.job,tier:d.tier,seat:d.seat,title:d.title,tr:h.head.tr,headN:h.head.given,rel:h.rel,fame:h.fame,wealth:h.wealth,kids:h.kids,addRel:dv=>houseRel(r.id,dv),obj:h}}
+    return {t:'H',id:r.id,p:d.p,name:`${d.sur} Gia`,sur:d.sur,kind:d.kind,job:d.job,tier:d.tier,seat:d.seat,title:d.title,tr:h.head.tr,headN:houseName(r.id),rel:h.rel,fame:h.fame,wealth:h.wealth,kids:h.kids,addRel:dv=>houseRel(r.id,dv),obj:h}}
   const c=w_clan(r.p,r.id);if(!c)return null;
-  return {t:'C',id:c.id,p:r.p,name:`họ ${c.sur}`,sur:c.sur,kind:c.job,job:CJOB63[c.job],tier:c.house?c.house.tier:3,seat:PROV[r.p].n,title:c.house?c.house.title:'',tr:c.head.tr,headN:c.head.given,rel:c.rel,fame:c.fame,wealth:c.wealth,kids:c.kids,addRel:dv=>{c.rel=clamp(c.rel+dv,-100,100);c.last=S.t},obj:c}}
+  return {t:'C',id:c.id,p:r.p,name:cname(c),sur:c.sur,kind:c.job,job:CJOB63[c.job],tier:c.house?c.house.tier:3,seat:PROV[r.p].n,title:c.house?c.house.title:'',tr:c.head.tr,headN:cHeadFull(c),rel:c.rel,fame:c.fame,wealth:c.wealth,kids:c.kids,addRel:dv=>{c.rel=clamp(c.rel+dv,-100,100);c.last=S.t},obj:c}}
 const hnear=id=>{const d=hdef(id);return !!d&&!!S.loc&&(d.p===S.loc.p||w_mo(S.loc.p,d.p)<=NEAR_MO)};
 /* mỗi tháng có thể có một chuyện từ các nhà ấy. Nhà nhỏ vô danh thì ít ai để mắt tới */
 function houseTick(mo){
@@ -4333,7 +4366,7 @@ function w633Migrate(st){
 
 /*@@V63-END@@*/
 /* ================= cổng cho các tệp kỳ ngộ ================= */
-const G={R,pick,chance,clamp,fmt,esc,fx,fxAll,roll,prob,later,age,nameOf,spouseOf,kidsOf,alive,home,married,stg,season,month,tierIdx,tierName,hasJob,grantTitle,mkSpouse,mkPerson,addStat,setJob,
+const G={cname,cnameU,cHeadFull,R,pick,chance,clamp,fmt,esc,fx,fxAll,roll,prob,later,age,nameOf,spouseOf,kidsOf,alive,home,married,stg,season,month,tierIdx,tierName,hasJob,grantTitle,mkSpouse,mkPerson,addStat,setJob,
   S:()=>S,P,D:window.D,JOBS,RANKS,TUOC,ROUTES,routes,REGIONS,relOf,addRel,kin,subOf,ensurePersona,HABITS,TRAITS,CROPS,GOODS,OFFICES,BIZ,isOfficialFamily,log,enqueue,die,mm,money:()=>S.money,fame:()=>S.fame,fmtMoney:money,
   head,isHead,has,addTrait:addTraitEv,removeTrait,traitsOf,shiftAx,axv,skv,addSk,addHabit,dropHabit,cutVice,vlv,isVice,viceOf,axLabels,outsiderName,mkGiven,fullOutsider,inClan,adopt,enlist,wipeClan,assignPost,appoint,postOf,offState,quitOffice,bizOf,priceOf,mk,lone,noble,famLuck,clanTuoc,
   hhOf:c=>HH(c.hh),mainHH,HOMES,LIFE,setAway:(c,a)=>{c.away=a},childOf,doBirth,newHH:(c,home)=>newBranch(c,home,0),
