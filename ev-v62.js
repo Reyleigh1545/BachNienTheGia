@@ -34,7 +34,7 @@ return [
  x:(c,d)=>{const p=P(d.xg);return `Có người từ làng bên mang tin: ${esc(p.given)} ở nhà họ ${esc(surOf(p))} bị mẹ chồng hành hạ, làm lụng quần quật mà vẫn bị chửi mắng. ${prot()>=2?'Nhà họ chưa biết nhà mình bây giờ có người làm quan.':''}`},
  o:(c,d)=>{const p=P(d.xg);return [
   {l:'Cho người sang nói chuyện phải trái',r:[{eq:0.5,khau:0.5,fame:0.4},40-prot()*6],y:c=>`Nhà họ ${esc(surOf(p))} chột dạ, từ đó đối xử với ${esc(p.given)} khác hẳn.`+fx(c,{fame:2}),n:c=>'Nhà bên kia đóng cửa không tiếp, còn nói con gái gả đi như bát nước đổ đi.'+fx(c,{tam:-6})},
-  {l:'Đón con về nhà',s:'Con gái bỏ nhà chồng về, người ngoài dị nghị',f:c=>{G.comeHome(p,chance(0.4));G.cf(-2,'Con gái bỏ chồng về nhà');return `${esc(p.given)} khóc nức nở ngày về. Từ nay lại ở nhà mẹ đẻ.`}},
+  {l:'Đón con về nhà',s:'Con gái bỏ nhà chồng về, người ngoài dị nghị',f:c=>{const k0=chance(0.4)&&age(p)>=18&&age(p)<=44;G.comeHome(p,k0);G.cf(-2,'Con gái bỏ chồng về nhà');return `${esc(p.given)} khóc nức nở ngày về. Từ nay lại ở nhà mẹ đẻ.`}},
   {l:'Gửi tiền riêng để con có chỗ dựa',f:c=>`Có chút tiền riêng, ${esc(p.given)} cũng đỡ khổ.`+fx(c,{money:-m(3)})},
   {l:'Con gái đã gả đi, phải nhẫn nhịn',ax:{rong:-2},f:c=>'Nghe tin mà lòng nặng trĩu.'+fx(c,{tam:-5})}]}},
 {id:'v62_xg_thong_gia_nho',fixed:1,t:'Thông gia nhờ vả',k:'Thông gia',
@@ -46,7 +46,7 @@ return [
 {id:'v62_xg_ly_hon_ve',fixed:1,t:'Bị nhà chồng trả về',k:'Thông gia',
  x:(c,d)=>{const p=P(d.xg);return `${esc(p.given)} ôm tay nải đứng trước cổng. Nhà họ ${esc(surOf(p))} viết hưu thư, nói ${pick(['lấy nhau mấy năm không có con trai','không hợp ý mẹ chồng','nhà mình nay sa sút, không môn đăng hộ đối'])}.`},
  o:(c,d)=>{const p=P(d.xg);return [
-  {l:'Mở cửa đón con về',f:c=>{const k=chance(0.35);G.comeHome(p,k);return `Nhà mình là nhà của con. ${k?esc(p.given)+' dắt theo đứa con nhỏ, nhà bên kia không nhận.':''}`+fx(c,{tam:-3})}},
+  {l:'Mở cửa đón con về',f:c=>{const k=chance(0.35)&&age(p)>=18&&age(p)<=44;G.comeHome(p,k);return `Nhà mình là nhà của con. ${k?esc(p.given)+' dắt theo đứa con nhỏ, nhà bên kia không nhận.':''}`+fx(c,{tam:-3})}},
   {l:'Sang nhà kia đòi lẽ phải',r:[{khau:0.6,fame:0.4,eq:0.3},50-prot()*6],y:c=>`Nhà kia đuối lý, phải đón ${esc(p.given)} về, lại xin lỗi.`+fx(c,{fame:4}),n:c=>{G.comeHome(p,false);return 'Cãi không lại, đành đưa con về nhà.'+fx(c,{tam:-6,fame:-2})}},
   {l:'Không nhận, bắt quay lại nhà chồng',ax:{rong:-5},f:c=>{p.left='botron';return `${esc(p.given)} quay lưng đi, từ đó bặt tin.`+fx(c,{tam:-8,fame:-3})}}]}},
 {id:'v62_tro_ve',fixed:1,t:'Người cũ trở về',k:'Gia sự',

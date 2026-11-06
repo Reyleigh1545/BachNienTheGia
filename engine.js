@@ -1,4 +1,4 @@
-/* Bách Niên Thế Gia v6.3.2 · engine (ghép từ src/ + src63/) */
+/* Bách Niên Thế Gia v6.3.3 · engine (ghép từ src/ + src63/) */
 (function(){
 'use strict';
 /* ================= tiện ích ================= */
@@ -530,9 +530,9 @@ function mkStaff(role){
   const g=chance(0.6)?'nam':'nữ';
   const st={id:'s'+Date.now().toString(36)+(staffN++),n:fullOutsider(g),g,tt:R(10,85),sm:R(10,85),kl:R(10,85),tl:R(5,100),m:R(0,25),role:role||null,ms:[]};
   st.wage=Math.round((350+((st.tt+st.sm+st.kl)/3)*9)*(1+st.m/80)/10)*10;
-  return st;
+  return staffInit(st);
 }
-function staffEff(st,role){const R0=ROLES[role];let s=0,n=0;for(const k in R0.req){s+=Math.min(1.25,st[k]/R0.req[k]);n++}return (n?s/n:1)*(0.7+st.m/200)}
+function staffEff(st,role){const R0=ROLES[role];let s=0,n=0;for(const k in R0.req){s+=Math.min(1.25,st[k]/R0.req[k]);n++}return (n?s/n:1)*(0.7+st.m/200)*staffVigor(st)}
 function bizSlots(b){const B=BIZ[b.type];const out=[];for(let i=0;i<=b.lv;i++)out.push(...B.lv[i][4]);return out}
 function bizCalc(b){
   const B=BIZ[b.type];const L=B.lv[b.lv];const slots=bizSlots(b);
@@ -549,7 +549,7 @@ function bizCalc(b){
   return {rev:Math.round(Math.min(rev,L[2]*1.3)),wages,mat:Math.round(mat),rent,profit:Math.round(Math.min(rev,L[2]*1.3)-wages-mat-rent),fill,ownerF};
 }
 function bizMonth(){
-  let v=0;S.biz.forEach(b=>{const c=bizCalc(b);b.last=c;v+=c.profit;
+  let v=0;S.biz.forEach(b=>{staffTick(b);const c=bizCalc(b);b.last=c;v+=c.profit;
     b.staff.forEach(st=>{st.m=Math.min(120,st.m+(2+st.tl/12)/12);for(const t of [30,60,90])if(st.m>=t&&!st.ms.includes(t)){st.ms.push(t);const ow=P(b.owner);enqueue('raise',ow&&inClan(ow)&&!ow.away&&ow.job==='chu'?ow.id:S.head,{biz:b.id,sid:st.id,t})}})});
   return v;
 }
@@ -2410,7 +2410,7 @@ function outsTick(){const outs=S.people.filter(p=>p.dead==null&&p.left&&!['luuvo
     if(p.left==='xuatgia'&&chance(0.005)){const L=['v62_xg_ve_tham','v62_xg_bi_bat_nat','v62_xg_thong_gia_nho','v62_xg_ly_hon_ve'];enqueue('ev',S.head,{ev:pick(L),data:{xg:p.id}})}
     if(['expelled','botron','tumat'].includes(p.left)&&S.t-(p.leftT||S.t)>=36&&a<70&&chance(0.002))enqueue('ev',S.head,{ev:'v62_tro_ve',data:{xg:p.id}})})}
 function comeHome(p,kid){p.left=null;p.leftT=null;p.hh=mainHH();p.spouse=null;p.flags.divorced=S.t;p.away=null;
-  if(kid){const k=mkPerson({g:chance(0.5)?'nam':'nữ',surname:(p.outSp&&p.outSp.sur)||pick(SURN),age:R(2,8),young:true,hh:mainHH()});k.parents=[p.id];k.gen=(p.gen||1)+1;k.ngoai=1;ensurePersona(k);S.people.push(k)}}
+  if(kid&&Math.floor((S.t-p.born)/12)>=18&&Math.floor((S.t-p.born)/12)<=44){const pa=Math.floor((S.t-p.born)/12);const k=mkPerson({g:chance(0.5)?'nam':'nữ',surname:(p.outSp&&p.outSp.sur)||pick(SURN),age:Math.max(1,Math.min(R(2,8),pa-16)),young:true,hh:mainHH()});k.parents=[p.id];k.gen=(p.gen||1)+1;k.ngoai=1;ensurePersona(k);S.people.push(k)}}
 
 /* ================= trục xuất, từ mặt ================= */
 function expelScope(c,sc){let L=[c];
@@ -2701,7 +2701,7 @@ function topHTML(){
    <div class="speed" role="group" aria-label="Tốc độ thời gian">${[[0,'❚❚'],[1,'×1'],[2,'×2'],[5,'×5'],[10,'×10']].map(([v,l])=>`<button data-speed="${v}" aria-pressed="${(running?speed:0)===v}" aria-label="${v?'Tốc độ '+l:'Dừng'}">${l}</button>`).join('')}</div>`;
 }
 function navHTML(){
-  return `<nav class="tabs" aria-label="Trang">${PAGES.filter(([id])=>S.pages.includes(id)).map(([id,n])=>`<button data-page="${id}" aria-pressed="${page===id}">${n}${S.newPages.includes(id)?'<i class="dot" aria-label="mới"></i>':''}</button>`).join('')}</nav>`;
+  return `<nav class="tabs" aria-label="Trang">${PAGES.filter(([id])=>S.pages.includes(id)).map(([id,n])=>`<button data-page="${id}" aria-pressed="${page===id}">${n}${S.newPages.includes(id)?'<i class="dot" aria-label="mới"></i>':id==='kinhdoanh'&&bizVacant()?'<i class="dot warn" aria-label="thiếu người"></i>':''}</button>`).join('')}</nav>`;
 }
 
 /* ================= gia phả ================= */
@@ -2885,6 +2885,7 @@ function pageGiatoc(){
    <dt>${I('hung','Hưng thịnh')}</dt><dd class="num">${Math.round(S.hung)}</dd><dt>${I('on','Ổn định')}</dt><dd class="num">${Math.round(S.on)}</dd><dt>${I('duyen','Cơ duyên gia tộc')}</dt><dd class="num">${Math.round(famLuck())}</dd>
    <dt>Tước vị</dt><dd>${titled.length?titled.map(p=>`${esc(nameOf(p))}: ${TUOC[p.tuoc]}`).join(', '):'Chưa có'}</dd></dl></section>
    ${perksCard()}
+   ${vilCard()}
    ${S.fame>=120&&head()?`<section class="card"><span class="eyebrow">Danh vọng</span><h2>Kêu gọi</h2><p class="kvline">${(S.kgT||0)>S.t?`Vừa kêu gọi, ${S.kgT-S.t} tháng nữa mới nên làm lại.`:'Nhà có tiếng, một lời kêu gọi người trong vùng sẵn lòng góp sức.'}</p><div class="acts"><button class="btn small" data-kg ${(S.kgT||0)>S.t?'disabled':''}>Kêu gọi</button></div></section>`:''}
    <section class="card" style="grid-column:1/-1"><span class="eyebrow">${I('rules','Gia quy')} · ${S.rules.length}/${ruleSlots()}</span><h2>${wait>0?`Thêm điều mới sau ${wait} tháng`:'Gia quy'}</h2>
    ${S.rules.length?`<div class="rulegrid">${S.rules.map(k=>`<div class="btn" aria-pressed="true"><strong>✓ ${RULES[k].n}</strong><small>${RULES[k].d}</small><span><button class="btn small ghost" data-drop="${k}">Bỏ</button></span></div>`).join('')}</div>`:'<p class="kvline muted">Chưa có điều nào.</p>'}
@@ -2949,28 +2950,15 @@ function pageRuong(){
 }
 
 /* ================= kinh doanh ================= */
-function pageKinhdoanh(){
-  const can=alive().filter(p=>!p.away&&age(p)>=16).flatMap(p=>Object.keys(BIZ).filter(t=>canOwn(p,t)).map(t=>[p,t]));
-  return `<div class="grid2">${S.biz.map(b=>{const B=BIZ[b.type];const L=B.lv[b.lv];const nx=B.lv[b.lv+1];const o=P(b.owner);const k=b.last||bizCalc(b);
-    const slots=bizSlots(b);const used=new Set();
-    return `<section class="card"><span class="eyebrow">${esc(B.n)}</span><h2>${esc(L[0])}</h2>
-    <p class="kvline">Của: <b>${esc(bizOwnName(b))}</b> · Người trông: ${o&&inClan(o)?`<button class="lnk" data-sel="${o.id}">${esc(nameOf(o))}</button>`:'<span class="down">chưa có ai trông</span>'}</p>
-    <dl class="kv" style="margin-top:6px"><dt>Doanh thu (trần ${money(L[2])})</dt><dd class="num">${money(k.rev)}</dd><dt>Lương người làm</dt><dd class="num down">${money(k.wages)}</dd><dt>Nguyên liệu, hao phí</dt><dd class="num down">${money(k.mat)}</dd><dt>Tiền thuê, thuế chợ</dt><dd class="num down">${money(k.rent)}</dd><dt><b>Lãi tháng</b></dt><dd class="num ${k.profit<0?'down':'up'}"><b>${money(k.profit)}</b></dd><dt>Đủ người</dt><dd class="num">${Math.round(k.fill*100)}%</dd></dl>
-    <div class="staff">${slots.map((r,i)=>{const st=b.staff.find(s=>s.role===r&&!used.has(s.id));if(st){used.add(st.id);return `<div class="srow"><div><b>${esc(st.n)}</b> · ${esc(ROLES[r].n)}<small class="num">Thông tuệ ${st.tt} · Sức ${st.sm} · Khéo ${st.kl} · Tiềm lực ${st.tl} · thạo ${Math.floor(st.m)} · hiệu quả ${Math.round(staffEff(st,r)*100)}% · ${money(st.wage)}/tháng</small></div><button class="btn small ghost" data-fire="${b.id}:${st.id}">Cho nghỉ</button></div>`}
-      return `<div class="srow empty"><div><b>Trống</b> · ${esc(ROLES[r].n)}<small>Cần ${Object.entries(ROLES[r].req).map(([k,v])=>`${ROLE_ST[k]} ${v}`).join(', ')}</small></div><button class="btn small" data-hire="${b.id}:${r}">Tuyển</button></div>`}).join('')||'<p class="note">Cơ sở nhỏ, chủ tự làm.</p>'}</div>
-    ${nx?`<button class="btn" data-expand="${b.id}" style="margin-top:8px;width:100%" ${bizFundGet(b)<nx[1]?'disabled':''}><strong>Mở rộng thành ${esc(nx[0])}</strong><small>${money(nx[1])} từ ${esc(bizOwnName(b).toLowerCase())} · trần doanh thu ${money(nx[2])} · thêm ${nx[4].length} chỗ làm</small></button>`:''}
-    <button class="btn ghost" data-sellb="${b.id}" style="margin-top:6px;width:100%"><strong>Bán cơ sở · khoảng ${money(bizValue(b))}</strong><small>Giá theo vốn đã bỏ, lãi gần đây${S.war?', đang chiến sự nên bị ép giá':''}</small></button>
-    ${!o||!inClan(o)?`<div class="field" style="margin-top:8px"><label>Giao cho người trông</label><select class="sel" data-owner="${b.id}"><option value="">Chọn người</option>${alive().filter(p=>age(p)>=16&&!p.away&&!['quan','vua'].includes(p.job)&&!p.biz).map(p=>`<option value="${p.id}">${esc(nameOf(p))} · ${esc(jobName(p))}</option>`).join('')}</select></div>`:''}</section>`}).join('')}
-   <section class="card"><span class="eyebrow">Mở cơ sở mới</span>
-   ${can.length?`<div class="choices">${can.map(([p,t])=>{const L0=BIZ[t].lv[0];return `<button class="btn" data-openb="${p.id}:${t}" ${canOpenAny(p,L0[1])?'':'disabled'}><strong>${esc(nameOf(p))} mở ${esc(L0[0].toLowerCase())} · ${money(L0[1])}</strong><small>Trần doanh thu ${money(L0[2])}/tháng</small></button>`}).join('')}</div>`:'<p class="kvline muted">Chưa ai đủ tay nghề để mở cơ sở.</p>'}</section></div>`;
-}
+/* v6.3.3: pageKinhdoanh và bizDetail nằm trong w633_core */
 function hirePopup(bid,role){
   const b=S.biz.find(x=>x.id===bid);if(!b)return;
+  const back=()=>{closeModal();setTimeout(()=>{if(!modalOpen()&&S.biz.includes(b))bizDetail(bid)},10)};
   openModal(`<span class="eyebrow">Tuyển người</span><h2>${esc(ROLES[role].n)} cho ${esc(BIZ[b.type].lv[b.lv][0].toLowerCase())}</h2>
-  <p class="muted">Tiền công tùy ngành, vị trí và tay nghề. Cần ${Object.entries(ROLES[role].req).map(([k,v])=>`${ROLE_ST[k]} ${v}`).join(', ')}. Ứng viên mới vào mỗi quý.</p>
-  <div class="choices">${S.cand.map((st,i)=>`<button class="btn" data-c="${i}"><strong>${esc(st.n)} · hiệu quả ${Math.round(staffEff(st,role)*100)}% · ${money(wageFor(st,b,role))}/tháng</strong><small class="num">Thông tuệ ${st.tt} · Sức mạnh ${st.sm} · Khéo léo ${st.kl} · Tiềm lực ${st.tl} · thông thạo ${st.m}</small></button>`).join('')||'<p class="note">Hết ứng viên, đợi quý sau.</p>'}<button class="btn ghost" data-x>Thôi</button></div>`);
-  M.querySelectorAll('[data-c]').forEach(x=>x.onclick=()=>{const st=S.cand.splice(+x.dataset.c,1)[0];st.role=role;st.wage=wageFor(st,b,role);b.staff.push(st);log(`Thuê ${st.n} làm ${ROLES[role].n.toLowerCase()}.`);closeModal()});
-  M.querySelector('[data-x]').onclick=closeModal;
+  <p class="muted">Tiền công tùy ngành, vị trí và tay nghề. Cần ${Object.entries(ROLES[role].req).map(([k,v])=>`${ROLE_ST[k]} ${v}`).join(', ')}. Ứng viên mới vào mỗi quý. Người lớn tuổi, sức yếu thì làm kém đi và dễ ốm đau.</p>
+  <div class="choices">${S.cand.map((st,i)=>`<button class="btn" data-c="${i}"><strong>${esc(st.n)} · ${stAge(st)} tuổi · hiệu quả ${Math.round(staffEff(st,role)*100)}% · ${money(wageFor(st,b,role))}/tháng</strong><small class="num">${esc(stHealthTxt(st))} · Thông tuệ ${st.tt} · Sức mạnh ${st.sm} · Khéo léo ${st.kl} · Tiềm lực ${st.tl} · thông thạo ${st.m}</small></button>`).join('')||'<p class="note">Hết ứng viên, đợi quý sau.</p>'}<button class="btn ghost" data-x>Thôi</button></div>`);
+  M.querySelectorAll('[data-c]').forEach(x=>x.onclick=()=>{const st=S.cand.splice(+x.dataset.c,1)[0];st.role=role;st.wage=wageFor(st,b,role);st.since=S.t;b.staff.push(st);log(`Thuê ${st.n} làm ${ROLES[role].n.toLowerCase()}.`);back()});
+  M.querySelector('[data-x]').onclick=back;
 }
 
 /* ================= kho, buôn bán ================= */
@@ -3029,15 +3017,12 @@ function bind(){
   app.querySelectorAll('[data-life]').forEach(s=>s.onchange=()=>{const h=S.hh[s.dataset.life];h.life=+s.value;log(`${h.name} chuyển sang sống ${LIFE[h.life][0].toLowerCase()}.`);done()});
   app.querySelectorAll('[data-build]').forEach(b=>b.onclick=()=>{if(b.dataset.build!==mainHH())return;const h=S.hh[b.dataset.build];const nx=HOMES[h.home+1];if(!nx||S.money<nx.cost)return;S.money-=nx.cost;h.home++;cf(nx.fame,'Xây nhà mới');S.hung=clamp(S.hung+3,0,100);log(`Xây xong ${nx.n}.`,'gd');done()});
   app.querySelectorAll('[data-openb]').forEach(b=>b.onclick=()=>{const [pid,t]=b.dataset.openb.split(':');openBizPopup(P(pid),t);done()});
-  app.querySelectorAll('[data-sellb]').forEach(b=>b.onclick=()=>{const bz=S.biz.find(x=>x.id===b.dataset.sellb);if(!bz)return;confirmBox(`Bán ${esc(BIZ[bz.type].lv[bz.lv][0].toLowerCase())}?`,`Có người trả ${money(bizValue(bz))}, tiền về ${esc(bizOwnName(bz).toLowerCase())}. Người đang trông sẽ thôi việc.`,'Bán',()=>{sellBiz(bz);closeModal();done()},closeModal)});
   app.querySelectorAll('[data-gop]').forEach(b=>b.onclick=()=>{S.gop=+b.dataset.gop;log(`Gia quy góp công quỹ: ${GOP.find(x=>x[0]===S.gop)[1].toLowerCase()} tiền công.`);done()});
   app.querySelectorAll('[data-to]').forEach(b=>b.onclick=()=>{S.farm.to=+b.dataset.to;log(`Đổi mức tô: ${TOLV[S.farm.to][0].toLowerCase()}.`);done()});
   app.querySelectorAll('[data-coff]').forEach(sl=>sl.onchange=()=>{const k=sl.dataset.coff;const p=sl.value?P(sl.value):null;S.coff[k]=p?p.id:null;log(p?`${nameOf(p)} nhận chức ${CLANOFF[k].n.toLowerCase()} trong tộc.`:`Chức ${CLANOFF[k].n.toLowerCase()} để trống.`);if(p)addStat(p,'tam',5);done()});
   const cf2=app.querySelector('#chiF');if(cf2)cf2.onchange=()=>{chiF=cf2.value;render()};
-  app.querySelectorAll('[data-expand]').forEach(b=>b.onclick=()=>expandBiz(S.biz.find(x=>x.id===b.dataset.expand)));
-  app.querySelectorAll('[data-hire]').forEach(b=>b.onclick=()=>{const [bid,r]=b.dataset.hire.split(':');hirePopup(bid,r)});
-  app.querySelectorAll('[data-fire]').forEach(b=>b.onclick=()=>{const [bid,sid]=b.dataset.fire.split(':');const bz=S.biz.find(x=>x.id===bid);const st=bz.staff.find(s=>s.id===sid);bz.staff=bz.staff.filter(s=>s.id!==sid);log(`Cho ${st.n} nghỉ việc.`);done()});
-  app.querySelectorAll('[data-owner]').forEach(s=>s.onchange=()=>{if(!s.value)return;const bz=S.biz.find(x=>x.id===s.dataset.owner);const p=P(s.value);if(p.biz){const ob=bizOf(p);if(ob)ob.owner=null}p.bizFrom=p.job;p.job='chu';p.biz=bz.id;p.lv=0;bz.owner=p.id;log(`${nameOf(p)} nhận trông coi ${BIZ[bz.type].lv[bz.lv][0].toLowerCase()}.`);done()});
+  app.querySelectorAll('tr[data-bz]').forEach(r=>{r.onclick=()=>bizDetail(r.dataset.bz);r.onkeydown=e=>{if(e.key==='Enter')bizDetail(r.dataset.bz)}});app.querySelectorAll('button[data-bz]').forEach(b=>b.onclick=e=>{e.stopPropagation();bizDetail(b.dataset.bz)});
+  app.querySelectorAll('[data-qhire]').forEach(b=>b.onclick=e=>{e.stopPropagation();const [bid,r]=b.dataset.qhire.split(':');hirePopup(bid,r)});
   app.querySelectorAll('[data-sell]').forEach(b=>b.onclick=()=>{const [g,p]=b.dataset.sell.split(':');sellKho(g,+p)});
   const tp=app.querySelector('[data-trip]');if(tp)tp.onclick=()=>tradePopup();
   app.querySelectorAll('[data-rule]').forEach(b=>b.onclick=()=>{const k=b.dataset.rule;if(S.rules.includes(k)||ruleWhy(k))return;addRule(k);done()});
@@ -3079,7 +3064,9 @@ function migrate(st){
   st.kyT=st.kyT||{};st.opt=st.opt||{};st.opt.preview=false;if(st.poem===undefined)st.poem=null;
   {const real=S;S=st;try{ensureEcon(st);if((st.ver||5)<6.1){st.people.forEach(p=>{if(p.dead==null&&p.spouse&&p.wantChild){p.kidAdj={v:20,until:st.t+24}}});for(const id in st.hh){const h=st.hh[id];if(/^Nhà /.test(h.name)&&id!=='h0'){const f=st.people.find(p=>p.hh===id&&p.dead==null&&!p.inLaw);if(f)h.name=branchName(f)}}}}finally{S=real}}
   if((st.ver||5)<6){const real=S;S=st;try{st.people.forEach(p=>{if(p.dead==null)ensurePersona(p)})}finally{S=real}}
-  w_ensure(st);if((st.ver||5)<6.32)ctGrand(st);st.ver=6.32;return st;
+  w_ensure(st);if((st.ver||5)<6.32)ctGrand(st);
+  {const real=S;S=st;try{if((st.ver||5)<6.33)w633Migrate(st)}finally{S=real}}
+  st.ver=6.33;return st;
 }
 function playSlot(n){
   const st=load(n);if(!st)return;S=migrate(st);S.slot=n;sel=S.head;O.hidden=true;M.innerHTML='';running=false;centerNext=true;page='giapha';
@@ -3090,7 +3077,7 @@ function mainMenu(){
   running=false;S=null;page='giapha';brandHead();
   const m=meta();const last=m.last&&m.slots[m.last]&&!m.slots[m.last].over?m.last:null;
   const any=Object.keys(m.slots).length||loadOld();
-  openModal(`<div class="menu"><div class="sealbig" aria-hidden="true">家</div><h2>Bách Niên Thế Gia</h2><p class="muted">Từ túp lều tranh đến danh gia vọng tộc</p><p class="muted" style="font-size:.78rem;margin-top:-.4rem">Phiên bản 6.3.2</p>
+  openModal(`<div class="menu"><div class="sealbig" aria-hidden="true">家</div><h2>Bách Niên Thế Gia</h2><p class="muted">Từ túp lều tranh đến danh gia vọng tộc</p><p class="muted" style="font-size:.78rem;margin-top:-.4rem">Phiên bản 6.3.3</p>
    <div class="choices">${last?`<button class="btn primary" data-m="cont"><strong>Tiếp tục</strong><small>${slotLine(last)}</small></button>`:''}
    <button class="btn ${last?'':'primary'}" data-m="new"><strong>Trò chơi mới</strong><small>Lập một dòng họ mới</small></button>
    <button class="btn" data-m="load" ${any?'':'disabled'}><strong>Tải bản lưu</strong><small>Ba ô lưu, mỗi ô một gia tộc</small></button>
@@ -3230,6 +3217,7 @@ function w_ensure(st){ /* gọi khi tạo ván mới hoặc nạp save cũ */
     if(!st.w)st.w=w_new();
     if(!st.loc||!PROV[st.loc.p]){const p=w_startProv(st.region||'trung');w_setLoc(p,0)}
     const W=st.w;['ten','ph','sk','dmg','clans'].forEach(k=>W[k]=W[k]||{});['wars','dis','news'].forEach(k=>W[k]=W[k]||[]);W.wid=W.wid||1;W.did=W.did||1;W.cid=W.cid||1;
+    houseEnsure(st);vilEnsure(st);
   }finally{S=real}}
 const w_nat=(p)=>PROV[p].nat;
 const homeNat=()=>PROV[S.loc.p].nat;
@@ -3396,6 +3384,7 @@ function w63Month(mo){
   if(S.war&&S.war.near===0){const hd=head();if(hd&&chance(0.05))enqueue('ev',hd.id,{ev:pick(['w63_giac_tran','w63_giac_tran','w63_chay_loan','w63_thue_luong'])})}
   else if(S.war&&S.war.near===1){const hd=head();if(hd&&chance(0.02))enqueue('ev',hd.id,{ev:pick(['w63_thue_luong','w63_ti_nan'])})}
   w_khoFee();
+  w633Month(mo);
   /* sự kiện dòng họ khác: thưa, mỗi loại có thời gian nghỉ riêng, "xin vay" chỉ khi họ kia thật sự túng */
   if(chance(0.028)){const hd=head();const L=w_clans();if(hd&&L.length){
     const pool=[['w63_ho_qua',1,48],['w63_ho_canh_tranh',0.8,84],['w63_ho_tranh_chap',0.8,84],['w63_ho_gia_nan',0.9,60],['w63_ho_hoi_lang',1,36],['w63_ho_xin_vay',0.8,144],['w631_ho_muon_trau',0.7,72],['w631_ho_gop_dinh',0.8,60],['w631_ho_dua_dam',0.6,96]].filter(([id])=>EVMAP[id]&&(S.cool[id]||-1e9)<=S.t&&(!EVMAP[id].c||EVMAP[id].c(hd)));
@@ -3486,7 +3475,7 @@ function pageHokhac(){
   if(!S.w)w_ensure(S);
   const L=w_clans().slice().sort((a,b)=>b.fame-a.fame);const P0=PROV[S.loc.p];const ours=w_ourKind();
   const relTxt=r=>r>=60?'thân thiết':r>=25?'mến':r>-15?'xa lạ':r>-45?'bất hòa':'thù oán';
-  return `<div class="grid1"><section class="card"><span class="eyebrow">${esc(locName())}</span><h2>Các họ quanh vùng</h2>
+  return `<div class="grid1">${houseCard()}<section class="card"><span class="eyebrow">${esc(locName())}</span><h2>Các họ quanh vùng</h2>
    <p class="kvline">${L.length} dòng họ cùng sống ở ${esc(P0.n)}. Họ nhà mình làm ${CJOB63[ours]}, những họ cùng nghề sẽ là đối thủ làm ăn.</p>
    <div class="clans">${L.map(c=>{const rival=c.job===ours;return `<div class="clanrow">
      <div><b>Họ ${esc(c.sur)}</b> <span class="chip ${c.fame>=150?'gold':''}">${c.fame>=150?'Danh gia':c.fame>=70?'Có tiếng':'Thường dân'}</span> ${rival?'<span class="chip red">cùng nghề</span>':''} ${c.feud?'<span class="chip red">thù oán</span>':''} ${c.mar?`<span class="chip">thông gia ×${c.mar}</span>`:''}
@@ -3552,6 +3541,7 @@ function fleePopup(why){
   choicePopup(hd,'Chạy nạn','Chạy nạn tới đâu',`${why||'Không thể ở lại.'} Bỏ ruộng, bỏ cơ sở làm ăn lại, mất phần lớn tài sản mang theo được, nhưng giữ được mạng người. Những nơi dưới đây tạm yên ổn.`,opts)}
 function w_bind(app){
   app.querySelectorAll('[data-prov]').forEach(b=>{const go=()=>{mapProv=b.dataset.prov;render()};b.onclick=go;b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}}});
+  app.querySelectorAll('[data-w633]').forEach(b=>b.onclick=()=>{const [k,v]=b.dataset.w633.split(':');if(k==='gift')h_gift(v);else if(k==='letter')h_letter(v)});
   app.querySelectorAll('[data-w63]').forEach(b=>b.onclick=()=>{const [k,v]=b.dataset.w63.split(':');
     if(k==='move')movePopup(v);else if(k==='trade'){preRoute63=v;tradePopup()}else if(k==='gift')w_gift(v);else if(k==='peace')w_peace(v);else if(k==='wed')w_wed(v)})}
 
@@ -3705,6 +3695,327 @@ function matchmaker(c){
   M.querySelector('[data-x]').onclick=closeModal;
 }
 
+/* ================= v6.3.3 · nhân viên là người thật · bảng sản nghiệp gọn ================= */
+
+/* ---------- nhân viên: có tuổi, sức khỏe, lòng trung thành; có thể ốm, nghỉ hưu, bỏ việc, chết ---------- */
+const stAge=st=>Math.floor((S.t-(st.born!=null?st.born:S.t-12*30))/12);
+function staffInit(st,age0){
+  const a=age0!=null?age0:Math.min(58,16+Math.floor(Math.pow(Math.random(),1.35)*42));
+  st.born=S.t-12*a-R(0,11);st.hp=clamp(R(62,100)-Math.max(0,a-45)*1.2,25,100);st.sick=0;st.loy=R(45,75);st.since=S.t;return st}
+function staffFix(st){if(st.born==null){const a=R(19,50);st.born=S.t-12*a-R(0,11)}
+  if(st.hp==null)st.hp=R(60,100);if(st.sick==null)st.sick=0;if(st.loy==null)st.loy=R(50,75);if(st.since==null)st.since=S.t-R(6,60);return st}
+/* sức làm việc theo tình trạng: ốm thì kém xa, già hoặc còn quá trẻ thì kém hơn, người được cho làm nhẹ chỉ còn một nửa */
+function staffVigor(st){const a=stAge(st);return (st.sick>0?0.4:1)*(a>=62?0.88:a>=57?0.95:a<18?0.8:1)*(st.lite?0.6:1)*(st.hp<35?0.85:1)}
+const stHealthTxt=st=>st.sick>0?`đang ốm (${st.sick} tháng nữa)`:st.hp>=75?'khỏe mạnh':st.hp>=50?'sức bình thường':st.hp>=30?'yếu, hay đau':'rất yếu';
+/* nghề nặng, dễ tai nạn: xác suất mỗi tháng gặp nạn */
+const STACC={phu:.0016,thuyenphu:.0022,tieusu:.0024,vosu:.0012,tho:.0011,thoca:.0009,chantrau:.0012,laibuon:.0012,bep:.0006,dao:.0004};
+function stfHazard(a){return a<30?0.0007:a<40?0.0012:a<50?0.0035:a<60?0.009:a<65?0.022:a<70?0.045:0.09} /* xác suất chết vì tuổi, mỗi năm */
+function stfActor(b){const ow=P(b.owner);return ow&&inClan(ow)&&!ow.away&&ow.dead==null?ow:head()}
+function stfEvent(b,ev,data){const c=stfActor(b);if(!c||!EVMAP[ev])return;enqueue('ev',c.id,{ev,data:Object.assign({bid:b.id,bn:BIZ[b.type].lv[b.lv][0]},data)})}
+function stfRemove(b,st){b.staff=b.staff.filter(x=>x!==st)}
+function stfSnap(st){return {n:st.n,role:st.role,ra:ROLES[st.role]?ROLES[st.role].n.toLowerCase():'người làm',age:stAge(st),yrs:Math.max(0,Math.floor((S.t-(st.since||S.t))/12)),wage:st.wage,g:st.g,sid:st.id}}
+function staffDie(b,st,why){
+  const sn=stfSnap(st);stfRemove(b,st);
+  b.staff.forEach(x=>{x.loy=clamp((x.loy||60)-3,0,100)});
+  log(`${sn.n} (${sn.ra} ở ${BIZ[b.type].lv[b.lv][0].toLowerCase()}) qua đời, thọ ${sn.age} tuổi.`,'hi');
+  stfEvent(b,'stf_death',Object.assign(sn,{why}))}
+function staffTick(b){
+  b.staff.slice().forEach(st=>{
+    if(!b.staff.includes(st))return;
+    staffFix(st);
+    const a=stAge(st);const epi=S.epi?1:0;
+    /* sức khỏe trôi theo năm */
+    if(S.t%12===0)st.hp=clamp(st.hp+R(-3,2)-(a>=50?2:0)+(a<35?1:0),8,100);
+    /* ốm */
+    if(st.sick>0){st.sick--;
+      const dp=0.006+(a>=55?0.014:0)+(st.hp<35?0.025:0)+epi*0.018-(st.care?0.012:0);
+      if(chance(Math.max(0.002,dp))){staffDie(b,st,'bệnh nặng');return}
+      if(st.sick===0){st.care=0;if(chance(0.12+(st.hp<40?0.15:0)))st.hp=Math.max(8,st.hp-R(6,16))}
+    }else{
+      const sp=0.006+(a>=50?0.006:0)+(a>=60?0.008:0)+epi*0.02+(st.hp<45?0.008:0)+(S.disaster&&S.disaster.k==='lam'?0.02:0);
+      if(chance(sp)){st.sick=R(1,4)+(st.hp<45?1:0);st.care=0;
+        if((a>=50||st.hp<50||epi)&&chance(0.55))stfEvent(b,'stf_sick',Object.assign(stfSnap(st),{}));
+        else log(`${st.n} ở ${BIZ[b.type].lv[b.lv][0].toLowerCase()} ngã bệnh, nghỉ mấy tháng.`)}}
+    /* tai nạn nghề */
+    const ar=STACC[st.role]||0;
+    if(ar&&chance(ar*(S.war?1.2:1))){
+      if(chance(0.13)){staffDie(b,st,'tai nạn lúc làm việc');return}
+      st.hp=Math.max(8,st.hp-R(8,22));st.sick=Math.max(st.sick,R(1,3));log(`${st.n} bị thương lúc làm việc ở ${BIZ[b.type].lv[b.lv][0].toLowerCase()}.`)}
+    /* tuổi già */
+    if(a>=40&&chance(stfHazard(a)/12*(st.hp<40?1.5:1))){staffDie(b,st,'tuổi già');return}
+    /* nghỉ hưu */
+    if(a>=60&&!st.lite&&chance(a>=66?0.05:0.022)){const sn=stfSnap(st);stfRemove(b,st);log(`${sn.n} xin nghỉ hưu${sn.yrs>=1?` sau ${sn.yrs} năm làm`:''} ở ${BIZ[b.type].lv[b.lv][0].toLowerCase()}.`);stfEvent(b,'stf_retire',sn);return}
+    /* lòng trung thành: lương cao hơn mặt bằng thì yên lòng, thấp hơn thì bực */
+    const R0=ROLES[st.role];const mw=R0?R0.w*((BIZX[b.type]||{w:1}).w||1):st.wage;
+    st.loy=clamp((st.loy||60)+(st.wage>=mw*1.15?0.35:st.wage>=mw*0.9?0.05:-0.45)+(S.t%12===0?R(-2,2):0),0,100);
+    if(a<48&&chance(0.0013)){const sn=stfSnap(st);stfRemove(b,st);log(`${sn.n} xin nghỉ ở ${BIZ[b.type].lv[b.lv][0].toLowerCase()}, ${pick(['về quê nối nghề nhà',st.g==='nữ'?'đi lấy chồng xa':'về quê cưới vợ','theo người quen đi làm ăn nơi khác','về chăm cha mẹ già','lập gia đình, dọn sang làng khác'])}.`);return}
+    if(st.loy<18&&chance(0.035)){const sn=stfSnap(st);stfRemove(b,st);log(`${sn.n} chán cảnh làm công, xin thôi việc ở ${BIZ[b.type].lv[b.lv][0].toLowerCase()}.`);stfEvent(b,'stf_quit',sn);return}
+  })}
+function stfRecruitKin(b,role,age0){const st=staffInit(mkStaff(role),age0);st.role=role;st.wage=wageFor(st,b,role);st.tl=Math.max(st.tl,R(35,80));st.loy=R(70,90);b.staff.push(st);return st}
+
+/* ---------- chỗ trống ---------- */
+function bizStaffInfo(b){
+  const slots=bizSlots(b);const used=new Set();const empty=[];let filled=0;
+  slots.forEach(r=>{const st=b.staff.find(s=>s.role===r&&!used.has(s.id));if(st){used.add(st.id);filled++}else empty.push(r)});
+  return {slots,filled,empty,total:slots.length,sick:b.staff.filter(s=>s.sick>0).length,old:b.staff.filter(s=>stAge(s)>=60).length}}
+const bizVacant=()=>S&&S.biz?S.biz.reduce((n,b)=>n+bizStaffInfo(b).empty.length,0):0;
+
+/* ---------- bảng sản nghiệp gọn ---------- */
+function pageKinhdoanh(){
+  const can=alive().filter(p=>!p.away&&age(p)>=16).flatMap(p=>Object.keys(BIZ).filter(t=>canOwn(p,t)).map(t=>[p,t]));
+  const rows=S.biz.map(b=>{const B=BIZ[b.type],L=B.lv[b.lv];const o=P(b.owner);const k=b.last||bizCalc(b);const si=bizStaffInfo(b);return {b,B,L,o,k,si}});
+  const tot={profit:rows.reduce((s,r)=>s+r.k.profit,0),filled:rows.reduce((s,r)=>s+r.si.filled,0),total:rows.reduce((s,r)=>s+r.si.total,0),vac:rows.reduce((s,r)=>s+r.si.empty.length,0),sick:rows.reduce((s,r)=>s+r.si.sick,0)};
+  const staffCell=r=>{const {si}=r;if(!si.total)return '<span class="muted">chủ tự làm</span>';
+    const miss=si.empty.length;
+    return `<span class="num">${si.filled}/${si.total}</span> ${miss?`<span class="chip red" title="${esc(si.empty.map(x=>ROLES[x].n).join(', '))}">Thiếu ${miss}</span>`:'<span class="chip green">Đủ người</span>'}${si.sick?` <span class="chip" title="Người làm đang ốm">ốm ${si.sick}</span>`:''}`};
+  return `<div class="grid1"><section class="card"><span class="eyebrow">Sản nghiệp</span><h2>${rows.length?`${rows.length} cơ sở`:'Chưa có cơ sở nào'}</h2>
+   ${rows.length?`<p class="kvline">Lãi tháng gần nhất <b class="num ${tot.profit<0?'down':'up'}">${money(tot.profit)}</b> · ${tot.filled}/${tot.total} chỗ làm có người${tot.vac?` · <b class="down">đang thiếu ${tot.vac} người</b>, bấm vào cơ sở để tuyển`:' · đủ người'}${tot.sick?` · ${tot.sick} người đang ốm`:''}</p>
+   <div class="tblwrap"><table class="btab"><thead><tr><th>Cơ sở</th><th>Người trông</th><th class="r">Doanh thu</th><th class="r">Lãi tháng</th><th>Nhân sự</th><th></th></tr></thead><tbody>
+   ${rows.map(r=>`<tr class="brow" data-bz="${r.b.id}" tabindex="0"><td><b>${esc(r.L[0])}</b><small>${esc(r.B.n)} · bậc ${r.b.lv+1}/${r.B.lv.length}</small></td>
+     <td>${r.o&&inClan(r.o)?esc(nameOf(r.o)):'<span class="down">chưa có</span>'}<small>${esc(bizOwnName(r.b))}</small></td>
+     <td class="r num">${money(r.k.rev)}</td><td class="r num ${r.k.profit<0?'down':'up'}">${money(r.k.profit)}</td>
+     <td>${staffCell(r)}</td><td class="r">${r.si.empty.length?`<button class="btn small" data-qhire="${r.b.id}:${r.si.empty[0]}">Tuyển</button> `:''}<button class="btn small ghost" data-bz="${r.b.id}">Chi tiết</button></td></tr>`).join('')}
+   </tbody></table></div>`:'<p class="kvline muted">Mở một cơ sở ở khung bên dưới để bắt đầu.</p>'}</section>
+   <section class="card"><span class="eyebrow">Mở cơ sở mới</span>
+   ${can.length?`<div class="choices">${can.map(([p,t])=>{const L0=BIZ[t].lv[0];return `<button class="btn" data-openb="${p.id}:${t}" ${canOpenAny(p,L0[1])?'':'disabled'}><strong>${esc(nameOf(p))} mở ${esc(L0[0].toLowerCase())} · ${money(L0[1])}</strong><small>Trần doanh thu ${money(L0[2])}/tháng</small></button>`}).join('')}</div>`:'<p class="kvline muted">Chưa ai đủ tay nghề để mở cơ sở.</p>'}</section></div>`;
+}
+function bizDetail(bid){
+  const b=S.biz.find(x=>x.id===bid);if(!b)return;const B=BIZ[b.type],L=B.lv[b.lv],nx=B.lv[b.lv+1];const o=P(b.owner);const k=b.last||bizCalc(b);
+  const slots=bizSlots(b);const used=new Set();
+  const stRow=st=>{const a=stAge(st);const yrs=Math.floor((S.t-(st.since||S.t))/12);
+    return `<div class="srow"><div><b>${esc(st.n)}</b> · ${esc(ROLES[st.role]?ROLES[st.role].n:'Người làm')} · ${a} tuổi<small>${esc(stHealthTxt(st))} · làm ${yrs>=1?yrs+' năm':'chưa đầy năm'} · hiệu quả ${Math.round(staffEff(st,st.role)*100)}% · ${money(st.wage)}/tháng${st.lite?' · làm nhẹ':''}</small>
+      <small class="num">Thông tuệ ${st.tt} · Sức ${st.sm} · Khéo ${st.kl} · Tiềm lực ${st.tl} · thạo ${Math.floor(st.m)} · ${(st.loy||60)>=65?'trung thành':(st.loy||60)>=35?'tạm yên':'đang bất mãn'}</small></div><button class="btn small ghost" data-fire="${st.id}">Cho nghỉ</button></div>`};
+  const filledH=[],emptyH=[];
+  slots.forEach(r=>{const st=b.staff.find(s=>s.role===r&&!used.has(s.id));if(st){used.add(st.id);filledH.push(stRow(st));return}
+    emptyH.push(`<div class="srow empty"><div><b class="down">Trống</b> · ${esc(ROLES[r].n)}<small>Cần ${Object.entries(ROLES[r].req).map(([kk,v])=>`${ROLE_ST[kk]} ${v}`).join(', ')}</small></div><button class="btn small" data-hire="${r}">Tuyển</button></div>`)});
+  const rowsHTML=filledH.join('')+emptyH.join('');
+  const extra=b.staff.filter(s=>!used.has(s.id)); /* người dư, không còn chỗ (sau khi bán bậc) */
+  openModal(`<span class="eyebrow">${esc(B.n)} · bậc ${b.lv+1}/${B.lv.length}</span><h2>${esc(L[0])}</h2>
+   <p class="kvline">Của: <b>${esc(bizOwnName(b))}</b> · Người trông: ${o&&inClan(o)?`<b>${esc(nameOf(o))}</b>`:'<span class="down">chưa có ai trông</span>'}</p>
+   <dl class="kv" style="margin-top:6px"><dt>Doanh thu (trần ${money(L[2])})</dt><dd class="num">${money(k.rev)}</dd><dt>Lương người làm</dt><dd class="num down">${money(k.wages)}</dd><dt>Nguyên liệu, hao phí</dt><dd class="num down">${money(k.mat)}</dd><dt>Tiền thuê, thuế chợ</dt><dd class="num down">${money(k.rent)}</dd><dt><b>Lãi tháng</b></dt><dd class="num ${k.profit<0?'down':'up'}"><b>${money(k.profit)}</b></dd><dt>Đủ người</dt><dd class="num">${Math.round(k.fill*100)}%</dd></dl>
+   <h3 style="margin:10px 0 0;font-size:14px">Nhân sự</h3>
+   <div class="staff">${rowsHTML||'<p class="note">Cơ sở nhỏ, chủ tự làm.</p>'}${extra.map(stRow).join('')}</div>
+   ${nx?`<button class="btn" data-expand style="margin-top:8px;width:100%" ${bizFundGet(b)<nx[1]?'disabled':''}><strong>Mở rộng thành ${esc(nx[0])}</strong><small>${money(nx[1])} từ ${esc(bizOwnName(b).toLowerCase())} · trần doanh thu ${money(nx[2])} · thêm ${nx[4].length} chỗ làm</small></button>`:''}
+   <button class="btn ghost" data-sellb style="margin-top:6px;width:100%"><strong>Bán cơ sở · khoảng ${money(bizValue(b))}</strong><small>Giá theo vốn đã bỏ, lãi gần đây${S.war?', đang chiến sự nên bị ép giá':''}</small></button>
+   ${!o||!inClan(o)?`<div class="field" style="margin-top:8px"><label>Giao cho người trông</label><select class="sel" data-owner><option value="">Chọn người</option>${alive().filter(p=>age(p)>=16&&!p.away&&!['quan','vua'].includes(p.job)&&!p.biz).map(p=>`<option value="${p.id}">${esc(nameOf(p))} · ${esc(jobName(p))}</option>`).join('')}</select></div>`:''}
+   <div class="choices" style="margin-top:8px"><button class="btn ghost" data-x>Đóng</button></div>`);
+  const again=()=>{render();save();setTimeout(()=>{if(!modalOpen()&&S.biz.includes(b))bizDetail(bid)},10)};
+  M.querySelector('[data-x]').onclick=closeModal;
+  M.querySelectorAll('[data-hire]').forEach(x=>x.onclick=()=>hirePopup(bid,x.dataset.hire));
+  M.querySelectorAll('[data-fire]').forEach(x=>x.onclick=()=>{const st=b.staff.find(s=>s.id===x.dataset.fire);if(!st)return;
+    confirmBox(`Cho ${esc(st.n)} nghỉ việc?`,`${esc(st.n)} đã làm ${Math.floor((S.t-(st.since||S.t))/12)} năm. Cho nghỉ thì chỗ làm bị trống, những người còn lại sẽ nghĩ đến chuyện của mình.`,'Cho nghỉ',()=>{b.staff=b.staff.filter(s=>s!==st);b.staff.forEach(z=>{z.loy=clamp((z.loy||60)-2,0,100)});log(`Cho ${st.n} nghỉ việc.`);closeModal();again()},()=>{closeModal();setTimeout(()=>bizDetail(bid),10)})});
+  const ex=M.querySelector('[data-expand]');if(ex)ex.onclick=()=>{expandBiz(b);closeModal();again()};
+  const sb=M.querySelector('[data-sellb]');if(sb)sb.onclick=()=>confirmBox(`Bán ${esc(L[0].toLowerCase())}?`,`Có người trả ${money(bizValue(b))}, tiền về ${esc(bizOwnName(b).toLowerCase())}. Người đang trông sẽ thôi việc.`,'Bán',()=>{sellBiz(b);closeModal();render();save()},()=>{closeModal();setTimeout(()=>bizDetail(bid),10)});
+  const ow=M.querySelector('[data-owner]');if(ow)ow.onchange=()=>{if(!ow.value)return;const p=P(ow.value);if(p.biz){const ob=bizOf(p);if(ob)ob.owner=null}p.bizFrom=p.job;p.job='chu';p.biz=b.id;p.lv=0;b.owner=p.id;log(`${nameOf(p)} nhận trông coi ${L[0].toLowerCase()}.`);closeModal();again()};
+}
+
+/* người đã nghỉ mà nhà chủ giữ lại: lập lại hồ sơ (dùng cho cả "ở lại làm nhẹ" và "tăng lương giữ chân") */
+function stfRehire(b,d,wage){
+  const R0=ROLES[d.role];if(!R0)return null;
+  const st=mkStaff(d.role);st.n=d.n;st.g=d.g||st.g;st.role=d.role;st.born=S.t-12*d.age-R(0,11);st.since=S.t-12*(d.yrs||0);
+  st.hp=clamp(R(45,75)-Math.max(0,d.age-55),20,90);st.sick=0;st.m=Math.min(120,(d.yrs||1)*7+R(5,25));
+  if(wage){st.wage=wage}else{st.lite=1;st.wage=Math.round((d.wage||600)*0.5/10)*10}
+  b.staff.push(st);return st}
+
+/* ================= v6.3.3 · BỐN NHÀ THẾ GIA ================= */
+/* Bốn dòng họ có tên, sống ở bốn vùng, đứng đầu bốn việc: võ (biên ải), văn (triều đình), thuốc (Dược Cốc), thủy quân (cảng) */
+const HOUSE_DEF=[
+  {id:'nguyen',sur:'Nguyễn',given:'Hoàng Long Vũ',age:52,tr:'chính trực',p:'nhan_mon',kind:'vo',tier:6,fame:300,wealth:78,title:'Trấn Bắc đại đô đốc',seat:'ải Nhạn Môn',job:'quan võ',
+    kids:[['Hoàng Nam','nam',26],['Lam Anh','nữ',19],['Bảo Vũ','nam',12]]},
+  {id:'vu',sur:'Vũ',given:'Quang Tuấn',age:58,tr:'khéo léo',p:'thien_kinh',kind:'quan',tier:6,fame:320,wealth:85,title:'Thượng thư bộ Lại',seat:'kinh thành Thiên Kinh',job:'quan văn',
+    kids:[['Minh Triết','nam',31],['Thanh Vân','nữ',22],['Quang Huy','nam',15]]},
+  {id:'duong',sur:'Dương',given:'Văn Phương',age:61,tr:'nhân hậu',p:'duoc_coc',kind:'thuoc',tier:5,fame:235,wealth:66,title:'Thái y viện chánh sứ',seat:'Dược Cốc',job:'quan văn, thầy thuốc',
+    kids:[['Tuệ Lâm','nữ',27],['Văn Thảo','nam',20],['Bích Hạnh','nữ',14]]},
+  {id:'kieu',sur:'Kiều',given:'Quang Duy',age:46,tr:'phóng khoáng',p:'bach_sa',kind:'vo',tier:5,fame:215,wealth:70,title:'Thủy sư đô đốc trấn Bạch Sa',seat:'cảng Bạch Sa',job:'quan võ, thủy quân',
+    kids:[['Hải Yến','nữ',21],['Quang Hải','nam',17]]}];
+const HOUSE_TIER={5:'Thế gia',6:'Danh môn vọng tộc'};
+const hdef=id=>HOUSE_DEF.find(d=>d.id===id);
+function houseEnsure(st){const W=st.w;if(!W||W.houses)return;W.houses={};
+  HOUSE_DEF.forEach(d=>{W.houses[d.id]={head:{given:d.given,age:d.age,tr:d.tr},kids:d.kids.map(k=>({id:'k'+(W.cid++),given:k[0],g:k[1],age:k[2]})),fame:d.fame,wealth:d.wealth,rel:0,last:-99,gen:0,gT:-99,lT:-99}})}
+const house=id=>S.w&&S.w.houses?S.w.houses[id]:null;
+const houseName=id=>{const d=hdef(id),h=house(id);return `${d.sur} ${h?h.head.given:d.given}`};
+function houseRel(id,dv){const h=house(id);if(!h)return 0;h.rel=clamp(h.rel+dv,-100,100);h.last=S.t;return h.rel}
+const houseAlly=(id,n)=>{const h=house(id);return !!h&&h.rel>=(n||50)};
+const houseRelTxt=r=>r>=70?'tri kỷ':r>=50?'đồng minh':r>=25?'mến':r>-15?'xa lạ':r>-45?'bất hòa':'thù oán';
+const houseKid=(id,pred)=>{const h=house(id);return h?h.kids.find(pred):null};
+function houseYear(){
+  const W=S.w;if(!W||!W.houses)return;
+  HOUSE_DEF.forEach(d=>{const h=W.houses[d.id];if(!h)return;
+    h.head.age++;h.kids.forEach(k=>k.age++);
+    h.fame=clamp(h.fame+R(-5,6)+(h.wealth-60)/30,40,360);h.wealth=clamp(h.wealth+R(-6,6),20,100);
+    if(h.rel>0&&h.rel<50)h.rel-=0.6;else if(h.rel<0)h.rel+=0.6;   /* tình thân nhạt dần nếu không vun đắp; đã là đồng minh thì bền */
+    if(h.head.age>=66&&chance((h.head.age-64)*0.06)){
+      const heir=h.kids.filter(k=>k.g==='nam'&&k.age>=20).sort((a,b)=>b.age-a.age)[0];const old=houseName(d.id);
+      if(heir){h.head={given:heir.given,age:heir.age,tr:pick(CTR63)};h.kids=h.kids.filter(k=>k!==heir)}
+      else{h.head={given:outsiderName('nam',PROV[d.p].r).given,age:R(38,48),tr:pick(CTR63)}}
+      h.gen++;w_news(`Gia chủ ${old} qua đời. ${houseName(d.id)} nối chức, nhà ${d.sur} vẫn giữ nếp cũ.`,true)}
+    h.kids=h.kids.filter(k=>!(k.age>=30&&chance(0.45)));
+    if(h.kids.length<3&&h.head.age<58&&chance(0.35)){const gg=chance(0.5)?'nam':'nữ';h.kids.push({id:'k'+(W.cid++),given:outsiderName(gg,PROV[d.p].r).given,g:gg,age:0})}
+    if(h.kids.length<2){const gg=chance(0.5)?'nam':'nữ';h.kids.push({id:'k'+(W.cid++),given:outsiderName(gg,PROV[d.p].r).given,g:gg,age:R(3,12)})}})}
+/* mỗi tháng có thể có một chuyện từ các nhà ấy. Nhà nhỏ vô danh thì ít ai để mắt tới */
+function houseTick(mo){
+  const W=S.w;if(!W||!W.houses||S.queue.length>3)return;
+  const hd=head();if(!hd)return;
+  const known=tierIdx()>=2||S.fame>=60;
+  if(!chance(known?0.055:0.02))return;
+  const rg=PROV[S.loc.p].r;
+  const hs=HOUSE_DEF.map(d=>({d,h:W.houses[d.id],w:1+(PROV[d.p].r===rg?2:0)+clamp(W.houses[d.id].rel/40,-0.6,1.6)+(PROV[d.p].r===S.region?0:0)}));
+  const cand=[];
+  hs.forEach(x=>{EVENTS.forEach(e=>{if(e.house!==x.d.id||(S.cool[e.id]||-1e9)>S.t)return;
+    try{if(e.hc&&!e.hc(hd,x.h))return}catch(err){return}
+    cand.push({e,w:x.w*(e.hw||1)})})});
+  if(!cand.length)return;
+  let tot=cand.reduce((a,x)=>a+x.w,0),r=Math.random()*tot,pk=cand[0];for(const x of cand){r-=x.w;if(r<=0){pk=x;break}}
+  const e=pk.e;S.cool[e.id]=S.t+(e.hcd||60);
+  let actor=hd;
+  if(e.hwho){const L=alive().filter(p=>inClan(p)&&!p.away&&p.dead==null&&age(p)>=12&&(()=>{try{return e.hwho(p,house(e.house))}catch(err){return false}})());if(!L.length){S.cool[e.id]=S.t+6;return}actor=pick(L)}
+  enqueue('ev',actor.id,{ev:e.id,data:{h:e.house}})}
+function houseCard(){
+  const W=S.w;if(!W||!W.houses)return '';
+  return `<section class="card"><span class="eyebrow">Thế gia thiên hạ</span><h2>Bốn nhà quyền quý</h2>
+   <p class="kvline">Bốn dòng họ đứng đầu bốn phương, quan văn lẫn quan võ. Nhà nhỏ vô danh thì ít người để mắt; có tiếng rồi thì họ sẽ tự tìm đến. Kết thân được với họ thì sau này có chỗ dựa.</p>
+   <div class="clans">${HOUSE_DEF.map(d=>{const h=W.houses[d.id];const P0=PROV[d.p];const near=P0.r===S.region;
+     return `<div class="clanrow"><div><b>${esc(houseName(d.id))}</b> <span class="chip gold">${HOUSE_TIER[d.tier]}</span> <span class="chip">${esc(d.job)}</span> ${h.rel>=50?'<span class="chip green">đồng minh</span>':''}${h.rel<=-25?'<span class="chip red">bất hòa</span>':''}${near?'<span class="chip blue">cùng vùng</span>':''}
+       <small class="muted">${esc(d.title)} · ${esc(d.seat)} (${esc(REGIONS[P0.r].n)}) · ${h.head.age} tuổi, ${esc(h.head.tr)} · danh vọng ${Math.round(h.fame)}</small>
+       <small>Quan hệ với nhà mình: <b class="${h.rel>=25?'up':h.rel<=-15?'down':''}">${houseRelTxt(h.rel)}</b> (${Math.round(h.rel)})</small></div>
+     <div class="acts"><button class="btn small" data-w633="gift:${d.id}">Gửi lễ vật</button><button class="btn small ghost" data-w633="letter:${d.id}">Gửi thư thăm hỏi</button></div></div>`}).join('')}</div></section>`}
+function h_gift(id){
+  const h=house(id),d=hdef(id);if(!h)return;const cost=mm(3+h.fame/40);
+  const low=tierIdx()<2&&S.fame<40,recent=S.t-h.gT<12;
+  confirmBox(`Gửi lễ vật đến ${esc(houseName(id))}?`,`Lễ vật trị giá ${money(cost)} gửi đến ${esc(d.seat)}. ${low?'Nhà mình còn nhỏ, họ ít để ý nên tình nghĩa lên chậm. ':''}${recent?'Mới gửi quà chưa lâu, gửi nữa cũng chỉ thêm chút lễ nghĩa.':''}`,'Gửi',()=>{
+    if(S.money<cost){closeModal();return}S.money-=cost;
+    const dv=(recent?2:R(6,11))*(low?0.5:1)*(h.head.tr==='tham lam'?1.2:1);houseRel(id,Math.round(dv));h.gT=S.t;
+    log(`Gửi lễ đến ${houseName(id)}, quan hệ tốt lên.`);closeModal();render();save()},closeModal)}
+function h_letter(id){
+  const h=house(id);if(!h)return;const cost=mm(0.3);
+  if(S.money<cost||S.t-h.lT<6){confirmBox('Thư thăm hỏi',S.t-h.lT<6?'Mới gửi thư chưa lâu. Đợi vài tháng nữa.':'Không đủ tiền gửi thư.','Thôi',closeModal,closeModal);return}
+  S.money-=cost;h.lT=S.t;houseRel(id,R(1,3));log(`Gửi thư thăm hỏi ${houseName(id)}.`);render();save()}
+
+/* ================= v6.3.3 · ÂN OÁN PHẠM TRUNG KIÊN VÀ NGUYỄN THÀNH DUY ================= */
+/* Kéo dài từ 10 đến 40 năm. S.vil: trạng thái cả câu chuyện. K = Kiên (nắm quyền), D = Duy (mưu sĩ).
+   ch: 0 chưa bắt đầu, 1 chờ mưu sĩ, 2 giằng co, 3 Duy bán ải, 4 thời cơ. pf = chứng cứ, wit = nhân chứng, dt = dân tâm (0 đến 100). */
+const KIEN='Phạm Trung Kiên',DUY='Nguyễn Thành Duy';
+const KRANK=['hào lý','chánh tổng','tri huyện','tri phủ','tổng trấn'];
+const KPOW=[30,46,62,78];
+function vilEnsure(st){if(!st.vil)st.vil={on:0,t0:null,ch:0,next:0,q:0,qt:0,K:{age:33,pow:18,rank:0,ok:1},D:{age:29,pow:10,ok:1,link:0},pf:0,wit:0,dt:0,fl:{},done:{},np:0,nl:0,hist:[],end:null,tries:0,stance:'',hideN:0,lastRank:0}}
+const vil=()=>S.vil;
+function vilLog(m){const v=S.vil;v.hist.unshift({t:S.t,m});if(v.hist.length>24)v.hist.length=24}
+/* kết thúc một bước: xóa cờ đang chờ, hẹn bước sau sau a đến b tháng (kéo dài thêm tùy thế lực Kiên và thái độ gia tộc) */
+function vd(a,b,note){const v=S.vil;if(!v)return '';v.q=0;const extra=v.stance==='hide'?R(2,5):v.stance==='fight'?-R(0,2):0;
+  v.next=S.t+Math.max(3,R(a,b)+extra+(v.K.rank>=3?2:0));if(note)vilLog(note);return ''}
+function vAdd(k,n,cap){const v=S.vil;v[k]=clamp((v[k]||0)+n,0,cap==null?100:cap);return ''}
+function kPow(n){const v=S.vil;v.K.pow=clamp(v.K.pow+n,0,100);return ''}
+function vFlag(k,val){S.vil.fl[k]=val==null?1:val;return ''}
+function vStance(s){const v=S.vil;v.stance=s;return ''}
+function vPick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+const vilQuan=()=>Math.max(-1,...alive().filter(p=>inClan(p)&&!p.away&&p.job==='quan').map(p=>p.lv));
+const vilFighters=()=>alive().filter(p=>inClan(p)&&p.dead==null&&age(p)>=17&&age(p)<=58&&p.vo>=60).length;
+/* các con đường kết thúc câu chuyện, mỗi đường cần nhiều điều kiện khác nhau của gia tộc */
+function vilRoutes(){
+  const v=S.vil,K=v.K;const need={pf:5+Math.min(4,K.rank),wit:K.rank>=2?3:2};
+  const ck=(t,ok)=>({t,ok:!!ok});
+  const biz=S.biz.length>=2||S.biz.some(b=>b.lv>=2);
+  const R1=[ck(`Chứng cứ từ ${need.pf} (hiện ${v.pf})`,v.pf>=need.pf),ck(`Nhân chứng từ ${need.wit} (hiện ${v.wit})`,v.wit>=need.wit),
+    ck('Có chỗ dựa trên công đường: người nhà làm quan từ thất phẩm, hoặc quan hệ với họ Vũ từ 40, hoặc danh vọng gia tộc từ 250',vilQuan()>=2||houseAlly('vu',40)||S.fame>=250),ck(`Lệ phí kiện tụng ${money(mm(40))}`,S.money>=mm(40))];
+  const R2=[ck(`Chứng cứ từ ${need.pf-3} (hiện ${v.pf})`,v.pf>=need.pf-3),ck('Có người đánh được: ít nhất hai người nhà võ lực từ 60, hoặc quan hệ với họ Nguyễn hay họ Kiều từ 40',vilFighters()>=2||houseAlly('nguyen',40)||houseAlly('kieu',40)),ck(`Tiền chiêu mộ ${money(mm(60))}`,S.money>=mm(60)),ck(`Dân tâm từ 20, để khỏi bị coi là loạn đảng (hiện ${Math.round(v.dt)})`,v.dt>=20)];
+  const R3=[ck(`Chứng cứ từ ${need.pf-3} (hiện ${v.pf})`,v.pf>=need.pf-3),ck('Có cơ sở làm ăn: hai cơ sở trở lên hoặc một cơ sở bậc 3',biz),ck('Quan hệ với họ Dương từ 40, hoặc tiền mặt từ '+money(mm(400)),houseAlly('duong',40)||S.money>=mm(400)),ck(`Vốn ${money(mm(150))}`,S.money>=mm(150))];
+  const R4=[ck(`Dân tâm từ 55 (hiện ${Math.round(v.dt)})`,v.dt>=55),ck(`Chứng cứ từ ${need.pf-2} (hiện ${v.pf})`,v.pf>=need.pf-2),ck('Danh vọng gia tộc từ 300',S.fame>=300)];
+  return [{id:'phap',n:'Kiện lên công đường',L:R1,ok:R1.every(x=>x.ok)},{id:'vo',n:'Dùng võ lực bắt giữ',L:R2,ok:R2.every(x=>x.ok)},{id:'tai',n:'Bóp nghẹt tài lực',L:R3,ok:R3.every(x=>x.ok)},{id:'tam',n:'Dân chúng đồng thanh',L:R4,ok:R4.every(x=>x.ok)}]}
+const vilReady=()=>vilRoutes().filter(r=>r.ok);
+function vilPool(kind){
+  const v=S.vil,hd=head();
+  return EVENTS.filter(e=>{if(e.vs!==kind)return false;
+    const dn=v.done[e.id];if(dn!=null&&(e.vonce!==false||S.t-dn<(e.vcd||48)))return false;
+    try{return !e.vc||e.vc(hd,v)}catch(err){return false}})}
+function vWPick(L){let tot=L.reduce((a,e)=>a+(e.vw||1),0),r=Math.random()*tot;for(const e of L){r-=(e.vw||1);if(r<=0)return e}return L[0]}
+function vilStart(){
+  const v=S.vil;v.on=1;v.t0=S.t;v.ch=1;v.next=S.t+R(1,2);v.K.pow=R(16,22);
+  vilLog('Tin đồn về một kẻ tên Phạm Trung Kiên bắt đầu lan khắp vùng.');
+  log('Trong vùng đang nổi lên một kẻ tên Phạm Trung Kiên. Người ta kháo nhau hắn có chỗ dựa lớn và không ai dám đụng vào.','hi')}
+function vilTick(mo){
+  const v=S.vil;if(!v||v.end)return;
+  if(!v.on){ /* điều kiện khởi đầu: đã có cái để mất, và đã sống ở đây một thời gian */
+    const hd=head();if(!hd||S.t<60||age(hd)<22||S.war)return;
+    const stake=tierIdx()>=2||S.farm.own>=2||S.biz.length>0||S.fame>=60||alive().some(p=>p.job==='quan'&&inClan(p));
+    if((stake||S.t>=180)&&chance(S.t>=120?0.05:0.025))vilStart();
+    return}
+  if(S.t%12===0){v.K.age++;v.D.age++;
+    kPow(R(0,2)+(v.stance==='hide'?2:0)+(v.K.rank>=3?0:0));
+    vAdd('dt',v.stance==='fight'?1:v.stance==='hide'?-1:0);
+    const nat=(x,who)=>{if(x.ok&&x.age>=66&&chance((x.age-65)*0.035)){x.ok=0;vilLog(`${who} qua đời vì tuổi già.`);log(`${who} đã chết vì tuổi già.`,'hi');return true}return false};
+    nat(v.K,KIEN);nat(v.D,DUY);
+    if(!v.K.ok){vilNatural();return}}
+  if(S.t-v.t0>=480){vilNatural();return}
+  if(v.q&&S.t-v.qt>8)v.q=0;
+  if(v.q||S.t<v.next||modalOpen())return;
+  const hd=head();if(!hd)return;
+  const pk=vilNext();if(!pk||!pk.ev||!EVMAP[pk.ev]){v.next=S.t+3;return}
+  v.q=1;v.qt=S.t;v.done[pk.ev]=S.t;
+  enqueue('ev',(pk.who||hd).id,{ev:pk.ev,data:Object.assign({},pk.data)})}
+function vilNext(){
+  const v=S.vil,K=v.K,hd=head();
+  if(v.ch===1){
+    if(!v.fl.a){const L=vilPool('A');if(L.length)return {ev:vWPick(L).id};v.fl.a=1}
+    if(!v.fl.b){const L=vilPool('B');if(L.length)return {ev:vWPick(L).id};v.fl.b=1}
+    v.ch=2;v.next=S.t+R(3,6);return null}
+  if(v.ch===0)return null;
+  /* Kiên leo lên: mua quan, chiếm chức */
+  if(K.ok&&K.rank<4&&K.pow>=KPOW[K.rank]&&S.t-v.lastRank>=36)return {ev:'vil_r',data:{to:K.rank+1}};
+  if(v.ch===2&&S.t-v.t0>=60&&K.rank>=1){v.ch=D_ok()?3:4}
+  if(v.ch===3){
+    const pend=EVENTS.some(e=>e.vs==='D'&&v.done[e.id]==null);
+    if(!pend)v.ch=4;
+    else{const L=vilPool('D');if(L.length)return {ev:L.sort((a,b)=>(a.vo||0)-(b.vo||0))[0].id}}}
+  if(v.ch>=4&&S.t-v.t0>=120&&vilReady().length&&(S.t-(v.zT||-99))>=18){v.zT=S.t;return {ev:'vil_z0'}}
+  /* người chơi đã nằm im quá lâu: sực tỉnh */
+  if(v.stance==='hide'&&v.hideN>=3&&!v.fl.tinh){v.fl.tinh=1;return {ev:'vil_s_tinh'}}
+  const pr=Math.min(0.9,(v.stance==='hide'?0.72:v.stance==='fight'?0.38:0.52)+0.03*K.rank);
+  const first=chance(pr)?'P':'L',second=first==='P'?'L':'P';
+  let L=vilPool(first);if(!L.length)L=vilPool(second);
+  if(v.stance==='hide'&&!L.length)L=vilPool('P');
+  if(!L.length)return null;
+  const e=vWPick(L);if(e.vs==='P'&&v.stance==='hide')v.hideN++;
+  return {ev:e.id,who:e.vwho?pickWho(e.vwho):null}}
+const D_ok=()=>S.vil.D.ok;
+function pickWho(f){const L=alive().filter(p=>inClan(p)&&!p.away&&p.dead==null&&age(p)>=14&&(()=>{try{return f(p)}catch(err){return false}})());return L.length?pick(L):null}
+/* sau 40 năm, hoặc khi cả hai đã khuất: câu chuyện khép lại không phải bằng công lý mà bằng thời gian */
+function vilNatural(){
+  const v=S.vil;if(v.end)return;v.end='fade';v.q=0;
+  vilLog(v.K.ok||v.D.ok?'Bốn mươi năm trôi qua, hai kẻ ấy già yếu, không còn sức làm hại ai. Mối ân oán khép lại bằng thời gian.':'Kiên đã khuất, Duy mất chỗ dựa. Mối ân oán khép lại bằng thời gian.');
+  v.K.ok=0;v.D.ok=0;
+  const hd=head();if(hd&&EVMAP.vil_e_fade)enqueue('ev',hd.id,{ev:'vil_e_fade'})}
+/* kết thúc: thắng */
+function vilEnd(how){const v=S.vil;v.end=how;v.q=0;vilLog(how==='won'?'Phạm Trung Kiên và Nguyễn Thành Duy đã bị trừng trị.':'Ân oán khép lại.')}
+function vilYears(){const v=S.vil;return v&&v.on?Math.floor((S.t-v.t0)/12):0}
+/* bảng hồ sơ ở trang Gia tộc */
+function vilCard(){
+  const v=S.vil;if(!v||!v.on)return '';
+  const K=v.K,D=v.D;const yrs=vilYears();
+  const pw=n=>n>=75?'rất lớn':n>=55?'lớn':n>=35?'đáng ngại':'còn yếu';
+  const routes=vilRoutes();
+  const ch=['','Mới xuất hiện','Giằng co','Duy giăng lưới','Chờ thời cơ'][v.end?0:Math.min(4,v.ch)]||'';
+  const bar=(n,max)=>`<span class="num">${n}</span>`;
+  return `<section class="card" style="grid-column:1/-1"><span class="eyebrow">Hồ sơ ân oán</span><h2>${esc(KIEN)} và ${esc(DUY)}</h2>
+   ${v.end?`<p class="kvline">${v.end==='won'?'Câu chuyện đã khép lại: hai kẻ ấy đã bị trừng trị.':'Câu chuyện đã khép lại.'} Kéo dài ${yrs} năm.</p>`:`
+   <dl class="kv"><dt>Đã kéo dài</dt><dd class="num">${yrs} năm</dd><dt>Giai đoạn</dt><dd>${ch}</dd>
+   <dt>${esc(KIEN)}</dt><dd>${K.ok?`${KRANK[K.rank]}, ${K.age} tuổi, thế lực ${pw(K.pow)}`:'đã khuất'}</dd>
+   <dt>${esc(DUY)}</dt><dd>${D.ok?`${D.age} tuổi, ${v.fl.war?'đã trốn sang Lang bộ':v.fl.duyOut?'bị vạch mặt, đang lẩn trốn':D.link?'đã tiếp cận nhà mình':v.fl.duyKnown?'xuất thân họ Nguyễn, bị ruồng bỏ':'chưa rõ lai lịch'}`:'đã khuất'}</dd>
+   <dt>Chứng cứ</dt><dd class="num">${v.pf}</dd><dt>Nhân chứng</dt><dd class="num">${v.wit}</dd><dt>Dân tâm</dt><dd class="num">${Math.round(v.dt)}</dd>
+   <dt>Thái độ nhà mình</dt><dd>${v.stance==='fight'?'chủ động đối phó':v.stance==='watch'?'âm thầm ghi chép':v.stance==='hide'?'nhẫn nhịn':'chưa định'}</dd></dl>
+   <div style="margin-top:8px"><b style="font-size:13px">Con đường kết thúc (cần đủ điều kiện)${v.ch>=4?'':' · chỉ mở sau khi hai kẻ ấy lộ rõ bộ mặt'}</b>
+   ${routes.map(r=>`<div class="srow${r.ok?'':' empty'}" style="margin-top:6px"><div><b>${esc(r.n)}</b> ${r.ok?'<span class="chip green">đủ điều kiện</span>':'<span class="chip red">chưa đủ</span>'}<small>${r.L.map(x=>`${x.ok?'✓':'✗'} ${esc(x.t)}`).join('<br>')}</small></div></div>`).join('')}</div>
+   ${v.hist.length?`<p class="note" style="margin-top:8px"><b>Diễn biến gần đây:</b> ${v.hist.slice(0,4).map(h=>esc(h.m)).join(' · ')}</p>`:''}`}</section>`}
+
+/* ---------- nhịp tháng của lớp 6.3.3 ---------- */
+function w633Month(mo){
+  if(S.t%12===0)houseYear();
+  houseTick(mo);
+  vilTick(mo)}
+/* ---------- nạp save cũ ---------- */
+function w633Migrate(st){
+  (st.biz||[]).forEach(b=>(b.staff||[]).forEach(staffFix));
+  houseEnsure(st);vilEnsure(st)}
+
 /*@@V63-END@@*/
 /* ================= cổng cho các tệp kỳ ngộ ================= */
 const G={R,pick,chance,clamp,fmt,esc,fx,fxAll,roll,prob,later,age,nameOf,spouseOf,kidsOf,alive,home,married,stg,season,month,tierIdx,tierName,hasJob,grantTitle,mkSpouse,mkPerson,addStat,setJob,
@@ -3715,9 +4026,10 @@ const G={R,pick,chance,clamp,fmt,esc,fx,fxAll,roll,prob,later,age,nameOf,spouseO
   _v61:{becomeHead,econMonth,brkPaths,brkStart,thoPopup,teachPopup,vacantPopup,moveOutPopup,rewardPopup,askGopPopup,askParentPopup,bossRaisePopup,sellBiz,openBizPopup,offHolder,prefFocus,kidWish,startLv,branches,newBranch,msPopup,pageCosngoi,econEst},
   kidAdj,gain,charge,canPay,fundOf,inMain,clanKeeps,branchLeader,purse:c=>c.purse,
   tierIdx,season,famePromo,clanLv,selfLv,FAME_CLAN,FAME_SELF,
-  kho:()=>S.kho,war:()=>S.war,epi:()=>S.epi,expandBiz,gameOver,openBiz,homeLv:()=>HH(mainHH()).home,lifeLv:()=>HH(mainHH()).life,fmtMoney:money,relation,jobName,matchmaker,canOwn,mkStaff,staffEff,isHead,
+  kho:()=>S.kho,war:()=>S.war,epi:()=>S.epi,expandBiz,gameOver,openBiz,homeLv:()=>HH(mainHH()).home,lifeLv:()=>HH(mainHH()).life,fmtMoney:money,relation,jobName,matchmaker,canOwn,mkStaff,staffEff,stfRecruitKin,stfRehire,ROLES,bizDetail,bizVacant,bizStaffInfo,staffTick,staffDie,stAge,isHead,
   protect,protName,obey,comeHome,marryOut,confer,ctRank,ctPending,mkMatch,standOf,innate,divorce,lyPopup,gateCap,hardCap,titleOf,jobFit,laborOk,working,selfEmp,remarryOk,adoptOk,setLove,settleEstate,kidCap,inClanP:inClan,rule,cf,addTraitP:addTrait,
   _v63:{fleePopup,fleeTargets,w_wed,w_gift,w_peace,w_spoil,w_front,w_damp,w_khoFee,mapSVG,w_ensure,w63Month,doMove,movePopup,locName,locP,routes63,w_clans,w_clan,w_news,w_shock,w_startWar,w_endWar,w_home,w_dis,w_tension,w_clansYear,w_mo,w_closed,moveCost,w_ourKind,w_jobKind,homeNat,w_label,leaveJob,sickPopup,get mapProv(){return mapProv},TIERN63,CJOB63,CTR63,VILL63},
+  _v633:{HOUSE_DEF,hdef,house,houseName,houseRel,houseAlly,houseKid,vil,vilLog,vd,vAdd,kPow,vFlag,vStance,vilRoutes,vilReady,vilEnd,vilStart,vilQuan,vilFighters,vilYears,vPick,pickWho,KIEN,DUY,KRANK,achieve,cf},
   _v62:{willPopup,chunoPopup,debtTick,expelPopup2,doExpel,tumatPopup,oanPopup,tranhviPopup,ruleSlots,ruleWhy,addRule,dropRule,keugoiPopup,thiencoPopup,gateCheck,ttlPopup,wishPick,wishScore,obey,ctxOk,CTX,v62Month,v62Year,loveTick,outsTick,divorcePopup,vuotsinhPopup,rulepropPopup,ruleforcePopup,rulechgPopup,pieceF,jobDig,minDig}};
 window.BNTG=G;
 buildEvents();

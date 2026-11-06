@@ -634,6 +634,15 @@ const CT_TXT={
 })();
 
 /*@@D632-END@@*/
+/*@@D633-BEGIN@@*/
+/* ================= v6.3.3: đặc tính từ chuyện ân oán Kiên – Duy ================= */
+Object.assign(TRAITS,{
+  trugian:{n:'Trừ gian diệt bạo',c:'p',d:'Đã góp công vạch mặt kẻ gian giữa thời loạn, thiên hạ nhớ tên. Danh vọng +1,5 mỗi năm; gia tộc hòa thuận thêm 1',fame:1.5,on:1},
+  khoandung:{n:'Khoan dung độ lượng',c:'p',d:'Đã tha cho kẻ từng hại mình, người đời kính trọng. Tâm trạng cao hơn 1,5; gia tộc hòa thuận thêm 1,5',tam:1.5,on:1.5},
+  vetan:{n:'Vết thương ân oán',c:'r',d:'Từng bị người ta hãm hại, mang vết thương cả đời. Tâm trạng thấp hơn 1',tam:-1}
+});
+
+/*@@D633-END@@*/
 /* v6.3: nới ngưỡng thông thạo của các bậc cao (đo ở 6.2 cho thấy gần như không ai tới bậc cuối) */
 Object.values(JOBS).forEach(J=>{if(J.lv)J.lv.forEach(L=>{if(L.req&&L.req.m>=60)L.req.m=Math.round(L.req.m*0.8)})});
 
