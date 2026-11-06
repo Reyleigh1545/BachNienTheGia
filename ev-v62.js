@@ -52,7 +52,7 @@ return [
 {id:'v62_tro_ve',fixed:1,t:'Người cũ trở về',k:'Gia sự',
  x:(c,d)=>{const p=P(d.xg);return `${esc(p.given)} rời gia tộc đã ${Math.floor((S().t-(p.leftT||S().t))/12)} năm, nay quần áo bạc thếch, đứng ngoài từ đường xin được nhận lại. ${p.left==='expelled'?'Năm xưa bị trục xuất, giờ nói đã biết lỗi.':'Bao năm phiêu bạt, nay muốn về với họ hàng.'}`},
  o:(c,d)=>{const p=P(d.xg);return [
-  {l:'Cho về, ghi lại tên vào gia phả',f:c=>{p.left=null;p.leftT=null;p.hh=G.mainHH();p.away=null;p.oan=0;G.shiftAx(p,{ht:8});return `${esc(p.given)} quỳ lạy tổ tiên, khóc như mưa.`+fx(c,{tam:4})+fx(p,{tam:20})}},
+  {l:'Cho về, ghi lại tên vào gia phả',f:c=>{p.left=null;p.leftT=null;p.hh=G.mainHH();p.away=null;p.oan=0;G.shiftAx(p,{ht:8});return `${esc(p.given)} quỳ lạy tổ tiên, khóc như mưa.`+(G.addStat(p,'tam',20),'')+fx(c,{tam:4})}},
   {l:'Cho ở tạm, thử lòng vài năm',f:c=>{p.left=null;p.leftT=null;p.hh=G.mainHH();p.away=null;p.fame=Math.min(p.fame,0);return `${esc(p.given)} được ở lại nhưng mọi người còn dè chừng.`}},
   {l:'Gia pháp đã định, không nhận',ax:{diem:2},f:c=>`${esc(p.given)} lặng lẽ bỏ đi.`+fx(c,{tam:-3})}]}},
 /* ================= gia tộc bất ổn ================= */

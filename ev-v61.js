@@ -105,7 +105,7 @@ return [
  o:[{l:'Làm ầm lên, hỏi từng người',ax:{diem:-3},f:c=>{const o=alive().filter(p=>p.id!==c.id&&age(p)>=12&&p.hh===c.hh);o.forEach(p=>G.addRel(p,c,-4));return 'Không tìm ra, cả nhà mất vui.'+fx(c,{purse:-Math.round(c.purse*0.3),tam:-6})}},
     {l:'Nhờ gia chủ phân xử',r:[{eq:0.5},50],y:c=>{const thief=alive().find(p=>p.id!==c.id&&p.habits.some(h=>['bac','trom'].includes(h)));return thief?`Hóa ra ${esc(thief.given)} lấy đi gỡ bạc. Tiền được trả lại phần lớn.`+fx(c,{tam:-2}):'Tìm thấy túi tiền rơi sau rương.'+fx(c,{tam:3})},n:c=>'Không ra manh mối.'+fx(c,{purse:-Math.round(c.purse*0.3),tam:-4})},
     {l:'Im lặng, từ nay cất kỹ hơn',ax:{diem:3,tiet:1},f:c=>'Coi như của đi thay người.'+fx(c,{purse:-Math.round(c.purse*0.3),tam:-3})}]},
-{id:'v61_cho_vay_ban',t:'Bạn xin vay tiền riêng',age:[18,70],c:c=>c.purse>=m(3),w:0.8,cd:48,k:'Tiền riêng',
+{id:'v61_cho_vay_ban',t:'Bạn xin vay tiền riêng',age:[18,70],c:c=>c.purse>=m(3),w:0.8,cd:72,pcd:120,rep:240,k:'Tiền riêng',
  x:c=>`Người bạn cũ tìm đến, mắt đỏ hoe: mẹ ốm nặng, cần tiền bốc thuốc. Biết ${N(c)} có chút tiền riêng.`,
  o:[{l:'Cho vay, không lấy lãi',ax:{rong:4},f:c=>{const v=Math.round(c.purse*0.3);if(chance(0.7)){G.later(c,'v61_ban_tra_no',R(12,30),{v});return 'Bạn cảm tạ rối rít, hẹn sẽ trả.'+fx(c,{purse:-v,eq:1})}return 'Bạn cầm tiền rồi biệt tăm.'+fx(c,{purse:-v,tam:-6})}},
     {l:'Biếu luôn một ít, không cần trả',ax:{rong:5},f:c=>'Bạn nhớ ơn suốt đời.'+fx(c,{purse:-m(1),fame:3})},

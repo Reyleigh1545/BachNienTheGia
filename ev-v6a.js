@@ -92,7 +92,7 @@ return [
  o:[{l:'Tự mình tìm ra kẻ gian',ax:{dl:2,gan:2},r:[{muu:0.7,tri:0.4},55],y:c=>'Lần ra thủ phạm thật, trắng án. Người làng phục sát đất.'+fx(c,{fame:6,tam:6,sk:{muu:2}}),n:c=>'Không tìm được chứng cứ. Tiếng nghi ngờ còn đó.'+fx(c,{fame:-3,tam:-6})},
     {l:'Cãi lý trước đình làng',ax:{gan:2,diem:-1},r:[{khau:0.7,eq:0.4},55],y:c=>'Lý lẽ đanh thép, kẻ vu oan cứng họng.'+fx(c,{fame:3,tam:3,sk:{khau:1}}),n:c=>'Càng cãi càng bị cho là có tật giật mình.'+fx(c,{fame:-5,tam:-6})},
     {l:'Nhẫn nhịn, sự thật sẽ sáng tỏ',ax:{diem:3,gan:-1},f:c=>chance(0.5)?'Ít lâu sau kẻ gian lộ mặt. Người ta xin lỗi.'+fx(c,{fame:4,tam:2}):'Chẳng ai minh oan, đành sống chung với lời đàm tiếu.'+fx(c,{fame:-3,tam:-5})}]},
-{id:'v6_ban_vay',t:'Bạn thân hỏi vay',age:[18,90],w:0.9,
+{id:'v6_ban_vay',t:'Bạn thân hỏi vay',age:[18,90],w:0.9,pcd:120,cd:60,rep:240,
  x:c=>`Người bạn thân từ thuở nhỏ tìm đến, mặt mày hốc hác: "Nhà tôi ${pick(['mẹ ốm nặng','bị kiện oan','mất mùa trắng tay','con bị bắt lính'])}. Cho tôi vay ${G.fmtMoney(m(5))}, sang năm tôi trả."`,
  o:[{l:'Cho vay ngay',ax:{rong:4},c:()=>G.money()>=m(5),f:c=>chance(0.6)?'Năm sau người bạn trả đủ, còn kèm quà biếu. Tình bạn càng bền.'+fx(c,{tam:4,fame:2}):'Bạn biệt tăm. Mất tiền, mất cả bạn.'+fx(c,{money:-m(5),tam:-6,ax:{rong:-3}})},
     {l:'Cho một ít, không cần trả',ax:{rong:3},c:()=>G.money()>=m(2),f:c=>'Người bạn rưng rưng nắm tay.'+fx(c,{money:-m(2),tam:3,fame:1})},

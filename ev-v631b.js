@@ -1,0 +1,248 @@
+/* Bách Niên Thế Gia v6.3.1 · lô B: sự kiện theo nghề (những nghề còn thưa việc) và ruộng đất
+   Điều kiện theo vùng, mùa, bậc nghề để hợp bối cảnh. Chênh lệch khó dễ đặt hằng số, người giỏi vẫn có lợi thế. */
+window.EVF.push(G=>{
+const {R,pick,chance,fx,esc,age}=G;
+const S=()=>G.S();
+const m=v=>G.mm(v);
+const N=c=>esc(c.given);
+const PR=c=>c.g==='nữ'?'chị':'anh';
+const fm=v=>G.fmtMoney(v);
+const DW=(p,e)=>Math.round(e-9*Math.log(p/(1-p)));
+const reg=()=>S().region;
+const kind=()=>{const P=G.D.PROV[S().loc&&S().loc.p];return P?P.k:'lang'};
+const F=()=>S().farm;
+const land=n=>{F().own=Math.max(0,F().own+n);return `<span class="fx"><span class="${n>0?'up':'down'}">Ruộng nhà ${n>0?'+':''}${n} mẫu</span></span>`};
+const busy=(c,mo)=>{c.busyUntil=Math.max(c.busyUntil||0,S().t+mo);return ''};
+const KV=['khuanvac'],TL=['thulai'],ND=['nhadich'],NG=['ngu'],TP=['tieuphu'],HAU=['hau'],THO=['tho'],DET=['det'],BEP=['bep'],CH=['chan'],TIEU=['tieu'],NOI=['noi'],HR=['hangrong'],TN=['tieunhi'],NONG=['nong'],MO=['mo'];
+const wet=()=>reg()!=='tay';
+return [
+/* ============ PHU KHUÂN VÁC ============ */
+{id:'kv631_dau_lung',t:'Lưng đau âm ỉ',job:KV,st:1,pcd:120,
+ x:c=>`Nhiều năm vác nặng, lưng ${N(c)} bắt đầu đau âm ỉ mỗi sáng trở trời. Cai phu bảo "lo mà giữ sức, hết sức thì hết cơm".`,
+ o:c=>[{l:'Nghỉ vài ngày, nhờ thầy lang châm cứu',s:`Tốn khoảng ${fm(m(2))}`,c:()=>G.money()>=m(2),f:c=>'Đỡ được phần nào, biết cách nâng đỡ lưng khi bốc.'+fx(c,{money:-m(2),suc:R(2,5)})},
+    {l:'Cắn răng làm tiếp',f:c=>chance(0.35)?'Một buổi vác quá nặng, lưng nhói lên, nằm liệt mấy tuần.'+fx(c,{suc:-R(10,18),money:-m(1)}):'Qua được mùa này, nhưng lưng chẳng hề khá hơn.'+fx(c,{suc:-2})},
+    {l:'Xin cai phu đổi sang việc nhẹ hơn',r:[{eq:0.6,khau:0.4},DW(0.55,55)],y:c=>'Được giao việc đếm hàng, lương giảm đôi chút nhưng bền lâu.'+fx(c,{eq:1,tam:3}),n:c=>'Cai phu bảo người khỏe đầy ra đó.'+fx(c,{tam:-4})}]},
+{id:'kv631_lu_ben',t:'Nước lũ ngập bến',job:KV,sea:['ha','thu'],c:()=>wet()&&['cang','phu','kinh'].includes(kind()),pcd:96,cd:36,
+ x:c=>`Mưa lớn đầu nguồn, nước dâng ngập kho bến. Thuyền không cập được, phu ngồi chờ cả tuần không có việc.`,
+ o:c=>[{l:'Xung phong dọn bùn, dời hàng lên cao',r:[{suc:0.6,vo:0.4},DW(0.7,55)],y:c=>'Chủ kho trả công gấp đôi, nhớ mặt người chịu khó.'+fx(c,{money:m(3),suc:-3,eq:1,fame:1}),n:c=>'Trượt chân giữa bùn, bị thương.'+fx(c,{suc:-R(6,12),money:-m(1)})},
+    {l:'Về quê phụ nhà vài tuần',f:c=>'Tranh thủ đỡ cha mẹ việc đồng, chờ nước rút.'+fx(c,{tam:3})},
+    {l:'Ngồi chờ ở quán trọ, mong nước rút mau',f:c=>'Tiền ăn quán tốn kém, chẳng làm ra đồng nào.'+fx(c,{money:-m(1.5),tam:-3})}]},
+{id:'kv631_tien_le',t:'Cai bến đòi tiền lệ',job:KV,c:c=>c.lv===0&&['cang','phu','kinh'].includes(kind()),pcd:96,
+ x:c=>`Cai bến đòi phu nộp "tiền lệ" mười phần, bảo là để giữ chỗ làm. Phu bến ngấm ngầm bất bình, nhưng không ai dám lên tiếng.`,
+ o:c=>[{l:'Nộp cho yên chuyện',f:c=>fx(c,{money:-m(1),tam:-2})},
+    {l:'Rủ mọi người cùng đứng ra nói chuyện',r:[{khau:0.6,eq:0.5,vo:0.2},DW(0.45,55)],y:c=>'Cai bến nhượng bộ, giảm một nửa. Cả bến mang ơn.'+fx(c,{eq:2,fame:R(2,4),money:m(1)}),n:c=>'Bị cai bến ghi hận, đưa việc nặng nhất.'+fx(c,{suc:-4,tam:-6})},
+    {l:'Bỏ sang bến khác',f:c=>'Bến mới người lạ, làm lại từ đầu nhưng nhẹ gánh tiền lệ.'+fx(c,{tam:-1,m:-1})}]},
+{id:'kv631_cuu_nguoi_duoi',t:'Cứu người đuối nước',job:KV,c:c=>c.vo>=40&&wet()&&['cang','phu','kinh'].includes(kind()),pcd:150,cd:48,
+ x:c=>`Đang bốc hàng, ${N(c)} nghe tiếng kêu cứu. Một đứa trẻ ngã xuống nước giữa chỗ thuyền va nhau.`,
+ o:c=>[{l:'Nhảy xuống cứu ngay',r:[{suc:0.6,vo:0.4},DW(0.7,55)],y:c=>'Kéo được đứa trẻ lên. Cha mẹ nó quỳ tạ, người bến vây quanh khen.'+fx(c,{fame:R(6,12),cfame:2,tam:6,money:m(R(2,6))}),n:c=>'Kéo được trẻ nhưng bản thân sặc nước, kiệt sức.'+fx(c,{suc:-R(12,22),fame:R(3,6)}),nn:c=>'Nước xiết quá, cả hai cùng chìm.'+fx(c,{suc:-R(35,50),lethal:chance(0.25)?1:0})},
+    {l:'La lớn gọi người, ném dây xuống',f:c=>'Mấy người cùng kéo đứa trẻ lên kịp.'+fx(c,{fame:2})}]},
+{id:'kv631_hang_quy',t:'Chuyển hòm hàng quý',job:KV,c:c=>c.lv>=1,pcd:96,
+ x:c=>`Một thương gia lớn cần người đáng tin để chuyển mấy hòm hàng quý từ thuyền về kho riêng, đi qua đoạn đường vắng.`,
+ o:c=>[{l:'Nhận, đi cùng hai người nữa',r:[{vo:0.5,eq:0.5},DW(0.7,55)],y:c=>'Hàng về kho nguyên vẹn. Thương gia hài lòng, hứa ưu tiên gọi lần sau.'+fx(c,{money:m(5),fame:2,m:2}),n:c=>'Gặp kẻ chặn đường, mất một hòm. Thương gia nghi ngờ.'+fx(c,{money:-m(2),fame:-3,tam:-5})},
+    {l:'Từ chối, sợ trách nhiệm quá nặng',f:c=>''}]},
+
+/* ============ THƯ LẠI ============ */
+{id:'tl631_sua_so',t:'Nhờ sửa sổ thuế',job:TL,pcd:96,
+ x:c=>`Một hào phú lén gửi lễ, nhờ ${N(c)} ghi bớt mấy mẫu ruộng trong sổ điền, hứa đền ơn hậu hĩnh.`,
+ o:c=>[{l:'Từ chối thẳng, trả lại lễ',f:c=>'Hào phú hậm hực, nhưng quan trên nghe chuyện, đánh giá cao sự liêm chính.'+fx(c,{fame:R(3,6),tam:3,eq:1})},
+    {l:'Nhận lễ, sửa nhẹ cho qua',r:[{tri:0.5,eq:0.4},DW(0.6,55)],y:c=>'Không ai phát hiện. Ví tiền nặng thêm.'+fx(c,{money:m(R(4,8)),fame:-2}),n:c=>'Bị thanh tra phát giác, trừ lương và nộp phạt.'+fx(c,{money:-m(6),fame:-10,tam:-8})},
+    {l:'Báo thẳng quan huyện',r:[{eq:0.5,khau:0.3},DW(0.55,55)],y:c=>'Quan huyện khen ngợi, sai làm chứng.'+fx(c,{fame:R(6,10),tam:4}),n:c=>'Hào phú có người chống lưng, '+PR(c)+' bị gạt sang việc vặt.'+fx(c,{tam:-5})}]},
+{id:'tl631_hoc_luat',t:'Mượn sách luật',job:TL,stMax:2,pcd:120,
+ x:c=>`Quan huyện có bộ luật chép tay quý, ai chịu khó thì được mượn đọc. ${N(c)} thấy đây là dịp học thêm.`,
+ o:c=>[{l:'Mượn về, chép từng đêm',s:'Mất vài tháng',f:c=>{busy(c,3);return 'Chép xong, '+PR(c)+' nắm rõ nhiều điều luật. Cách làm việc sắc sảo hẳn.'+fx(c,{tri:R(1,3),m:R(2,4),tam:-2})}},
+    {l:'Đọc thoáng qua cho biết',f:c=>fx(c,{tri:1,m:1})},
+    {l:'Để dành lúc khác',f:c=>''}]},
+{id:'tl631_vu_an_kho',t:'Hồ sơ vụ án khó',job:TL,c:c=>c.lv>=1,pcd:96,
+ x:c=>`Một vụ tranh chấp ruộng đất kéo dài hai đời, hồ sơ rối như tơ vò. Quan huyện giao cho ${N(c)} lập lại đầu đuôi.`,
+ o:c=>[{l:'Thức đêm đối chiếu từng giấy tờ',r:[{tri:1,suc:0.2},DW(0.55,55)],y:c=>'Tìm ra tờ khế gốc, vụ án được phân xử công bằng. Quan huyện nhớ công.'+fx(c,{fame:R(6,12),m:3,tri:1}),n:c=>'Nhiều giấy tờ bị mất, đành lập tạm. Công cốc.'+fx(c,{tam:-4,suc:-3})},
+    {l:'Xin thêm người phụ giúp',f:c=>'Hai người làm nhanh hơn, nhưng công lao chia đôi.'+fx(c,{fame:2,m:1})},
+    {l:'Báo đã đầy việc, từ chối',f:c=>fx(c,{tam:-1})}]},
+
+/* ============ NHA DỊCH ============ */
+{id:'nd631_bat_tron_thue',t:'Bắt người trốn thuế',job:ND,pcd:96,
+ x:c=>`${N(c)} được sai đến bắt một nông dân trốn thuế mấy vụ liền. Đến nơi thấy nhà dột nát, con thơ gầy guộc, ông ta quỳ lạy xin khất.`,
+ o:c=>[{l:'Giữ phép nước, điệu về huyện',f:c=>'Quan khen làm đúng phép. Lòng '+PR(c)+' nặng trĩu suốt mấy ngày.'+fx(c,{fame:1,tam:-6,eq:-1,m:1})},
+    {l:'Nói với quan huyện xin khoan hạn một vụ',r:[{khau:0.5,eq:0.6},DW(0.5,55)],y:c=>'Quan động lòng cho khất. Người nông dân cả đời nhớ ơn.'+fx(c,{fame:R(3,6),tam:5,eq:1}),n:c=>'Quan quở nặng, bảo đừng xen vào chuyện không phải của mình.'+fx(c,{tam:-5})},
+    {l:'Lén bỏ ít tiền giúp ông ta nộp một phần',s:`Tốn khoảng ${fm(m(2))}`,c:()=>G.money()>=m(2),f:c=>'Ông ta nộp đủ hạn, thoát nạn. Không ai biết người giúp.'+fx(c,{money:-m(2),tam:6,eq:1})}]},
+{id:'nd631_dem_canh',t:'Đêm tuần canh',job:ND,sea:['dong','thu'],pcd:60,cd:18,
+ x:c=>`Đêm gió lạnh, ${N(c)} đi tuần phố thì nghe tiếng động sau kho muối. Có bóng người trèo tường.`,
+ o:c=>[{l:'Hô hoán và đuổi theo',r:[{vo:0.7,suc:0.3},DW(0.55,55)],y:c=>'Bắt được tên trộm cùng đồ đã mang. Chủ kho thưởng tiền.'+fx(c,{money:m(R(3,6)),fame:R(2,4),m:2}),n:c=>'Tên trộm chạy thoát, còn quăng gạch trúng vai.'+fx(c,{suc:-R(6,12)})},
+    {l:'Đánh mõ báo động, đợi đồng đội tới',f:c=>'Cả toán kéo tới, vây được hai tên. Công chia đều.'+fx(c,{money:m(1.5),fame:1})},
+    {l:'Giả như không thấy',f:c=>chance(0.3)?'Sáng ra kho bị mất hàng, quan huyện hỏi trách nhiệm tuần canh.'+fx(c,{money:-m(3),fame:-4}):''}]},
+{id:'nd631_hoi_lo',t:'Tiền hối lộ',job:ND,pcd:96,
+ x:c=>`Một chủ quán kín đáo nhét vào tay ${N(c)} mấy đồng, nhờ "lờ đi" chuyện quán mở quá giờ cấm.`,
+ o:c=>[{l:'Trả lại, nhắc nhở đúng luật',f:c=>'Chủ quán bối rối cảm ơn, lần sau tuân thủ giờ giấc.'+fx(c,{fame:2,eq:1})},
+    {l:'Nhận rồi làm ngơ',f:c=>chance(0.25)?'Bị đồng nghiệp tố giác, quan huyện phạt.'+fx(c,{money:-m(3),fame:-6}):'Có thêm khoản nhỏ bỏ túi.'+fx(c,{money:m(2),fame:-1})},
+    {l:'Nhận nhưng bắt quán phải sửa chỗ cháy nổ nguy hiểm',r:[{tri:0.5,eq:0.4},DW(0.55,55)],y:c=>'Quán sửa lò cho an toàn, người xung quanh được nhờ.'+fx(c,{money:m(1),fame:2}),n:c=>'Chủ quán đổi ý, đâm đơn kiện ngược.'+fx(c,{tam:-4,fame:-2})}]},
+
+/* ============ NGƯ PHỦ ============ */
+{id:'ng631_bao_bien',t:'Giông bão giữa khơi',job:NG,sea:['ha','thu'],c:()=>reg()==='dong'||['cang','phu'].includes(kind()),pcd:96,cd:30,
+ x:c=>`Đang kéo lưới thì mây đen kéo kín trời phía đông. Sóng bắt đầu dựng bạc đầu. ${N(c)} còn nửa mẻ cá chưa thu.`,
+ o:c=>[{l:'Cắt lưới, quay mũi về bến ngay',f:c=>'Thuyền về bến nguyên vẹn, mất một tấm lưới.'+fx(c,{money:-m(2),tam:-2})},
+    {l:'Cố thu hết mẻ cá rồi chạy',r:[{suc:0.5,vo:0.2,ky:0.3},DW(0.55,55)],y:c=>'Kịp thu cá và tránh bão. Mẻ cá bán được giá.'+fx(c,{money:m(4),m:2}),n:c=>'Sóng đánh mạnh hơn dự tính, thuyền hỏng một bên mạn.'+fx(c,{money:-m(8),suc:-R(12,22),lethal:chance(0.12)?1:0})},
+    {l:'Neo thuyền ở vịnh kín gió, chờ bão tan',r:[{tri:0.5,ky:0.4},DW(0.7,50)],y:c=>'Thuyền yên suốt đêm, sáng ra biển lặng.'+fx(c,{m:2,tri:1}),n:c=>'Neo không chắc, thuyền trôi dạt nhưng vẫn giữ được mạng.'+fx(c,{money:-m(4),suc:-6})}]},
+{id:'ng631_mua_ca',t:'Mùa cá rộ',job:NG,sea:['xuan','ha','thu'],pcd:72,cd:20,
+ x:c=>`Đàn cá về bến dày đặc, lưới nào cũng nặng. Thương lái đến đông nhưng cá nhiều thì giá hạ.`,
+ o:c=>[{l:'Bán ngay cho thương lái',f:c=>'Tiền vào đều trong mấy ngày.'+fx(c,{money:m(R(3,6)),tam:4})},
+    {l:'Ướp muối làm mắm để bán dần',s:`Tốn khoảng ${fm(m(1))}`,c:()=>G.money()>=m(1),r:[{ky:0.5,tri:0.3,eq:0.2},DW(0.65,50)],y:c=>{const k=G.kho();k.muoi=(k.muoi||0);return 'Mẻ mắm thơm, bán được giá gấp rưỡi mùa cá thường.'+fx(c,{money:m(R(6,10)),m:2})},n:c=>'Muối ít quá, mắm thiu một nửa.'+fx(c,{money:-m(1.5),tam:-3})},
+    {l:'Phơi khô, để dành mùa đông biển động',f:c=>'Nhà có thêm cá khô ăn qua mùa khan.'+fx(c,{suc:2,tam:3})}]},
+{id:'ng631_hai_tac',t:'Gặp thuyền lạ',job:NG,c:c=>reg()==='dong'&&c.lv>=0&&!!(G.S().w&&G.S().w.ph&&Object.values(G.S().w.ph).some(v=>v>=1)),pcd:120,cd:48,
+ x:c=>`Xa xa có thuyền lạ, buồm đen, không cờ hiệu, chạy thẳng về phía thuyền cá. Dân chài đồn đây là thuyền của Hải Minh.`,
+ o:c=>[{l:'Quay mũi, chèo hết sức về bến',r:[{suc:0.6,ky:0.3,vo:0.1},DW(0.55,55)],y:c=>'Thoát được. Cả bến cảm ơn lời cảnh báo.'+fx(c,{fame:2,tam:-2}),n:c=>'Bị đuổi kịp, mất hết mẻ cá và lưới.'+fx(c,{money:-m(6),suc:-R(5,12)})},
+    {l:'Giương cờ hiệu thuyền buôn xin thông hành',r:[{khau:0.6,eq:0.4},DW(0.4,55)],y:c=>'Chúng nhận ít cá làm lệ rồi tha.'+fx(c,{money:-m(1)}),n:c=>'Chúng lục soát thuyền, cướp sạch.'+fx(c,{money:-m(8),suc:-8})},
+    {l:'Tránh vào vịnh nhỏ nấp',f:c=>'May là họ không để ý, nhưng cả ngày bỏ lỡ việc.'+fx(c,{money:-m(1),tam:-2})}]},
+
+/* ============ TIỀU PHU / THỢ SĂN ============ */
+{id:'tp631_gap_ho',t:'Dấu chân hổ',job:TP,c:()=>['nam','bac','trung'].includes(reg()),pcd:150,cd:48,
+ x:c=>`Trên đường vào rừng, ${N(c)} thấy dấu chân to hằn sâu trong bùn, vết cào trên thân cây cao quá đầu người. Có hổ ở gần.`,
+ o:c=>[{l:'Rút lui ngay, báo cho làng',f:c=>'Làng lập bẫy và cử người canh. Không ai bị hại.'+fx(c,{fame:2,tam:-2})},
+    {l:'Lần theo dấu cùng vài người trong làng',s:'Rủi ro lớn',r:[{vo:0.6,suc:0.3,ky:0.1},DW(0.4,55)],y:c=>'Hạ được con hổ, lấy da xương bán được giá lớn, cả vùng được yên.'+fx(c,{money:m(R(18,30)),fame:R(10,18),cfame:3,vo:1}),n:c=>'Hổ lao ra bất ngờ, '+PR(c)+' bị thương nặng.'+fx(c,{suc:-R(30,45),hpMax:-R(3,6),lethal:chance(0.35)?1:0})},
+    {l:'Bỏ rừng đó, đi chặt chỗ khác',f:c=>'Kiếm củi ở xa, đường lâu hơn.'+fx(c,{money:-m(1)})}]},
+{id:'tp631_tram_huong',t:'Cây trầm hương',job:TP,c:c=>reg()==='nam',pcd:240,cd:120,good:1,
+ x:c=>`Trong lúc chặt cây già mục, ${N(c)} ngửi thấy mùi thơm lạ từ lõi gỗ sẫm. Đây có thể là trầm hương, thứ người trên kinh sẵn lòng trả cả gia tài.`,
+ o:c=>[{l:'Cẩn thận lấy phần lõi, đem đi tìm lái buôn uy tín',r:[{tri:0.5,eq:0.5},DW(0.6,50)],y:c=>'Đúng là trầm. Bán được món tiền lớn.'+fx(c,{money:m(R(30,60)),fame:2,tam:10}),n:c=>'Chỉ là gỗ mục thơm nhẹ. Chút tiền công coi như bỏ.'+fx(c,{tam:-3})},
+    {l:'Bán rẻ cho thương lái đến ngay hôm ấy',f:c=>'Họ trả nhanh, không mặc cả, nhưng giá thấp hơn nhiều.'+fx(c,{money:m(R(8,14)),tam:3})},
+    {l:'Giữ kín, không nói với ai',f:c=>'Một thời gian sau mới đem bán dần, nhưng có người đã nghe tiếng.'+fx(c,{money:m(R(15,30)),fame:-1})}]},
+{id:'tp631_go_lim',t:'Cây lim cổ thụ',job:TP,stMax:2,sea:['dong','xuan'],pcd:120,
+ x:c=>`Trong rừng có cây lim cổ thụ ba người ôm. Thợ mộc ngoài chợ ngỏ ý mua gỗ nhưng cây thuộc đất rừng của làng, phải xin phép.`,
+ o:c=>[{l:'Xin phép lý trưởng, chia phần cho làng',f:c=>'Làng đồng ý. Gỗ bán được giá, mọi người đều có phần.'+fx(c,{money:m(R(5,10)),fame:R(2,4),cfame:1})},
+    {l:'Lén chặt một nửa đem bán',f:c=>chance(0.35)?'Bị kiểm lâm bắt, phạt nặng.'+fx(c,{money:-m(8),fame:-8}):'Gỗ bán được giá cao mà không ai hay.'+fx(c,{money:m(R(8,14)),fame:-1})},
+    {l:'Để cây yên, đánh dấu cho làng giữ',f:c=>'Dân làng khen biết giữ rừng.'+fx(c,{fame:R(3,6)})}]},
+
+/* ============ GIA NHÂN ============ */
+{id:'hau631_chu_om',t:'Chủ nhà đổ bệnh',job:HAU,pcd:120,
+ x:c=>`Chủ nhà bất ngờ lâm bệnh nặng, sốt li bì. Những người làm khác sợ lây, lấy cớ rút ra. ${N(c)} thấy trong nhà chỉ còn mình và vài người.`,
+ o:c=>[{l:'Ở lại thức đêm chăm sóc',r:[{suc:0.5,eq:0.5},DW(0.7,55)],y:c=>'Chủ nhà dần qua cơn nguy. Ông biết ơn, thưởng lớn và nâng đỡ lâu dài.'+fx(c,{money:m(R(4,8)),bonus:0.08,fame:2,tam:4}),n:c=>'Chăm mệt nhoài nên bản thân cũng ngã bệnh. Chủ nhà qua khỏi nhưng chẳng nhớ công.'+fx(c,{suc:-R(8,16)})},
+    {l:'Đi mời thầy lang giỏi đến',s:`Tốn khoảng ${fm(m(3))}`,c:()=>G.money()>=m(3),f:c=>'Thầy lang chữa khỏi bệnh. Chủ nhà ghi nhận sự nhanh nhạy.'+fx(c,{money:-m(3),fame:3,eq:1})},
+    {l:'Rút theo mọi người, sợ liên lụy',f:c=>'Chủ nhà qua khỏi, ghi nhớ kẻ bỏ đi.'+fx(c,{bonus:-0.1,fame:-2,tam:-3})}]},
+{id:'hau631_bi_vu',t:'Bị vu mất đồ',job:HAU,pcd:150,cd:36,
+ x:c=>`Phu nhân trong nhà mất chiếc trâm quý, cho rằng ${N(c)} lấy cắp. Mọi ánh mắt đổ dồn về ${PR(c)}.`,
+ o:c=>[{l:'Xin tự khám người và lục chỗ ở để chứng minh',r:[{eq:0.6,khau:0.4},DW(0.7,55)],y:c=>'Không thấy gì. Vài hôm sau chiếc trâm được tìm ra ở khe giường. Phu nhân xin lỗi.'+fx(c,{fame:2,tam:2,money:m(1)}),n:c=>'Bị mắng nặng lời dù không có bằng chứng, phải cắt tiền công mấy tháng.'+fx(c,{money:-m(1),tam:-8})},
+    {l:'Im lặng chịu đựng',f:c=>chance(0.5)?'Chiếc trâm sau tìm ra, không ai nhắc lại chuyện cũ.'+fx(c,{tam:-4}):'Bị phạt trượng cho có.'+fx(c,{suc:-8,tam:-8})},
+    {l:'Báo thẳng việc với quản gia nhờ phân xử',f:c=>'Quản gia điều tra công bằng, thấy rõ chuyện oan.'+fx(c,{tam:2,eq:1})}]},
+{id:'hau631_chuoc_than',t:'Gom tiền chuộc thân',job:HAU,age:[18,50],c:c=>c.purse>=m(10)||G.money()>=m(60),pcd:200,
+ x:c=>`Làm thuê lâu năm, ${N(c)} dành dụm được một khoản. Chủ nhà từng nói nếu muốn ra làm riêng thì cứ bàn chuyện chuộc thân.`,
+ o:c=>[{l:'Xin chuộc thân, ra làm riêng',s:`Tốn khoảng ${fm(m(10))}`,c:c=>c.purse>=m(10),f:c=>{c.purse-=m(10);G.setJob(c,'hangrong');return 'Chủ nhà vui vẻ cho đi, còn tặng ít lộ phí. Từ nay tự đứng ra buôn bán nhỏ.'+fx(c,{tam:12,fame:2})}},
+    {l:'Xin chủ tăng công thay vì chuộc thân',r:[{khau:0.5,eq:0.5},DW(0.5,55)],y:c=>'Chủ nể tình, tăng công đáng kể.'+fx(c,{bonus:0.1,tam:4}),n:c=>'Chủ bảo biết đủ, đừng đòi hỏi.'+fx(c,{tam:-4})},
+    {l:'Tiếp tục dành dụm',f:c=>fx(c,{purse:m(1)})}]},
+
+/* ============ THỢ THỦ CÔNG ============ */
+{id:'tho631_don_lon',t:'Đơn hàng lớn',job:THO,c:c=>c.lv>=1,pcd:96,
+ x:c=>`Một thương gia đặt cả lô đồ dùng giao trong một tháng, trả trước nửa. Nhận thì lãi lớn nhưng gấp rút, chậm hẹn phải đền.`,
+ o:c=>[{l:'Nhận, thuê thêm thợ phụ',s:`Tốn khoảng ${fm(m(3))}`,c:()=>G.money()>=m(3),r:[{vo:0.4,ky:0.4,eq:0.2},DW(0.65,55)],y:c=>'Giao đúng hạn, hàng đẹp. Thương gia dặn lần sau còn đặt.'+fx(c,{money:m(R(8,14))-m(3),fame:R(3,5),m:3}),n:c=>'Hàng giao muộn mấy ngày, bị trừ tiền.'+fx(c,{money:-m(3),tam:-4})},
+    {l:'Nhận một nửa số lượng',f:c=>'Thương gia hơi tiếc nhưng nhận. Công việc vừa sức.'+fx(c,{money:m(4),m:1})},
+    {l:'Từ chối, sợ quá sức',f:c=>''}]},
+{id:'tho631_thay_la',t:'Thợ lạ truyền mẹo',job:THO,stMax:2,pcd:150,cd:36,
+ x:c=>`Một ông thợ từ xa ghé xưởng xin nghỉ chân. Thấy ${N(c)} chăm chỉ, ông gợi ý một mẹo xử lý mối ghép mà trong vùng ít người biết.`,
+ o:c=>[{l:'Mời cơm, xin học bằng được',s:`Tốn khoảng ${fm(m(1))}`,c:()=>G.money()>=m(1),f:c=>'Hai bên thức trắng đêm. Sáng ra tay nghề lên một bậc.'+fx(c,{money:-m(1),m:R(4,7),vo:1})},
+    {l:'Nghe qua rồi tự mày mò',f:c=>chance(0.5)?'Làm thử đúng mẹo, sản phẩm đẹp hơn.'+fx(c,{m:R(2,4)}):'Mày mò sai nhiều lần, hỏng ít vật liệu.'+fx(c,{money:-m(1),m:1})}]},
+{id:'tho631_dung_cu',t:'Dụng cụ hỏng giữa mùa đắt hàng',job:THO,pcd:96,
+ x:c=>`Giữa lúc khách đông nhất, lưỡi cưa chính của ${N(c)} gãy làm đôi. Thợ rèn đầu chợ báo phải chờ nửa tháng mới có thép.`,
+ o:c=>[{l:'Mua lưỡi cưa mới tốn kém ở chợ khác',s:`Tốn khoảng ${fm(m(4))}`,c:()=>G.money()>=m(4),f:c=>'Có đồ nghề mới ngay, kịp làm hàng cho khách.'+fx(c,{money:-m(4),m:1})},
+    {l:'Nhờ thợ rèn tự tay sửa lại',r:[{ky:0.5,vo:0.3},DW(0.6,50)],y:c=>'Sửa tạm dùng ổn, không mất tiền.'+fx(c,{money:-m(0.5)}),n:c=>'Sửa không ăn thua, mất mấy ngày làm lại.'+fx(c,{tam:-4,money:-m(2)})},
+    {l:'Nhận đơn nhỏ, làm bằng đồ nghề khác',f:c=>'Chậm hơn nhưng giữ được khách quen.'+fx(c,{money:m(1)})}]},
+
+/* ============ DỆT THÊU ============ */
+{id:'det631_tam_benh',t:'Tằm sinh bệnh',job:DET,sea:['xuan'],c:()=>reg()!=='bac',pcd:96,cd:30,
+ x:c=>`Mùa nuôi tằm đầu xuân, những nong tằm của ${N(c)} bắt đầu lười ăn, thân chuyển xám. Có thể là bệnh tằm đang lan.`,
+ o:c=>[{l:'Cách ly, thay lá dâu tươi, quét vôi nong',r:[{ky:0.5,tri:0.4},DW(0.6,50)],y:c=>'Giữ được phần lớn số tằm. Kén năm nay vẫn bán được.'+fx(c,{money:m(3),m:2}),n:c=>'Bệnh vẫn lan, mất quá nửa số tằm.'+fx(c,{money:-m(3),tam:-5})},
+    {l:'Bỏ hết lứa này, làm lại lứa sau',f:c=>'Mất vốn lứa này nhưng giữ được lứa sau sạch bệnh.'+fx(c,{money:-m(2),tam:-3})},
+    {l:'Hỏi bà lão trong xóm có kinh nghiệm',f:c=>'Bà chỉ cách xông ngải cứu và rắc tro bếp, đỡ phần nào.'+fx(c,{eq:1,m:1})}]},
+{id:'det631_mau_hoa_van',t:'Mẫu hoa văn lạ',job:DET,stMax:2,pcd:150,
+ x:c=>`Một khách quý mang theo mảnh gấm cổ có hoa văn ít thấy, hỏi ${N(c)} có thể thêu lại được không.`,
+ o:c=>[{l:'Nhận, nghiên cứu từng mũi chỉ',s:'Mất vài tháng',r:[{mi:0.5,ky:0.5},DW(0.5,55)],y:c=>{busy(c,3);return 'Thêu lại giống đến lạ. Tiếng lành đồn xa, khách tìm đến.'+fx(c,{money:m(R(5,9)),fame:R(3,6),m:R(4,7),mi:1})},n:c=>{busy(c,3);return 'Thêu không tới, khách trả lại. Nhưng học được kỹ thuật mới.'+fx(c,{m:2,tam:-3})}},
+    {l:'Xin chép lại mẫu để thêu sau',f:c=>'Khách cho mượn vài ngày. '+N(c)+' vẽ lại, dần ứng dụng.'+fx(c,{m:2,mi:1})},
+    {l:'Từ chối vì sợ làm hỏng gấm quý',f:c=>''}]},
+
+/* ============ ĐẦU BẾP ============ */
+{id:'bep631_tiec_lon',t:'Đặt tiệc lớn',job:BEP,c:c=>c.lv>=1,pcd:96,
+ x:c=>`Một nhà quyền quý đặt tiệc ba mươi mâm mừng thượng thọ, cần ${N(c)} lo toàn bộ món. Nhiều mối lớn sẽ có mặt.`,
+ o:c=>[{l:'Nhận, thức trắng đêm chuẩn bị',s:`Tốn khoảng ${fm(m(3))}`,c:()=>G.money()>=m(3),r:[{eq:0.5,ky:0.4,suc:0.1},DW(0.65,55)],y:c=>'Tiệc thành công rực rỡ, thực khách khen nức nở, nhiều người hỏi thuê lần sau.'+fx(c,{money:m(R(8,14))-m(3),fame:R(4,8),m:3}),n:c=>'Một món bị cháy, chủ nhà không hài lòng, trừ nửa tiền công.'+fx(c,{money:-m(1),tam:-6})},
+    {l:'Nhận một phần số mâm, giao phần còn lại cho đồng nghiệp',f:c=>'Chất lượng ổn, tiền chia đôi.'+fx(c,{money:m(3),m:1})},
+    {l:'Từ chối vì quá sức',f:c=>''}]},
+{id:'bep631_mon_gia_truyen',t:'Món gia truyền của bà cụ',job:BEP,stMax:2,pcd:200,
+ x:c=>`Bà cụ bán hàng đầu ngõ, sắp nghỉ, nhìn ${N(c)} bảo muốn truyền công thức nước dùng gia truyền, với điều kiện giữ đúng cách nấu.`,
+ o:c=>[{l:'Nhận lời, học đủ từng bước',f:c=>'Nước dùng đậm đà đặc biệt. Món này sau thành chiêu bài.'+fx(c,{m:R(4,6),sk:{ky:1},fame:2})},
+    {l:'Chép công thức rồi cải biến theo ý mình',r:[{ky:0.6,tri:0.3},DW(0.5,50)],y:c=>'Món mới độc đáo, khách quen tấm tắc khen.'+fx(c,{m:3,fame:3,money:m(2)}),n:c=>'Hương vị mất hồn, bà cụ nghe tin thì buồn lòng.'+fx(c,{tam:-4})}]},
+
+/* ============ CHĂN NUÔI ============ */
+{id:'chan631_dich_gia_suc',t:'Dịch lở mồm long móng',job:CH,sea:['ha','thu'],pcd:96,cd:36,
+ x:c=>`Vài con trâu bò bỏ ăn, miệng loét, chảy dãi. Có vẻ là dịch gia súc đang lan trong vùng.`,
+ o:c=>[{l:'Cách ly đàn bệnh, đun nước muối rửa chuồng',r:[{ky:0.5,tri:0.3,suc:0.2},DW(0.6,50)],y:c=>'Chặn được dịch, chỉ mất hai con.'+fx(c,{money:-m(2),m:3,tri:1}),n:c=>'Bệnh vẫn lan, mất khá nhiều gia súc.'+fx(c,{money:-m(9),tam:-6})},
+    {l:'Bán vội phần khỏe mạnh để giữ vốn',f:c=>'Bán rẻ hơn thường, nhưng giữ lại được ít vốn.'+fx(c,{money:m(3),tam:-3})},
+    {l:'Mời thầy lang thú y trong vùng',s:`Tốn khoảng ${fm(m(3))}`,c:()=>G.money()>=m(3),f:c=>'Thầy kê thuốc, bệnh giảm dần.'+fx(c,{money:-m(3),m:2})}]},
+{id:'chan631_trom_gia_suc',t:'Mất trâu trong đêm',job:CH,pcd:96,cd:30,
+ x:c=>`Sáng ra, ${N(c)} thấy chuồng mở toang, mất hai con trâu béo. Dấu chân dẫn về phía bìa rừng.`,
+ o:c=>[{l:'Nhờ người làng cùng truy tìm',r:[{vo:0.4,eq:0.4,tri:0.2},DW(0.55,50)],y:c=>'Tìm thấy trâu bị giấu trong hẻm núi, bắt được tên trộm.'+fx(c,{fame:R(2,5),tam:3}),n:c=>'Dấu vết mất ở bờ suối, đành bỏ cuộc.'+fx(c,{money:-m(8),tam:-6})},
+    {l:'Báo quan, xin lệnh truy bắt',f:c=>'Quan sai nha dịch đi, vài ngày có tin. Phải lo cơm nước cho họ.'+fx(c,{money:-m(1.5),fame:1})},
+    {l:'Chịu mất, lo gia cố chuồng',f:c=>'Tốn thêm tiền làm chuồng chắc.'+fx(c,{money:-m(3)})}]},
+{id:'chan631_ngua_gioi',t:'Con ngựa cái giống tốt',job:CH,c:c=>['bac','tay'].includes(reg()),good:1,pcd:200,cd:60,
+ x:c=>`Một con ngựa cái của ${N(c)} sinh ra chú ngựa non chân dài vai rộng, dáng rất tốt. Lái ngựa đi qua nhìn mãi.`,
+ o:c=>[{l:'Giữ lại nuôi làm giống',f:c=>'Vài năm sau đàn ngựa của '+N(c)+' nổi tiếng trong vùng.'+fx(c,{bonus:0.1,m:3,fame:3})},
+    {l:'Bán cho lái ngựa lấy giá cao',f:c=>'Được món tiền không nhỏ.'+fx(c,{money:m(R(18,32)),tam:6})},
+    {l:'Đem dự hội đua ngựa, cầu danh',r:[{vo:0.3,suc:0.2,ky:0.5},DW(0.5,55)],y:c=>'Về nhất hạng non, tên tuổi lan khắp thảo nguyên.'+fx(c,{fame:R(8,14),money:m(10),m:2}),n:c=>'Ngựa non lạ đường, tụt lại cuối hàng.'+fx(c,{tam:-3})}]},
+
+/* ============ TIÊU SƯ ============ */
+{id:'tieu631_duong_binh_ach',t:'Đường qua vùng giao chiến',job:TIEU,c:()=>!!G.war()||(G.S().w&&G.S().w.ph&&Object.values(G.S().w.ph).some(v=>v>=2)),pcd:60,cd:24,
+ x:c=>`Chuyến hàng cần đi qua vùng đang có giao tranh. Chủ hàng trả gấp đôi nhưng dặn không được chậm.`,
+ o:c=>[{l:'Nhận chuyến, đi đường vòng qua núi',r:[{vo:0.5,tri:0.5},DW(0.5,55)],y:c=>'Vòng qua sườn núi vắng, giao hàng trót lọt. Chủ hàng thưởng thêm.'+fx(c,{money:m(R(14,22)),fame:R(3,6),m:3}),n:c=>'Gặp toán lính tán loạn, mất hàng, bị thương.'+fx(c,{money:-m(12),suc:-R(12,24)})},
+    {l:'Từ chối vì quá nguy hiểm',f:c=>'Chủ hàng thuê đoàn khác. '+N(c)+' giữ được mạng và uy tín thận trọng.'+fx(c,{tam:2})},
+    {l:'Đợi lệnh ngừng chiến mới đi',f:c=>'Chuyến hàng bị hoãn, mất mối.'+fx(c,{money:-m(2),tam:-2})}]},
+{id:'tieu631_ket_nghia',t:'Kết nghĩa anh em',job:TIEU,stMax:2,pcd:150,
+ x:c=>`Sau chuyến hàng vất vả, một tiêu sư trong đoàn đề nghị kết nghĩa anh em, cùng nhau gây dựng một nhóm hộ tống riêng.`,
+ o:c=>[{l:'Nhận lời, thề cùng sống chết',f:c=>'Hai người sau này trở thành chỗ dựa lẫn nhau, mối làm ăn thuận lợi.'+fx(c,{bonus:0.08,eq:1,tam:5,fame:2})},
+    {l:'Từ tốn cân nhắc, chưa vội',f:c=>'Họ hơi buồn, nhưng vẫn giữ tình thân thiện.'+fx(c,{tam:-1})},
+    {l:'Từ chối, không muốn ràng buộc',f:c=>fx(c,{tam:-2})}]},
+
+/* ============ NỘI TRỢ ============ */
+{id:'noi631_nuoi_lon',t:'Nuôi một lứa lợn',job:NOI,c:()=>reg()!=='tay',pcd:96,
+ x:c=>`${N(c)} muốn tận dụng cám gạo và rau thừa để nuôi một lứa lợn, đến Tết bán lấy tiền.`,
+ o:c=>[{l:'Nuôi chu đáo, chăm từng bữa',r:[{eq:0.5,ky:0.3,suc:0.2},DW(0.65,50)],y:c=>'Lợn béo tròn, bán dịp Tết được giá. Khoản tiền riêng đáng kể.'+fx(c,{purse:m(R(5,9)),tam:5,m:1}),n:c=>'Lợn bị dịch, chỉ giữ được vài con.'+fx(c,{purse:-m(1),tam:-4})},
+    {l:'Nuôi vài con để nhà ăn Tết',f:c=>'Tết nhà có thịt tươi, cả nhà vui.'+fx(c,{tam:6})},
+    {l:'Thôi, nhà không có chỗ',f:c=>''}]},
+{id:'noi631_hoc_tho_cam',t:'Học dệt thổ cẩm',job:NOI,c:c=>age(c)<45&&['tay','bac','nam'].includes(reg()),pcd:200,
+ x:c=>`Một người quen trong làng sẵn lòng dạy ${N(c)} dệt thổ cẩm vào những buổi nông nhàn, hứa rằng sau này làm thêm có thu.`,
+ o:c=>[{l:'Học đều đặn mỗi chiều',s:'Mất nhiều tháng',f:c=>{busy(c,2);return 'Sau mấy tháng, tay nghề khá lên rõ rệt. Có thể làm thêm bán chợ.'+fx(c,{m:R(3,5),mi:1,purse:m(2)})}},
+    {l:'Học qua loa cho biết',f:c=>fx(c,{mi:1})},
+    {l:'Bận việc nhà, không học được',f:c=>''}]},
+
+/* ============ HÀNG RONG / TIỂU NHỊ ============ */
+{id:'hr631_mua_tet',t:'Chợ Tết đông khách',job:HR,sea:['dong'],pcd:48,cd:11,
+ x:c=>`Những ngày giáp Tết, chợ đông nghịt người. ${N(c)} nghĩ nên mua thêm hàng để bán được nhiều hơn.`,
+ o:c=>[{l:'Vay thêm vốn nhập nhiều hàng',s:'Có thể lời lớn',r:[{eq:0.6,tri:0.4},DW(0.65,50)],y:c=>'Bán sạch trong ba ngày. Lời hơn cả mấy tháng thường.'+fx(c,{money:m(R(5,9)),m:2,tam:6}),n:c=>'Trời mưa, khách thưa, hàng tồn ế.'+fx(c,{money:-m(4),tam:-5})},
+    {l:'Bán như thường, đi sớm về muộn',f:c=>'Doanh thu khá hơn ngày thường.'+fx(c,{money:m(2.5),suc:-2})},
+    {l:'Nghỉ Tết sớm về với gia đình',f:c=>'Cả nhà đón Tết đủ đầy.'+fx(c,{tam:8})}]},
+{id:'hr631_thu_thue_cho',t:'Lính chợ thu tiền chỗ ngồi',job:HR,pcd:96,
+ x:c=>`Lính chợ đi qua, đòi thu tiền chỗ ngồi gấp rưỡi mọi khi, bảo "lệnh huyện mới".`,
+ o:c=>[{l:'Nộp đủ, tránh rắc rối',f:c=>fx(c,{money:-m(1)})},
+    {l:'Hỏi xem lệnh có dán ở cổng chợ không',r:[{tri:0.5,khau:0.5},DW(0.5,50)],y:c=>'Lính không đưa ra được lệnh nào, đành thu giá cũ.'+fx(c,{fame:1,tam:3}),n:c=>'Lính nổi nóng, đạp đổ gánh hàng.'+fx(c,{money:-m(2),tam:-6})},
+    {l:'Dọn sang chỗ khác bán',f:c=>'Chỗ mới ít khách hơn nhưng đỡ phải nộp.'+fx(c,{money:-m(0.5)})}]},
+{id:'tn631_khach_sang',t:'Khách sang ghé quán',job:TN,pcd:96,
+ x:c=>`Một vị khách ăn mặc sang trọng ghé quán, gọi món ít nhưng đòi hỏi rất khó chiều. ${N(c)} đang bưng bàn.`,
+ o:c=>[{l:'Phục vụ chu đáo, nhẹ nhàng',r:[{eq:0.7,khau:0.3},DW(0.65,50)],y:c=>'Khách hài lòng, thưởng hậu và nhắn chủ quán nhớ tên '+N(c)+'.'+fx(c,{money:m(R(2,4)),fame:1,m:2}),n:c=>'Khách vẫn chê, quở trách trước mặt mọi người.'+fx(c,{tam:-5})},
+    {l:'Nhờ người thâm niên ra tiếp thay',f:c=>'Chuyện êm, khách vui, không ai trách.'+fx(c,{tam:1})},
+    {l:'Cãi lại khi bị quở',f:c=>chance(0.3)?'Khách là người quen biết của quan, quán bị phiền.'+fx(c,{money:-m(2),tam:-5,fame:-3}):'Khách hậm hực bỏ đi.'+fx(c,{tam:-2})}]},
+
+/* ============ NÔNG: đường tới ruộng riêng ============ */
+{id:'nong631_khai_hoang',t:'Đất bồi ven sông',job:NONG,sea:['xuan'],c:()=>wet()&&F().own<40,pcd:120,cd:60,
+ x:c=>`Sau mùa nước, bãi đất bồi ven sông lộ ra rộng chưa ai cày. Làng cho phép ai khai hoang trước thì được làm chủ, nộp thuế nhẹ ba năm đầu.`,
+ o:c=>[{l:'Rủ cả nhà ra phát hoang suốt mùa',s:'Công sức rất lớn',r:[{suc:0.6,vo:0.2,eq:0.2},DW(0.65,55)],y:c=>{busy(c,3);return 'Đất bồi màu mỡ. Sau vài vụ đã thành ruộng tốt.'+land(R(2,4))+fx(c,{suc:-4,tam:6})},n:c=>{busy(c,3);return 'Nước lên bất ngờ, cuốn trôi một phần công sức.'+land(1)+fx(c,{suc:-6,tam:-4})}},
+    {l:'Thuê thêm người làm giúp',s:`Tốn khoảng ${fm(m(6))}`,c:()=>G.money()>=m(6),f:c=>'Có thêm ruộng mà đỡ vất vả.'+land(2)+fx(c,{money:-m(6),tam:3})},
+    {l:'Để người khác khai, mình không đủ sức',f:c=>''}]},
+{id:'nong631_tranh_nuoc_ha',t:'Hạn tranh nước ruộng',job:NONG,sea:['ha'],c:()=>wet(),pcd:60,cd:24,
+ x:c=>`Mấy tuần không mưa, mương nước cạn dần. Nhà trên chặn nước, nhà dưới không có nước chảy vào ruộng.`,
+ o:c=>[{l:'Họp các nhà cùng chia ca lấy nước',r:[{khau:0.5,eq:0.6},DW(0.6,50)],y:c=>'Cả xóm chia nước theo phiên, lúa qua được hạn.'+fx(c,{eq:1,fame:2,tam:3}),n:c=>'Không ai chịu nhường, xô xát nhỏ, lúa vẫn héo một phần.'+fx(c,{suc:-4,money:-m(2)})},
+    {l:'Thức đêm đào thêm mương nhánh',f:c=>{busy(c,1);return 'Kịp có nước vào ruộng nhà mình, mệt rã rời.'+fx(c,{suc:-6,m:1})}},
+    {l:'Gánh nước từng gáo tưới cho kịp',f:c=>'Cứu được ít lúa, nhưng kiệt sức.'+fx(c,{suc:-R(8,14),money:-m(0.5)})}]},
+{id:'nong631_ruong_cong',t:'Làng chia lại ruộng công',job:NONG,c:()=>F().own<8,pcd:200,cd:120,
+ x:c=>`Làng chia lại ruộng công theo đinh. Nhà nào có nhiều đinh thì được chia nhiều, nhưng phải nộp thuế và phục dịch theo suất.`,
+ o:c=>[{l:'Xin nhận suất đầy đủ, gánh dịch',f:c=>'Được thêm ít ruộng công, bù lại phải đi phu mấy ngày.'+land(R(1,2))+fx(c,{suc:-3,tam:2})},
+    {l:'Xin giảm suất vì nhà neo người',f:c=>'Được giảm nửa nhưng ruộng chia cũng ít.'+land(1)},
+    {l:'Từ bỏ phần chia vì không muốn nộp thuế',f:c=>''}]},
+{id:'nong631_giong_moi',t:'Thương lái mang giống lạ',job:NONG,sea:['xuan'],pcd:150,cd:60,
+ x:c=>`Một thương lái bán giống lúa ngắn ngày, nghe nói chín sớm hơn mười ngày nhưng hạt nhỏ hơn.`,
+ o:c=>[{l:'Mua thử một ít, gieo một góc ruộng',s:`Tốn khoảng ${fm(m(1.5))}`,c:()=>G.money()>=m(1.5),r:[{ky:0.4,tri:0.5},DW(0.6,50)],y:c=>'Giống hợp đất, thu sớm tránh được lũ. Từ vụ sau nhà đổi hẳn giống.'+fx(c,{money:-m(1.5)+m(3),m:2,tam:3}),n:c=>'Giống không hợp đất, thu kém.'+fx(c,{money:-m(1.5),tam:-3})},
+    {l:'Giữ giống cũ, tin kinh nghiệm',f:c=>''}]},
+
+]
+});
