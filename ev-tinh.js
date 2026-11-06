@@ -12,7 +12,10 @@ const A=o=>Object.assign({arc:1,k:'Cốt truyện'},o);
 const ST=o=>Object.assign({once:1,k:'Mở đầu cốt truyện',w:0.7,cd:24},o);
 const single=c=>!married(c)&&!c.left;
 const sib=(a,b)=>a.parents.length&&b.parents.length&&a.parents.some(p=>b.parents.includes(p));
-const lover=(c,lift,o)=>G.mkPerson(Object.assign({g:c.g==='nam'?'nữ':'nam',age:Math.max(16,age(c)+R(-4,2)),lift},o||{}));
+/* v6.3.2: người trong tình duyên có chỉ số và nghề theo địa vị; nhà quyền thế (lift 30 trở lên) và nhân vật có tên là người trong cốt truyện: giỏi hơn, có tài riêng */
+const lover=(c,lift,o)=>G.mkMatch(c,Object.assign({age:Math.max(16,age(c)+R(-4,2)),up:Math.max(-1,Math.min(3.5,(lift-G.tierIdx()*4)/8)),story:lift>=30?1:0},o||{}));
+const THUONG=c=>c.g==='nam'?{surname:'Thương',given:'Tâm Từ',main:'mi',traits:['khuynhthanh','phongnha'],min:{mi:84,tri:74,eq:70},job:'noi'}:{surname:'Thương',given:'Cảnh Hành',main:'tri',traits:['thongminh','muusi'],min:{tri:84,vo:70,eq:70,mi:72},job:'hiep',lv:1};
+const LACNHAN={surname:'Lạc',given:'Nhạn',g:'nữ',main:'mi',story:1,traits:['duyendang','phongnha'],min:{mi:88,tri:74,eq:72},job:'nghe',lv:2};
 const marry=(c,p,free)=>{G.mkSpouse(c,free,p);return ''};
 const ta=c=>c.g==='nam'?'nàng':'chàng';
 const fit=(c,need)=>G.tierIdx()>=need.t||c.fame+S().fame*0.2>=need.f||(c.tuoc||0)>0||c.job==='quan'&&c.lv>=need.q||c.degree>=need.d;
@@ -74,15 +77,15 @@ A({id:'tt_b',t:'Ân nhân',k:'Thương Tâm Từ',
     {l:'Từ chối lễ, chỉ xin làm bạn',r:[{eq:1},45],y:c=>'Người ấy càng thêm cảm mến.'+fx(c,{fame:4})+nx(c,'tt_c',6,12),n:c=>''}]}),
 A({id:'tt_c',t:'Thương gia nổi giận',k:'Thương Tâm Từ',c:single,
  x:c=>`Chuyện hẹn hò đến tai Thương hầu gia. Ông cho gọi ${N(c)} đến phủ, lạnh lùng nói: "Con ta chỉ gả cho người có công danh. Kẻ ${G.tierName().toLowerCase()} mà dám trèo cao?" Thương gia đòi: gia thế từ Hào phú, hoặc làm quan từ Lục phẩm, hoặc đỗ thi Hội, hoặc có tước vị.`,
- o:[{l:'Đường hoàng cầu hôn',c:c=>fit(c,{t:4,f:99999,q:3,d:2}),r:[{mi:0.6,eq:0.8,fame:0.3},62],y:c=>{const nm=c.g==='nam'?['Thương','Tâm Từ']:['Thương','Cảnh Hành'];const p=lover(c,35,{surname:nm[0],given:nm[1]});G.addTrait(p,c.g==='nam'?'khuynhthanh':'thongminh');p.flags.quyen=2;return 'Hầu gia gật đầu. Đám cưới rình rang cả phủ thành!'+marry(c,p,false)+fx(c,{fame:R(40,60),hung:8,money:m(R(60,120))})},n:c=>'Hầu gia ra thêm ba thử thách, mình hỏng một.'+fx(c,{tam:-10})+nx(c,'tt_d',24,36)},
+ o:[{l:'Đường hoàng cầu hôn',c:c=>fit(c,{t:4,f:99999,q:3,d:2}),r:[{mi:0.6,eq:0.8,fame:0.3},62],y:c=>{const p=lover(c,35,THUONG(c));p.flags.quyen=2;return 'Hầu gia gật đầu. Đám cưới rình rang cả phủ thành!'+marry(c,p,false)+fx(c,{fame:R(40,60),hung:8,money:m(R(60,120))})},n:c=>'Hầu gia ra thêm ba thử thách, mình hỏng một.'+fx(c,{tam:-10})+nx(c,'tt_d',24,36)},
     {l:'Xin hầu gia cho ba năm',c:c=>!fit(c,{t:4,f:99999,q:3,d:2}),f:c=>'Hầu gia nhếch mép: "Được, ba năm."'+fx(c,{tam:-3})+nx(c,'tt_d',30,40)},
-    {l:'Rủ người ấy bỏ trốn',r:[{eq:0.6,tri:0.6,vo:0.3},62],y:c=>{const nm=c.g==='nam'?['Thương','Tâm Từ']:['Thương','Cảnh Hành'];const p=lover(c,35,{surname:nm[0],given:nm[1]});p.flags.thu=2;return 'Hai người trốn về quê thành thân. Thương gia thề không đội trời chung.'+marry(c,p,true)+fx(c,{cfame:-25,on:-10,tam:12})},n:c=>'Bị gia binh Thương phủ chặn lại, đánh gãy chân.'+fx(c,{suc:-30,hpMax:-R(3,5),fame:-15,tam:-20})},
+    {l:'Rủ người ấy bỏ trốn',r:[{eq:0.6,tri:0.6,vo:0.3},62],y:c=>{const p=lover(c,35,THUONG(c));p.flags.thu=2;return 'Hai người trốn về quê thành thân. Thương gia thề không đội trời chung.'+marry(c,p,true)+fx(c,{cfame:-25,on:-10,tam:12})},n:c=>'Bị gia binh Thương phủ chặn lại, đánh gãy chân.'+fx(c,{suc:-30,hpMax:-R(3,5),fame:-15,tam:-20})},
     {l:'Lui về, giữ phận mình',f:c=>fx(c,{tam:-15,eq:2})}]}),
 A({id:'tt_d',t:'Lời hẹn với Thương gia',k:'Thương Tâm Từ',c:single,
  x:c=>fit(c,{t:4,f:99999,q:3,d:2})?`Hạn đã đến. ${N(c)} giờ đã khác xưa, đủ tư cách bước vào cổng Thương phủ.`:`Hạn đã đến mà công danh chưa thành. Thương gia đã nhận lễ của một vị thế tử khác, định ngày cưới.`,
- o:c=>fit(c,{t:4,f:99999,q:3,d:2})?[{l:'Mang sính lễ vào Thương phủ',f:c=>{const nm=c.g==='nam'?['Thương','Tâm Từ']:['Thương','Cảnh Hành'];const p=lover(c,35,{surname:nm[0],given:nm[1]});G.addTrait(p,c.g==='nam'?'khuynhthanh':'thongminh');p.flags.quyen=2;return 'Người ấy đã đợi đúng ba năm. Đám cưới làm nức lòng cả phủ thành.'+marry(c,p,false)+fx(c,{fame:R(50,80),hung:10,tam:20})}}]
+ o:c=>fit(c,{t:4,f:99999,q:3,d:2})?[{l:'Mang sính lễ vào Thương phủ',f:c=>{const p=lover(c,35,THUONG(c));p.flags.quyen=2;return 'Người ấy đã đợi đúng ba năm. Đám cưới làm nức lòng cả phủ thành.'+marry(c,p,false)+fx(c,{fame:R(50,80),hung:10,tam:20})}}]
   :[{l:'Đến tiễn người ấy lần cuối',f:c=>'Người ấy dúi vào tay một cây trâm ngọc rồi quay đi.'+fx(c,{tam:-20,eq:3})},
-    {l:'Cướp người trong ngày cưới',r:[{vo:1,tri:0.5},80],y:c=>{const nm=c.g==='nam'?['Thương','Tâm Từ']:['Thương','Cảnh Hành'];const p=lover(c,35,{surname:nm[0],given:nm[1]});p.flags.thu=2;return 'Cướp được người, cao chạy xa bay về quê.'+marry(c,p,true)+fx(c,{cfame:-35,on:-12})},n:c=>'Bị bắt giải lên quan, đánh trượng, phạt nặng.'+fx(c,{suc:-30,money:-m(40),fame:-40})}]}),
+    {l:'Cướp người trong ngày cưới',r:[{vo:1,tri:0.5},80],y:c=>{const p=lover(c,35,THUONG(c));p.flags.thu=2;return 'Cướp được người, cao chạy xa bay về quê.'+marry(c,p,true)+fx(c,{cfame:-35,on:-12})},n:c=>'Bị bắt giải lên quan, đánh trượng, phạt nặng.'+fx(c,{suc:-30,money:-m(40),fame:-40})}]}),
 
 /* ================= CỐT TRUYỆN: HOA KHÔI LẠC NHẠN ================= */
 ST({id:'lnh_a',t:'Tiếng đàn trên lầu Vọng Nguyệt',age:[18,40],g:'nam',c:c=>G.tierIdx()>=2&&!c.away,w:0.4,
@@ -91,12 +94,12 @@ ST({id:'lnh_a',t:'Tiếng đàn trên lầu Vọng Nguyệt',age:[18,40],g:'nam'
     {l:'Ra về, không dính vào chốn này',f:c=>fx(c,{eq:1})}]}),
 A({id:'lnh_b',t:'Thân phận hoa khôi',k:'Lạc Nhạn',
  x:c=>`Lạc Nhạn kể nàng vốn là con nhà quan bị tịch biên, bị bán vào lầu xanh. Tú bà đòi giá chuộc thân rất cao. Một vị công tử nhà quyền thế cũng đang nhắm nàng làm thiếp.`,
- o:[{l:'Chuộc thân cho nàng',s:'Tốn rất nhiều',c:()=>G.money()>=m(80),f:c=>{const p=lover(c,20,{surname:'Lạc',given:'Nhạn',g:'nữ'});G.addTrait(p,'duyendang');return married(c)?'Chuộc nàng ra, nàng xin ở lại làm người nhà, lo việc đàn hát cho cả họ.'+fx(c,{money:-m(80),fame:-5,tam:10}):'Chuộc nàng về làm vợ. Người đời dị nghị, nhưng hai người hạnh phúc.'+marry(c,p,true)+fx(c,{money:-m(80),cfame:-8,tam:15})}},
+ o:[{l:'Chuộc thân cho nàng',s:'Tốn rất nhiều',c:()=>G.money()>=m(80),f:c=>{const p=lover(c,20,LACNHAN);return married(c)?'Chuộc nàng ra, nàng xin ở lại làm người nhà, lo việc đàn hát cho cả họ.'+fx(c,{money:-m(80),fame:-5,tam:10}):'Chuộc nàng về làm vợ. Người đời dị nghị, nhưng hai người hạnh phúc.'+marry(c,p,true)+fx(c,{money:-m(80),cfame:-8,tam:15})}},
     {l:'Giúp nàng kêu oan cho cha',r:[{tri:1,eq:0.6,fame:0.3},75],y:c=>'Án cũ được xét lại, nàng được trả tự do và minh oan.'+fx(c,{fame:R(25,40)})+nx(c,'lnh_c',6,12),n:c=>'Đụng chạm quyền thế, bị dằn mặt.'+fx(c,{suc:-15,tam:-8})},
     {l:'Thôi, phận ai nấy chịu',f:c=>fx(c,{tam:-6})}]}),
 A({id:'lnh_c',t:'Lạc gia phục hồi',k:'Lạc Nhạn',
  x:'Cha Lạc Nhạn được minh oan, phục chức. Lạc gia đến tận nhà tạ ơn.',
- o:[{l:'Xin cưới Lạc Nhạn',c:c=>!married(c),f:c=>{const p=lover(c,30,{surname:'Lạc',given:'Nhạn',g:'nữ'});G.addTrait(p,'duyendang');p.flags.quyen=1;return 'Lạc gia vui vẻ gả con.'+marry(c,p,false)+fx(c,{fame:20,hung:5})}},
+ o:[{l:'Xin cưới Lạc Nhạn',c:c=>!married(c),f:c=>{const p=lover(c,30,LACNHAN);p.flags.quyen=1;return 'Lạc gia vui vẻ gả con.'+marry(c,p,false)+fx(c,{fame:20,hung:5})}},
     {l:'Nhận lễ tạ, kết làm thông gia sau này',f:c=>'Lạc gia nhận là ân nhân.'+fx(c,{money:m(40),fame:15,hung:3})}]}),
 
 /* ================= THÔNG GIA ================= */

@@ -323,7 +323,7 @@ return [
     {l:'Xin lỗi, diễn lại',f:c=>fx(c,{tam:-4})}]},
 {id:'ng_cong_tu',t:'Công tử theo đuổi',job:['nghe'],st:1,c:c=>!married(c),
  x:'Một công tử con nhà quan gửi hoa và thư tình mỗi tối.',
- o:[{l:'Đáp lại',r:[{mi:1,eq:0.6},65],y:c=>{G.mkSpouse(c,true);return 'Nên duyên với nhà quyền quý!'+fx(c,{fame:10})},n:c=>'Nhà công tử ngăn cấm, cấm cửa.'+fx(c,{tam:-12})},
+ o:[{l:'Đáp lại',r:[{mi:1,eq:0.6},65],y:c=>{G.mkSpouse(c,true,G.mkMatch(c,{up:3,story:1}));return 'Nên duyên với nhà quyền quý!'+fx(c,{fame:10})},n:c=>'Nhà công tử ngăn cấm, cấm cửa.'+fx(c,{tam:-12})},
     {l:'Từ chối',f:c=>fx(c,{fame:2})}]},
 {id:'ng_vao_phu',t:'Diễn ở phủ quan',job:['nghe'],st:1,
  x:'Phủ quan mời vào diễn mừng thọ.',

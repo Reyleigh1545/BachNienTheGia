@@ -1,4 +1,4 @@
-/* Bách Niên Thế Gia v6.3.1 · engine (ghép từ src/ + src63/) */
+/* Bách Niên Thế Gia v6.3.2 · engine (ghép từ src/ + src63/) */
 (function(){
 'use strict';
 /* ================= tiện ích ================= */
@@ -62,13 +62,13 @@ const pot=(c,k)=>{const a=c.gn&&c.gn[k];if(!a)return 60;const hi=Math.max(...a),
 function rollTraitGenes(){const tg={};for(const k in TRAITS){const T=TRAITS[k];if(!T.gene)continue;tg[k]=(chance(T.p)?1:0)+(chance(T.p)?1:0)}return tg}
 function expressed(c,k){const T=TRAITS[k];if(!T)return false;if(c.traits.includes(k))return true;if(!T.gene||!c.tg)return false;const n=c.tg[k]||0;return T.gene==='D'?n>=1:n>=2}
 function traitsOf(c){const s=new Set(c.traits);if(c.tg)for(const k in c.tg)if(TRAITS[k]&&expressed(c,k))s.add(k);axLabels(c).forEach(t=>s.add(t));return [...s]}
-const realTraits=c=>traitsOf(c).filter(t=>!TRAITS[t].ax);
+const realTraits=c=>traitsOf(c).filter(t=>!TRAITS[t].ax&&!TRAITS[t].ct);
 const has=(c,t)=>traitsOf(c).includes(t);
 function tsum(c,key){let v=0;traitsOf(c).forEach(t=>{const T=TRAITS[t];if(typeof T[key]==='number')v+=T[key]});return v}
 function addTrait(c,t){if(TRAITS[t]&&TRAITS[t].ax){if(axLabels(c).includes(t))return false;setLabel(c,t,true);return true}if(!c.traits.includes(t)&&!expressed(c,t)){c.traits.push(t);return true}return false}
 function removeTrait(c,t){if(TRAITS[t]&&TRAITS[t].ax){setLabel(c,t,false);return}c.traits=c.traits.filter(x=>x!==t);if(c.tg&&c.tg[t]&&expressed(c,t))c.tg[t]=0}
 function randomTraits(c){
-  const pool=Object.keys(TRAITS).filter(k=>!TRAITS[k].gene&&!TRAITS[k].ax);
+  const pool=Object.keys(TRAITS).filter(k=>!TRAITS[k].gene&&!TRAITS[k].ax&&!TRAITS[k].ct);
   const n=chance(0.5)?1:chance(0.3)?2:0;
   for(let i=0;i<n;i++){const k=pick(pool);const T=TRAITS[k];if(T.c==='p'&&!chance(0.15))continue;addTrait(c,k)}
 }
@@ -83,10 +83,12 @@ function mkPerson(o){
     job:'none',lv:0,m:0,bonus:0,liem:R(35,75),focus:'nghi',tam:R(45,70),spouse:null,parents:[],inLaw:false,dead:null,left:null,
     ms:{},mms:{},msRetry:{},exam:null,degree:0,gen:1,school:'nha',pre:{},habits:[],wantChild:false,preg:null,away:null,flags:{},seen:{},
     fame:0,tuoc:0,duyen:R(10,90),traits:[],gn:o.gn||rollGenes(o.lift),tg:o.tg||rollTraitGenes(),hh:o.hh||(S.hh?mainHH():'h0'),merit:0,purse:0,biz:null};
+  if(o.traits!==false)randomTraits(c);
+  innateGenes(c);
   if(!o.young){STATS.forEach(([k])=>{c[k]=k==='suc'?clamp(Math.round(pot(c,'suc')*R(80,100)/100),40,100):clamp(Math.round(pot(c,k)*R(45,80)/100),5,95)})}
   else STATS.forEach(([k])=>c[k]=k==='suc'?R(55,90):clamp(Math.round(pot(c,k)*0.12)+R(1,6),1,30));
+  innateStats(c,c,!!o.young);
   c.cap.suc=Math.max(c.suc,R(85,100));
-  if(o.traits!==false)randomTraits(c);
   c.duyen=clamp(c.duyen+tsum(c,'duyen'),1,100);
   ['g','surname','given','age','young','gn','tg','lift','traits','hh'].forEach(k=>delete o[k]);
   Object.assign(c,o);
@@ -347,7 +349,7 @@ function monthlyPerson(c,a){
     const gene=0.5+pot(c,k)/100;addStat(c,k,perYear/12*dim*moodF*kidm*gene*(1+(tg[k]||0)+all+(k==='vo'&&rule('thuongvo')?0.15:0)))};
   if(a>=4&&!away){for(const k in F.g)grow(k,F.g[k])}
   if(a>=6&&a<18&&c.school!=='nha'&&!away){const lvl=a<10?1:a<14?2:3;const sc=SCHOOL[lvl][c.school];
-    if(sc){const teach=(home().some(p=>['su'].includes(p.job)&&age(p)>=16||p.job==='chu'&&S.biz.find(b=>b.id===p.biz&&b.type==='truong'))?1.3:1)*(S.rules.includes('hieuhoc')?1.15:1)*(inMain(c)&&offHolder('giaothu')?1.1+offV('giaothu')/200:1);
+    if(sc){const teach=(1+Math.min(0.5,home().reduce((s,p)=>s+(age(p)>=16&&!p.away?tsum(p,'teach'):0),0)))*(home().some(p=>['su'].includes(p.job)&&age(p)>=16||p.job==='chu'&&S.biz.find(b=>b.id===p.biz&&b.type==='truong'))?1.3:1)*(S.rules.includes('hieuhoc')?1.15:1)*(inMain(c)&&offHolder('giaothu')?1.1+offV('giaothu')/200:1);
       for(const k in sc.g)grow(k,sc.g[k]*teach);for(const j in (sc.pre||{}))c.pre[j]=(c.pre[j]||0)+sc.pre[j]/12}}
   if(S.rules.includes('hoathuan'))grow('eq',1);
   c.habits.forEach(h=>{const H=HABITS[h];if(!H)return;const f=H.vice?vlv(c,h)/50:1;if(H.tri)grow('tri',H.tri);if(H.eq)grow('eq',H.eq);if(H.fame)c.fame+=H.fame*f;if(H.hp)addStat(c,'suc',H.hp*f)});
@@ -643,7 +645,7 @@ function nextPopup(){
 }
 function headerFor(c){
   return `<aside class="mside"><div class="mhead">${avatarSVG(c,48)}<div><b>${esc(nameOf(c))}</b>${c.tuoc?` <span class="chip gold">${TUOC[c.tuoc]}</span>`:''}<div class="mini">${relation(c)} · ${age(c)} tuổi · ${esc(jobName(c))}${c.away?' · '+awayText(c):''}</div></div></div>
-  <div class="chips">${axChips(c)}${realTraits(c).map(traitChip).join('')}${viceChips(c)}</div>${statBlock(c,true)}</aside><!--/side-->`;
+  <div class="chips">${ctChips(c)}${axChips(c)}${realTraits(c).map(traitChip).join('')}${viceChips(c)}</div>${statBlock(c,true)}</aside><!--/side-->`;
 }
 function choicePopup(c,eyebrow,title,text,opts,arc,data,evId){
   if(DRY)return;
@@ -708,6 +710,7 @@ function showPopup(it,c){
   switch(it.kind){
     case 'ev':{const ev=EVMAP[it.ev];if(!ev){skip();return}const d=it.data||{};
       if(it.ev==='bat_linh'&&(c.away||c.job==='quan_ngu')){skip();return}
+      if(ev.ct&&(ctRank(c,ev.ct[0])>=ev.ct[1]||c.away||c.dead!=null)){skip();return}
       if(d.oid){const o=P(d.oid);if(!o||!inClan(o)){skip();return}}
       if(d.xg){const o=P(d.xg);if(!o||o.dead!=null||!o.left){skip();return}}
       if(d.who){const o=P(d.who);if(!o||!inClan(o)){skip();return}}
@@ -969,10 +972,10 @@ function schoolPopup(c,lvl){
 function mkSpouse(c,free,o){
   /* v6.3: đã có vợ/chồng còn sống ở trong nhà thì không cưới thêm (cốt truyện nhiều bước có thể xảy ra sau khi đã thành thân) */
   {const cur=spouseOf(c);if(cur&&inClan(cur)&&cur.spouse===c.id)return cur}
-  const p=o||mkPerson({g:c.g==='nam'?'nữ':'nam',age:clamp(age(c)+R(-4,3),16,60),hh:c.hh});
+  const p=o||mkMatch(c,{hh:c.hh});
   p.inLaw=true;p.gen=c.gen;p.spouse=c.id;c.spouse=p.id;p.hh=c.hh;
   STATS.forEach(([k])=>p.ms[k]=MS.filter(t=>p[k]>=t));
-  if(!o||!o.job||o.job==='none'){const best=STARTJOBS.filter(id=>meets(p,id)&&JOBS[id].inc).sort((a,b)=>JOBS[b].inc-JOBS[a].inc)[0];
+  if(!p.job||p.job==='none'){const best=STARTJOBS.filter(id=>meets(p,id)&&JOBS[id].inc).sort((a,b)=>JOBS[b].inc-JOBS[a].inc)[0];
     p.job=p.g==='nữ'&&chance(0.55)?'noi':(best||'nong');p.m=R(0,30);(p.mms[p.job]=[]).push(...[20].filter(t=>t<=p.m))}
   p.focus=pick(['nghi','hoc','cam','phat','ren']);
   p.wantChild=false;c.wantChild=false;
@@ -981,31 +984,9 @@ function mkSpouse(c,free,o){
   if(p.needT!=null&&tierIdx()-p.needT>=3&&!free)cf(-2,'Kết thông gia không môn đăng hộ đối');
   S.people.push(p);cf(free?2:5,'Cưới hỏi');S.hung=clamp(S.hung+2,0,100);
   addStat(c,'tam',12);addStat(p,'tam',10);
-  log(`${nameOf(c)} kết duyên cùng ${nameOf(p)}.`,'gd');
+  log(`${nameOf(c)} kết duyên cùng ${nameOf(p)}${p.job&&p.job!=='none'?` (${jobName(p).toLowerCase()})`:''}.`,'gd');
   return p;
 }
-function matchmaker(c){
-  if(married(c))return;
-  const fee=mm(1.5);if(S.money<fee)return;S.money-=fee;
-  const ti=tierIdx();
-  const list=[0,1,2].map(i=>{const lift=ti*5+R(-5,10)+i*6;const p=mkPerson({g:c.g==='nam'?'nữ':'nam',age:clamp(age(c)+R(-4,3),16,60),lift});ensurePersona(p);
-    const tot=p.tri+p.vo+p.mi+p.eq;const q=tot/4;
-    p.fee=Math.round(mm(q/5)*(1-Math.min(c.mi,100)/250)*(clanLv()>=3?0.6:1));
-    p.needT=clamp(Math.floor((q-35)/12),0,6);p.needF=Math.max(0,Math.round((q-50)*3));
-    return p});
-  const ok=p=>tierIdx()>=p.needT&&(c.fame+S.fame*0.2)>=p.needF&&S.money>=p.fee;
-  const outOk=c.g==='nữ'&&!isHead(c)&&!c.inLaw&&!married(c);
-  openModal(`${headerFor(c)}<span class="eyebrow">Bà mối · đã trả ${money(fee)}</span><h2>Ba mối lương duyên</h2>
-   <p class="muted">Người càng giỏi thì nhà bên kia càng kén: đòi gia thế, danh vọng và sính lễ cao. Mị lực của mình cao được giảm sính lễ. Hiện có ${money(S.money)}.</p>
-   <div class="choices">${list.map((p,i)=>`<button class="btn" data-i="${i}" ${ok(p)?'':'disabled'}><strong>${esc(nameOf(p))} · ${age(p)} tuổi${traitsOf(p).length?' · '+traitsOf(p).slice(0,4).map(t=>TRAITS[t].n).join(', '):''}</strong>
-   <small class="num">${STATS.map(([k,n])=>`${n} ${p[k]}`).join(' · ')}</small><small>Sính lễ ${money(p.fee)}${p.needT?` · đòi gia thế từ ${TIERS[p.needT][0]}`:''}${p.needF?` · đòi danh vọng ${p.needF}`:''}</small></button>`).join('')}
-   ${outOk?list.map((p,i)=>`<button class="btn" data-o="${i}" ${tierIdx()+1>=p.needT?'':'disabled'}><strong>Gả ${esc(c.given)} về nhà họ ${esc(p.surname)}</strong><small>Con gái về nhà chồng, gia tộc nhận lại khoảng ${money(Math.round(p.fee*0.6))} sính lễ</small></button>`).join(''):''}
-   <button class="btn ghost" data-x>Chưa ưng ai</button></div>`);
-  M.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{const p=list[+b.dataset.i];if(!married(c)){S.money-=p.fee;mkSpouse(c,false,p)}closeModal()});
-  M.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{const p=list[+b.dataset.o];marryOut(c,p);closeModal()});
-  M.querySelector('[data-x]').onclick=closeModal;
-}
-
 /* ================= sinh nở ================= */
 function pregPopup(c){
   choicePopup(c,'Tin vui','Có tin mừng',`${esc(nameOf(c))} đã mang thai.${c.preg.twins?' Thầy thuốc bắt mạch nói có thể là song thai, cần chăm sóc kỹ.':''} Chín tháng nữa gia tộc đón thêm thành viên. Chăm sóc thế nào?`,[
@@ -2517,8 +2498,9 @@ const gateCap=(c,k)=>(c.gate&&c.gate[k])||100;
 const hardCap=(c,k)=>(c.g200&&c.g200[k])?200:150;
 const nextGate=g=>g===100?120:g===120?140:g===140?150:g===150?200:g;
 const statV=(c,k)=>c[k];
-function titleOf(c,k){const L=STITLE[k];let t=null;const v=statV(c,k);for(const [n,s] of L)if(v>=n)t=s;return t}
-function titleIdx(c,k){const L=STITLE[k];let i=-1;const v=statV(c,k);L.forEach(([n],j)=>{if(v>=n)i=j});return i}
+/* v6.3.2: danh hiệu không còn tự hiện khi chỉ số đủ; phải được công nhận qua sự kiện hoặc kỳ ngộ (xem confer) */
+function titleIdx(c,k){return ctRank(c,k)}
+function titleOf(c,k){const i=ctRank(c,k);return i>=0?STITLE[k][i][1]:null}
 function gateCheck(c,a){if(a<8)return;c.msQ=c.msQ||{};c.ttl=c.ttl||{};
   for(const [k] of STATS){const g=gateCap(c,k);const v=c[k];
     if(!c.brk&&GATES.includes(g)&&v>=g-0.6&&!((c.msRetry[k]||0)>S.t)&&c.msQ[k]!==g){c.msQ[k]=g;enqueue('ms',c.id,{k,t:g})}
@@ -2547,7 +2529,7 @@ function v62Month(){
   ensure62();
   alive().forEach(c=>{if(!inClan(c))return;const a=age(c);
     if(c.away&&c.away.until&&S.t>=c.away.until&&['odo','sep'].includes(c.away.type)){const t=c.away.type;c.away=null;if(t==='odo'){log(`${nameOf(c)} hết hạn ở đợ, trở về nhà.`,'gd');addStat(c,'tam',10)}else log(`${nameOf(c)} trở về sau thời gian ly thân.`)}
-    jobGrow(c);kidLearn(c,a);oanTick(c);thiencoTick(c)});
+    jobGrow(c);kidLearn(c,a);oanTick(c);thiencoTick(c);ctTick(c)});
   loveTick();outsTick();debtTick();ruleMonth();
   if(S.on<30&&chance(0.03)){const ps=alive().filter(p=>age(p)>=14&&!p.away&&!isHead(p));if(ps.length)enqueue('ev',pick(ps).id,{ev:pick(['v62_on_trom_nha','v62_on_bo_nha','v62_on_cai_va'])})}
   if(month()===1)v62Year()}
@@ -2753,8 +2735,9 @@ function sheetHTML(c){
   const a=age(c),J=JOBS[c.job],dead=c.dead!=null,out=!inClan(c);
   const deg=['','Cử nhân','Đỗ thi Hội',c.flags.examTitle||'Tiến sĩ'][c.degree];
   let h=`<button class="xclose" data-close aria-label="Đóng">×</button><div class="who">${avatarSVG(c,64)}<div style="min-width:0"><h2>${esc(nameOf(c))}</h2>
-   <div class="chips"><span class="chip ${c.id===S.head?'gold':''}">${relation(c)}</span><span class="chip">${dead?'Đã mất':a+' tuổi'}</span>${c.tuoc?`<span class="chip gold">${TUOC[c.tuoc]}</span>`:''}${c.degree?`<span class="chip gold">${deg}</span>`:''}${STATS.map(([k])=>titleOf(c,k)).filter(Boolean).map(t=>`<span class="chip gold">${esc(t)}</span>`).join('')}${c.outSp?`<span class="chip">Về nhà họ ${esc(c.outSp.sur)}</span>`:''}${c.preg?'<span class="chip red">Mang thai</span>':''}${c.away?`<span class="chip blue">${awayText(c)}</span>`:''}${c.hh!==mainHH()&&!out?`<span class="chip blue">${esc(HH(c.hh).name)}</span>`:''}</div>
+   <div class="chips"><span class="chip ${c.id===S.head?'gold':''}">${relation(c)}</span><span class="chip">${dead?'Đã mất':a+' tuổi'}</span>${c.tuoc?`<span class="chip gold">${TUOC[c.tuoc]}</span>`:''}${c.degree?`<span class="chip gold">${deg}</span>`:''}${ctChips(c)}${c.outSp?`<span class="chip">Về nhà họ ${esc(c.outSp.sur)}</span>`:''}${c.preg?'<span class="chip red">Mang thai</span>':''}${c.away?`<span class="chip blue">${awayText(c)}</span>`:''}${c.hh!==mainHH()&&!out?`<span class="chip blue">${esc(HH(c.hh).name)}</span>`:''}</div>
    <div class="chips">${realTraits(c).map(traitChip).join('')}${habChips(c)}${viceChips(c)}</div></div></div>
+   ${ctNote(c)?`<p class="muted small" style="margin:.3rem 0 .5rem">${ctNote(c)}</p>`:''}
    <div class="dsec tight"><h3>${I('axes','Tính cách')}</h3><div class="chips">${axChips(c)||'<span class="muted small">Chưa có nét nổi bật</span>'}</div></div>
    ${statBlock(c)}
    <div class="kvline">${I('pot','Tiềm năng:')} ${STATS.filter(([k])=>k!=='suc').map(([k,n])=>`${n} ${Math.round(pot(c,k))}`).join(' · ')}</div>
@@ -3096,7 +3079,7 @@ function migrate(st){
   st.kyT=st.kyT||{};st.opt=st.opt||{};st.opt.preview=false;if(st.poem===undefined)st.poem=null;
   {const real=S;S=st;try{ensureEcon(st);if((st.ver||5)<6.1){st.people.forEach(p=>{if(p.dead==null&&p.spouse&&p.wantChild){p.kidAdj={v:20,until:st.t+24}}});for(const id in st.hh){const h=st.hh[id];if(/^Nhà /.test(h.name)&&id!=='h0'){const f=st.people.find(p=>p.hh===id&&p.dead==null&&!p.inLaw);if(f)h.name=branchName(f)}}}}finally{S=real}}
   if((st.ver||5)<6){const real=S;S=st;try{st.people.forEach(p=>{if(p.dead==null)ensurePersona(p)})}finally{S=real}}
-  w_ensure(st);st.ver=6.3;return st;
+  w_ensure(st);if((st.ver||5)<6.32)ctGrand(st);st.ver=6.32;return st;
 }
 function playSlot(n){
   const st=load(n);if(!st)return;S=migrate(st);S.slot=n;sel=S.head;O.hidden=true;M.innerHTML='';running=false;centerNext=true;page='giapha';
@@ -3107,7 +3090,7 @@ function mainMenu(){
   running=false;S=null;page='giapha';brandHead();
   const m=meta();const last=m.last&&m.slots[m.last]&&!m.slots[m.last].over?m.last:null;
   const any=Object.keys(m.slots).length||loadOld();
-  openModal(`<div class="menu"><div class="sealbig" aria-hidden="true">家</div><h2>Bách Niên Thế Gia</h2><p class="muted">Từ túp lều tranh đến danh gia vọng tộc</p><p class="muted" style="font-size:.78rem;margin-top:-.4rem">Phiên bản 6.3.1</p>
+  openModal(`<div class="menu"><div class="sealbig" aria-hidden="true">家</div><h2>Bách Niên Thế Gia</h2><p class="muted">Từ túp lều tranh đến danh gia vọng tộc</p><p class="muted" style="font-size:.78rem;margin-top:-.4rem">Phiên bản 6.3.2</p>
    <div class="choices">${last?`<button class="btn primary" data-m="cont"><strong>Tiếp tục</strong><small>${slotLine(last)}</small></button>`:''}
    <button class="btn ${last?'':'primary'}" data-m="new"><strong>Trò chơi mới</strong><small>Lập một dòng họ mới</small></button>
    <button class="btn" data-m="load" ${any?'':'disabled'}><strong>Tải bản lưu</strong><small>Ba ô lưu, mỗi ô một gia tộc</small></button>
@@ -3187,8 +3170,9 @@ function gameMenu(){
 function rollFounder(org,reg){
   const OR=ORIGINS[org];
   const gn=rollGenes(0);const tmp={traits:[],tg:rollTraitGenes(),gn};
-  randomTraits(tmp);
+  randomTraits(tmp);innateGenes(tmp);
   const stats={};STATS.forEach(([k])=>stats[k]=k==='suc'?clamp(Math.round(pot(tmp,'suc')*R(85,100)/100),45,100):clamp(Math.round(pot(tmp,k)*R(50,82)/100),8,90));
+  innateStats(tmp,stats,false);
   for(const k in OR.b||{})stats[k]=clamp(stats[k]+OR.b[k],5,95);
   let jobs=OR.jobs.slice();if(org==='sondan')jobs=REGIONS[reg].sea?['ngu','ngu','tieuphu']:['tieuphu','tieuphu','ngu'];
   const job=pick(jobs);
@@ -3524,15 +3508,23 @@ function w_peace(id){
     {l:'Nhờ người có tiếng trong vùng đứng ra',c:()=>S.fame>=40,r:[{eq:0.6,fame:0.5},50],y:x=>{c.rel=clamp(c.rel+22,-100,100);c.feud=0;return 'Có người lớn tuổi đứng ra hòa giải, hai họ nguôi giận.'},n:x=>{c.rel=clamp(c.rel-3,-100,100);return 'Người làm chứng chưa đủ trọng, chuyện đâu vẫn còn đó.'}},
     {l:'Thôi, để thời gian trôi',f:x=>''}]);
 }
+/* nghề và địa vị của con cháu một họ láng giềng: định một lần, hiện ra khi chọn mối */
+const NPCJ63={nong:'nong',buon:'tieunhi',tho:'tho',hoc:'su',vo:'tieu',quan:'thulai',thuoc:'y'};
+function w_kidProfile(c,k){
+  if(!k.jb){const st=clamp(Math.log2(1+c.fame)*1.15+c.wealth/40-0.6,0,9);k.st=Math.round(st*10)/10;
+    k.jb=(k.g==='nữ'&&chance(0.5))?'noi':(NPCJ63[c.job]||'nong');k.jl=npcLv(k.jb,k.st,false)}
+  return k}
+const w_kidJob=k=>{const J=JOBS[k.jb];return (J.lv[k.jl]||J.lv[0]).n.toLowerCase()};
 function w_wed(id){
   const c=w_clan(S.loc.p,id),hd=head();if(!c||!hd)return;
   const ours=alive().filter(p=>inClan(p)&&!p.spouse&&age(p)>=16&&age(p)<=34&&!p.inLaw&&!(p.left));
   const opts=[];
   ours.slice(0,6).forEach(m=>c.kids.filter(k=>k.g!==m.g&&k.age>=16&&k.age<=32&&Math.abs(k.age-age(m))<=8).slice(0,2).forEach(k=>{
+    w_kidProfile(c,k);
     const base=0.3+c.rel/220+(S.fame-c.fame)/500+(c.head.tr==='tham lam'?0.05:0)+(m.mi-50)/300;const pr=clamp(base,0.08,0.9);
-    opts.push({l:`${m.given} (${age(m)} t) hỏi cưới ${k.g==='nữ'?'cô':'cậu'} ${k.given} họ ${c.sur} (${k.age} t)`,s:`Khả năng nhà ${k.g==='nữ'?'gái':'trai'} nhận lời: ${Math.round(pr*100)}%`,
+    opts.push({l:`${m.given} (${age(m)} t) hỏi cưới ${k.g==='nữ'?'cô':'cậu'} ${k.given} họ ${c.sur} (${k.age} t, ${w_kidJob(k)})`,s:`Nhà ${CJOB63[c.job]}, danh vọng ${Math.round(c.fame)}. Khả năng nhà ${k.g==='nữ'?'gái':'trai'} nhận lời: ${Math.round(pr*100)}%`,
       f:x=>{ if(!chance(pr)){c.rel=clamp(c.rel-5,-100,100);return `Họ ${esc(c.sur)} từ chối khéo, bảo "hai nhà chưa xứng đôi".`+fx(m,{tam:-6})}
-        const sp=mkPerson({g:k.g,surname:c.sur,given:k.given,age:k.age,hh:m.hh});sp.npcClan=c.id;sp.needT=tierIdx();
+        const sp=mkMatch(m,{g:k.g,surname:c.sur,given:k.given,age:k.age,hh:m.hh,stand:k.st,job:k.jb,lv:k.jl});sp.npcClan=c.id;sp.needT=tierIdx();
         c.kids=c.kids.filter(z=>z!==k);c.mar++;c.rel=clamp(c.rel+18,-100,100);
         if(m.g==='nam'){const p2=mkSpouse(m,false,sp);return `Hai nhà thông gia. ${esc(p2.given)} về làm dâu họ ${esc(S.surname)}.`+fx(m,{fame:2})}
         sp.fee=mm(6+c.fame/12);marryOut(m,sp);return `Hai nhà thông gia. ${esc(m.given)} xuất giá về họ ${esc(c.sur)}.`}}) }));
@@ -3563,6 +3555,156 @@ function w_bind(app){
   app.querySelectorAll('[data-w63]').forEach(b=>b.onclick=()=>{const [k,v]=b.dataset.w63.split(':');
     if(k==='move')movePopup(v);else if(k==='trade'){preRoute63=v;tradePopup()}else if(k==='gift')w_gift(v);else if(k==='peace')w_peace(v);else if(k==='wed')w_wed(v)})}
 
+/* ================= v6.3.2 · chức danh · đặc tính khởi đầu · mai mối theo địa vị ================= */
+
+/* ---------- chức danh: chỉ số đủ cao mới có tư cách, nhưng phải được công nhận bằng sự kiện hoặc kỳ ngộ ---------- */
+const ctRank=(c,k)=>(c.ct&&c.ct[k]!=null)?c.ct[k]:-1;
+/* chỉ số dùng để xét tư cách: sức khỏe lấy theo mức tối đa, không để một trận ốm làm mất tư cách */
+const ctStat=(c,k)=>k==='suc'?Math.min(c.cap.suc,c.suc+12):c[k];
+function ctRaw(c,k){let i=-1;const v=ctStat(c,k);STITLE[k].forEach(([n],j)=>{if(v>=n)i=j});return i}
+/* các chức danh đã đủ chỉ số mà chưa được công nhận */
+function ctPending(c){const o=[];for(const [k] of STATS){const r=ctRaw(c,k),h=ctRank(c,k);if(r>h)o.push([k,h+1])}return o}
+function ctNote(c){const L=ctPending(c);if(!L.length||c.dead!=null)return '';
+  return L.map(([k,i])=>`${SN[k]} đã đủ sức nhận danh hiệu <b>${esc(STITLE[k][i][1])}</b>, đang chờ dịp được người đời công nhận.`).join(' ')}
+function confer(c,k,i){
+  c.ct=c.ct||{};c.ttl=c.ttl||{};
+  if(i<=ctRank(c,k))return '';
+  const name=STITLE[k][i][1];
+  for(let j=0;j<STITLE[k].length;j++)removeTrait(c,'ct_'+k+'_'+j);
+  addTrait(c,'ct_'+k+'_'+i);
+  c.ct[k]=i;c.ttl[k]=Math.max(c.ttl[k]==null?-1:c.ttl[k],i);
+  const f=Math.round(6+i*5);c.fame+=f;cf(f*0.35,'Người nhà được công nhận danh hiệu');
+  S.hung=clamp(S.hung+Math.min(6,1+i*0.6),0,100);
+  achieve(c,`được công nhận ${SN[k].toLowerCase()} ${name}`);
+  log(`${nameOf(c)} được người đời công nhận là "${name}".`,'gd');
+  const T=TRAITS['ct_'+k+'_'+i];
+  return ` Từ nay người đời gọi là <b>${esc(name)}</b>. <span class="muted">${esc(T.d)}.</span>`}
+const CT_P=[0.026,0.02,0.016,0.013,0.01,0.008,0.006,0.0045,0.0035];
+let CTEV=null;
+function ctEvents(k,i){if(!CTEV){CTEV={};EVENTS.forEach(e=>{if(e.ct){const key=e.ct[0]+e.ct[1];(CTEV[key]=CTEV[key]||[]).push(e)}})}return CTEV[k+i]||[]}
+function ctTick(c){
+  if(c.dead!=null||age(c)<14||c.brk||c.away||!inClan(c))return;
+  if((c.flags.ctWait||0)>S.t)return;
+  const L=ctPending(c).filter(([k])=>!((c.flags['ctF_'+k]||0)>S.t));if(!L.length)return;
+  const [k,i0]=pick(L);
+  const okEv=j=>ctEvents(k,j).filter(e=>{try{return !e.c||e.c(c)}catch(err){return false}});
+  /* người vượt xa mốc được công nhận nhanh hơn, và đôi khi được công nhận thẳng ở bậc cao hơn (đủ danh vọng mới có sự kiện ở bậc ấy) */
+  const gap=ctRaw(c,k)-i0+1;let i=i0;
+  if(gap>=2)for(let j=i0+gap-1;j>i0;j--)if(chance(0.4)&&okEv(j).length){i=j;break}
+  const p=CT_P[i]*(0.6+c.duyen/100)*(1+famLuck()/200)*(1+clamp(c.fame/400,0,1))*(1+Math.min(1,0.4*(gap-1)));
+  if(!chance(p))return;
+  const ok=okEv(i);if(!ok.length)return;
+  let tot=ok.reduce((a,e)=>a+(e.w||1),0),r=Math.random()*tot,ev=ok[0];for(const e of ok){r-=(e.w||1);if(r<=0){ev=e;break}}
+  c.seen[ev.id]=S.t;S.evLast=S.evLast||{};S.evLast[ev.id]=S.t;S.evn=S.evn||{};S.evn[ev.id]=(S.evn[ev.id]||0)+1;
+  c.flags.ctWait=S.t+R(6,10);
+  enqueue('ev',c.id,{ev:ev.id})}
+const ctChips=c=>{let h='';for(const [k] of STATS){const i=ctRank(c,k);if(i>=0)h+=`<button class="chip gold" data-info="tr:ct_${k}_${i}">${esc(STITLE[k][i][1])}</button>`}return h};
+/* nạp save cũ: ai đang mang danh hiệu theo chỉ số thì giữ nguyên, kèm năng lực */
+function ctGrand(st){const real=S;S=st;try{st.people.forEach(c=>{if(c.ct)return;c.ct={};c.ttl=c.ttl||{};
+  for(const [k] of STATS){let i=-1;STITLE[k].forEach(([n],j)=>{if(c[k]>=n)i=j});
+    if(i>=0){c.ct[k]=i;c.ttl[k]=Math.max(c.ttl[k]==null?-1:c.ttl[k],i);if(c.dead==null)addTrait(c,'ct_'+k+'_'+i)}}})}finally{S=real}}
+
+/* ---------- đặc tính tăng tốc: sinh ra đã hơn người ---------- */
+/* grow/growAll/capUp dương nghĩa là có năng khiếu ở chỉ số ấy: gen cao hơn, chỉ số khởi đầu cao hơn; âm thì thấp hơn */
+function innateMap(c){
+  const out={};const add=(k,min,plus,al)=>{const o=out[k]=out[k]||{min:0,plus:0,al:0};o.min=Math.max(o.min,min);o.plus+=plus;o.al=Math.max(o.al,al)};
+  traitsOf(c).forEach(t=>{const T=TRAITS[t];if(!T||T.ct)return;
+    if(T.grow)for(const k in T.grow){const v=T.grow[k];if(v>0)add(k,36+Math.round(v*70),Math.round(v*12),60+Math.round(v*75));else add(k,0,Math.round(v*22),0)}
+    if(T.growAll>0)['tri','vo','mi','eq'].forEach(k=>add(k,36+Math.round(T.growAll*40),Math.round(T.growAll*10),60+Math.round(T.growAll*45)));
+    if(T.growAll<0)['tri','vo','mi','eq'].forEach(k=>add(k,0,Math.round(T.growAll*12),0));
+    if(T.capUp)for(const k in T.capUp)if(k!=='suc'&&!(T.grow&&T.grow[k]))add(k,38+Math.round(T.capUp[k]*1.5),Math.round(T.capUp[k]*0.25),60+Math.round(T.capUp[k]*1.4))});
+  if(traitsOf(c).includes('omyeu'))add('suc',0,-10,0);
+  return out}
+function innateGenes(c){const m=innateMap(c);if(!c.gn)return;for(const k in m){const o=m[k];if(!o.al||!c.gn[k])continue;
+  const [a,b]=c.gn[k];const hi=Math.max(a,b,o.al),lo=Math.max(Math.min(a,b),o.al-25);c.gn[k]=[hi,lo]}}
+function innateStats(c,stats,young){const m=innateMap(c);
+  for(const k in m){const o=m[k];const b=stats[k];if(b==null)continue;
+    if(k==='suc'){stats[k]=clamp(b+o.plus,30,100);continue}
+    stats[k]=young?clamp(b+Math.round((o.min-40)*0.12)+Math.round(o.plus*0.4),1,30):clamp(Math.max(b,o.min)+o.plus+(o.min?R(0,3):0),5,96)}}
+function innate(c,young){innateGenes(c);innateStats(c,c,young);c.cap.suc=Math.max(c.cap.suc,c.suc)}
+
+/* ---------- địa vị của người đi tìm mối, và những người xứng với địa vị ấy ---------- */
+function standOf(c){
+  let s=tierIdx()*1.1+(c.tuoc||0)*0.9+(c.degree||0)*0.7+clamp((c.fame||0)/180,0,1.5)+clamp(S.fame/1500,0,1.2)+tsum(c,'match');
+  if(c.job==='quan')s+=0.3*c.lv;else if(c.job==='quan_ngu')s+=0.25*c.lv;else if(c.job==='chu')s+=0.3*c.lv;else if(['y','su','nghe','tieu'].includes(c.job))s+=0.15*c.lv;
+  const sp=spouseOf(c);if(sp&&(sp.tuoc||0))s+=0.4*sp.tuoc;
+  return clamp(s,0,10)}
+const MJOB_M=[['nong','nong','nong','khuanvac','tieuphu','ngu','chan','hau','hangrong'],['nong','nong','tho','tieunhi','tieuphu','chan','hangrong','tieu'],
+  ['tho','tieunhi','tieu','y','su','nghe','tho'],['tho','tieu','y','su','nghe','diaky','thulai'],['y','su','tieu','nghe','thulai','diaky','tho'],
+  ['y','su','nghe','thulai','tieu','diaky'],['y','su','nghe','thulai','nguy','diaky']];
+const MJOB_F=[['nong','det','hangrong','hau','noi','bep','chan'],['det','noi','nong','tieunhi','bep','mo','noi'],['noi','det','nghe','mo','bep','tieunhi'],
+  ['noi','nghe','y','det','mo','su'],['noi','nghe','y','det','mo','su','diaky'],['noi','nghe','y','det','su','diaky','mo'],['noi','nghe','y','su','diaky','det','mo']];
+const MTAL={tri:['thongminh','vankhuc','muusi'],vo:['khoemanh','thanluc','satinh'],mi:['duyendang','phongnha','khuynhthanh'],eq:['thaunhan','tamtinh','lacquan'],suc:['khoemanh']};
+function mjobFor(g,grade){const L=(g==='nam'?MJOB_M:MJOB_F)[clamp(grade,0,6)];return pick(L)}
+/* bậc nghề hợp với địa vị; dừng trước bậc đòi cơ duyên riêng hay học vị */
+function npcLv(id,st,jit){const J=JOBS[id];if(!J.lv||J.lv.length<2||id==='nong'||id==='noi')return 0;
+  let want=clamp(Math.round((st-2.4)/1.7+(jit?R(-1,1)*0.8:0)),0,J.lv.length-1);
+  for(let l=1;l<=want;l++){const r=J.lv[l].req||{};if(r.flag||r.degree){want=l-1;break}}
+  return want}
+/* đặt nghề cho người chưa vào nhà: chỉ số và thông thạo đủ để xứng với bậc nghề */
+function setNpcJob(p,id,st,fixLv){
+  const J=JOBS[id];p.job=id;p.lv=0;p.m=0;
+  if(J.req)for(const k in J.req)if(p[k]<J.req[k])p[k]=J.req[k]+R(0,6);
+  const want=fixLv!=null?Math.min(fixLv,J.lv.length-1):npcLv(id,st,true);
+  if(want>0){
+    for(let l=1;l<=want;l++){const r=J.lv[l].req||{};for(const k in r){if(k==='m'||k==='flag'||k==='degree')continue;if(k==='fame')p.fame=Math.max(p.fame,r.fame);else if(p[k]<r[k])p[k]=r[k]+R(0,5)}}
+    p.lv=want;p.m=(J.lv[want].req.m||0)+R(0,10)}
+  else p.m=R(0,30);
+  p.mms=p.mms||{};p.mms[id]=[20,40,60,80,100,120].filter(t=>t<=p.m)}
+function mkMatch(c,o){
+  o=Object.assign({},o||{});
+  const g=o.g||(c.g==='nam'?'nữ':'nam');
+  const st0=o.stand!=null?o.stand:standOf(c)+(o.up||0);
+  const st=clamp(st0+(o.story?1.8:0),0,10.5);
+  const base=clamp(26+st*5.8+R(-5,8),18,92);
+  const spec={};['surname','given','age','hh'].forEach(k=>{if(o[k]!=null)spec[k]=o[k]});
+  const p=mkPerson(Object.assign({g,age:clamp(age(c)+R(-4,3),16,60),lift:Math.round(st*3)},spec,{traits:false}));
+  const main=o.main||pick(g==='nam'?['tri','vo','vo','eq','tri']:['mi','mi','eq','tri','eq']);
+  ['tri','vo','mi','eq'].forEach(k=>{p[k]=clamp(Math.round(base+R(-16,6)+(k===main?R(10,20):0)+(k==='mi'&&g==='nữ'?R(0,8):0)+(k==='vo'&&g==='nam'?R(0,7):0)),8,97)});
+  p.suc=R(58,96);p.cap.suc=Math.max(p.suc,R(88,100));
+  /* năng khiếu: địa vị càng cao càng hay có người tài; người trong cốt truyện luôn có */
+  const tal=(o.traits||[]).slice();
+  if(!tal.length&&(o.story||chance(0.06+0.045*st))){const L=MTAL[main]||MTAL.tri;tal.push(L[Math.min(L.length-1,Math.floor(Math.pow(Math.random(),1.6)*(o.story?L.length:Math.min(L.length,1+st/4))))])}
+  tal.forEach(t=>{if(TRAITS[t])addTrait(p,t)});
+  /* người thường có thêm tính nết nhẹ như mọi người */
+  if(!tal.length&&chance(0.4)){const pool=Object.keys(TRAITS).filter(k=>!TRAITS[k].gene&&!TRAITS[k].ax&&!TRAITS[k].ct&&TRAITS[k].c==='g');addTrait(p,pick(pool))}
+  innate(p,false);
+  if(o.min)for(const k in o.min)p[k]=Math.max(p[k],o.min[k]);
+  p.stand=Math.round(st*10)/10;
+  /* gia thế nhà bên kia: người càng giỏi, nhà càng kén */
+  p.famT=clamp(Math.round(st*0.55+R(-1,1)),0,6);
+  if(g==='nữ'&&chance(0.35)&&!o.job&&st>=1.5)o.job='noi';
+  setNpcJob(p,o.job||mjobFor(g,Math.round(st/1.5)),st,o.lv);
+  STATS.forEach(([k])=>p.ms[k]=MS.filter(t=>p[k]>=t));
+  p.fame=Math.max(p.fame,Math.round(st*st*2.2));
+  p.stand=Math.round(st*10)/10;
+  return p}
+const famLine=p=>p.famT>0?`con nhà ${TIERS[p.famT][0].toLowerCase()}`:'nhà bình dân';
+function matchmaker(c){
+  if(married(c))return;
+  const fee=mm(1.5);if(S.money<fee)return;S.money-=fee;
+  const st=standOf(c);
+  const list=[0,1,2].map(i=>{
+    const p=mkMatch(c,{up:(i-1)*0.9,g:c.g==='nam'?'nữ':'nam'});ensurePersona(p);
+    const q=(p.tri+p.vo+p.mi+p.eq)/4;
+    p.needT=clamp(p.famT+(i===2?1:0),0,6);p.needF=Math.max(0,Math.round((q-48)*3+p.famT*6));
+    p.fee=Math.round(mm(q/5+p.famT*0.5)*(1-Math.min(c.mi,100)/250)*(clanLv()>=3?0.6:1));
+    return p});
+  const ok=p=>tierIdx()>=p.needT&&(c.fame+S.fame*0.2)>=p.needF&&S.money>=p.fee;
+  const outOk=c.g==='nữ'&&!isHead(c)&&!c.inLaw&&!married(c);
+  const talent=p=>traitsOf(p).filter(t=>!TRAITS[t].ct).slice(0,3).map(t=>TRAITS[t].n);
+  openModal(`${headerFor(c)}<span class="eyebrow">Bà mối · đã trả ${money(fee)}</span><h2>Ba mối lương duyên</h2>
+   <p class="muted">Nhà mình ${st>=7?'danh giá, bà mối đem đến toàn mối cao':st>=4?'có tiếng, mối đem đến khá hơn người thường':'bình thường, mối đem đến vừa sức'}. Người càng giỏi thì nhà bên kia càng kén: đòi gia thế, danh vọng và sính lễ cao. Mị lực của mình cao được giảm sính lễ. Hiện có ${money(S.money)}.</p>
+   <div class="choices">${list.map((p,i)=>`<button class="btn" data-i="${i}" ${ok(p)?'':'disabled'}><strong>${esc(nameOf(p))} · ${age(p)} tuổi · ${esc(jobName(p))}</strong>
+   <small>${famLine(p)}${talent(p).length?' · '+talent(p).join(', '):''}</small>
+   <small class="num">${STATS.map(([k,n])=>`${n} ${p[k]}`).join(' · ')}</small><small>Sính lễ ${money(p.fee)}${p.needT?` · đòi gia thế từ ${TIERS[p.needT][0]}`:''}${p.needF?` · đòi danh vọng ${p.needF}`:''}</small></button>`).join('')}
+   ${outOk?list.map((p,i)=>`<button class="btn" data-o="${i}" ${tierIdx()+1>=p.needT?'':'disabled'}><strong>Gả ${esc(c.given)} về nhà họ ${esc(p.surname)}</strong><small>${esc(p.given)} ${age(p)} tuổi, ${esc(jobName(p).toLowerCase())}, ${famLine(p)}. Gia tộc nhận lại khoảng ${money(Math.round(p.fee*0.6))} sính lễ</small></button>`).join(''):''}
+   <button class="btn ghost" data-x>Chưa ưng ai</button></div>`);
+  M.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{const p=list[+b.dataset.i];if(!married(c)){S.money-=p.fee;mkSpouse(c,false,p)}closeModal()});
+  M.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{const p=list[+b.dataset.o];marryOut(c,p);closeModal()});
+  M.querySelector('[data-x]').onclick=closeModal;
+}
+
 /*@@V63-END@@*/
 /* ================= cổng cho các tệp kỳ ngộ ================= */
 const G={R,pick,chance,clamp,fmt,esc,fx,fxAll,roll,prob,later,age,nameOf,spouseOf,kidsOf,alive,home,married,stg,season,month,tierIdx,tierName,hasJob,grantTitle,mkSpouse,mkPerson,addStat,setJob,
@@ -3574,7 +3716,7 @@ const G={R,pick,chance,clamp,fmt,esc,fx,fxAll,roll,prob,later,age,nameOf,spouseO
   kidAdj,gain,charge,canPay,fundOf,inMain,clanKeeps,branchLeader,purse:c=>c.purse,
   tierIdx,season,famePromo,clanLv,selfLv,FAME_CLAN,FAME_SELF,
   kho:()=>S.kho,war:()=>S.war,epi:()=>S.epi,expandBiz,gameOver,openBiz,homeLv:()=>HH(mainHH()).home,lifeLv:()=>HH(mainHH()).life,fmtMoney:money,relation,jobName,matchmaker,canOwn,mkStaff,staffEff,isHead,
-  protect,protName,obey,comeHome,marryOut,divorce,lyPopup,gateCap,hardCap,titleOf,jobFit,laborOk,working,selfEmp,remarryOk,adoptOk,setLove,settleEstate,kidCap,inClanP:inClan,rule,cf,addTraitP:addTrait,
+  protect,protName,obey,comeHome,marryOut,confer,ctRank,ctPending,mkMatch,standOf,innate,divorce,lyPopup,gateCap,hardCap,titleOf,jobFit,laborOk,working,selfEmp,remarryOk,adoptOk,setLove,settleEstate,kidCap,inClanP:inClan,rule,cf,addTraitP:addTrait,
   _v63:{fleePopup,fleeTargets,w_wed,w_gift,w_peace,w_spoil,w_front,w_damp,w_khoFee,mapSVG,w_ensure,w63Month,doMove,movePopup,locName,locP,routes63,w_clans,w_clan,w_news,w_shock,w_startWar,w_endWar,w_home,w_dis,w_tension,w_clansYear,w_mo,w_closed,moveCost,w_ourKind,w_jobKind,homeNat,w_label,leaveJob,sickPopup,get mapProv(){return mapProv},TIERN63,CJOB63,CTR63,VILL63},
   _v62:{willPopup,chunoPopup,debtTick,expelPopup2,doExpel,tumatPopup,oanPopup,tranhviPopup,ruleSlots,ruleWhy,addRule,dropRule,keugoiPopup,thiencoPopup,gateCheck,ttlPopup,wishPick,wishScore,obey,ctxOk,CTX,v62Month,v62Year,loveTick,outsTick,divorcePopup,vuotsinhPopup,rulepropPopup,ruleforcePopup,rulechgPopup,pieceF,jobDig,minDig}};
 window.BNTG=G;
