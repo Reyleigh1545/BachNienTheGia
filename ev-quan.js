@@ -146,7 +146,7 @@ A({id:'q_ce_c',t:'Gió đổi chiều',
 /* đinh ưu xong */
 {id:'q_phuc_chuc',t:'Mãn tang',fixed:1,k:'Quan trường',
  x:c=>`Hai mươi bảy tháng cư tang đã mãn. Triều đình gửi công văn hỏi ${N(c)} có muốn trở lại nhiệm sở.`,
- o:[{l:'Phục chức',f:c=>{c.away=null;const r=G.appoint(c,c.lv,true);return `Trở lại làm ${G.OFFICES[r.id].n}.`+fx(c,{fame:3})}},
+ o:[{l:'Phục chức',f:c=>{c.away=null;const r=G.appoint(c,c.lv,true);return `Trở lại làm ${G.seatName(r.key)}.`+fx(c,{fame:3})}},
     {l:'Xin ở nhà thêm, lo việc họ',f:c=>{c.away=null;G.quitOffice(c);return 'Ở lại quê nhà.'+fx(c,{tam:8,fame:5})}}]},
 
 /* ================= THIÊN TAI: HIẾN KẾ ĐƯỢC PHONG TƯỚC ================= */
