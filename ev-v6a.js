@@ -177,7 +177,7 @@ return [
     {l:'Bỏ qua, trẻ con mà',f:c=>'Không ai nói gì.'+fx(c,{ax:{thanh:-3}})}]},
 {id:'v6_tre_chia_qua',t:'Chiếc bánh chia đôi',age:[5,12],w:0.7,
  x:c=>`Người lớn thấy ${N(c)} lén bẻ nửa chiếc bánh cho ${pick(['đứa bạn ăn mày','con nhà hàng xóm nghèo','con chó hoang'])}.`,
- o:[{l:'Khen con tốt bụng',f:c=>'Con cười tít mắt.'+fx(c,{tam:4,ax:{rong:4}})},
+ o:[{l:'Khen con tốt bụng',f:c=>'Con cười tít mắt.'+fx(c,{tam:4,cheer:3,ax:{rong:4}})},
     {l:'Dặn con của mình phải giữ',f:c=>'Con gật đầu, lần sau không chia nữa.'+fx(c,{ax:{rong:-3}})},
     {l:'Không nói gì',f:c=>'Chuyện nhỏ trôi qua.'+fx(c,{ax:{rong:1}})}]},
 {id:'v6_tre_so_toi',t:'Sợ ma',age:[4,10],w:0.7,
@@ -187,7 +187,7 @@ return [
     {l:'Quát cho im',f:c=>'Con im, nhưng run cầm cập.'+fx(c,{tam:-5,ax:{gan:-2,ht:1}})}]},
 {id:'v6_tre_viec_nha',t:'Việc nhà đầu tiên',age:[6,12],w:0.8,
  x:c=>`${N(c)} được giao ${pick(['chăn trâu','quét sân','trông em','nhặt rau','gánh nước'])} mỗi ngày.`,
- o:[{l:'Khen thưởng khi làm tốt',f:c=>'Con hăng hái làm.'+fx(c,{tam:3,ax:{cc:4}})},
+ o:[{l:'Khen thưởng khi làm tốt',f:c=>'Con hăng hái làm.'+fx(c,{tam:3,cheer:3,ax:{cc:4}})},
     {l:'Bắt làm cho bằng được',f:c=>'Con làm, nhưng mặt nặng mày nhẹ.'+fx(c,{tam:-3,ax:{cc:2,ht:1}})},
     {l:'Thôi, để người lớn làm',f:c=>'Con được chơi suốt ngày.'+fx(c,{tam:4,ax:{cc:-3,dl:-2}})}]},
 

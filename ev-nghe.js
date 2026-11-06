@@ -458,15 +458,15 @@ return [
  x:c=>{const sev=c.liem<20?3:c.liem<40?2:1;c.flags.hacSev=sev;return `Ngự sử dâng sớ hặc ${N(c)} ${sev===3?'tham ô công quỹ, cấu kết gian thương. Tội này nhẹ thì chém đầu, nặng thì liên lụy cả họ':sev===2?'nhận hối lộ, xử án thiên vị. Tội này đủ để mất chức':'lơ là công vụ, dung túng thuộc hạ. Tội nhỏ, nhưng để lâu thành lớn'}. ${sev===3?'Chứng cứ khá chắc.':'Chứng cứ còn lỏng lẻo.'}`},
  o:c=>{const sev=c.flags.hacSev||1;const d=[0,55,70,88][sev];const fine=m(20*(c.lv+1)*sev);
   const fail=(c,hard)=>{if(sev===1)return 'Bị phạt bổng, giáng một bậc.'+fx(c,{lv:-1,bonus:-0.1,fame:-8,tam:-8});
-    if(sev===2||!hard&&chance(0.5)){G.quitOffice(c);return 'Bị cách chức, đuổi về quê.'+fx(c,{fame:-35,money:-fine,tam:-15,cfame:-8})}
+    if(sev===2||!hard&&chance(0.5)){G.quitOffice(c);return 'Bị cách chức, đuổi về quê.'+fx(c,{fame:-35,money:-fine,tam:-15,cfame:-8})+G.stripHonors(c,sev,sev===3?'bị cách chức vì tội tham ô':'bị cách chức vì tội nhận hối lộ')}
     if(hard&&chance(0.35)){G.wipeClan(`Án tham ô của ${G.nameOf(c)} bị xử tru di tam tộc. Cả họ ${G.S().surname} bị xử trảm, gia sản sung công.`);return 'Tru di tam tộc.'}
     G.die(c,'bị xử trảm vì tội tham ô');return 'Bị xử trảm giữa chợ. Cả họ mang nhục.'+fx(c,{cfame:-60})};
   return [
   {l:'Biện bạch trước triều',r:[{tri:1,eq:0.6,liem:0.8},d],y:c=>'Lý lẽ chặt chẽ, thoát tội.'+fx(c,{liem:3,tam:-4}),n:c=>fail(c,false),nn:c=>fail(c,true)},
   {l:`Lo lót quan trên (${G.fmtMoney(fine*2)})`,c:()=>G.money()>=fine*2,f:c=>chance([0,0.7,0.5,0.3][sev])?'Vụ án được ém xuống.'+fx(c,{money:-fine*2,liem:-6}):'Bị tố thêm tội đút lót!'+fx(c,{money:-fine*2})+fail(c,sev===3)},
-  {l:`Nhận tội, nộp lại tiền (${G.fmtMoney(fine)})`,f:c=>{if(sev===3){G.quitOffice(c);return 'Thành khẩn nên được tha chết, cách chức, tịch biên gia sản.'+fx(c,{money:-fine*3,fame:-40,cfame:-20,tam:-20})}return 'Được khoan hồng.'+fx(c,{money:-fine,liem:15,lv:-(sev-1)||0,fame:-5})}},
+  {l:`Nhận tội, nộp lại tiền (${G.fmtMoney(fine)})`,f:c=>{if(sev===3){G.quitOffice(c);return 'Thành khẩn nên được tha chết, cách chức, tịch biên gia sản.'+fx(c,{money:-fine*3,fame:-40,cfame:-20,tam:-20})+G.stripHonors(c,3,'nhận tội tham ô')}return 'Được khoan hồng.'+fx(c,{money:-fine,liem:15,lv:-(sev-1)||0,fame:-5})}},
   {l:'Đổ tội cho thuộc hạ',s:'Thành thì thoát, bại thì thêm tội khi quân',r:[{eq:1,tri:0.8},d+8],y:c=>'Thuộc hạ chịu tội thay.'+fx(c,{liem:-8,eq:1}),n:c=>'Thuộc hạ khai hết!'+fail(c,true)},
-  {l:'Bỏ trốn khỏi nhiệm sở',c:()=>sev===3,s:'Mất hết, nhưng còn mạng',r:[{vo:0.6,tri:0.6,eq:0.4},60],y:c=>{G.quitOffice(c);c.fame-=60;return 'Thoát được, sống mai danh ẩn tích một thời gian rồi lén về quê.'+fx(c,{cfame:-30,tam:-20})},n:c=>fail(c,true)}]}},
+  {l:'Bỏ trốn khỏi nhiệm sở',c:()=>sev===3,s:'Mất hết, nhưng còn mạng',r:[{vo:0.6,tri:0.6,eq:0.4},60],y:c=>{G.quitOffice(c);c.fame-=60;return 'Thoát được, sống mai danh ẩn tích một thời gian rồi lén về quê.'+fx(c,{cfame:-30,tam:-20})+G.stripHonors(c,3,'bỏ trốn khỏi nhiệm sở')},n:c=>fail(c,true)}]}},
 {id:'sauthi',t:'Vinh quy bái tổ',fixed:1,k:'Khoa cử',
  x:c=>`${N(c)} đỗ ${esc(c.flags.examTitle||'Tiến sĩ')}, triều đình có thể bổ chức tới ${G.RANKS[c.flags.examRank||0]}. Cả làng ra đón.`,
  o:[{l:'Nhận chức làm quan',f:c=>{c.flags.chose=1;c.bonus=0;c.m=Math.min(c.m,20);const r=G.appoint(c,c.flags.examRank||0);return `Được bổ làm ${G.OFFICES[r.id].n} (${G.RANKS[G.OFFICES[r.id].r]}), thay ${r.old}. Từ nay không được buôn bán.`+fx(c,{fame:20,tam:10})}},

@@ -60,7 +60,7 @@ A({id:'c3_c',t:'Kết cục vụ muối lậu',
  x:(c,d)=>d.k==='thang'?'Đường dây bị triệt phá, kẻ cầm đầu bị xử trảm. Vua đích thân khen ngợi.':d.k==='oan'?'Bị vu ngược là đồng phạm, giam vào ngục chờ xét xử.':d.k==='lui'?'Đường dây vẫn hoạt động. Dân trong vùng bàn tán quan sợ quyền thế.':'Vụ muối lậu vỡ lở. Danh sách người nhận tiền có tên mình.',
  o:[{l:'Tạ ơn vua',c:(c,d)=>d.k==='thang',f:c=>{G.grantTitle(c,Math.min(3,1+Math.floor(c.lv/3)));return 'Được phong tước, thăng chức.'+fx(c,{lv:2,fame:R(50,80),liem:10,tam:12})}},
     {l:'Kêu oan trong ngục',c:(c,d)=>d.k==='oan',r:[{eq:1,tri:0.6,liem:0.6},65],y:c=>'Được minh oan, phục chức.'+fx(c,{fame:20,suc:-15,hpMax:-2}),n:c=>{G.quitOffice(c);return 'Bị cách chức, đánh trượng.'+fx(c,{suc:-30,hpMax:-R(4,8),fame:-40,money:-m(80),tam:-20})}},
-    {l:'Nhận tội, nộp hết tiền',c:(c,d)=>d.k==='lo',f:c=>{G.quitOffice(c);return 'Bị cách chức, tịch biên một phần gia sản.'+fx(c,{money:-m(250),fame:-50,tam:-20})}},
+    {l:'Nhận tội, nộp hết tiền',c:(c,d)=>d.k==='lo',f:c=>{G.quitOffice(c);return 'Bị cách chức, tịch biên một phần gia sản.'+fx(c,{money:-m(250),fame:-50,tam:-20})+G.stripHonors(c,2,'bị cách chức vì nhận tiền muối lậu')}},
     {l:'Chấp nhận',c:(c,d)=>d.k==='lui',f:c=>fx(c,{fame:-10,tam:-5})}]}),
 /* ========== 4. VÕ: MỐI THÙ SƯ MÔN ========== */
 ST({id:'c4_su_mon',t:'Sư phụ bị hại',c:c=>c.vo>=60&&age(c)>=16&&age(c)<=45,

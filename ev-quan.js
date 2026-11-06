@@ -58,7 +58,7 @@ A({id:'qh_tro_gioi_b',t:'Môn sinh đỗ đạt',k:'Môn sinh',
  x:c=>`Mưa liên tiếp mười ngày, nước sông dâng sát mặt đê. Phải quyết ngay: gia cố đê chính hay xả lũ vào vùng trũng ít dân.`,
  o:[{l:'Đích thân ra đê chỉ huy gia cố',r:[{tri:0.6,eq:0.6,suc:0.4},60],y:c=>'Đê giữ được. Dân lập đền sống thờ.'+fx(c,{fame:R(25,40),suc:-8}),n:c=>'Đê vỡ một đoạn, may người chạy kịp.'+fx(c,{fame:-10,suc:-10,tam:-10})},
     {l:'Xả lũ vào vùng trũng',f:c=>'Thành giữ được, vài làng ngập trắng.'+fx(c,{fame:-4,tam:-5,eq:1})},
-    {l:'Ở yên trong nha môn chờ',f:c=>{G.quitOffice(c);return 'Đê vỡ. Bị cách chức tra hỏi.'+fx(c,{fame:-40,tam:-15})}}]},
+    {l:'Ở yên trong nha môn chờ',f:c=>{G.quitOffice(c);return 'Đê vỡ. Bị cách chức tra hỏi.'+fx(c,{fame:-40,tam:-15})+G.stripHonors(c,2,'bị cách chức vì bỏ mặc đê vỡ')}}]},
 {id:'qd_hao_cuong',t:'Hào cường chiếm đất',job:Q,ptag:['dan'],
  x:c=>`Một nhà hào cường có người làm quan trong triều, cướp ruộng của mấy chục hộ nông dân. Dân kéo đến nha môn kêu oan.`,
  o:[{l:'Xử đúng luật, trả ruộng cho dân',r:[{tri:0.6,eq:0.6,liem:0.6},62],y:c=>'Hào cường phải trả ruộng.'+fx(c,{fame:R(20,30),liem:4}),n:c=>'Người trong triều của hắn ra tay. Bị điều đi nơi khác.'+fx(c,{fame:8,lv:-1,tam:-8})},
@@ -191,7 +191,7 @@ A({id:'md_c',t:'Đêm trước khởi sự',
       if(chance(Math.min(0.8,Math.max(0.03,th/100)))){S().royal=1;c.job='vua';c.lv=0;c.away=null;G.log(`${G.nameOf(c)} khởi sự thành công, lên ngôi hoàng đế.`,'gd');return '<b>Khởi sự thành công!</b> Kinh thành đổi chủ. Họ '+esc(S().surname)+' trở thành hoàng tộc.'+fx(c,{fame:500,hung:30,on:-10})}
       G.wipeClan(`Mưu phản thất bại. ${G.nameOf(c)} bị lăng trì, cả họ ${S().surname} bị tru di cửu tộc.`);return ''}},
     {l:'Hoãn lại, chờ thời cơ',f:c=>{c.flags.lo=(c.flags.lo||0)+1;return 'Hoãn binh. Càng lâu càng dễ lộ.'+nx(c,'md_c',8,16)}},
-    {l:'Tự thú, xin khoan hồng',r:[{eq:1,fame:0.4},70],y:c=>{if(c.job==='quan')G.quitOffice(c);c.tuoc=0;return 'Được tha chết, tước hết chức tước.'+fx(c,{fame:-80,cfame:-60,tam:-20})},n:c=>{G.die(c,'bị xử trảm vì tội mưu phản');return 'Không được tha.'+fx(c,{cfame:-100})}}]}),
+    {l:'Tự thú, xin khoan hồng',r:[{eq:1,fame:0.4},70],y:c=>{if(c.job==='quan')G.quitOffice(c);const st=G.stripHonors(c,3,'tự thú tội mưu phản');return 'Được tha chết, tước hết chức tước.'+fx(c,{fame:-80,cfame:-60,tam:-20})+st},n:c=>{G.die(c,'bị xử trảm vì tội mưu phản');return 'Không được tha.'+fx(c,{cfame:-100})}}]}),
 
 /* ================= QUÂN NGŨ (chỉ khi ở doanh trại) ================= */
 {id:'bat_linh',t:'Bắt lính',fixed:1,k:'Chiến sự',
