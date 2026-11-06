@@ -299,10 +299,19 @@ return [
   {l:'Từ chối lễ, chỉ nhận tấm lòng',f:c=>{if(cl)cl.rel=Math.min(100,cl.rel+22);return 'Họ cảm động, cả vùng truyền tai nhau tiếng tốt.'+fx(c,{fame:R(4,7),cfame:1,tam:4})}}]}},
 {id:'w63_ho_hoi_lang',fixed:1,t:'Mời dự đám',k:'Họ khác',
  x:(c,d)=>{const cl=V().w_clan(d.p,d.cl);return cl?`Họ ${esc(cl.sur)} mời nhà mình dự ${pick(['đám cưới con trai','đám giỗ lớn','tiệc mừng thượng thọ','lễ mừng nhà mới'])}. Khách khứa trong vùng sẽ có mặt đông đủ.`:'Có người mời dự đám.'},
- o:(c,d)=>{const cl=V().w_clan(d.p,d.cl);if(!cl)return [{l:'Bỏ qua',f:()=>''}];return [
-  {l:'Cả nhà đi dự, mừng đàng hoàng',s:`Tốn khoảng ${fm(m(5))}`,c:()=>G.money()>=m(5),f:c=>{cl.rel=Math.min(100,cl.rel+10);return 'Bàn tiệc rôm rả, gặp được nhiều người có tiếng trong vùng.'+fx(c,{money:-m(5),fame:R(1,3),tam:4,eq:1})}},
-  {l:'Cử một người đại diện đi dự',s:`Tốn khoảng ${fm(m(2))}`,c:()=>G.money()>=m(2),f:c=>{cl.rel=Math.min(100,cl.rel+4);return 'Cũng đủ lễ nghĩa.'+fx(c,{money:-m(2)})}},
-  {l:'Viện cớ bận, không đi',f:c=>{cl.rel=Math.max(-100,cl.rel-5);return fx(c,{fame:-1})}}]}},
+ o:(c,d)=>{const cl=V().w_clan(d.p,d.cl);if(!cl)return [{l:'Bỏ qua',f:()=>''}];
+  /* v6.3.5: nhà chỉ có một người lớn thì không có chuyện "cả nhà đi"; cử người đi thì phải có cái được */
+  const can=G.home().filter(p=>age(p)>=14&&!p.away&&p.dead==null);
+  const solo=can.length<=1;
+  const rep=can.slice().sort((a,b)=>(b.eq+b.mi*0.5)-(a.eq+a.mi*0.5))[0]||c;
+  const o=[];
+  if(!solo)o.push({l:'Cả nhà đi dự, mừng đàng hoàng',s:`Tốn khoảng ${fm(m(5))}`,c:()=>G.money()>=m(5),f:c=>{cl.rel=Math.min(100,cl.rel+10);return 'Bàn tiệc rôm rả, gặp được nhiều người có tiếng trong vùng.'+fx(c,{money:-m(5),fame:R(1,3),tam:4,eq:1})}});
+  o.push({l:solo?'Tự mình đi dự, mừng vừa đủ lễ':`Cử ${rep.given} đi dự thay cả nhà`,s:`Tốn khoảng ${fm(m(2))}`,c:()=>G.money()>=m(2),f:c=>{
+    const ok=chance(G.prob(rep,{eq:0.6,mi:0.4},DW(0.75,44)));
+    if(ok){cl.rel=Math.min(100,cl.rel+6);return `${N(rep)} ăn nói khéo, được chủ nhà mời ngồi mâm trên, quen thêm vài người có tiếng.`+fx(c,{money:-m(2)})+fx(rep,{fame:R(1,3),tam:5,eq:1})}
+    cl.rel=Math.min(100,cl.rel+3);return `${N(rep)} đến dự cho đủ lễ nghĩa, ngồi mâm dưới, chẳng ai để ý.`+fx(c,{money:-m(2)})+fx(rep,{tam:-1})}});
+  o.push({l:'Viện cớ bận, không đi',f:c=>{cl.rel=Math.max(-100,cl.rel-5);return fx(c,{fame:-1})}});
+  return o}},
 {id:'w63_ho_xin_vay',fixed:1,t:'Láng giềng xin vay',k:'Họ khác',
  x:(c,d)=>{const cl=V().w_clan(d.p,d.cl);d.amt=d.amt||m(R(10,22));return cl?`Gia chủ họ ${esc(cl.sur)}, người ${cl.head.tr}, sang xin vay <b>${fm(d.amt)}</b>, hẹn trả sau vài tháng có kèm lãi.`:'Có người xin vay.'},
  o:(c,d)=>{const cl=V().w_clan(d.p,d.cl);if(!cl)return [{l:'Từ chối',f:()=>''}];const amt=d.amt;const pr=clamp(0.82-(cl.head.tr==='tham lam'?0.25:0)-(cl.head.tr==='hẹp hòi'?0.1:0)+(cl.head.tr==='chính trực'?0.1:0)+(cl.wealth-50)/300,0.35,0.95);
