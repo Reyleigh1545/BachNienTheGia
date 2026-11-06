@@ -208,6 +208,10 @@ main{display:grid;gap:14px}
 .mkt div{border:1px solid var(--line);border-radius:6px;padding:6px 8px;display:grid;font-size:12.5px}
 .offs h3{font-size:17px;margin-top:14px}
 .off{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:7px 0;align-items:flex-start}
+.off.mine{background:rgba(184,134,11,.08);padding-left:6px;padding-right:6px;border-radius:6px}
+.qgrp{margin:8px 0}.qb{width:100%;text-align:left;margin-bottom:2px}
+.qseats{margin-top:6px;max-height:280px;overflow:auto;border-top:1px dashed var(--line);padding-top:4px}
+.srow2{display:flex;justify-content:space-between;gap:8px;padding:3px 0;font-size:13px;border-bottom:1px dotted var(--line)}.srow2 small{color:var(--muted);text-align:right}
 .off small{display:block;color:var(--muted);font-size:12px}
 .off .who2{flex:none;max-width:40%;text-align:right}
 .off.mine{background:var(--jade-soft);padding-inline:8px;border-radius:6px}
@@ -336,10 +340,12 @@ ul.plain{margin:4px 0 0;padding-left:18px;font-size:12.5px;display:grid;gap:3px}
 <div class="wrap" id="app"></div>
 <div class="overlay sheet" id="sheetO" hidden><div class="modal sheetm" id="sheetM" role="dialog" aria-modal="true" aria-label="Hồ sơ nhân vật"></div></div>
 <div class="tip" id="tip" hidden></div>
-<div class="verlbl" aria-hidden="true">v6.3.5</div>
+<div class="verlbl" aria-hidden="true">v6.4</div>
 <div class="overlay" id="overlay" hidden><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
 
 <script src="data.js"></script>
+<script src="data-v64.js"></script>
+<script src="data-v64m.js"></script>
 <script>window.EVF=window.EVF||[];</script>
 <script src="ev-chung.js"></script>
 <script src="ev-nghe.js"></script>
@@ -368,5 +374,6 @@ ul.plain{margin:4px 0 0;padding-left:18px;font-size:12.5px;display:grid;gap:3px}
 <script src="ev-v633g.js"></script>
 <script src="ev-v635a.js"></script>
 <script src="ev-v635b.js"></script>
+<script src="ev-v64.js"></script>
 <script src="engine.js"></script>
 </body></html>

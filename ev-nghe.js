@@ -469,7 +469,7 @@ return [
   {l:'Bỏ trốn khỏi nhiệm sở',c:()=>sev===3,s:'Mất hết, nhưng còn mạng',r:[{vo:0.6,tri:0.6,eq:0.4},60],y:c=>{G.quitOffice(c);c.fame-=60;return 'Thoát được, sống mai danh ẩn tích một thời gian rồi lén về quê.'+fx(c,{cfame:-30,tam:-20})+G.stripHonors(c,3,'bỏ trốn khỏi nhiệm sở')},n:c=>fail(c,true)}]}},
 {id:'sauthi',t:'Vinh quy bái tổ',fixed:1,k:'Khoa cử',
  x:c=>`${N(c)} đỗ ${esc(c.flags.examTitle||'Tiến sĩ')}, triều đình có thể bổ chức tới ${G.RANKS[c.flags.examRank||0]}. Cả làng ra đón.`,
- o:[{l:'Nhận chức làm quan',f:c=>{c.flags.chose=1;c.bonus=0;c.m=Math.min(c.m,20);const r=G.appoint(c,c.flags.examRank||0);return `Được bổ làm ${G.OFFICES[r.id].n} (${G.RANKS[G.OFFICES[r.id].r]}), thay ${r.old}. Từ nay không được buôn bán.`+fx(c,{fame:20,tam:10})}},
+ o:[{l:'Nhận chức làm quan',f:c=>{c.flags.chose=1;c.bonus=0;c.m=Math.min(c.m,20);const r=G.appoint(c,c.flags.examRank||0);return `Được bổ làm ${G.seatName(r.key)} (${G.rankTxt(c)}), thay ${r.old}. Từ nay không được buôn bán.`+fx(c,{fame:20,tam:10})}},
     {l:'Về quê mở trường dạy học',c:()=>G.money()>=G.BIZ.truong.lv[0][1],f:c=>{c.flags.chose=2;G.openBiz(c,'truong');c.m=Math.max(c.m,40);return 'Học trò kéo đến đông nghịt.'+fx(c,{fame:15})}},
     {l:'Giữ nghề cũ',f:c=>{c.flags.chose=3;return 'Người đời tiếc cho.'+fx(c,{fame:5})}}]},
 /* ===================== NỘI TRỢ ===================== */
