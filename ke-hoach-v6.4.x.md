@@ -74,7 +74,7 @@ Những điểm này trong thiết kế dưới đây là **quy ước của gam
 ### C3. Thiết kế đề xuất
 Dữ liệu:
 - Thêm `c.sph=[{id,k,t0,t1,e}]`, danh sách hôn nhân theo thứ tự thời gian.
-  - `k`: `chanh` (chính thất), `ke` (kế thất), sau này có thể thêm `thu` (thứ thất).
+  - `k`: `chanh` (chính thất) hoặc `ke` (kế thất). Không có thứ thất, xem C4.
   - `e`: `mat` (người kia mất), `ly` (ly hôn), `taigia` (góa phụ tái giá rời nhà), hoặc rỗng nếu còn.
 - `c.spouse` vẫn là người hiện tại hoặc người cuối cùng, giữ nguyên cho các chỗ đang dùng.
 - Hàm mới: `spousesOf(c)` trả về danh sách theo `sph`, nếu cũ chưa có thì dựng từ `c.spouse`.
@@ -100,10 +100,11 @@ Trường hợp biên cần xử lý:
 
 Sự kiện nhỏ có thể kèm theo (cộng vào chỉ tiêu số lượng): mẹ kế với con chồng (hòa thuận hoặc bất hòa), giỗ vợ trước khi đã có kế thất, kế thất ra mắt gia tộc.
 
-### C4. Câu hỏi để mày chốt trước khi làm
-Có cho **thứ thất / thiếp** (đa thê) trong game không?
-- **Phương án 1, đề xuất cho 6.4.x:** chỉ có chính thất và kế thất. Mỗi lúc chỉ một vợ hoặc chồng còn trong nhà; người cũ được giữ trong gia phả. Sửa nhỏ: chủ yếu là `sph` và `treeHTML`.
-- **Phương án 2, để 6.5:** thêm thứ thất cho nhà giàu, quan lớn. Phải sửa mọi chỗ giả định "chỉ một vợ", gồm thụ thai (engine.js 512 chọn bà nào), tình cảm, ly hôn, dắt gia đình đi nhậm chức, cùng luật con đích và con thứ, và mất tâm trạng giữa các bà. Nặng hơn nhiều và dễ phát sinh lỗi.
+### C4. Đã chốt (2026-11-07): giữ chế độ một vợ một chồng
+Mày quyết định **không có thứ thất / thiếp**. Mỗi lúc chỉ một vợ hoặc một chồng còn ở trong nhà; người cũ (đã mất hoặc đã ly) được giữ lại trong gia phả. Chỉ cần chính thất và kế thất, sửa chủ yếu là `sph` và `treeHTML`.
+- Không làm: thứ thất, nàng hầu, chọn "bà nào" khi thụ thai, luật con đích và con thứ. Nếu sau này đổi ý thì phải sửa mọi chỗ giả định "chỉ một vợ" (thụ thai ở engine.js 512, tình cảm, ly hôn, dắt gia đình đi nhậm chức), nên coi là việc lớn của một bản riêng.
+- Trong C3, mục `thu` (thứ thất) của `k` bỏ đi; chỉ giữ `chanh` và `ke`.
+- Chưa làm gì cả. Mục này vẫn là ghi chú cho gói 6.4.x, chờ mày bảo làm.
 
 ---
 
