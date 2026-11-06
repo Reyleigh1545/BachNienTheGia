@@ -7,6 +7,15 @@ Nguyên tắc đang áp dụng: chỉ test khi mày yêu cầu (kiểm cú pháp
 
 ---
 
+## Đã làm trong 6.4.1 (nhánh `v6.4.1`)
+- **Ngự y ánh xạ vào ghế Thái y viện** (mục B1b, chọn cách ánh xạ cấp nghề sang ghế). Ngự y → ghế Ngự y, Viện phán → Thái y viện phán, Thái y lệnh → ghế Thái y lệnh (đổi tên từ "Thái y viện sứ"). Chiếu mời chỉ phát khi nhà chưa có ai ở trong cung và còn ghế Ngự y trống. Lên cấp cần ghế cấp trên đang trống, có báo khi ghế trống. Ngự y phải về kinh nhậm chức như quan (có hỏi đi một mình hay dắt gia đình), không có nhiệm kỳ ba năm. Save cũ được xếp ghế tự động. Quan thường không còn xin hay được bổ vào các ghế Thái y viện.
+- **Truyền nghề:** học trò trong cửa sổ "Truyền nghề" chỉ lấy người ở chi chính, không còn lấy người ở chi họ.
+- **Sự kiện vỡ đồ quý** (`v6_lo_tay`) chỉ còn dành cho gia nhân. Việc phụ "làm thuê cho nhà giàu" và sự kiện "Lên kinh làm thuê" không còn rơi vào quan, ngự y, quan võ, chủ cơ sở.
+- Chưa làm trong 6.4.1: nút "Rút tên", nút "Ứng thí võ cử", gia phả nhiều đời vợ chồng (mục A, C vẫn là ghi chú).
+- Chỗ để chỉnh sau: ghế **Y chính** (4 ghế) chỉ có NPC ngồi, người nhà chưa vào được; ngự y bậc 3 (Thái y lệnh) chỉ có 1 ghế nên rất khó lên; học trò truyền nghề nếu thầy ở chi họ thì không còn mục "Dạy trực tiếp" (vẫn viết sách được).
+
+---
+
 ## A. Đã đồng ý, làm trong 6.4.x
 
 ### A1. Nút "Bỏ thi / rút tên"

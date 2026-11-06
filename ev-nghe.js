@@ -288,8 +288,8 @@ return [
  o:[{l:'Mở lớp truyền nghề',f:c=>fx(c,{fame:R(15,25),eq:2})},
     {l:'Viết sách y học',r:[{tri:1},85],y:c=>'Bộ sách được lưu truyền.'+fx(c,{fame:R(30,50),tri:2,over:1}),n:c=>'Viết dở dang.'+fx(c,{tam:-3})}]},
 {id:'y_chieumo',t:'Chiếu chỉ của hoàng thất',fixed:1,k:'Chiêu mộ',
- x:c=>`Tiếng tăm y thuật của ${N(c)} đến tai triều đình. Thái y viện gửi chiếu mời vào cung làm ngự y.`,
- o:[{l:'Tiếp chỉ vào cung',f:c=>{c.job='nguy';c.lv=0;c.bonus=0;return 'Trở thành ngự y. Bổng lộc cao, nhưng chốn cung đình hiểm ác.'+fx(c,{fame:R(40,60),tam:4})}},
+ x:c=>`Tiếng tăm y thuật của ${N(c)} đến tai triều đình. Thái y viện đang khuyết một chân ngự y, gửi chiếu mời vào cung.`,
+ o:[{l:'Tiếp chỉ vào cung',f:c=>{const k=G.nguInvite(c);if(!k)return 'Chiếu đến chậm một bước, chân ngự y vừa có người khác nhận.'+fx(c,{fame:R(10,20),tam:-2});return `Trở thành ${G.seatName(k).replace(/ \(\d+\)$/,'').toLowerCase()} trong Thái y viện. Bổng lộc cao, nhưng chốn cung đình hiểm ác.`+fx(c,{fame:R(40,60),tam:4})}},
     {l:'Xin ở lại chữa bệnh cho dân',f:c=>'Dân chúng kính phục.'+fx(c,{fame:R(25,35),eq:2,tam:5})}]},
 /* chủ y quán */
 {id:'yq_dich_quan',t:'Y quán ngày dịch',job:YQ,sea:['dong'],c:()=>S().epi,

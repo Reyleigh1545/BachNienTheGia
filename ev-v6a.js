@@ -108,7 +108,7 @@ return [
     {l:'Dùng lời lẽ khuyên can',ax:{diem:2},r:[{khau:0.7,eq:0.5,fame:0.3},55],y:c=>'Tên kia nể mặt, bỏ qua.'+fx(c,{fame:4,sk:{khau:1}}),n:c=>'Hắn quay sang chửi luôn cả mình.'+fx(c,{tam:-4})},
     {l:'Lặng lẽ đi chỗ khác',ax:{gan:-3,rong:-1},f:c=>'Về nhà vẫn còn day dứt.'+fx(c,{tam:-3})},
     {l:'Sau đó lén giúp người bị đánh',ax:{rong:3},f:c=>'Đưa người kia ít tiền mua thuốc.'+fx(c,{money:-m(1),tam:3,fame:1})}]},
-{id:'v6_lo_tay',t:'Lỡ tay làm vỡ đồ quý',age:[12,80],w:0.7,
+{id:'v6_lo_tay',t:'Lỡ tay làm vỡ đồ quý',job:['hau'],age:[14,80],w:0.9,
  x:c=>`Đang giúp việc ở nhà ${pick(['một phú hộ','một vị tú tài','ông chủ cũ'])}, ${N(c)} lỡ tay làm vỡ ${pick(['chiếc bình men lam','bộ ấm trà quý','tấm gương đồng'])}. Không ai nhìn thấy.`,
  o:[{l:'Tự nhận lỗi, xin đền',ax:{thanh:5},f:c=>chance(0.5)?'Chủ nhà cảm động trước sự thật thà, bỏ qua, còn tin cậy hơn.'+fx(c,{fame:3,tam:3}):'Phải đền một khoản, nhưng ngẩng cao đầu.'+fx(c,{money:-m(3),fame:2})},
     {l:'Lặng lẽ thu dọn, giấu đi',ax:{thanh:-4},f:c=>chance(0.4)?'Bị phát hiện. Từ đó chẳng ai thuê nữa.'+fx(c,{fame:-6,tam:-6}):'Chẳng ai biết. Chỉ mình mình biết.'+fx(c,{tam:-2})},

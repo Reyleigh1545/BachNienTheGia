@@ -114,10 +114,10 @@ minhtan|Minh tán|C9|K|3|kinh|mi50|Xướng danh trong nghi lễ triều đình.
 thaibok|Thái bộc tự khanh|T4|K|1|kinh|tri78 eq62|Coi ngựa, xe của nhà vua.
 thongchinh|Thông chính sứ|T3|K|1|kinh|tri86 eq68|Nhận, chuyển tấu sớ vào trong cung.
 thongchinhpho|Thông chính phó sứ|T4|K|2|kinh|tri78 eq62|Giúp việc nhận tấu sớ.
-vienphan|Thái y viện sứ|C5|K|1|an|tri80 mi45|Đứng đầu việc thuốc men trong cung.
-vienphan2|Thái y viện phán|C6|K|2|an|tri72|Bắt mạch cho hoàng thân quốc thích.
-ngyy|Ngự y|C8|K|4|an|tri62|Khám bệnh cho vua và hậu cung.
-yhoc|Y chính|T9|K|4|an|tri55|Chế thuốc, giúp việc ở Thái y viện.
+vienphan|Thái y lệnh|C5|K|1|y|tri80 mi45 eq0|Đứng đầu Thái y viện, lo việc thuốc men trong cung.
+vienphan2|Thái y viện phán|C6|K|2|y|tri72 eq0|Bắt mạch cho hoàng thân quốc thích.
+ngyy|Ngự y|C8|K|4|y|tri62 eq0|Khám bệnh cho vua và hậu cung.
+yhoc|Y chính|T9|K|4|y|tri55 eq0|Chế thuốc, giúp việc ở Thái y viện.
 khamthien|Khâm thiên giám giám chính|C5|K|1|kinh|tri82|Xem thiên văn, soạn lịch cho cả nước.
 khamthien2|Khâm thiên giám giám phó|C6|K|2|kinh|tri72|Giúp việc xem thiên văn, soạn lịch.
 linhdai|Linh đài lang|C8|K|2|kinh|tri62|Quan sát tinh tượng ngày đêm.
@@ -210,6 +210,7 @@ function parseRow(line,g){
     else if((m=tk.match(/^s([\d.]+)$/)))T.side=+m[1];
     else if((m=tk.match(/^ar(\d)$/)))T.ar=+m[1];
     else if(tk.startsWith('at:'))T.at=tk.slice(3).split(',')});
+  if(T.req.eq===0)delete T.req.eq;
   return {id,T};
 }
 D.build64=function(){
