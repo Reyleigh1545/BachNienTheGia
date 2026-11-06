@@ -130,6 +130,22 @@ const clanTuoc=()=>alive().reduce((m,p)=>Math.max(m,p.tuoc||0),0);
 function tierScore(){return S.fame+wealth()/1000+clanTuoc()*1500+(S.royal?50000:0)}
 function tierIdx(){const s=tierScore();let i=0;TIERS.forEach(([,v],k)=>{if(s>=v)i=k});return i}
 function tierName(){return S.royal?'Hoàng tộc':TIERS[tierIdx()][0]}
+/* v6.3.5: uy gia chủ. Làm gia chủ thì được cộng thẳng vào cả năm chỉ số, mức theo địa vị gia tộc: Bần hộ 0 đến Danh môn vọng tộc +10.
+   Là phần của chức, không phải của người: đổi gia chủ thì người cũ mất, người mới được; địa vị lên xuống thì mức cộng lên xuống theo. */
+const HEADB=[0,2,3,5,7,8,10];
+const headBonus=()=>S.royal?10:(HEADB[tierIdx()]||0);
+function headBSync(){
+  if(!S||!S.people)return;const hb=headBonus();
+  S.people.forEach(p=>{
+    const cur=p.hb||0;const want=(p.dead==null&&!p.left&&p.id===S.head)?hb:0;
+    if(want===cur)return;
+    p.hb=want;if(!want)delete p.hb;
+    if(p.dead!=null||p.left)return;
+    const d=want-cur;
+    ['tri','vo','mi','eq'].forEach(k=>{p.cap[k]=Math.max(1,p.cap[k]+d);p[k]=Math.max(0,p[k]+d)});
+    p.cap.suc=Math.max(10,p.cap.suc+d);p.suc=clamp(p.suc+d,1,p.cap.suc);
+    if(cur>0&&want>0&&!DRY)log(`Địa vị gia tộc ${d>0?'lên':'xuống'}, uy gia chủ của ${p.given} ${d>0?'thêm':'bớt'} ${Math.abs(d)} mọi chỉ số (nay +${want}).`,d>0?'gd':'hi')
+  })}
 const mm=v=>Math.round(v*60*TK[tierIdx()]);
 const famLuck=()=>{const a=alive();return a.length?a.reduce((s,p)=>s+p.duyen,0)/a.length:50};
 
@@ -2006,7 +2022,7 @@ function headGopPopup(c){
 
 /* ---------- gia chủ mới đang ở riêng thì về nhà chính ---------- */
 function becomeHead(p){
-  const old=mainHH();S.head=p.id;
+  const old=mainHH();S.head=p.id;headBSync();
   if(p.hh===old||!S.hh[old])return;
   const from=p.hh;const sp=spouseOf(p);
   const movers=alive().filter(x=>x.hh===from&&(x===p||x===sp||((x.parents.includes(p.id)||(sp&&x.parents.includes(sp.id)))&&(!married(x)||age(x)<18))));
@@ -2829,6 +2845,7 @@ const INFO={
   rules:['Gia quy','Số điều được giữ tùy gia thế và số người trong họ. Thêm điều mới làm Ổn định giảm 5, mỗi năm chỉ thêm một điều. Bỏ điều cũ cũng làm lòng người xáo động.'],
   region:['Vùng','Mỗi vùng sản vật khác nhau nên giá khác nhau. Mang hàng từ nơi rẻ tới nơi đắt mà bán. Đường càng xa càng lâu, càng nhiều rủi ro.']};
 function infoText(k){
+  if(k.startsWith('hb:')){return ['Uy gia chủ',`Làm gia chủ thì được cộng thẳng +${+k.slice(3)} vào cả năm chỉ số (trí tuệ, võ lực, sức khỏe, mị lực, EQ). Mức cộng theo địa vị gia tộc, hiện là ${tierName().toLowerCase()}: ${TIERS.map(([n],i)=>n+' +'+HEADB[i]).join(', ')}. Đó là uy của chức, không phải của người: không còn làm gia chủ thì mất, địa vị gia tộc xuống thì mức cộng cũng giảm.`]}
   if(k.startsWith('fp:')){const q=FAME_SELF[+k.slice(3)-1];return q?[q[1],'Từ '+q[0]+' danh vọng cá nhân. '+q[2]]:['','']}
   if(k.startsWith('tr:')){const T=TRAITS[k.slice(3)];return [T.n,T.d+'.']}
   if(k.startsWith('org:')){const O0=ORIGINS[k.slice(4)];return [O0.n,O0.d]}
@@ -2898,7 +2915,7 @@ function sheetHTML(c){
   const a=age(c),J=JOBS[c.job],dead=c.dead!=null,out=!inClan(c);
   const deg=['','Cử nhân','Đỗ thi Hội',c.flags.examTitle||'Tiến sĩ'][c.degree];
   let h=`<button class="xclose" data-close aria-label="Đóng">×</button><div class="who">${avatarSVG(c,64)}<div style="min-width:0"><h2>${esc(nameOf(c))}</h2>
-   <div class="chips"><span class="chip ${c.id===S.head?'gold':''}">${relation(c)}</span><span class="chip">${dead?'Đã mất':a+' tuổi'}</span>${selfPerks(c)}${c.tuoc?`<button class="chip gold" data-info="tr:tu_${Math.min(5,c.tuoc)}">${TUOC[c.tuoc]}</button>`:''}${c.degree?`<button class="chip gold" data-info="tr:dg_${Math.min(3,c.degree)}">${deg}</button>`:''}${ctChips(c)}${c.outSp?`<span class="chip">Về nhà họ ${esc(c.outSp.sur)}</span>`:''}${c.preg?'<span class="chip red">Mang thai</span>':''}${c.away?`<span class="chip blue">${awayText(c)}</span>`:''}${c.hh!==mainHH()&&!out?`<span class="chip blue">${esc(HH(c.hh).name)}</span>`:''}</div>
+   <div class="chips"><span class="chip ${c.id===S.head?'gold':''}">${relation(c)}</span><span class="chip">${dead?'Đã mất':a+' tuổi'}</span>${selfPerks(c)}${c.hb?`<button class="chip gold" data-info="hb:${c.hb}">Uy gia chủ +${c.hb}</button>`:''}${c.tuoc?`<button class="chip gold" data-info="tr:tu_${Math.min(5,c.tuoc)}">${TUOC[c.tuoc]}</button>`:''}${c.degree?`<button class="chip gold" data-info="tr:dg_${Math.min(3,c.degree)}">${deg}</button>`:''}${ctChips(c)}${c.outSp?`<span class="chip">Về nhà họ ${esc(c.outSp.sur)}</span>`:''}${c.preg?'<span class="chip red">Mang thai</span>':''}${c.away?`<span class="chip blue">${awayText(c)}</span>`:''}${c.hh!==mainHH()&&!out?`<span class="chip blue">${esc(HH(c.hh).name)}</span>`:''}</div>
    <div class="chips">${realTraits(c).map(traitChip).join('')}${habChips(c)}${viceChips(c)}</div></div></div>
    ${ctNote(c)?`<p class="muted small" style="margin:.3rem 0 .5rem">${ctNote(c)}</p>`:''}
    <div class="dsec tight"><h3>${I('axes','Tính cách')}</h3><div class="chips">${axChips(c)||'<span class="muted small">Chưa có nét nổi bật</span>'}</div></div>
@@ -3563,6 +3580,7 @@ function w63Month(mo){
   if(S.war&&S.war.near===0){const hd=head();if(hd&&chance(0.05))enqueue('ev',hd.id,{ev:pick(['w63_giac_tran','w63_giac_tran','w63_chay_loan','w63_thue_luong'])})}
   else if(S.war&&S.war.near===1){const hd=head();if(hd&&chance(0.02))enqueue('ev',hd.id,{ev:pick(['w63_thue_luong','w63_ti_nan'])})}
   w_khoFee();
+  headBSync();
   w633Month(mo);
   /* sự kiện dòng họ khác: thưa, mỗi loại có thời gian nghỉ riêng, "xin vay" chỉ khi họ kia thật sự túng */
   if(chance(0.028)){const hd=head();const L=w_clans();if(hd&&L.length){
