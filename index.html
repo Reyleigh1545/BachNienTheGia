@@ -289,6 +289,35 @@ details.more{margin-top:10px}details.more>summary{cursor:pointer;font-weight:600
 .slot .acts{display:flex;gap:6px;flex-wrap:wrap}
 textarea.code{width:100%;box-sizing:border-box;font:12px/1.4 ui-monospace,Menlo,Consolas,monospace;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--paper);color:var(--ink);resize:vertical}
 @media (max-width:520px){.subs.ax{grid-template-columns:repeat(4,1fr)}}
+/* ===== v6.3: thế giới, họ khác ===== */
+.grid1{display:grid;gap:14px}
+.mapsvg text.pl{font-family:var(--body);font-size:9.5px;font-weight:600;fill:var(--ink);paint-order:stroke;stroke:var(--panel);stroke-width:2.5px;stroke-linejoin:round}
+.mapsvg text.rn{font-size:16px;opacity:.28;letter-spacing:.12em;text-transform:uppercase}
+.mapsvg .pd{stroke:var(--ink);stroke-width:1.2}
+.mapsvg .pv{cursor:pointer}.mapsvg .pv:focus-visible{outline:none}
+.mapsvg .pv:hover .pd,.mapsvg .pv:focus-visible .pd{stroke-width:2.6}
+.mapsvg .pv.on .pd{stroke:var(--seal);stroke-width:3}
+.mapsvg .pv.home .pd{stroke:var(--seal);stroke-width:2.4}
+.mapsvg .dz{fill:color-mix(in srgb,var(--gold) 30%,transparent);stroke:var(--gold);stroke-width:1.5}
+.mapsvg .dz.warn{stroke-dasharray:3 3;fill:transparent}
+.mapsvg .tl{stroke-width:2.2;fill:none;opacity:.85}
+.mapsvg .tl.ph1{stroke:var(--gold);stroke-dasharray:5 4}
+.mapsvg .tl.ph2{stroke:#d9822b;stroke-width:3}
+.mapsvg .tl.ph3{stroke:var(--seal);stroke-width:4}
+.mapsvg .wz{fill:color-mix(in srgb,var(--seal) 22%,transparent);stroke:var(--seal);stroke-width:2}
+.mapsvg .rt{stroke:var(--ink);stroke-width:1.8;stroke-dasharray:6 5;opacity:.7}
+.tens{display:grid;gap:5px;margin-top:4px}
+.tenrow{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(70px,1fr) 90px;gap:8px;align-items:center;font-size:12.5px}
+.tenrow.rel{font-weight:600}
+.tbar{display:block;height:7px;border-radius:99px;background:var(--line);overflow:hidden}
+.tbar i{display:block;height:100%;background:var(--jade)}
+.tbar i.ph1{background:var(--gold)}.tbar i.ph2{background:#d9822b}.tbar i.ph3{background:var(--seal)}
+.clans{display:grid;gap:8px;margin-top:10px}
+.clanrow{display:flex;flex-wrap:wrap;gap:8px 14px;justify-content:space-between;align-items:center;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--paper)}
+.clanrow>div:first-child{display:grid;gap:3px;min-width:min(100%,260px);flex:1}
+.clanrow small{display:block;font-size:12px}
+.clanrow .acts{display:flex;flex-wrap:wrap;gap:6px}
+ul.plain{margin:4px 0 0;padding-left:18px;font-size:12.5px;display:grid;gap:3px}
 </style>
 
 <div class="wrap" id="app"></div>
@@ -310,5 +339,6 @@ textarea.code{width:100%;box-sizing:border-box;font:12px/1.4 ui-monospace,Menlo,
 <script src="ev-v6a.js"></script>
 <script src="ev-v61.js"></script>
 <script src="ev-v62.js"></script>
+<script src="ev-v63.js"></script>
 <script src="engine.js"></script>
 </body></html>

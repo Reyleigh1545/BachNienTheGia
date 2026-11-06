@@ -298,7 +298,7 @@ return [
  x:c=>`${N(c)} sốt cao, mụn nước mọc khắp người. Bệnh đậu mùa!`,
  o:[{l:'Cách ly, mời thầy thuốc tận tình',c:()=>G.money()>=m(20),f:c=>'Qua khỏi, mặt có ít vết rỗ.'+fx(c,{money:-m(20),suc:-15,mi:-R(2,6),hpMax:-R(1,3)})},
     {l:'Cúng bái cầu xin',r:[{suc:1},55],y:c=>'Qua khỏi.'+fx(c,{suc:-20,mi:-R(3,8),hpMax:-R(2,4)}),n:c=>'Bệnh rất nặng.'+fx(c,{suc:-R(35,50),hpMax:-R(5,10),mi:-R(5,10),lethal:1})}]},
-{id:'chay_nha',t:'Hỏa hoạn',age:[14,90],w:0.35,cd:36,c:()=>G.G.homeLv()<=2,
+{id:'chay_nha',t:'Hỏa hoạn',age:[14,90],w:0.35,cd:36,c:()=>G.homeLv()<=2,
  x:'Đêm hanh khô, đốm lửa bếp bén sang mái. Lửa bốc cao rừng rực.',
  o:[{l:'Lao vào cứu đồ đạc và người',r:[{vo:0.6,suc:1},55],y:c=>'Cứu được người và phần lớn của cải.'+fx(c,{money:-m(15),fame:3,suc:-6}),n:c=>'Bị bỏng nặng, mất nhiều tài sản.'+fx(c,{money:-m(40),suc:-R(18,30),hpMax:-R(3,6),mi:-3,tam:-10})},
     {l:'Hô hoán xóm giềng dập lửa',r:[{eq:1},45],y:c=>'Cả xóm xúm vào cứu.'+fx(c,{money:-m(20),tam:-4}),n:c=>'Lửa lan quá nhanh.'+fx(c,{money:-m(50),tam:-12})}]},

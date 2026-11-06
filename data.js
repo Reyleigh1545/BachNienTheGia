@@ -531,5 +531,75 @@ const GATE_TXT={
 const THATXUAT={votu:'Không có con trai',dam:'Dâm dật',batsu:'Không thờ cha mẹ chồng',khau:'Lắm điều',dao:'Trộm cắp',do:'Ghen tuông',tat:'Bệnh hiểm nghèo'};
 const BATKHU={tang:'Đã để tang cha mẹ chồng',ngheo:'Lấy nhau lúc nghèo, nay đã giàu',coi:'Không còn nhà để về'};
 
-return {JOBMETA,EMPLOYER62,BIZX,RULEREQ,RULEX62,RULEX_CONFLICT,GATES,STITLE,GATE_TXT,THATXUAT,BATKHU,CLANOFF,TOLV,GOP,THO,BRK100,SURN2,MMID,MGIV,FMID,FGIV,RNAME,POEMS,ORIGINS,AXES,SKILLS,JOBX,SCHOOLX,FOCUSX,LIFEX,VICES,REGIONS,DIST,SUBS,PERSONA,PATHS,OFFICES,STATS,SN,MS,SURN,MNAME,FNAME,HOMES,LIFE,TIERS,EXPECT,TK,TUOC,TUOC_PAY,TUOC_HOME,TUOC_LAND,RANKS,SALARY,VACANCY,ARMY,JOBS,STARTJOBS,FOCUS,SCHOOL,HABITS,TRAITS,CROPS,GOODS,ROUTES,ROLES,BIZ,RULES,WARS};
+/*@@D63-BEGIN@@*/
+/* ================= v6.3: thế giới · tỉnh, nước, thiên tai, hàng hóa ================= */
+/* hàng hiếm theo vùng + hao hụt: dec = tỉ lệ hư mỗi tháng */
+Object.assign(GOODS,{
+  ngua:{n:'Ngựa chiến',u:'con',p:5000,dec:0.004},ngoc:{n:'Ngọc thạch',u:'viên',p:9000,dec:0},traichau:{n:'Trân châu',u:'hộp',p:7500,dec:0}});
+Object.assign(GOODS.lua,{dec:0.008});Object.assign(GOODS.ngo,{dec:0.03});Object.assign(GOODS.duong,{dec:0.01});Object.assign(GOODS.che,{dec:0.008});
+Object.assign(GOODS.duoc,{dec:0.01});Object.assign(GOODS.to,{dec:0.002});Object.assign(GOODS.bong,{dec:0.004});
+const RARE_P={ /* hệ số giá theo vùng cho hàng hiếm: thấp = nơi sản xuất */
+  ngua:{trung:1.4,bac:.45,dong:1.7,nam:1.8,tay:1.0},ngoc:{trung:1.5,bac:1.6,dong:1.7,nam:1.3,tay:.4},traichau:{trung:1.6,bac:1.8,dong:.45,nam:1.4,tay:1.9}};
+for(const k in REGIONS)for(const g in RARE_P)REGIONS[k].p[g]=+Math.pow(RARE_P[g][k],0.62).toFixed(3); /* nén chênh lệch giá để không có chuyến buôn lãi vô lý */
+REGIONS.trung.p.to=.72;REGIONS.trung.p.che=.78;
+/* nước. col: màu trên bản đồ. hos: độ hiếu chiến */
+const NAT={
+  trieu:{n:'Đại Triều',r:'trung',col:'#b8860b',hos:.9,d:'Triều đình chính thống, có ải biên giới Bắc và Tây.'},
+  ha_tay:{n:'Phiên trấn Hà Tây',r:'trung',col:'#8b5e3c',hos:.7,d:'Phiên vương cát cứ miền tây Trung Châu, thần phục trên danh nghĩa.'},
+  lang_bo:{n:'Lang bộ',r:'bac',col:'#4f6d7a',hos:1.2,d:'Bộ tộc du mục phía bắc, kỵ binh nhanh, ưa cướp phá biên ải.'},
+  hac_ma:{n:'Hắc Mã bộ',r:'bac',col:'#2f3e46',hos:1.0,d:'Bộ tộc thảo nguyên chăn ngựa, đối địch Lang bộ.'},
+  van_dao:{n:'Vân Đảo quốc',r:'dong',col:'#3a7ca5',hos:.5,d:'Quốc gia đảo giàu nhờ thương cảng và muối.'},
+  hai_minh:{n:'Hải Minh',r:'dong',col:'#7d4e57',hos:1.1,d:'Liên minh hải tặc và thuyền chiến ngoài khơi.'},
+  tho_ty:{n:'Thổ ty Lam Sơn',r:'nam',col:'#5b8c5a',hos:.7,d:'Liên minh các thổ ty miền núi, nắm dược liệu và đường độc đạo.'},
+  lam_quoc:{n:'Lam quốc',r:'nam',col:'#c17f59',hos:.8,d:'Tiểu quốc đồng bằng ven biển phía nam.'},
+  sa_quoc:{n:'Sa quốc',r:'tay',col:'#d4a373',hos:.9,d:'Vương quốc sa mạc giữ con đường tơ lụa.'},
+  oc_dao:{n:'Liên minh Ốc Đảo',r:'tay',col:'#6a994e',hos:.6,d:'Các thành ốc đảo liên minh lỏng lẻo.'}};
+/* tỉnh. k: kinh (kinh đô) | phu (phủ lớn) | cang (cảng) | bien (ải biên giới) | lang (vùng nông thôn).
+   pm: hệ số giá riêng của tỉnh (nhân với hệ số vùng). */
+const PROV={
+  nhan_mon:{n:'Nhạn Môn quan',r:'bac',nat:'trieu',k:'bien',x:262,y:112,pm:{sat:1.15,lua:1.25,muoi:1.2,ngua:.8},d:'Ải lớn nhất phía bắc, đóng quân đông.'},
+  thiet_son:{n:'Thiết Sơn',r:'bac',nat:'lang_bo',k:'lang',x:165,y:68,pm:{sat:.8,go:.85},d:'Mỏ sắt và rừng thông.'},
+  ma_truong:{n:'Mã Trường',r:'bac',nat:'hac_ma',k:'lang',x:335,y:52,pm:{ngua:.85,to:1.1},d:'Thảo nguyên mênh mông, chợ ngựa lớn.'},
+  tuyet_linh:{n:'Tuyết Lĩnh',r:'bac',nat:'lang_bo',k:'lang',x:250,y:38,pm:{duoc:.85,ngua:.95},d:'Cao nguyên quanh năm lạnh, mùa đông khắc nghiệt.'},
+  thien_kinh:{n:'Thiên Kinh',r:'trung',nat:'trieu',k:'kinh',x:250,y:188,pm:{to:1.1,gom:1.05,huong:1.15,ngoc:1.2,traichau:1.2,ngua:1.1,che:1.1},d:'Kinh đô, quan lại, nhà giàu và hàng quý đổ về.'},
+  hoai_thuy:{n:'Hoài Thủy',r:'trung',nat:'trieu',k:'phu',x:208,y:240,pm:{lua:.95,duong:.95},d:'Phủ lớn bên sông, chợ đông, nhiều xưởng.'},
+  lac_giang:{n:'Lạc Giang',r:'trung',nat:'trieu',k:'lang',x:305,y:176,pm:{lua:.85,ngo:.9,to:.9},d:'Đồng bằng phù sa, vựa lúa của Trung Châu.'},
+  son_ha:{n:'Sơn Hà',r:'trung',nat:'ha_tay',k:'phu',x:172,y:160,pm:{sat:.9,go:.9,ngua:.9},d:'Đất của phiên vương, núi non hiểm trở, thợ rèn giỏi.'},
+  hai_khau:{n:'Hải Khẩu',r:'trung',nat:'trieu',k:'cang',x:336,y:226,pm:{huong:.82,traichau:.85,muoi:.9},d:'Cảng lớn của Trung Châu, thuyền ngoại quốc ra vào.'},
+  bach_sa:{n:'Bạch Sa',r:'dong',nat:'van_dao',k:'cang',x:392,y:136,pm:{traichau:.9,huong:.9},d:'Thương cảng bãi cát trắng.'},
+  van_dao:{n:'Vân Đảo',r:'dong',nat:'van_dao',k:'kinh',x:446,y:190,pm:{traichau:.85,to:1.05,gom:.95},d:'Đảo chính, vương cung và chợ lớn.'},
+  diem_dien:{n:'Diêm Điền',r:'dong',nat:'van_dao',k:'lang',x:412,y:252,pm:{muoi:.85,traichau:.9},d:'Ruộng muối và làng chài.'},
+  hai_minh_ao:{n:'Hải Minh Đảo',r:'dong',nat:'hai_minh',k:'lang',x:462,y:268,pm:{traichau:.8,sat:1.1},d:'Ổ của liên minh hải tặc, chợ đen.'},
+  lam_son:{n:'Lam Sơn',r:'nam',nat:'tho_ty',k:'lang',x:178,y:335,pm:{duoc:.85,go:.85},d:'Núi rừng, nhiều lam chướng.'},
+  duoc_coc:{n:'Dược Cốc',r:'nam',nat:'tho_ty',k:'lang',x:262,y:366,pm:{duoc:.8,huong:.9},d:'Thung lũng thuốc quý.'},
+  mia_chau:{n:'Mía Châu',r:'nam',nat:'lam_quoc',k:'lang',x:332,y:338,pm:{duong:.85,lua:.95},d:'Đồng mía và ruộng lúa chín sớm.'},
+  cam_thanh:{n:'Cẩm Thành',r:'nam',nat:'lam_quoc',k:'cang',x:392,y:326,pm:{huong:.85,go:.9,ngua:1.1},d:'Kinh đô Lam quốc, cảng lớn phía nam.'},
+  ngoc_mon:{n:'Ngọc Môn quan',r:'tay',nat:'trieu',k:'bien',x:128,y:178,pm:{ngoc:.85,to:1.15,che:1.15},d:'Ải phía tây, cửa ngõ con đường tơ lụa.'},
+  sa_thanh:{n:'Sa Thành',r:'tay',nat:'sa_quoc',k:'phu',x:62,y:130,pm:{to:1.1,ngoc:.9,huong:.95},d:'Thành lớn của Sa quốc, thương đoàn tấp nập.'},
+  thanh_tuyen:{n:'Thanh Tuyền',r:'tay',nat:'oc_dao',k:'lang',x:66,y:215,pm:{bong:.9,ngoc:.85},d:'Ốc đảo có suối nước ngọt.'},
+  lien_sa:{n:'Liên Sa',r:'tay',nat:'oc_dao',k:'phu',x:84,y:268,pm:{ngoc:.8,muoi:.9},d:'Thành ốc đảo phía nam sa mạc, mỏ ngọc.'}};
+/* cặp nước giáp nhau: [a,b,căng thẳng gốc,hiếu chiến,tỉnh tuyến đầu của a,tỉnh tuyến đầu của b] */
+const BORDER=[
+  ['trieu','lang_bo',30,1.0,'nhan_mon','thiet_son'],['trieu','hac_ma',25,.8,'nhan_mon','ma_truong'],['lang_bo','hac_ma',35,1.1,'tuyet_linh','ma_truong'],
+  ['trieu','ha_tay',20,.7,'thien_kinh','son_ha'],['trieu','sa_quoc',22,.6,'ngoc_mon','sa_thanh'],['sa_quoc','oc_dao',28,.9,'sa_thanh','thanh_tuyen'],
+  ['trieu','oc_dao',15,.4,'ngoc_mon','thanh_tuyen'],['trieu','van_dao',18,.5,'hai_khau','bach_sa'],['van_dao','hai_minh',40,1.2,'diem_dien','hai_minh_ao'],
+  ['trieu','hai_minh',25,.8,'hai_khau','hai_minh_ao'],['trieu','tho_ty',25,.8,'hoai_thuy','lam_son'],['tho_ty','lam_quoc',30,1.0,'duoc_coc','mia_chau'],
+  ['trieu','lam_quoc',20,.6,'hoai_thuy','mia_chau']];
+/* thiên tai theo vùng. w: trọng số theo vùng, mo: tháng có thể xảy ra, d: kéo dài (tháng), warn: có báo trước, epi: gây dịch,
+   crop: hệ số thu hoạch ruộng khi trúng, g: hàng tăng giá */
+const DIS={
+  lu:{n:'Lũ lụt',w:{trung:1.5,nam:.8,dong:.3},mo:[5,6,7,8,9],d:[2,4],warn:1,crop:.45,g:['lua','ngo'],epi:.3,say:'Nước sông dâng cao, đê vỡ nhiều chỗ.'},
+  chau:{n:'Nạn châu chấu',w:{trung:1,bac:.3,nam:.4},mo:[6,7,8,9],d:[2,3],warn:0,crop:.5,g:['lua','ngo'],epi:.1,say:'Châu chấu kéo đến che kín trời.'},
+  han:{n:'Đại hạn',w:{trung:.7,tay:1.4,bac:.6},mo:[4,5,6,7,8],d:[3,6],warn:0,crop:.5,g:['lua','ngo','bong'],epi:.2,say:'Mấy tháng không một giọt mưa, ruộng nứt nẻ.'},
+  bao:{n:'Bão biển',w:{dong:2.2,trung:.5,nam:.8},mo:[7,8,9,10],d:[1,2],warn:1,crop:.6,g:['muoi','lua','go'],epi:.1,say:'Bão đổ bộ, sóng cuốn thuyền bè và mái nhà.'},
+  cat:{n:'Bão cát',w:{tay:2.2},mo:[3,4,5],d:[1,2],warn:1,crop:.6,g:['bong','lua'],epi:0,say:'Bão cát phủ kín ốc đảo và đường thương đạo.'},
+  lam:{n:'Dịch lam chướng',w:{nam:2.2,dong:.3},mo:[3,4,5,6,10],d:[3,5],warn:0,crop:.85,g:['duoc'],epi:1,say:'Sương độc từ rừng sâu tràn xuống, người ốm hàng loạt.'},
+  tuyet:{n:'Bão tuyết',w:{bac:2.2,tay:.3},mo:[11,12,1,2],d:[2,4],warn:1,crop:.55,g:['ngo','sat','go'],epi:.2,say:'Tuyết phủ trắng thảo nguyên, gia súc chết cóng hàng đàn.'}};
+const NOTE63={nghe:['nong','buon','tho','hoc','vo','quan','thuoc'],jobN:{nong:'làm ruộng',buon:'buôn bán',tho:'thợ thủ công',hoc:'nho học',vo:'võ nghệ',quan:'quan lại',thuoc:'thầy thuốc'}};
+
+/*@@D63-END@@*/
+/* v6.3: nới ngưỡng thông thạo của các bậc cao (đo ở 6.2 cho thấy gần như không ai tới bậc cuối) */
+Object.values(JOBS).forEach(J=>{if(J.lv)J.lv.forEach(L=>{if(L.req&&L.req.m>=60)L.req.m=Math.round(L.req.m*0.8)})});
+
+return {NAT,PROV,BORDER,DIS,NOTE63,JOBMETA,EMPLOYER62,BIZX,RULEREQ,RULEX62,RULEX_CONFLICT,GATES,STITLE,GATE_TXT,THATXUAT,BATKHU,CLANOFF,TOLV,GOP,THO,BRK100,SURN2,MMID,MGIV,FMID,FGIV,RNAME,POEMS,ORIGINS,AXES,SKILLS,JOBX,SCHOOLX,FOCUSX,LIFEX,VICES,REGIONS,DIST,SUBS,PERSONA,PATHS,OFFICES,STATS,SN,MS,SURN,MNAME,FNAME,HOMES,LIFE,TIERS,EXPECT,TK,TUOC,TUOC_PAY,TUOC_HOME,TUOC_LAND,RANKS,SALARY,VACANCY,ARMY,JOBS,STARTJOBS,FOCUS,SCHOOL,HABITS,TRAITS,CROPS,GOODS,ROUTES,ROLES,BIZ,RULES,WARS};
 })();
