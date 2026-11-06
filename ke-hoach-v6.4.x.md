@@ -28,6 +28,21 @@ Nguyên tắc đang áp dụng: chỉ test khi mày yêu cầu (kiểm cú pháp
 - Hiện trạng: đạt thông thạo 120 thì gần như hết nội dung tiếp theo (ev-nghe.js:292–310).
 - Đề xuất: nối với ghế "Thái y viện" trong hệ ghế v6.4. Thêm sự kiện chữa bệnh cho hoàng tộc, soạn y thư, mở y quán, nhận học trò. Thêm danh hiệu riêng cho người đạt đỉnh nghề. Có thể cho gia tộc bớt chết bệnh nhờ có thầy thuốc giỏi.
 
+### B1b. Chiếu mời vào cung làm ngự y: chống trùng, theo ghế Thái y viện (mày thêm 2026-11-07)
+Ý của mày: nếu trong gia tộc đã có người ở trong cung thì đừng mời thêm; hoặc cho làm các chức ở Thái y viện, còn ghế trống thì mới mời.
+
+Hiện trạng trong code:
+- Sự kiện `y_chieumo` (ev-nghe.js:290, đánh dấu `fixed:1`, cho nghề thầy thuốc và chủ y quán) chọn "Tiếp chỉ vào cung" thì chỉ đặt `c.job='nguy'; c.lv=0`. Không kiểm tra gia tộc đã có ngự y chưa, nên nhiều người trong nhà có thể bị mời lần lượt.
+- Nghề `nguy` (data.js:59) có 3 cấp: Ngự y, Viện phán, Thái y lệnh. Nghề này **chưa nối** với hệ ghế v6.4. Bốn ghế Thái y viện của v6.4 (data-v64.js:117–120) là: Thái y viện sứ (1 ghế), Thái y viện phán (2), Ngự y (4), Y chính (4). Hai hệ chạy song song, chưa biết nhau.
+- Tên lệch: ghế ghi "Thái y viện sứ", còn nhân vật họ Dương ghi "Thái y viện chánh sứ" (engine.js:4324). Nên thống nhất.
+
+Đề xuất:
+1. **Chống trùng.** Thêm điều kiện cho `y_chieumo` (qua `G._v62.CTX`): nếu trong gia tộc đã có người đang làm ngự y hoặc giữ ghế Thái y viện thì sự kiện không xuất hiện. Nếu muốn nhẹ tay hơn, chỉ mời người khác khi người kia đã mất hoặc nghỉ.
+2. **Mời theo ghế trống.** Chiếu chỉ phát ra khi Thái y viện còn ghế trống (đếm bằng `seatKeys`/`offState`). Người được mời nhận bậc thấp nhất phù hợp (Y chính, rồi Ngự y), tiếp chỉ thì gọi `assignPost` thay vì chỉ đổi `c.job`. Nhiệm kỳ và hồi tị đã có sẵn trong hệ ghế. Muốn lên Viện phán hay Viện sứ thì đi theo thăng chức trong viện, không mời mới.
+3. **Ghế đã đầy.** Nếu Thái y viện hết ghế (NPC giữ hết) thì không phát chiếu. Có thể thêm một kỳ ngộ "chờ khuyết": có người về hưu thì mới mời.
+4. **Thống nhất hai hệ.** Cần chọn một trong hai: ánh xạ ba cấp của nghề `nguy` sang bốn ghế (cấp 1 → Y chính hoặc Ngự y, cấp 2 → Viện phán, cấp 3 → Viện sứ), hoặc bỏ nghề `nguy` mà đưa người vào nghề `quan` có ghế Thái y viện. Chưa chốt, cần mày quyết. Nếu đụng tới nghề `nguy` thì phải rà các chỗ đang dùng nó (engine.js có khoảng 15 chỗ, như `isOfficialFamily`, `paid`, tính uy thế gia tộc).
+5. Các sự kiện ngự y sẵn có (ev-nghe.js khoảng 300–310) và sự kiện `h_du_dongy` (họ Dương tuyển học trò, ev-v633b.js:150) nên kiểm lại cho khớp với ghế sau khi nối.
+
 ### B2. Chỉ số 150
 - Hiện trạng: các mốc chặn là `GATES=[100,120,140]`, sau đó 150, rồi 200. `hardCap` là 150 trừ khi `c.g200`. Ở 150 chỉ có danh hiệu (`STITLE`) và một sự kiện Thiên cơ rất hiếm.
 - Đề xuất: popup báo rõ khi chạm trần 150, mỗi chỉ số có sự kiện Thiên cơ riêng, và nói rõ cách mở trần 200.
