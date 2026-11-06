@@ -19,7 +19,7 @@ ST({id:'th_a',t:'Thoái hôn',age:[16,22],c:c=>!married(c)&&!c.inLaw&&G.tierIdx(
 A({id:'th_b',t:'Ba năm sau',
  x:(c,d)=>rose(c)?`${N(c)} giờ đã khác xưa. Nhà họ ${pick(['Mộ Dung','Liễu','Tiêu','Bạch'])} lại sa sút vì làm ăn thua lỗ, cho người đến xin nối lại hôn ước${d.p==='hen'?', đúng như lời hẹn năm nào':''}.`:`Ba năm trôi qua mà ${N(c)} vẫn chưa làm nên chuyện gì. Nghe tin người kia đã gả vào một nhà quyền quý.`,
  o:c=>rose(c)?[
-    {l:'Bỏ qua chuyện cũ, nối lại hôn ước',c:c=>!married(c),f:c=>{G.mkSpouse(c,true,G.mkPerson({g:c.g==='nam'?'nữ':'nam',age:age(c)-1,lift:20}));return 'Người đời khen độ lượng.'+fx(c,{fame:R(10,20),tam:6})}},
+    {l:'Bỏ qua chuyện cũ, nối lại hôn ước',c:c=>!married(c),f:c=>{G.mkSpouse(c,true,G.mkMatch(c,{age:age(c)-1,up:0.6,story:1}));return 'Người đời khen độ lượng.'+fx(c,{fame:R(10,20),tam:6})}},
     {l:'Từ chối khéo, chúc họ yên ổn',f:c=>'Chuyện cũ khép lại nhẹ nhàng.'+fx(c,{fame:R(8,15),eq:2,tam:8})},
     {l:'Bắt họ quỳ xin trước sân như năm xưa',f:c=>'Hả hê một trận. Nhưng có người bảo mình hẹp hòi.'+fx(c,{tam:15,fame:-5})}]
    :[{l:'Gác chuyện cũ, sống tiếp',f:c=>fx(c,{eq:2,tam:-4})},{l:'Uống rượu giải sầu',f:c=>fx(c,{tam:-8,habit:chance(0.3)?'ruou':undefined})}]}),

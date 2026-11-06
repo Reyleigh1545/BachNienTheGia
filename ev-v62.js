@@ -34,7 +34,7 @@ return [
  x:(c,d)=>{const p=P(d.xg);return `Có người từ làng bên mang tin: ${esc(p.given)} ở nhà họ ${esc(surOf(p))} bị mẹ chồng hành hạ, làm lụng quần quật mà vẫn bị chửi mắng. ${prot()>=2?'Nhà họ chưa biết nhà mình bây giờ có người làm quan.':''}`},
  o:(c,d)=>{const p=P(d.xg);return [
   {l:'Cho người sang nói chuyện phải trái',r:[{eq:0.5,khau:0.5,fame:0.4},40-prot()*6],y:c=>`Nhà họ ${esc(surOf(p))} chột dạ, từ đó đối xử với ${esc(p.given)} khác hẳn.`+fx(c,{fame:2}),n:c=>'Nhà bên kia đóng cửa không tiếp, còn nói con gái gả đi như bát nước đổ đi.'+fx(c,{tam:-6})},
-  {l:'Đón con về nhà',s:'Con gái bỏ nhà chồng về, người ngoài dị nghị',f:c=>{G.comeHome(p,chance(0.4));G.cf(-2,'Con gái bỏ chồng về nhà');return `${esc(p.given)} khóc nức nở ngày về. Từ nay lại ở nhà mẹ đẻ.`}},
+  {l:'Đón con về nhà',s:'Con gái bỏ nhà chồng về, người ngoài dị nghị',f:c=>{const k0=chance(0.4)&&age(p)>=18&&age(p)<=44;G.comeHome(p,k0);G.cf(-2,'Con gái bỏ chồng về nhà');return `${esc(p.given)} khóc nức nở ngày về. Từ nay lại ở nhà mẹ đẻ.`}},
   {l:'Gửi tiền riêng để con có chỗ dựa',f:c=>`Có chút tiền riêng, ${esc(p.given)} cũng đỡ khổ.`+fx(c,{money:-m(3)})},
   {l:'Con gái đã gả đi, phải nhẫn nhịn',ax:{rong:-2},f:c=>'Nghe tin mà lòng nặng trĩu.'+fx(c,{tam:-5})}]}},
 {id:'v62_xg_thong_gia_nho',fixed:1,t:'Thông gia nhờ vả',k:'Thông gia',
@@ -46,13 +46,13 @@ return [
 {id:'v62_xg_ly_hon_ve',fixed:1,t:'Bị nhà chồng trả về',k:'Thông gia',
  x:(c,d)=>{const p=P(d.xg);return `${esc(p.given)} ôm tay nải đứng trước cổng. Nhà họ ${esc(surOf(p))} viết hưu thư, nói ${pick(['lấy nhau mấy năm không có con trai','không hợp ý mẹ chồng','nhà mình nay sa sút, không môn đăng hộ đối'])}.`},
  o:(c,d)=>{const p=P(d.xg);return [
-  {l:'Mở cửa đón con về',f:c=>{const k=chance(0.35);G.comeHome(p,k);return `Nhà mình là nhà của con. ${k?esc(p.given)+' dắt theo đứa con nhỏ, nhà bên kia không nhận.':''}`+fx(c,{tam:-3})}},
+  {l:'Mở cửa đón con về',f:c=>{const k=chance(0.35)&&age(p)>=18&&age(p)<=44;G.comeHome(p,k);return `Nhà mình là nhà của con. ${k?esc(p.given)+' dắt theo đứa con nhỏ, nhà bên kia không nhận.':''}`+fx(c,{tam:-3})}},
   {l:'Sang nhà kia đòi lẽ phải',r:[{khau:0.6,fame:0.4,eq:0.3},50-prot()*6],y:c=>`Nhà kia đuối lý, phải đón ${esc(p.given)} về, lại xin lỗi.`+fx(c,{fame:4}),n:c=>{G.comeHome(p,false);return 'Cãi không lại, đành đưa con về nhà.'+fx(c,{tam:-6,fame:-2})}},
   {l:'Không nhận, bắt quay lại nhà chồng',ax:{rong:-5},f:c=>{p.left='botron';return `${esc(p.given)} quay lưng đi, từ đó bặt tin.`+fx(c,{tam:-8,fame:-3})}}]}},
 {id:'v62_tro_ve',fixed:1,t:'Người cũ trở về',k:'Gia sự',
  x:(c,d)=>{const p=P(d.xg);return `${esc(p.given)} rời gia tộc đã ${Math.floor((S().t-(p.leftT||S().t))/12)} năm, nay quần áo bạc thếch, đứng ngoài từ đường xin được nhận lại. ${p.left==='expelled'?'Năm xưa bị trục xuất, giờ nói đã biết lỗi.':'Bao năm phiêu bạt, nay muốn về với họ hàng.'}`},
  o:(c,d)=>{const p=P(d.xg);return [
-  {l:'Cho về, ghi lại tên vào gia phả',f:c=>{p.left=null;p.leftT=null;p.hh=G.mainHH();p.away=null;p.oan=0;G.shiftAx(p,{ht:8});return `${esc(p.given)} quỳ lạy tổ tiên, khóc như mưa.`+fx(c,{tam:4})+fx(p,{tam:20})}},
+  {l:'Cho về, ghi lại tên vào gia phả',f:c=>{p.left=null;p.leftT=null;p.hh=G.mainHH();p.away=null;p.oan=0;G.shiftAx(p,{ht:8});return `${esc(p.given)} quỳ lạy tổ tiên, khóc như mưa.`+(G.addStat(p,'tam',20),'')+fx(c,{tam:4})}},
   {l:'Cho ở tạm, thử lòng vài năm',f:c=>{p.left=null;p.leftT=null;p.hh=G.mainHH();p.away=null;p.fame=Math.min(p.fame,0);return `${esc(p.given)} được ở lại nhưng mọi người còn dè chừng.`}},
   {l:'Gia pháp đã định, không nhận',ax:{diem:2},f:c=>`${esc(p.given)} lặng lẽ bỏ đi.`+fx(c,{tam:-3})}]}},
 /* ================= gia tộc bất ổn ================= */
@@ -252,8 +252,8 @@ return [
     {l:'Cảm ơn, nhưng nhà muốn cho học chữ',f:c=>'Thầy tiếc nhưng hiểu.'+fx(c,{tri:1})}]},
 {id:'v62_tre_viec_nha',t:'Đỡ đần việc nhà',age:[6,17],c:c=>c.school==='viecnha',w:1.2,cd:24,k:'Việc nhà',
  x:c=>`${N(c)} ${pick(['dậy sớm nhóm bếp, quét sân','một mình trông mấy em nhỏ','ra đồng mang cơm cho người lớn','vá lại tấm lưới rách'])}, người lớn đi làm về thấy đâu ra đấy.`,
- o:[{l:'Khen ngợi',f:c=>'Được khen, càng chăm.'+fx(c,{tam:5,eq:1})},
-    {l:'Thưởng ít tiền tiêu vặt',f:c=>'Cất kỹ trong ống tre.'+fx(c,{purse:m(0.2),tam:4})},
+ o:[{l:'Khen ngợi',f:c=>'Được khen, càng chăm.'+fx(c,{tam:5,eq:1,cheer:3})},
+    {l:'Thưởng ít tiền tiêu vặt',f:c=>'Cất kỹ trong ống tre.'+fx(c,{purse:m(0.2),tam:4,cheer:4})},
     {l:'Cho nghỉ một hôm đi chơi',f:c=>'Chạy ra đồng thả diều cả chiều.'+fx(c,{tam:8})}]},
 {id:'v62_tre_tu_hoc',t:'Mượn sách',age:[8,17],c:c=>c.school==='tuhoc',w:1.2,cd:24,k:'Tự học',
  x:c=>`${N(c)} chạy sang nhà ${pick(['ông đồ già','cậu tú cuối xóm','sư cụ'])} xin mượn sách, hẹn chép xong trả.`,

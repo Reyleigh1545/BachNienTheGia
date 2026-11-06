@@ -355,7 +355,7 @@ return [
     {l:'Bảo trẻ con đừng hỏi lắm',f:c=>fx(c,{tam:-2})}]},
 {id:'tre_hoc_gioi_ve',t:'Thầy khen',age:[7,15],c:c=>c.school!=='nha'&&c.tri>40,
  x:c=>`Thầy học nhắn gửi: ${N(c)} học giỏi nhất lớp, nên cho học lên cao.`,
- o:[{l:'Thưởng cho con',f:c=>fx(c,{money:-m(3),tam:6})},
+ o:[{l:'Thưởng cho con',f:c=>fx(c,{money:-m(3),tam:6,cheer:4})},
     {l:'Bảo con cố gắng thêm',f:c=>fx(c,{tri:2,tam:-1})}]},
 {id:'tre_luoi_hoc',t:'Học vẹt',age:[7,15],c:c=>c.school!=='nha'&&c.tri<30,
  x:c=>`Thầy phàn nàn ${N(c)} chỉ học thuộc lòng mà không hiểu gì.`,

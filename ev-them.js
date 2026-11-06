@@ -144,7 +144,7 @@ V({id:'t_g_ban_hang_le',t:'Phiên chợ Tết',tier:ngheo,sea:['dong'],age:[14,6
     {l:'Đi sắm Tết',f:c=>fx(c,{money:-m(3),tam:10})}]}),
 V({id:'t_g_nha_giau_hoi',t:'Nhà giàu dạm hỏi',tier:ngheo,age:[16,24],c:c=>!G.married(c),
  x:c=>`Nhà phú hộ làng bên để ý ${N(c)}, nhờ mối đến dạm hỏi. Của hồi môn không ít.`,
- o:[{l:'Gật đầu',f:c=>{G.mkSpouse(c);return 'Thành thân với người nhà phú hộ.'+fx(c,{money:m(R(80,150)),tam:8,cfame:8})}},
+ o:[{l:'Gật đầu',f:c=>{G.mkSpouse(c,false,G.mkMatch(c,{up:2}));return 'Thành thân với người nhà phú hộ.'+fx(c,{money:m(R(80,150)),tam:8,cfame:8})}},
     {l:'Từ chối, muốn tự chọn',f:c=>fx(c,{tam:2})}]}),
 V({id:'t_g_cua_roi',t:'Túi tiền đánh rơi',tier:ngheo,
  x:'Trên đường về, nhặt được túi gấm nặng trĩu bạc, có thêu chữ của một hiệu buôn.',

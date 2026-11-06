@@ -161,7 +161,7 @@ const TRAITS={
   thientai:{n:'Thiên tài',c:'p',gene:'r',p:.06,d:'Mọi chỉ số tăng nhanh 40%, dễ phá giới hạn',growAll:.4,brk:10},
   phuctinh:{n:'Phúc tinh',c:'p',d:'Cơ duyên +30, gặp nhiều kỳ ngộ tốt',duyen:30},
   thanluc:{n:'Thần lực',c:'p',gene:'D',p:.02,d:'Võ lực tăng nhanh 50%, rèn được tới 115',grow:{vo:.5},capUp:{vo:15}},
-  khuynhthanh:{n:'Khuynh thành',c:'p',gene:'D',p:.02,d:'Mị lực rèn được tới 115',grow:{mi:.4},capUp:{mi:15}},
+  khuynhthanh:{n:'Khuynh thành',c:'p',gene:'D',p:.02,look:1,d:'Tướng mạo bẩm sinh hơn người, mị lực có sẵn ngay từ nhỏ, rèn được tới 115',grow:{mi:.4},capUp:{mi:15}},
   ythanh:{n:'Y thánh căn cốt',c:'p',d:'Nghề y tăng thông thạo gấp đôi',mmJobs:['y'],mm:1},
   vankhuc:{n:'Văn Khúc tinh',c:'p',d:'Điểm thi +12, Trí rèn được tới 115',exam:12,capUp:{tri:15}},
   satinh:{n:'Sát tinh',c:'p',d:'Chiến công gấp rưỡi, nhưng dễ đổ máu',merit:.5,cond:.03},
@@ -419,11 +419,11 @@ const BRK100={
     {id:'dan',l:'Lắng nghe nỗi khổ của dân',d:'Đi từng nhà, nghe từng chuyện',mo:[10,16],sp:{eq:.9,thanh:.3},job:['quan'],gain:'thaunhan'}]};
 /* các đặc tính mới cho đột phá */
 const TRAITS61={
-  dainho:{n:'Đại nho',c:'p',d:'Trí tuệ rèn được tới 115, điểm thi +6, được giới sĩ phu kính trọng',capUp:{tri:15},exam:6,fame:2},
+  dainho:{n:'Học thuật đại ngộ',c:'p',d:'Trí tuệ rèn được tới 115, điểm thi +6, được giới sĩ phu kính trọng',capUp:{tri:15},exam:6,fame:2},
   muusi:{n:'Mưu sĩ',c:'p',d:'Trí tuệ rèn được tới 112, Cơ mưu tăng nhanh, việc lớn dễ thành',capUp:{tri:12},cond:.03},
   ythu:{n:'Y thư truyền đời',c:'p',d:'Trí tuệ tới 110, thông thạo nghề y tăng nhanh',capUp:{tri:10},mm:.4,mmJobs:['y','nguy']},
-  tongsu:{n:'Tông sư',c:'p',d:'Võ lực rèn được tới 118, ra trận lập công nhanh',capUp:{vo:18},merit:.3},
-  kimthan:{n:'Kim cương thân',c:'p',d:'Võ lực và sức khỏe tới 110, ít bệnh tật',capUp:{vo:10,suc:10},sick:.6},
+  tongsu:{n:'Võ đạo đại ngộ',c:'p',d:'Võ lực rèn được tới 118, ra trận lập công nhanh',capUp:{vo:18},merit:.3},
+  kimthan:{n:'Thân thể đúc thép',c:'p',d:'Võ lực và sức khỏe tới 110, ít bệnh tật',capUp:{vo:10,suc:10},sick:.6},
   truongtho:{n:'Trường thọ',c:'p',d:'Già chậm hơn 10 năm, sức khỏe rèn tới 115',decl:10,capUp:{suc:15}},
   phongnha:{n:'Phong nhã danh sĩ',c:'p',d:'Mị lực rèn được tới 115, danh vọng tự tăng',capUp:{mi:15},fame:3},
   thaunhan:{n:'Thấu nhân tâm',c:'p',d:'EQ rèn được tới 115, gia tộc ổn định hơn',capUp:{eq:15},on:2},
@@ -479,7 +479,16 @@ Object.assign(SCHOOL[2],{cha:{n:'Theo cha mẹ học',fee:0,g:{},anyGirl:1,par:1
 Object.assign(SCHOOL[3],{cha:{n:'Theo cha mẹ học',fee:0,g:{},anyGirl:1,par:1},tuhoc:{n:'Tự học',fee:0,g:{},anyGirl:1,self:1},viecnha:{n:'Phụ việc nhà',fee:0,g:{suc:1,eq:1},anyGirl:1,chore:1},
   hocviec:{n:'Theo người học việc',fee:0,g:{},anyGirl:1,appr:1},gui:{n:'Gửi vào cơ sở làm ăn',fee:0,g:{eq:1},anyGirl:1,gui:1},hocdet:{n:'Phường dệt học việc',fee:80,g:{mi:3,eq:1},pre:{det:5},anyGirl:1},hocbep:{n:'Vào bếp tửu lâu học việc',fee:0,g:{eq:1,suc:1},pre:{bep:5},anyGirl:1}});
 SCHOOL[2].hocy.anyGirl=1;SCHOOL[2].hocbuon.anyGirl=1;SCHOOL[3].yhd.anyGirl=1;SCHOOL[3].thoi.anyGirl=1;
-Object.assign(SCHOOLX,{cha:{ax:{ht:1}},tuhoc:{ax:{dl:1.5,yc:1},sk:{muu:1}},viecnha:{ax:{cc:1.5,ht:.5},sk:{ql:2}},hocviec:{ax:{cc:1,dl:.5},sk:{ky:2}},gui:{ax:{dl:1,hd:.5},sk:{khau:1,ql:1}},hocdet:{ax:{cc:1,diem:.5},sk:{ky:3}},hocmo:{ax:{rong:1,gan:.5},sk:{ky:2}},hocbep:{ax:{cc:1},sk:{ky:2}}});
+/* v6.3.4: con gái học theo nếp nhà. need = nếp nhà tối thiểu (0 Nho lễ giữ khuê môn, 1 cho dạy chữ trong nhà, 2 cho học thầy riêng, 3 gia quy "Nữ nhi được đi học" mới vào trường công) */
+SCHOOL[1].nucong.girlOnly=1;SCHOOL[2].nucong.girlOnly=1;SCHOOL[3].khue.girlOnly=1;
+SCHOOL[1].daychu={n:'Mời thầy dạy chữ tại nhà',fee:200,g:{tri:4,eq:1},tier:1,anyGirl:1,girlOnly:1,need:1};
+SCHOOL[2].daychu={n:'Mời thầy dạy chữ tại nhà',fee:350,g:{tri:5,eq:1},tier:2,anyGirl:1,girlOnly:1,need:1};
+SCHOOL[3].daychu={n:'Mời thầy dạy chữ tại nhà',fee:600,g:{tri:6,eq:2},tier:2,anyGirl:1,girlOnly:1,need:1};
+SCHOOL[3].khue.need=1;SCHOOL[1].giasu.need=2;SCHOOL[2].danhsu.need=2;
+['lang','tu'].forEach(k=>SCHOOL[1][k].need=3);SCHOOL[1].vodo.need=3;
+['huyen','vodd','hoctho'].forEach(k=>SCHOOL[2][k].need=3);
+['phu','qtg','vop','vohk'].forEach(k=>SCHOOL[3][k].need=3);
+Object.assign(SCHOOLX,{cha:{ax:{ht:1}},tuhoc:{ax:{dl:1.5,yc:1},sk:{muu:1}},viecnha:{ax:{cc:1.5,ht:.5},sk:{ql:2}},hocviec:{ax:{cc:1,dl:.5},sk:{ky:2}},gui:{ax:{dl:1,hd:.5},sk:{khau:1,ql:1}},hocdet:{ax:{cc:1,diem:.5},sk:{ky:3}},hocmo:{ax:{rong:1,gan:.5},sk:{ky:2}},hocbep:{ax:{cc:1},sk:{ky:2}},daychu:{ax:{diem:1,yc:.3},sk:{muu:.5}}});
 
 /* gia quy thêm: tham khảo tinh thần Hoàng Minh Tổ huấn (giữ phép tổ, cần kiệm, phân rõ đích thứ, cấm ngoại thích can dự, nghiêm trị tham nhũng, thương dân)
    req: điều kiện mở khóa */
@@ -518,7 +527,7 @@ const STITLE={
   tri:[[100,'Bác học'],[110,'Danh nho'],[120,'Đại nho'],[130,'Hồng nho thạc học'],[140,'Văn đàn tông sư'],[150,'Thánh hiền chi tài'],[170,'Á thánh'],[185,'Bác cổ thông kim'],[200,'Văn Khúc giáng thế']],
   vo:[[100,'Cao thủ'],[110,'Nhất lưu cao thủ'],[120,'Đại cao thủ'],[130,'Tông sư'],[140,'Đại tông sư'],[150,'Võ thánh'],[170,'Thiên hạ vô song'],[185,'Kiếm tâm thông minh'],[200,'Võ thần']],
   suc:[[100,'Cường tráng'],[110,'Khí huyết như rồng'],[120,'Đồng bì thiết cốt'],[130,'Kim cương chi thân'],[140,'Bách bệnh bất xâm'],[150,'Trường sinh căn cốt'],[170,'Phản lão hoàn đồng'],[185,'Tiên phong đạo cốt'],[200,'Bất lão chi thân']],
-  mi:[[100,'Phong hoa'],[110,'Danh động một phủ'],[120,'Khuynh thành'],[130,'Khuynh quốc'],[140,'Tuyệt đại phong hoa'],[150,'Thiên hạ đệ nhất phong tư'],[170,'Thiên tiên chi tư'],[185,'Nhất tiếu khuynh thiên hạ'],[200,'Tạo hóa chi mỹ']],
+  mi:[[100,'Phong hoa'],[110,'Danh động một phủ'],[120,'Mỹ nhân kinh thành'],[130,'Khuynh quốc'],[140,'Tuyệt đại phong hoa'],[150,'Thiên hạ đệ nhất phong tư'],[170,'Thiên tiên chi tư'],[185,'Nhất tiếu khuynh thiên hạ'],[200,'Tạo hóa chi mỹ']],
   eq:[[100,'Thấu tình đạt lý'],[110,'Nhân tâm như gương'],[120,'Đức cao vọng trọng'],[130,'Thu phục lòng người'],[140,'Nhất ngôn cửu đỉnh'],[150,'Thánh nhân chi tâm'],[170,'Đại trí nhược ngu'],[185,'Tâm như minh kính'],[200,'Thiên tâm']]};
 const GATE_TXT={
   tri:{120:'Sách vở trong thiên hạ hầu như đã đọc hết, cái còn lại phải tự mình ngộ ra.',140:'Học đã đến chỗ cùng, chỉ một bước nữa là thành bậc thầy muôn đời.'},
@@ -598,6 +607,66 @@ const DIS={
 const NOTE63={nghe:['nong','buon','tho','hoc','vo','quan','thuoc'],jobN:{nong:'làm ruộng',buon:'buôn bán',tho:'thợ thủ công',hoc:'nho học',vo:'võ nghệ',quan:'quan lại',thuoc:'thầy thuốc'}};
 
 /*@@D63-END@@*/
+/*@@D632-BEGIN@@*/
+/* ================= v6.3.2: chức danh có năng lực riêng · cờ công nhận ================= */
+/* Chỉ số đủ cao mới có tư cách. Muốn mang danh hiệu phải có sự kiện hoặc kỳ ngộ công nhận (xem ev-v632a.js).
+   Mỗi bậc là một đặc tính ẩn 'ct_<chỉ số>_<bậc>', người chỉ giữ bậc cao nhất của từng chỉ số. */
+const CTFX={
+  tri:{exam:[5,7,9,12,15,18,22,26,32],teach:[.06,.08,.1,.13,.16,.2,.24,.3,.4],mm:[.3,.35,.4,.5,.6,.7,.85,1,1.3],fame:[1,1.5,2,3,4,5,6,8,10],inc:[.04,.05,.06,.08,.1,.12,.15,.18,.22],
+    mmJobs:['y','su','thulai','diaky','nguy','quan']},
+  vo:{merit:[.1,.15,.2,.3,.4,.5,.65,.8,1],cond:[.008,.012,.016,.02,.026,.034,.044,.055,.07],mm:[.3,.35,.4,.5,.6,.7,.85,1,1.3],fame:[1,1.5,2,3,4,5,6,8,10],inc:[.04,.05,.06,.08,.1,.12,.15,.18,.22],
+    mmJobs:['tieu','quan_ngu','hiep','khuanvac','nhadich','tho']},
+  suc:{hp:[.2,.25,.3,.4,.5,.6,.7,.8,1],sick:[.85,.75,.65,.55,.45,.35,.25,.15,.05],decl:[2,3,4,5,7,9,11,14,17],tam:[1,1.5,2,2.5,3,3.5,4,4.5,5.5],inc:[.04,.05,.06,.08,.1,.12,.15,.18,.22],
+    mmJobs:['khuanvac','tho','ngu','tieuphu','nhadich','tieu','quan_ngu']},
+  mi:{duyen:[3,5,7,9,12,15,18,22,27],fame:[1,1.5,2,3,4,5,6,8,10],match:[.5,.7,1,1.3,1.7,2.2,2.7,3.2,3.8],mm:[.3,.35,.4,.5,.6,.7,.85,1,1.3],inc:[.04,.05,.06,.08,.1,.12,.15,.18,.22],
+    mmJobs:['nghe','det','tieunhi','hangrong','bep']},
+  eq:{on:[.6,.8,1.1,1.4,1.8,2.3,2.8,3.3,4.2],tam:[1,1.5,2,2.5,3,3.5,4,4.5,5.5],cond:[.008,.012,.016,.02,.026,.034,.044,.055,.07],match:[.4,.5,.7,.9,1.2,1.5,1.8,2.2,2.7],
+    mm:[.3,.35,.4,.5,.6,.7,.85,1,1.3],inc:[.04,.05,.06,.08,.1,.12,.15,.18,.22],mmJobs:['quan','chu','hangrong','tieunhi','mo','hau','thulai']}};
+const CT_NUM=v=>String(v).replace('.',',');
+const CT_TXT={
+  exam:v=>`điểm thi +${v}`,teach:v=>`con cháu trong nhà học nhanh thêm ${Math.round(v*100)}%`,
+  fame:v=>`danh vọng bản thân tăng ${CT_NUM(v)} mỗi năm`,merit:v=>`chiến công thu được nhiều thêm ${Math.round(v*100)}%`,
+  cond:v=>`việc khó dễ thành hơn (${CT_NUM(+(v*100).toFixed(1))}%)`,hp:v=>`hồi sức nhanh thêm ${CT_NUM(v)} mỗi tháng`,
+  sick:v=>`khi có dịch chỉ còn ${Math.round(v*100)}% nguy cơ nhiễm`,decl:v=>`già chậm hơn ${v} năm`,
+  tam:v=>`tâm trạng luôn cao hơn ${CT_NUM(v)}`,duyen:v=>`cơ duyên +${v}`,on:v=>`gia tộc hòa thuận thêm ${CT_NUM(v)}`,
+  match:v=>`khi mai mối gặp được người có giá trị cao hơn`,exam:v=>`điểm thi +${v}`,inc:v=>`thu nhập thêm ${Math.round(v*100)}%`};
+(function(){
+  for(const k in CTFX){const F=CTFX[k];
+    STITLE[k].forEach(([th,name],i)=>{
+      const T={n:name,c:'p',ct:1,ck:k,ci:i};const parts=[];
+      for(const f in F){if(f==='mmJobs')continue;const v=F[f][i];T[f]=v;
+        if(f==='mm')parts.push(`thông thạo nghề ${F.mmJobs.map(j=>JOBS[j].n.toLowerCase()).join(', ')} tăng thêm ${CT_NUM(v)} mỗi năm`);
+        else if(f==='inc')parts.push(`thu nhập nghề ${F.mmJobs.map(j=>JOBS[j].n.toLowerCase()).join(', ')} cao thêm ${Math.round(v*100)}%`);
+        else parts.push(CT_TXT[f](v))}
+      if(F.mmJobs){if(F.mm)T.mmJobs=F.mmJobs;if(F.inc)T.incJobs=F.mmJobs}
+      const txt=parts.map((s,j)=>j?s:s.charAt(0).toUpperCase()+s.slice(1)).join('; ');
+      T.d=`Danh hiệu về ${SN[k].toLowerCase()} (từ ${th}), do người đời công nhận. ${txt}`;
+      TRAITS['ct_'+k+'_'+i]=T})}
+})();
+
+/* v6.3.4: học vị và tước vị cũng mang đặc điểm, nhưng nhẹ, vì đã có ruộng đất và bổng lộc kèm theo.
+   Không lưu vào người: tính theo c.degree và c.tuoc (xem traitsOf), nên bị tước danh thì đặc điểm mất theo. */
+const HONFX={
+  dg:{n:['','Cử nhân','Cống sĩ','Tiến sĩ'],exam:[0,2,3,0],fame:[0,.3,.6,1],match:[0,.15,.3,.5],teach:[0,.02,.04,.08],on:[0,0,0,.2],tam:[0,0,0,.3]},
+  tu:{n:TUOC,fame:[0,.5,.8,1.2,1.8,2.5],on:[0,.2,.3,.4,.6,.8],match:[0,.2,.35,.55,.8,1.1],tam:[0,.3,.5,.7,1,1.4]}};
+(function(){
+  const HT={exam:v=>`điểm thi +${v}`,fame:v=>`danh vọng bản thân tăng ${CT_NUM(v)} mỗi năm`,match:()=>`mai mối gặp được người xứng hơn`,teach:v=>`con cháu trong nhà học nhanh thêm ${Math.round(v*100)}%`,on:v=>`gia tộc hòa thuận thêm ${CT_NUM(v)}`,tam:v=>`tâm trạng cao hơn ${CT_NUM(v)}`};
+  const mk=(pre,F,nn,what,note)=>{for(let i=1;i<nn;i++){const T={n:F.n[i],c:'p',ct:1,hon:1};const parts=[];
+    for(const f in F){if(f==='n')continue;const v=F[f][i];if(!v)continue;T[f]=v;parts.push(HT[f](v))}
+    T.d=`${what} ${F.n[i]}. ${note} ${parts.map((x,j)=>j?x:x.charAt(0).toUpperCase()+x.slice(1)).join('; ')}`;
+    TRAITS[pre+'_'+i]=T}};
+  mk('dg',HONFX.dg,4,'Học vị','Đã có đường khoa bảng và bổng lộc riêng nên đặc điểm đi kèm chỉ ở mức nhẹ.');mk('tu',HONFX.tu,6,'Tước vị','Đã được ban ruộng đất và bổng lộc nên đặc điểm đi kèm chỉ ở mức nhẹ.')})();
+
+/*@@D632-END@@*/
+/*@@D633-BEGIN@@*/
+/* ================= v6.3.3: đặc tính từ chuyện ân oán Kiên – Duy ================= */
+Object.assign(TRAITS,{
+  trugian:{n:'Trừ gian diệt bạo',c:'p',d:'Đã góp công vạch mặt kẻ gian giữa thời loạn, thiên hạ nhớ tên. Danh vọng +1,5 mỗi năm; gia tộc hòa thuận thêm 1',fame:1.5,on:1},
+  khoandung:{n:'Khoan dung độ lượng',c:'p',d:'Đã tha cho kẻ từng hại mình, người đời kính trọng. Tâm trạng cao hơn 1,5; gia tộc hòa thuận thêm 1,5',tam:1.5,on:1.5},
+  vetan:{n:'Vết thương ân oán',c:'r',d:'Từng bị người ta hãm hại, mang vết thương cả đời. Tâm trạng thấp hơn 1',tam:-1}
+});
+
+/*@@D633-END@@*/
 /* v6.3: nới ngưỡng thông thạo của các bậc cao (đo ở 6.2 cho thấy gần như không ai tới bậc cuối) */
 Object.values(JOBS).forEach(J=>{if(J.lv)J.lv.forEach(L=>{if(L.req&&L.req.m>=60)L.req.m=Math.round(L.req.m*0.8)})});
 
