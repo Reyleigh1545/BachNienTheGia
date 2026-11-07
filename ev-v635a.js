@@ -19,7 +19,7 @@ const nope=[{l:'Bỏ qua',f:()=>''}];
 const GD=d=>d.good==null?(d.good=chance(0.55)?1:0):d.good;
 const best=(arr,f)=>arr.slice().sort((a,b)=>f(b)-f(a))[0];
 /* người trong nhà có thể ra mặt (đủ lớn, không đi xa) */
-const able=()=>G.home().filter(p=>age(p)>=14&&!p.away&&p.dead==null);
+const able=()=>G.home().filter(p=>G.inMain(p)&&age(p)>=14&&!p.away&&p.dead==null);
 
 /* nhờ vả tùy nghề của nhà họ */
 const ASK={
