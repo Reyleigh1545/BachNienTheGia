@@ -301,7 +301,7 @@ return [
  x:(c,d)=>{const cl=V().w_clan(d.p,d.cl);return cl?`${esc(G.cnameU(cl))} mời nhà mình dự ${pick(['đám cưới con trai','đám giỗ lớn','tiệc mừng thượng thọ','lễ mừng nhà mới'])}. Khách khứa trong vùng sẽ có mặt đông đủ.`:'Có người mời dự đám.'},
  o:(c,d)=>{const cl=V().w_clan(d.p,d.cl);if(!cl)return [{l:'Bỏ qua',f:()=>''}];
   /* v6.3.5: nhà chỉ có một người lớn thì không có chuyện "cả nhà đi"; cử người đi thì phải có cái được */
-  const can=G.home().filter(p=>age(p)>=14&&!p.away&&p.dead==null);
+  const can=G.home().filter(p=>G.inMain(p)&&age(p)>=14&&!p.away&&p.dead==null);
   const solo=can.length<=1;
   const rep=can.slice().sort((a,b)=>(b.eq+b.mi*0.5)-(a.eq+a.mi*0.5))[0]||c;
   const o=[];
