@@ -11,12 +11,14 @@ Nguyên tắc đang áp dụng: chỉ test khi mày yêu cầu (kiểm cú pháp
 - **Ngự y ánh xạ vào ghế Thái y viện** (mục B1b, chọn cách ánh xạ cấp nghề sang ghế). Ngự y → ghế Ngự y, Viện phán → Thái y viện phán, Thái y lệnh → ghế Thái y lệnh (đổi tên từ "Thái y viện sứ"). Chiếu mời chỉ phát khi nhà chưa có ai ở trong cung và còn ghế Ngự y trống. Lên cấp cần ghế cấp trên đang trống, có báo khi ghế trống. Ngự y phải về kinh nhậm chức như quan (có hỏi đi một mình hay dắt gia đình), không có nhiệm kỳ ba năm. Save cũ được xếp ghế tự động. Quan thường không còn xin hay được bổ vào các ghế Thái y viện.
 - **Truyền nghề:** học trò trong cửa sổ "Truyền nghề" chỉ lấy người ở chi chính, không còn lấy người ở chi họ.
 - **Sự kiện vỡ đồ quý** (`v6_lo_tay`) chỉ còn dành cho gia nhân. Việc phụ "làm thuê cho nhà giàu" và sự kiện "Lên kinh làm thuê" không còn rơi vào quan, ngự y, quan võ, chủ cơ sở.
-- Chưa làm trong 6.4.1: nút "Rút tên", nút "Ứng thí võ cử", gia phả nhiều đời vợ chồng (mục A, C vẫn là ghi chú).
+- **Nút "Rút tên"** (mục A1): hiện khi đang ghi danh thi văn hoặc thi võ. Rút tên thì nghỉ thi hai năm, học vị đã đỗ vẫn giữ. Ghi danh lại thi tiếp từ kỳ đang dở (không phải thi lại từ thi Hương).
+- **Nút "Ứng thí võ cử"** (mục A2): nam 16 đến 40 tuổi, võ lực từ 60, chưa đỗ võ cử, không phải quan, lính, giang hồ. Thi mỗi năm vào tháng Chín, chọn một trong ba môn (cung ngựa, quyền côn, binh thư). Từ 60 điểm là đỗ, từ 92 là đỗ đầu bảng; trượt thì sang năm thi lại hoặc rút tên. Đỗ thì chọn vào quân nhận chức Bách hộ (đỗ đầu: Thiên hộ) rồi chọn nơi nhậm chức, hoặc ở nhà giữ danh.
+- **Gia phả giữ vợ/chồng cũ** (mục C): vẫn một vợ một chồng. Mỗi người có lịch sử hôn nhân (chính thất, kế thất; kế thất là người cưới sau khi vợ cũ mất). Cây gia phả vẽ cả người cũ (mờ đi, có nhãn "đã ly" nếu ly hôn), con xếp có nhãn "con bà X" khi cha có từ hai đời vợ. Góa phụ về dâu tái hôn với người ngoài họ cũng được vẽ, và con của họ (trước kia không nhánh nào vẽ tới) nay hiện ra. Bảng nhân vật có dòng "Trước đây". Save cũ được dựng lại lịch sử, cứu được những người vợ/chồng đã mất mà bị ghi đè; người đã ly hôn từ trước thì không cứu được.
 - Chỗ để chỉnh sau: ghế **Y chính** (4 ghế) chỉ có NPC ngồi, người nhà chưa vào được; ngự y bậc 3 (Thái y lệnh) chỉ có 1 ghế nên rất khó lên; học trò truyền nghề nếu thầy ở chi họ thì không còn mục "Dạy trực tiếp" (vẫn viết sách được).
 
 ---
 
-## A. Đã đồng ý, làm trong 6.4.x
+## A. Đã đồng ý (đã làm xong trong 6.4.1, giữ lại để tham khảo thiết kế)
 
 ### A1. Nút "Bỏ thi / rút tên"
 - Hiện trạng: `register(c)` đặt `c.exam={stage:0,scores:[]}` và người đã ứng thí văn không có cách nào hủy.
@@ -70,7 +72,7 @@ Tối thiểu 5000 sự kiện và 500 kỳ ngộ, thêm dần qua các gói nh�
 
 ---
 
-## C. Gia phả: giữ lại vợ/chồng cũ khi tái hôn
+## C. Gia phả: giữ lại vợ/chồng cũ khi tái hôn (đã làm xong trong 6.4.1, giữ lại để tham khảo thiết kế)
 
 ### C1. Lỗi hiện tại (đã xác định trong code)
 - `mkSpouse(c,free,o)` (engine.js khoảng 1214) gán `c.spouse=p.id`, ghi đè người cũ.

@@ -152,7 +152,12 @@ const ev=[
 {id:'v64_khoa_an',t:'Ân khoa mừng vua mới',job:Q,ptag:['hoc','kinh'],k:'Triều đình',w:3,
  x:c=>`Vua mới mở ân khoa đặc cách, nhiều sĩ tử muốn tìm người cầm cân nảy mực. ${N(c)} được nhắc đến trong danh sách chấm thi.`,
  o:c=>[{l:'Nhận chức, chấm công tâm',f:c=>'Ân khoa thành công, tiếng ngài lên cao.'+fx(c,{fame:R(10,20),liem:3,m:2})},
-  {l:'Xin thôi, tránh thị phi',f:c=>'Người khác thế vào, ngài đỡ lo.'+fx(c,{tam:2})}]}
+  {l:'Xin thôi, tránh thị phi',f:c=>'Người khác thế vào, ngài đỡ lo.'+fx(c,{tam:2})}]},
+/* ================= v6.4.1: đỗ võ cử, chọn bổ dụng ================= */
+{id:'v641_vo_do',t:'Bổ dụng sau võ cử',fixed:1,k:'Võ cử',
+ x:c=>`Triều đình xét ${N(c)} ${c.flags.voTop?'đỗ đầu bảng':'đỗ'} võ cử, cho chọn: vào quân ngũ nhận chức ${c.flags.voTop?'Thiên hộ':'Bách hộ'}, hay ở lại nhà giữ danh võ cử.`,
+ o:c=>[{l:c.flags.voTop?'Vào quân, nhận chức Thiên hộ':'Vào quân, nhận chức Bách hộ',s:'Rời nhà ra doanh trại, sau đó chọn nơi nhậm chức',f:c=>{G.voEnlist(c,c.flags.voTop?4:3);return `${N(c)} cáo biệt gia đình, mang ấn bổ dụng ra doanh trại.`+fx(c,{fame:R(5,12),tam:4})}},
+  {l:'Ở lại nhà, giữ danh võ cử',f:c=>'Danh võ cử ở lại với dòng họ, đi đâu người ta cũng nể.'+fx(c,{fame:R(4,9),tam:3})}]}
 ];
 /* điều kiện riêng, để không lệch bối cảnh */
 const set=(id,f)=>{CTX[id]=f};

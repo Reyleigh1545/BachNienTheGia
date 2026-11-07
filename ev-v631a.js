@@ -147,7 +147,7 @@ return [
 {id:'qn631_vo_cu',t:'Tiến cử thi võ cử',job:QN,c:c=>c.vo>=70&&c.lv>=1&&c.lv<=4&&!G.war()&&!c.flags.voCu,w:0.7,pcd:60,
  x:c=>`Tướng quân trong doanh thấy ${N(c)} võ nghệ hơn người, muốn tiến cử đi thi võ cử ở kinh thành. Đỗ thì được bổ chức riêng, trượt thì uổng phí cả mấy tháng.`,
  o:c=>[
-  {l:'Nhận lời đi thi',s:'Vắng mấy tháng',r:[{vo:1,tri:0.4,suc:0.3},DW(0.5,55)],y:c=>{c.flags.voCu=1;busy(c,4);return 'Đỗ võ cử, tên được báo về cả doanh. Tướng quân cất nhắc ngay.'+fx(c,{merit:R(40,70),fame:R(15,25),lv:1})},yy:c=>{c.flags.voCu=1;busy(c,4);return 'Đỗ đầu bảng võ cử, triều đình ban thưởng hậu!'+fx(c,{merit:R(90,130),fame:R(30,45),money:m(40),lv:2})},n:c=>{busy(c,4);return 'Vào đến vòng cuối thì trượt. Về doanh, '+PR(c)+' luyện thêm, hẹn kỳ sau.'+fx(c,{merit:5,tam:-5})}},
+  {l:'Nhận lời đi thi',s:'Vắng mấy tháng',r:[{vo:1,tri:0.4,suc:0.3},DW(0.5,55)],y:c=>{c.flags.voCu=1;c.flags.voDo=1;busy(c,4);return 'Đỗ võ cử, tên được báo về cả doanh. Tướng quân cất nhắc ngay.'+fx(c,{merit:R(40,70),fame:R(15,25),lv:1})},yy:c=>{c.flags.voCu=1;c.flags.voDo=1;busy(c,4);return 'Đỗ đầu bảng võ cử, triều đình ban thưởng hậu!'+fx(c,{merit:R(90,130),fame:R(30,45),money:m(40),lv:2})},n:c=>{busy(c,4);return 'Vào đến vòng cuối thì trượt. Về doanh, '+PR(c)+' luyện thêm, hẹn kỳ sau.'+fx(c,{merit:5,tam:-5})}},
   {l:'Từ chối, ở lại doanh',f:c=>{c.flags.voCu=1;return fx(c,{tam:-1})}}]},
 {id:'qn631_day_tan_binh',t:'Dạy lính mới',job:QN,c:c=>c.lv>=2&&!G.war(),w:0.9,pcd:18,
  x:c=>`Doanh trại vừa nhận một đợt tân binh gầy gò vụng về. Thượng cấp giao ${N(c)} kèm cặp họ.`,
