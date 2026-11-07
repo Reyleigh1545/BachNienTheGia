@@ -90,6 +90,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .tree>ul>li::before,.tree>ul>li::after{display:none}
 .couple{display:flex;align-items:center}
 .couple .knot{width:14px;border-top:1.5px dashed var(--gold)}
+.couple .spw{display:flex;flex-direction:column;align-items:center;gap:2px}
+.couple .mk{font-size:.66rem;color:var(--muted);line-height:1.1;white-space:nowrap}
+.node.old{opacity:.6}
 .node{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:7px 10px;width:150px;text-align:left;display:grid;gap:1px;position:relative}
 .node:hover{border-color:var(--jade)}
 .node[aria-pressed="true"]{border-color:var(--seal);box-shadow:0 0 0 1px var(--seal)}
@@ -340,7 +343,7 @@ ul.plain{margin:4px 0 0;padding-left:18px;font-size:12.5px;display:grid;gap:3px}
 <div class="wrap" id="app"></div>
 <div class="overlay sheet" id="sheetO" hidden><div class="modal sheetm" id="sheetM" role="dialog" aria-modal="true" aria-label="Hồ sơ nhân vật"></div></div>
 <div class="tip" id="tip" hidden></div>
-<div class="verlbl" aria-hidden="true">v6.4</div>
+<div class="verlbl" aria-hidden="true">v6.4.1</div>
 <div class="overlay" id="overlay" hidden><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
 
 <script src="data.js"></script>

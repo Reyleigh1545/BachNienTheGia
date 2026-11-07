@@ -7,6 +7,7 @@ const m=v=>G.mm(v);
 const N=c=>esc(c.given);
 const ax=(c,k)=>G.axv(c,k);
 const side=(c,k)=>c.focus===k&&!c.away;
+const OFFJ=['quan','nguy','quan_ngu','chu','vua'];
 const mo=()=>G.month();
 const hh=c=>G.hhOf(c);
 return [
@@ -54,12 +55,12 @@ return [
     {l:'Xắn tay áo đánh nhau',ax:{gan:4,diem:-3},r:[{vo:0.8,suc:0.2},55],y:c=>'Đánh lui cả bọn.'+fx(c,{fame:3,vo:1}),n:c=>'Bị đánh trọng thương.'+fx(c,{suc:-15,tam:-6})},
     {l:'Tìm khúc sông khác',ax:{diem:2},f:c=>'Xa hơn, ít cá hơn, nhưng yên ổn.'+fx(c,{money:-m(0.3)})}]},
 /* ============ làm thuê ============ */
-{id:'v61_thue_chu_ac',t:'Chủ nhà khắc nghiệt',age:[13,60],c:c=>side(c,'thue'),w:1,cd:30,k:'Việc phụ',
+{id:'v61_thue_chu_ac',t:'Chủ nhà khắc nghiệt',age:[13,60],c:c=>side(c,'thue')&&!OFFJ.includes(c.job),w:1,cd:30,k:'Việc phụ',
  x:c=>`Bà chủ nhà giàu ${N(c)} làm thuê nổi tiếng chua ngoa, hôm nay lại vu cho làm vỡ cái bình men lam.`,
  o:[{l:'Cãi lại cho ra lẽ',ax:{gan:3,dl:2},r:[{khau:0.6,eq:0.4},55],y:c=>'Hóa ra con mèo làm vỡ. Bà chủ ngượng, trả thêm công.'+fx(c,{money:m(0.5),tam:3}),n:c=>'Bị đuổi, mất cả tháng công.'+fx(c,{money:-m(0.4),tam:-6})},
     {l:'Nhịn, đền một phần',ax:{dl:-2},f:c=>'Cắn răng chịu.'+fx(c,{money:-m(0.3),tam:-5})},
     {l:'Bỏ việc luôn',ax:{dl:3},f:c=>'Đi tìm nhà khác.'+fx(c,{tam:2})}]},
-{id:'v61_thue_quy',t:'Được chủ nhà quý',age:[13,60],c:c=>side(c,'thue')&&(c.eq>=50||ax(c,'cc')>=60),w:0.8,cd:48,k:'Việc phụ',
+{id:'v61_thue_quy',t:'Được chủ nhà quý',age:[13,60],c:c=>side(c,'thue')&&!OFFJ.includes(c.job)&&(c.eq>=50||ax(c,'cc')>=60),w:0.8,cd:48,k:'Việc phụ',
  x:c=>`Làm thuê lâu ngày, ông chủ thấy ${N(c)} chăm chỉ, thật thà. Ông ngỏ ý muốn giữ hẳn ở lại.`,
  o:[{l:'Nhận lời làm gia nhân hẳn',c:c=>!['quan','chu'].includes(c.job)&&c.job!=='hau',f:c=>{G.setJob(c,'hau');return 'Từ nay là gia nhân nhà ông chủ, có lương tháng.'+fx(c,{tam:4})}},
     {l:'Cảm ơn, chỉ làm lúc rảnh',f:c=>'Ông chủ tiếc nhưng vẫn quý, cho thêm tiền Tết.'+fx(c,{money:m(1),eq:1})}]},
