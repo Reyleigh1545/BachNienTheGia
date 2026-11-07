@@ -433,3 +433,10 @@ Nguyên nhân tìm thấy trong code và hướng sửa đề xuất (chờ mày
 **Nhãn danh vọng cá nhân** (`FAME_SELF` trong `engine.js`) đang quá thấp, dễ đạt: Có tiếng tăm 20, Được tin dùng 50, Danh nhân 100, Bậc quốc sĩ 200. Phải nâng lên (làm ở 6.4.1.2; tao đưa con số để mày duyệt lúc làm bản đó). Các chỗ khác dùng mốc danh vọng cá nhân (ví dụ tật xấu: người danh vọng từ 100 chỉ trưởng bối hoặc gia chủ được khuyên can) phải chỉnh theo.
 
 **Hậu sử:** người chơi được đặt **quốc hiệu** và **niên hiệu đầu tiên** khi lên ngôi.
+
+## Chốt thêm sau khi thử v6.4.1.1 (2026-11-07, làm ở 6.4.1.2)
+
+- **Người trông cơ sở và người mở cơ sở chỉ lấy người đang làm nghề hợp với cơ sở.** Ví dụ võ đường lấy người làm nghề võ (tiêu sư, hiệp khách), trường học lấy người dạy học.
+- **Mốc quản trị hạ từ 50 xuống 35**, cho cả trông lẫn mở cơ sở.
+- **Quản trị tăng theo chức vụ trong nghề:** bậc thấp tăng rất ít, bậc cao tăng nhanh hơn. Làm chủ thì tăng 1 mỗi năm.
+- **Mục tiêu:** đời đầu gần như không làm chủ được. Đời đầu chỉ tích kinh nghiệm rồi truyền cho con cháu, để con cháu sau này có cơ hội làm chủ.

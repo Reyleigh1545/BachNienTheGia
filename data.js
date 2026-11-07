@@ -26,9 +26,10 @@ const EXPECT=[0,1,1,2,3,3,4];
 /* hệ số tiền trong kỳ ngộ theo gia thế */
 const TK=[1,1.6,2.6,4,6,9,14];
 const TUOC=['','Nam tước','Tử tước','Bá tước','Hầu tước','Quốc công'];
-const TUOC_PAY=[0,20000,35000,60000,120000,250000];
+/* v6.4.1.2: hạ bổng tước (trước 20, 35, 60, 120, 250 bạc) và ruộng ban (trước 30, 50, 100, 200, 400 mẫu) */
+const TUOC_PAY=[0,6000,10000,16000,26000,42000];
 const TUOC_HOME=[0,3,3,4,4,5];
-const TUOC_LAND=[0,30,50,100,200,400];
+const TUOC_LAND=[0,20,35,60,100,160];
 const RANKS=['Cửu phẩm','Bát phẩm','Thất phẩm','Lục phẩm','Ngũ phẩm','Tứ phẩm','Tam phẩm','Nhị phẩm','Nhất phẩm'];
 const SALARY=[2800,3300,4500,6000,8000,12000,20000,32000,52000];
 const VACANCY=[0.6,0.5,0.4,0.3,0.22,0.15,0.1,0.06,0.03];
@@ -348,17 +349,17 @@ const AXES=[
 const SKILLS=[['muu','Cơ mưu'],['khau','Khẩu tài'],['ql','Quản trị'],['ky','Kỹ nghệ']];
 /* mỗi năm làm nghề: kéo tính cách (ax) và rèn năng lực (sk) */
 const JOBX={
-  nong:{ax:{cc:1.5,tiet:.5},sk:{ky:1}},tieunhi:{ax:{hd:1,tv:.5},sk:{khau:3,ql:1}},khuanvac:{ax:{gan:.5,tiet:-.5},sk:{}},tieuphu:{ax:{gan:1,dl:1},sk:{ky:1}},
-  ngu:{ax:{gan:1,dl:.5},sk:{ky:1}},hangrong:{ax:{hd:1,tv:.5},sk:{khau:3}},hau:{ax:{ht:1,dl:-1},sk:{khau:2,ql:1}},tho:{ax:{cc:1,diem:.5},sk:{ky:4}},
+  nong:{ax:{cc:1.5,tiet:.5},sk:{ky:1}},tieunhi:{ax:{hd:1,tv:.5},sk:{khau:3}},khuanvac:{ax:{gan:.5,tiet:-.5},sk:{}},tieuphu:{ax:{gan:1,dl:1},sk:{ky:1}},
+  ngu:{ax:{gan:1,dl:.5},sk:{ky:1}},hangrong:{ax:{hd:1,tv:.5},sk:{khau:3}},hau:{ax:{ht:1,dl:-1},sk:{khau:2}},tho:{ax:{cc:1,diem:.5},sk:{ky:4}},
   chan:{ax:{cc:1,diem:.5},sk:{ky:2}},y:{ax:{rong:1,diem:.5},sk:{ky:3,khau:1}},su:{ax:{ht:.5,diem:.5},sk:{khau:3,muu:1}},nghe:{ax:{hd:1,tiet:-.5},sk:{khau:2,ky:1}},
   tieu:{ax:{gan:1.5,yc:.5},sk:{muu:1}},thulai:{ax:{thanh:-.3},sk:{ql:3,muu:1}},nhadich:{ax:{gan:1,rong:-.5},sk:{muu:1}},quan:{ax:{tv:1,thanh:-.3},sk:{muu:3,ql:2,khau:1}},
-  nguy:{ax:{diem:1},sk:{ky:3}},quan_ngu:{ax:{gan:1.5,yc:1,diem:-.5},sk:{muu:1}},hiep:{ax:{gan:1.5,dl:1.5},sk:{muu:1}},chu:{ax:{tv:1,dl:1},sk:{ql:4,khau:1}},noi:{ax:{rong:.5,cc:.5},sk:{ql:3}},
+  nguy:{ax:{diem:1},sk:{ky:3}},quan_ngu:{ax:{gan:1.5,yc:1,diem:-.5},sk:{muu:1}},hiep:{ax:{gan:1.5,dl:1.5},sk:{muu:1}},chu:{ax:{tv:1,dl:1},sk:{khau:1}},noi:{ax:{rong:.5,cc:.5},sk:{ql:3}},
   none:{ax:{cc:-1,dl:-.5},sk:{}},huu:{ax:{diem:.5},sk:{}}};
 const SCHOOLX={lang:{ax:{ht:1,tiet:1}},tu:{ax:{ht:1.5,tiet:1},sk:{muu:1}},giasu:{ax:{ht:1,tiet:1.5},sk:{muu:2,khau:1}},vodo:{ax:{gan:2,diem:-.5}},nucong:{ax:{ht:1,cc:1},sk:{ql:2}},
   huyen:{ax:{ht:1,tv:1},sk:{muu:2}},danhsu:{ax:{tv:1.5,tiet:1},sk:{muu:3,khau:1}},vodd:{ax:{gan:2,yc:1}},hocy:{ax:{rong:1,cc:1},sk:{ky:3}},hocbuon:{ax:{hd:1,tv:1},sk:{khau:3,ql:1}},hoctho:{ax:{cc:2},sk:{ky:3}},
   phu:{ax:{tv:1,ht:1},sk:{muu:3}},qtg:{ax:{tv:2},sk:{muu:4,khau:2}},vop:{ax:{gan:2,yc:2},sk:{muu:1}},vohk:{ax:{gan:1.5,yc:1},sk:{muu:2}},yhd:{ax:{rong:1.5},sk:{ky:4}},thoi:{ax:{tv:1.5,hd:1},sk:{khau:3,ql:3}},khue:{ax:{tiet:1.5,ht:1},sk:{khau:2,ql:1}}};
 const FOCUSX={nghi:{ax:{cc:-.3}},hoc:{ax:{yc:.4,cc:.4},sk:{muu:1}},vo:{ax:{gan:1,yc:.5}},ren:{ax:{yc:.5}},nghe:{ax:{cc:1.5},sk:{ky:2}},giao:{ax:{hd:1.5,tiet:-.5},sk:{khau:3}},cam:{ax:{diem:1},sk:{khau:1}},
-  phat:{ax:{diem:1.5,rong:1,tiet:1}},du:{ax:{dl:1,gan:.5}},lac:{ax:{tiet:-2,cc:-1}},giup:{ax:{cc:1.5,rong:.5}},muu:{ax:{yc:.5},sk:{muu:5}},so:{ax:{cc:.5},sk:{ql:5}},bien:{ax:{hd:.5},sk:{khau:4}}};
+  phat:{ax:{diem:1.5,rong:1,tiet:1}},du:{ax:{dl:1,gan:.5}},lac:{ax:{tiet:-2,cc:-1}},giup:{ax:{cc:1.5,rong:.5}},muu:{ax:{yc:.5},sk:{muu:5}},so:{ax:{cc:.5},sk:{ql:1.5}},bien:{ax:{hd:.5},sk:{khau:4}}};
 const LIFEX=[{cc:1,rong:-.5,tiet:.5},{cc:.5},{},{tiet:-.5,cc:-.3},{tiet:-1.5,cc:-1,rong:.5}];
 /* tật xấu: base = khả năng nhiễm mỗi tháng, age = tuổi hay nhiễm, chain = dễ kéo theo */
 const VICES={
@@ -612,7 +613,8 @@ const NOTE63={nghe:['nong','buon','tho','hoc','vo','quan','thuoc'],jobN:{nong:'l
 /* Chỉ số đủ cao mới có tư cách. Muốn mang danh hiệu phải có sự kiện hoặc kỳ ngộ công nhận (xem ev-v632a.js).
    Mỗi bậc là một đặc tính ẩn 'ct_<chỉ số>_<bậc>', người chỉ giữ bậc cao nhất của từng chỉ số. */
 const CTFX={
-  tri:{exam:[5,7,9,12,15,18,22,26,32],teach:[.06,.08,.1,.13,.16,.2,.24,.3,.4],mm:[.3,.35,.4,.5,.6,.7,.85,1,1.3],fame:[1,1.5,2,3,4,5,6,8,10],inc:[.04,.05,.06,.08,.1,.12,.15,.18,.22],
+  /* v6.4.1.2: bỏ hai tác dụng lan ra cả gia tộc (teach của trí tuệ, on của EQ); danh hiệu chỉ số chỉ còn tác dụng cho chính người mang */
+  tri:{exam:[5,7,9,12,15,18,22,26,32],mm:[.3,.35,.4,.5,.6,.7,.85,1,1.3],fame:[1,1.5,2,3,4,5,6,8,10],inc:[.04,.05,.06,.08,.1,.12,.15,.18,.22],
     mmJobs:['y','su','thulai','diaky','nguy','quan']},
   vo:{merit:[.1,.15,.2,.3,.4,.5,.65,.8,1],cond:[.008,.012,.016,.02,.026,.034,.044,.055,.07],mm:[.3,.35,.4,.5,.6,.7,.85,1,1.3],fame:[1,1.5,2,3,4,5,6,8,10],inc:[.04,.05,.06,.08,.1,.12,.15,.18,.22],
     mmJobs:['tieu','quan_ngu','hiep','khuanvac','nhadich','tho']},
@@ -620,7 +622,7 @@ const CTFX={
     mmJobs:['khuanvac','tho','ngu','tieuphu','nhadich','tieu','quan_ngu']},
   mi:{duyen:[3,5,7,9,12,15,18,22,27],fame:[1,1.5,2,3,4,5,6,8,10],match:[.5,.7,1,1.3,1.7,2.2,2.7,3.2,3.8],mm:[.3,.35,.4,.5,.6,.7,.85,1,1.3],inc:[.04,.05,.06,.08,.1,.12,.15,.18,.22],
     mmJobs:['nghe','det','tieunhi','hangrong','bep']},
-  eq:{on:[.6,.8,1.1,1.4,1.8,2.3,2.8,3.3,4.2],tam:[1,1.5,2,2.5,3,3.5,4,4.5,5.5],cond:[.008,.012,.016,.02,.026,.034,.044,.055,.07],match:[.4,.5,.7,.9,1.2,1.5,1.8,2.2,2.7],
+  eq:{tam:[1,1.5,2,2.5,3,3.5,4,4.5,5.5],cond:[.008,.012,.016,.02,.026,.034,.044,.055,.07],match:[.4,.5,.7,.9,1.2,1.5,1.8,2.2,2.7],
     mm:[.3,.35,.4,.5,.6,.7,.85,1,1.3],inc:[.04,.05,.06,.08,.1,.12,.15,.18,.22],mmJobs:['quan','chu','hangrong','tieunhi','mo','hau','thulai']}};
 const CT_NUM=v=>String(v).replace('.',',');
 const CT_TXT={
