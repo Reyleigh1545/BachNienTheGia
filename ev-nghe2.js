@@ -8,21 +8,23 @@ const N=c=>esc(c.given);
 const nx=(c,id,a,b,d)=>{G.later(c,id,R(a,b),d);return ''};
 const A=o=>Object.assign({arc:1,k:'Cốt truyện'},o);
 const F=()=>S().farm;
-const land=(n)=>{F().own=Math.max(0,F().own+n);return ''};
+/* v6.4.1.5: mua ruộng đang thuê thì ruộng thuê thành ruộng nhà */
+const land=(n)=>{if(n>0){const cv=Math.min(F().rent||0,n);F().rent-=cv}F().own=Math.max(0,F().own+n);return ''};
+const lc=()=>Math.round(G.landCost()*0.85);
 const NONG=['nong'],KV=['khuanvac'],TP=['tieuphu'],NG=['ngu'],HR=['hangrong'],HAU=['hau'],CH=['chan'],TL=['thulai'],ND=['nhadich'],CHU=['chu'];
 const toKho=(g,q)=>{S().kho[g]=(S().kho[g]||0)+q;return ''};
 return [
 /* ================= RUỘNG VƯỜN ================= */
 {id:'nong_ban_ruong_re',t:'Hàng xóm bán ruộng',job:NONG,pcd:30,w:1.3,
  x:c=>`Nhà bên cạnh ${pick(['con nợ bạc','sắp dọn lên phủ','cần tiền chữa bệnh'])}, rao bán ${R(1,3)} mẫu ruộng giá rẻ hơn chợ.`,
- o:[{l:'Mua một mẫu',c:()=>G.money()>=m(55),f:c=>'Ruộng nhà thêm một mẫu.'+fx(c,{money:-m(55),tam:6})+land(1)},
-    {l:'Vay nóng để mua hai mẫu',f:c=>{G.later(c,'nong_tra_no',R(10,16));return 'Thêm hai mẫu, nhưng mang nợ.'+fx(c,{tam:3})+land(2)}},
+ o:c=>[{l:`Mua một mẫu (${G.fmtMoney(lc())})`,c:()=>G.money()>=lc(),f:c=>'Ruộng nhà thêm một mẫu.'+fx(c,{money:-lc(),tam:6})+land(1)},
+    {l:`Vay nóng để mua hai mẫu (gốc lẫn lãi khoảng ${G.fmtMoney(Math.round(2*lc()*1.35))})`,f:c=>{const owe=Math.round(2*lc()*1.35);G.later(c,'nong_tra_no',R(10,16),{owe});return `Thêm hai mẫu, nhưng mang nợ ${G.fmtMoney(owe)}.`+fx(c,{tam:3})+land(2)}},
     {l:'Đành để lỡ',f:c=>fx(c,{tam:-3})}]},
 A({id:'nong_tra_no',t:'Đến hạn trả nợ ruộng',
- x:'Chủ nợ đến đòi tiền mua ruộng năm ngoái, cả gốc lẫn lãi.',
- o:[{l:'Trả đủ',c:()=>G.money()>=m(140),f:c=>'Sạch nợ, ruộng là của mình.'+fx(c,{money:-m(140),tam:5})},
+ x:(c,d)=>`Chủ nợ đến đòi tiền mua ruộng năm ngoái, cả gốc lẫn lãi: ${G.fmtMoney((d&&d.owe)||Math.round(2*lc()*1.35))}.`,
+ o:(c,d)=>{const owe=(d&&d.owe)||Math.round(2*lc()*1.35);return [{l:`Trả đủ (${G.fmtMoney(owe)})`,c:()=>G.money()>=owe,f:c=>'Sạch nợ, ruộng là của mình.'+fx(c,{money:-owe,tam:5})},
     {l:'Gán lại một mẫu',f:c=>'Mất một mẫu, đỡ nợ.'+land(-1)+fx(c,{tam:-6})},
-    {l:'Xin khất',r:[{eq:1},55],y:c=>'Được khất nửa năm.'+nx(c,'nong_tra_no',5,7),n:c=>'Bị siết cả hai mẫu.'+land(-2)+fx(c,{tam:-12})}]}),
+    {l:'Xin khất',r:[{eq:1},55],y:c=>'Được khất nửa năm.'+nx(c,'nong_tra_no',5,7,{owe:Math.round(owe*1.1)}),n:c=>'Bị siết cả hai mẫu.'+land(-2)+fx(c,{tam:-12})}]}}),
 {id:'nong_dia_chu',t:'Địa chủ cho thuê ruộng',job:NONG,stMax:1,
  x:'Địa chủ đầu làng có mấy mẫu ruộng bỏ hoang, muốn cho thuê nộp tô nửa phần hoa lợi.',
  o:[{l:'Nhận cày thêm ba mẫu',f:c=>{F().rent+=3;return 'Thêm ruộng, thêm việc. Nhớ chia ruộng gieo trồng ở trang Ruộng vườn.'+fx(c,{tam:-1})}},

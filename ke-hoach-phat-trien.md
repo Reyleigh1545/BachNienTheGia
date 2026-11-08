@@ -107,3 +107,33 @@ Ghi tiếp vào đây khi mày gửi. Lỗi thuộc diện sửa ngay (nguyên t
 - Cân bằng các con số của 6.4.1.2 (quản trị, mốc đỗ 62 và 72, trần sự kiện, danh vọng cá nhân), chờ mày chơi thử.
 - Nghĩa vụ và rủi ro đi kèm tước.
 - Lối tập ấm cho con quan.
+
+## 6. Chốt sau khi test 6.4.1.4 (09/11/2026)
+
+**Thứ tự bản mới.** Gợi ý 6.4.1.5 chia làm hai bản. Các bản sau lùi xuống một số: hoàng đế và các thứ đi kèm là 6.4.1.7, ân oán 6.4.1.8, lên ngôi và hậu sử 6.4.1.9.
+
+| Bản | Nội dung |
+|---|---|
+| 6.4.1.5 | Sửa các lỗi lúc test; tách họ gốc, hộ và chi; quan hệ giữa các họ; hôn nhân, gả đi |
+| 6.4.1.6 | Tình duyên; chi họ xa có nơi ở và hiện trên bản đồ; gia đình người đi lính, làm quan xa (đưa vợ con theo, cưới khi về phép, tỉ lệ có con) |
+| 6.4.1.7 | Hoàng đế (thêm tuyến 4 và tuyến 6 của file quan trường), danh hiệu và thiên mệnh (thêm sự kiện vượt mốc đa dạng theo từng mốc), thời thế, chiến tranh tại nơi ở |
+
+**Tước.** Tước tính theo tổng công trạng: công đủ tới mốc của bậc nào thì được phong bậc ấy. Không còn tùy sự kiện lớn hay nhỏ, và cũng không chỉ lên từng bậc một.
+
+**Sự kiện vượt mốc chỉ số.** Không chặn theo tuổi. Thay vào đó thêm lựa chọn hợp với trẻ con và người già, và ẩn những lựa chọn không hợp tuổi, như trẻ con đi xa.
+
+**Đi lính** (cách a, giữ như hiện tại): người đi lính tự quyết. Nếu người ấy là chi chủ thì người chơi vẫn điều khiển.
+
+**Ruộng.** Mỗi hộ có ruộng riêng:
+- Tá điền ở chi họ làm ruộng của chi, hoặc đi cày thuê; tiền vào quỹ chi.
+- Nhà chính không dùng sức người của chi.
+
+**Để giai đoạn cân bằng:** chỉ số qua 100 vẫn tăng nhanh.
+
+**6.4.1.5 đã làm (09/11/2026):**
+- Sửa các lỗi lúc test.
+- Tách họ gốc, hộ, chi (mới ở mức dữ liệu).
+- Quan hệ giữa các họ: thù oán, thông gia, cảnh giác, gia phong, sổ ân oán, nhường nhịn, một sống một còn.
+- Kiểu hôn nhân, thông gia thật, thế đứng của con gái gả đi.
+- Ruộng riêng cho chi.
+- 36 sự kiện.
