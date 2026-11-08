@@ -440,3 +440,55 @@ Nguyên nhân tìm thấy trong code và hướng sửa đề xuất (chờ mày
 - **Mốc quản trị hạ từ 50 xuống 35**, cho cả trông lẫn mở cơ sở.
 - **Quản trị tăng theo chức vụ trong nghề:** bậc thấp tăng rất ít, bậc cao tăng nhanh hơn. Làm chủ thì tăng 1 mỗi năm.
 - **Mục tiêu:** đời đầu gần như không làm chủ được. Đời đầu chỉ tích kinh nghiệm rồi truyền cho con cháu, để con cháu sau này có cơ hội làm chủ.
+
+## Chốt thêm: quyền điều khiển, gia quy, quan trường (2026-11-08)
+
+Mày chơi thử 6.4.1.2 xong mới làm.
+
+**Thứ tự các bản mới:**
+- **6.4.1.3:** quyền điều khiển, tự quyết theo tính cách, thư nhà, gia quy chia nhóm phạt, uy gia pháp.
+- **6.4.1.4:** cốt truyện quan trường, bè đảng có sự kiện, các nấc hậu quả tới tru di.
+- Các bản cũ từ 6.4.1.3 trở đi lùi xuống từ 6.4.1.5.
+
+**Quyền điều khiển**
+- Người chơi điều khiển: gia chủ, người nhà chính đang ở nhà, và các chi chủ.
+- Tự quyết theo tính cách: thành viên khác của chi họ, và người nhà chính đi làm quan hay đi xa (trừ gia chủ).
+- Cách tự quyết:
+  - Sự kiện cũ dùng bảng `AXKW` để đoán tính chất lựa chọn.
+  - Sự kiện quan trường mới gắn nhãn tay.
+  - Người hay nghe lời gia chủ (`obey` cao) và sợ gia pháp thì né lựa chọn phạm gia quy.
+- Hiển thị: việc tự quyết chỉ ghi nhật ký, cuối năm gộp thành một "thư nhà" cho mỗi chi. Chỉ hiện hộp khi có hậu quả lớn.
+- Gia chủ can thiệp được: gửi thư răn dạy, gọi người về, cắt viện trợ, trục xuất trước.
+
+**Gia quy**
+- Mỗi gia quy cấm thuộc **một nhóm phạt cố định**, gia chủ không phải chọn mức phạt. Bốn nhóm:
+  - Tăng trưởng: không có vi phạm.
+  - Phạt tiền, đòn roi.
+  - Trục xuất.
+  - Xử tử tại gia.
+- Phát giác vi phạm:
+  - Không phải vi phạm nào cũng lộ.
+  - Lộ rồi thì gia chủ chọn thi hành hay tha. Tha nhiều thì **uy gia pháp** giảm.
+- Xử tử tại gia có cái giá: quan phủ biết thì gia chủ có thể bị bắt; danh vọng bị ảnh hưởng.
+- Trục xuất trước khi vụ án nổ thì nhà chính thoát liên lụy.
+- **Nhắc lập gia quy:** gia tộc còn chỗ trống gia quy mà không đang trong thời gian chờ thì mỗi năm nhắc gia chủ một lần.
+
+**Quan trường**
+- Khoảng 6 cốt truyện, mỗi cái 4 đến 8 bước, có mức "lộ":
+  1. Tham ô đê điều.
+  2. Đảng tranh.
+  3. Án oan.
+  4. Buôn lậu biên ải.
+  5. Hối lộ khoa trường.
+  6. Can gián vua.
+- Các nấc hậu quả, từ nhẹ tới nặng:
+  - Thăng quan, ghi công.
+  - Giữ chức, điều đi xa.
+  - Giáng chức.
+  - Cách chức, cấm cả họ thi một khoa.
+  - Lưu đày, tịch biên.
+  - Xử trảm người phạm.
+  - Tru di tam tộc: chi họ ở xa sống sót thì chơi tiếp từ chi đó.
+  - Tru di cửu tộc: hết game. Chỉ khi mưu phản, hoặc đã có nhiều cảnh báo mà vẫn bỏ qua.
+- Bè đảng có sự kiện thật: lời đồn, hặc tội kết bè, hồi tị cùng nha môn. Một người bị hặc thì tra ra cả những người khác trong họ.
+- Giữ tách biệt với ba đường lên ngôi (mục 9).

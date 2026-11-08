@@ -1,4 +1,4 @@
-/* Bách Niên Thế Gia v6.4.1.2 · bảng admin (chỉ nạp ở admin.html, phải nạp TRƯỚC engine.js)
+/* Bách Niên Thế Gia v6.4.1.3 · bảng admin (chỉ nạp ở admin.html, phải nạp TRƯỚC engine.js)
    - Hiện tỉ lệ thành của từng lựa chọn có gieo xúc xắc
    - Máy tự chọn: Cao / Vừa / Thấp / Ngẫu nhiên. Không bao giờ chọn lựa chọn không gieo nếu hộp có lựa chọn gieo.
      Hộp chỉ toàn lựa chọn không gieo: chạy thử từng lựa chọn (previewScore), Cao lấy cái lợi nhất, Vừa cái ở giữa, Thấp cái thiệt nhất.
@@ -128,6 +128,12 @@ function body(){const g=G(),S=g&&g.S();
     <button class="btn small primary" data-apply>Áp dụng</button>
     <h4>Gọi sự kiện cho người đang chọn</h4><input class="adq" type="search" placeholder="Tìm theo id hoặc tên sự kiện" value="${esc(q)}">
     <div class="adlist">${findEv().map(e=>`<div><span><b>${esc(e.t||e.id)}</b> <small>${esc(e.id)}${e.ky?' · kỳ ngộ':''}${e.arc||e.fixed?' · cốt truyện':''}</small></span><button data-ev="${esc(e.id)}">Gọi</button><button data-why="${esc(e.id)}">Vì sao?</button></div>`).join('')}</div>`}
+  if(tab==='tk'){if(!S)return '<p class="admut">Chưa có ván.</p>';const L=S.stat||[];const fm=g.fmtMoney||(v=>v);
+    const rows=L.map((o,i)=>{const nx=L[i+1];const dm=(nx?nx.m0:S.money)-(o.m0||0);return `<tr><td>${o.y}</td><td>${o.pick}</td><td>${o.show}</td><td>${o.drop}</td><td>${o.auto}${o.big?` (${o.big})`:''}</td><td>${o.other}</td><td>${fm(Math.round(o.evm||0))}</td><td>${fm(Math.round(dm))}</td></tr>`}).reverse().join('');
+    return `<h4>Hộp thoại theo năm (12 năm gần nhất)</h4>
+    <div style="overflow:auto"><table style="width:100%;font-size:12px;border-collapse:collapse"><thead><tr><th>Năm</th><th>Bốc</th><th>Hiện</th><th>Bỏ</th><th>Tự quyết</th><th>Hộp khác</th><th>Tiền từ sự kiện</th><th>Công quỹ đổi</th></tr></thead><tbody>${rows||'<tr><td colspan="8">Chưa có số liệu</td></tr>'}</tbody></table></div>
+    <p class="admut">Bốc: sự kiện đời thường được bốc. Hiện: hộp sự kiện thật sự mở cho người chơi, gồm cả sự kiện hẹn trước và cốt truyện. Bỏ: bốc rồi nhưng lúc mở không còn hợp lệ. Tự quyết: người ngoài quyền điều khiển tự chọn (trong ngoặc là số lần hiện hộp báo tin). Hộp khác: sinh, tử, thi cử, việc làm… Tiền từ sự kiện: tổng tiền công quỹ tăng giảm ngay khi chọn lựa chọn.</p>
+    <h4>Gia quy</h4><p class="admut">Uy gia pháp ${Math.round(S.uy??50)} · ${(S.rules||[]).length} điều · tin đồn chưa lộ ${(S.rumor||[]).length}</p>`}
   const sl=normalSlots();
   return `<h4>Tự chơi</h4>${A.play?`<p>Đang chạy… tháng ${S?S.t:''} / ${target}</p><button class="btn small" data-stop>Dừng</button>`:
      `<div class="adrow"><input type="number" data-years value="10" min="1" style="width:5em"> năm <button class="btn small primary" data-play>Chạy</button></div>
@@ -140,7 +146,7 @@ function body(){const g=G(),S=g&&g.S();
 function draw(){let el=document.getElementById('adm');
   if(!el){el=document.createElement('div');el.id='adm';document.body.appendChild(el)}
   el.innerHTML=`<button class="adtog" data-tog>${open?'✕ Đóng':'⚙ Admin'}${A.play?' · đang chạy':A.auto!=='off'?' · tự chọn':''}${A.force!=='none'?' · ép':''}</button>
-   ${open?`<div class="adpanel"><nav>${[['chon','Tự chọn'],['chinh','Chỉnh'],['choi','Tự chơi']].map(([k,l])=>`<button data-tab="${k}" aria-pressed="${tab===k}">${l}</button>`).join('')}</nav>
+   ${open?`<div class="adpanel"><nav>${[['chon','Tự chọn'],['chinh','Chỉnh'],['choi','Tự chơi'],['tk','Thống kê']].map(([k,l])=>`<button data-tab="${k}" aria-pressed="${tab===k}">${l}</button>`).join('')}</nav>
    <div class="adbody">${body()}</div><p class="adnote">${esc(note)}</p></div>`:''}`;
   const $=s=>el.querySelector(s),$$=s=>el.querySelectorAll(s);
   $('[data-tog]').onclick=()=>{open=!open;draw()};
