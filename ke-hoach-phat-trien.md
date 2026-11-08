@@ -29,10 +29,10 @@ Chi tiết từng hệ thống vẫn nằm ở `ke-hoach-v6.4.1.1.md`. File này
 
 | Bản | Nội dung | Nguồn |
 |---|---|---|
-| **6.4.1.3** | Quyền điều khiển, tự quyết theo tính cách, thư nhà; gia quy chia nhóm phạt, uy gia pháp, nhắc lập gia quy; các lỗi sửa ngay (mục 3) | Chốt thêm 08/11, Review, Audit |
-| **6.4.1.4** | Cốt truyện quan trường (khoảng 6 cái), bè đảng có sự kiện, các nấc hậu quả tới tru di | Chốt thêm 08/11 |
+| **6.4.1.3** (đã làm) | Quyền điều khiển, tự quyết theo tính cách, thư nhà; gia quy chia nhóm phạt, uy gia pháp, nhắc lập gia quy; các lỗi sửa ngay (mục 3) | Chốt thêm 08/11, Review, Audit |
+| **6.4.1.4** (đã làm) | Cốt truyện quan trường theo `Gợi ý cốt truyện quan trường.docx`: hồ sơ quan, 4 phe, cấp tội, thang hậu quả tới tru di, sử ký quan trường, 50 sự kiện (tuyến 1, 2, 3, 5) | Chốt thêm 08/11, file gợi ý |
 | **6.4.1.5** | Hảo cảm với các họ khác (6), gả đi (14), tình duyên (11), lập chi họ khi nhậm chức xa (15) | ke-hoach mục 6, 11, 14, 15; Review ý 4 |
-| **6.4.1.6** | Trạng thái hoàng đế (10), danh hiệu cấp Thần gộp với thiên mệnh (7, y-kien 8), sự kiện thời thế theo loại vua | ke-hoach mục 7, 10; y-kien mục 8 |
+| **6.4.1.6** | Trạng thái hoàng đế (10), danh hiệu cấp Thần gộp với thiên mệnh (7, y-kien 8), sự kiện thời thế theo loại vua; **tuyến 4 (thanh trừng do vua nghi) và tuyến 6 (tranh đoạt hoàng quyền) của file gợi ý quan trường**, khoảng 30 đến 50 sự kiện | ke-hoach mục 7, 10; y-kien mục 8; file gợi ý |
 | **6.4.1.7** | Ân oán Phạm Trung Kiên: đường kiện khó, các cái kết thua, báo thù, cân thưởng (8) | ke-hoach mục 8 |
 | **6.4.1.8** | Ba đường lên ngôi và màn hậu sử: **game có cái kết** (9) | ke-hoach mục 9; y-kien mục 35 |
 | **6.4.1.9 trở đi** | Nội dung còn lại của v6.5 (mục 4) cho tới mốc v6.5 | y-kien mục 10, 13, 31, 38 |
