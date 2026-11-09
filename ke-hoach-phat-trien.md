@@ -149,3 +149,9 @@ Ghi tiếp vào đây khi mày gửi. Lỗi thuộc diện sửa ngay (nguyên t
 - Họ khác: không đến làm thân với Bần hộ, Thường dân; chỉ ngỏ thông gia khi nhà mình ngang hoặc cao hơn và hai nhà đã thân.
 
 **Ghi nhớ:** từ nay lựa chọn không kèm chú thích; chỉ ghi giá khi lựa chọn là trả tiền ngay.
+
+**6.4.1.6 đã làm (09/11/2026):**
+- Tình duyên nhiều bước. Mở đầu chỉ cho người 18 đến 25 tuổi có tài, có đức; dễ rung động hay không tùy tính cách.
+- Chi họ xa lập ở nơi nhậm chức: có nơi ở, dấu ⌂ trên bản đồ, gửi quỹ về, mức gắn bó, có thể thành chi độc lập.
+- Gia đình người đi lính: vợ con theo vào trại gia binh, về phép, cưới vợ nhân dịp phép, tỉ lệ có con.
+- 24 sự kiện.
