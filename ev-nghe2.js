@@ -18,7 +18,7 @@ return [
 {id:'nong_ban_ruong_re',t:'Hàng xóm bán ruộng',job:NONG,pcd:30,w:1.3,
  x:c=>`Nhà bên cạnh ${pick(['con nợ bạc','sắp dọn lên phủ','cần tiền chữa bệnh'])}, rao bán ${R(1,3)} mẫu ruộng giá rẻ hơn chợ.`,
  o:c=>[{l:`Mua một mẫu (${G.fmtMoney(lc())})`,c:()=>G.money()>=lc(),f:c=>'Ruộng nhà thêm một mẫu.'+fx(c,{money:-lc(),tam:6})+land(1)},
-    {l:`Vay nóng để mua hai mẫu (gốc lẫn lãi khoảng ${G.fmtMoney(Math.round(2*lc()*1.35))})`,f:c=>{const owe=Math.round(2*lc()*1.35);G.later(c,'nong_tra_no',R(10,16),{owe});return `Thêm hai mẫu, nhưng mang nợ ${G.fmtMoney(owe)}.`+fx(c,{tam:3})+land(2)}},
+    {l:"Vay nóng để mua hai mẫu",f:c=>{const owe=Math.round(2*lc()*1.35);G.later(c,'nong_tra_no',R(10,16),{owe});return `Thêm hai mẫu, nhưng mang nợ ${G.fmtMoney(owe)}.`+fx(c,{tam:3})+land(2)}},
     {l:'Đành để lỡ',f:c=>fx(c,{tam:-3})}]},
 A({id:'nong_tra_no',t:'Đến hạn trả nợ ruộng',
  x:(c,d)=>`Chủ nợ đến đòi tiền mua ruộng năm ngoái, cả gốc lẫn lãi: ${G.fmtMoney((d&&d.owe)||Math.round(2*lc()*1.35))}.`,

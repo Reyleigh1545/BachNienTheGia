@@ -1,4 +1,4 @@
-/* Bách Niên Thế Gia v6.4.1.5 · bảng admin (chỉ nạp ở admin.html, phải nạp TRƯỚC engine.js)
+/* Bách Niên Thế Gia v6.4.1.5.1 · bảng admin (chỉ nạp ở admin.html, phải nạp TRƯỚC engine.js)
    - Hiện tỉ lệ thành của từng lựa chọn có gieo xúc xắc
    - Máy tự chọn: Cao / Vừa / Thấp / Ngẫu nhiên. Không bao giờ chọn lựa chọn không gieo nếu hộp có lựa chọn gieo.
      Hộp chỉ toàn lựa chọn không gieo: chạy thử từng lựa chọn (previewScore), Cao lấy cái lợi nhất, Vừa cái ở giữa, Thấp cái thiệt nhất.
