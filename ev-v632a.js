@@ -14,6 +14,9 @@ const THR=[100,110,120,130,140,150,170,185,200];
 const AXS=['diem','gan','tiet','rong'],SKS=['muu','khau','ql','ky'];
 const diffFor=(k,thr,spec,tg)=>{let v=0,w=0;for(const x in spec){const val=x===k?thr:x==='fame'?60:AXS.includes(x)?50:SKS.includes(x)?25:60;v+=val*spec[x];w+=spec[x]}
   return Math.round(v/w*0.93-9*Math.log(tg/(1-tg)))};
+/* v6.4.1.5.1: danh hiệu chỉ số khó lấy hơn; còn trẻ thì càng khó, trừ người tư chất trời phú (tiềm năng từ 85) */
+const potK=(c,k)=>{const a=c.gn&&c.gn[k];if(!a)return 60;return Math.max(...a)*0.65+Math.min(...a)*0.35};
+const agePen=(c,k)=>{const a=age(c);return (a<30?18:a<40?10:a<50?4:0)-(potK(c,k)>=85?10:0)};
 const fam=(c,n)=>c.fame+S().fame*0.2>=n;
 const wait=(c,k,m)=>{c.flags['ctF_'+k]=S().t+m;return ''};
 const ZT={tri:'Học là việc của mình, danh hiệu để người ta gọi, mình không cần nhận.',vo:'Võ công để bảo vệ người nhà, không cần mang danh.',
@@ -23,9 +26,9 @@ const X=(k,i,d)=>({
   c:c=>fam(c,Math.round(NEED[i]*(d.fm==null?1:d.fm)))&&(!d.c||d.c(c)),
   x:c=>rp(d.x,c),
   o:c=>[
-    {l:d.a[0],r:[d.sa,diffFor(k,THR[i],d.sa,0.6)],y:c=>rp(d.a[1],c)+G.confer(c,k,i)+fx(c,{fame:R(6,12)+i*3,tam:6}),
+    {l:d.a[0],r:[d.sa,diffFor(k,THR[i],d.sa,0.35)+agePen(c,k)],y:c=>rp(d.a[1],c)+G.confer(c,k,i)+fx(c,{fame:R(6,12)+i*3,tam:6}),
      n:c=>rp(d.a[2],c)+wait(c,k,R(12,24))+fx(c,{tam:-5,fame:-R(1,3)})},
-    {l:d.b[0],r:[d.sb,diffFor(k,THR[i],d.sb,0.78)],y:c=>rp(d.b[1],c)+G.confer(c,k,i)+fx(c,{fame:R(2,6)+i*2,tam:3}),
+    {l:d.b[0],r:[d.sb,diffFor(k,THR[i],d.sb,0.5)+agePen(c,k)],y:c=>rp(d.b[1],c)+G.confer(c,k,i)+fx(c,{fame:R(2,6)+i*2,tam:3}),
      n:c=>rp(d.b[2],c)+wait(c,k,R(8,16))+fx(c,{tam:-2})},
     {l:'Từ chối, chưa muốn nhận danh hiệu',f:c=>`${N(c)} từ chối. ${d.z||ZT[k]}`+wait(c,k,R(24,48))+fx(c,{tam:1})}]});
 const D=[

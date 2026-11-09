@@ -137,3 +137,15 @@ Ghi tiếp vào đây khi mày gửi. Lỗi thuộc diện sửa ngay (nguyên t
 - Kiểu hôn nhân, thông gia thật, thế đứng của con gái gả đi.
 - Ruộng riêng cho chi.
 - 36 sự kiện.
+
+**6.4.1.5.1 (bản sửa, 09/11/2026):**
+- Chỉ số lớn theo trần mềm của tư chất. Lớn tự nhiên không còn cộng chồng lên phần học được.
+- Danh hiệu chỉ số khó lấy hơn, nhất là khi còn trẻ.
+- Khoa thi: mỗi vòng tối đa 100 điểm; thi Đình 5 vòng; danh hiệu và chức bổ theo điểm thi Đình (Trạng nguyên tối đa Lục phẩm).
+- Chức tạm giữ trong lúc chờ ghế.
+- Bỏ dòng chú thích dưới lựa chọn.
+- Nội trợ không còn bậc và thông thạo.
+- Người bị trục xuất bị xóa khỏi gia phả.
+- Họ khác: không đến làm thân với Bần hộ, Thường dân; chỉ ngỏ thông gia khi nhà mình ngang hoặc cao hơn và hai nhà đã thân.
+
+**Ghi nhớ:** từ nay lựa chọn không kèm chú thích; chỉ ghi giá khi lựa chọn là trả tiền ngay.
