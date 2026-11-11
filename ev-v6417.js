@@ -60,7 +60,7 @@ L.push(
 const crSide=(c,s)=>{const C=cr();if(!C)return '';C.ours=s;if(s!=='n'&&c.job==='quan')Q.join(c,C[s].f);return ''};
 L.push(
 {id:'tc_vua_benh',t:'Hoàng đế lâm bệnh',k:'Tranh ngôi',fixed:1,
- x:c=>{const C=cr();return C?`Vua ${emp()} lâm bệnh nặng mà chưa lập thái tử. ${crN('a')} được các đại thần thuộc Hoàng đảng ủng hộ. ${crN('b')} được phe Quyền thần nâng đỡ. Ai cũng biết rồi sẽ phải chọn.`:''},
+ x:c=>{const C=cr();return C?`Vua ${emp()} lâm bệnh nặng mà chưa lập thái tử. ${crN('a')} được các đại thần thuộc Hoàng đảng ủng hộ. ${crN('b')} được phe Quyền thần nâng đỡ. ${C.kin==='anhem'?'Hai người là anh em ruột.':C.kin==='anhho'?'Hai người là anh em họ, ai cũng muốn ngôi báu.':C.kin==='chucau'?'Người chú và người cháu đều nhăm nhe ngai vàng.':''} Ai cũng biết rồi sẽ phải chọn.`:''},
  o:c=>cr()?[{l:`Ngả về ${cr().a.n}`,ax:{ht:1},f:c=>crSide(c,'a')+'Nhà mình lặng lẽ gửi lời tới phủ hoàng tử.'},{l:`Ngả về ${cr().b.n}`,ax:{tv:1},f:c=>crSide(c,'b')+'Nhà mình lặng lẽ gửi lời tới phủ thân vương.'},{l:'Giữ trung lập',ax:{diem:1},f:c=>crSide(c,'n')+'Không theo ai, đứng ngoài nhìn.'}]:NO},
 {id:'tc_loi_keo',t:'Bị lôi kéo',k:'Tranh ngôi',fixed:1,
  x:c=>{const C=cr();if(!C)return '';const o=C.ours==='a'?'b':C.ours==='b'?'a':pick(['a','b']);return `Người của ${crN(o)} mang lễ hậu tới, hứa hẹn chức tước nếu nhà mình đổi ý.`},
@@ -85,7 +85,7 @@ L.push(
  o:c=>{const C=cr();if(!C)return NO;return [
   {l:'Ủng hộ lời bàn',ax:{tv:1},f:c=>{C.b.pow+=8;if(C.ours==='b')C.act++;return 'Thêm một chữ ký vào tờ sớ.'}},
   {l:'Phản đối',ax:{ht:1,gan:1},f:c=>{C.a.pow+=8;if(C.ours==='a')C.act++;return 'Lời phản đối vang giữa triều.'}},
-  {l:'Đứng ra hòa giải hai bên',r:[{eq:1,tri:0.8,fame:0.3},78],ax:{rong:1,diem:1},y:c=>{const d=V.d();d.heir={set:true,n:C.a.n.replace(/^Hoàng tử /,''),age:R(18,30)};d.cr=null;Q.log('Hòa giải tranh ngôi',`${G.nameOf(c)} đứng ra hòa giải, ${C.a.n} được lập làm thái tử, ${C.b.n} được giữ đất phong.`);return 'Hai bên chịu nhường. Vua lập thái tử, thân vương giữ đất phong. Một cuộc đổ máu được tránh.'+fx(c,{fame:25,cfame:15,fav:15})},n:c=>'Lời hòa giải rơi vào khoảng không. Cả hai phe đều nghi mình.'+fx(c,{risk:10})}]}},
+  {l:'Đứng ra hòa giải hai bên',r:[{eq:1,tri:0.8,fame:0.3},78],ax:{rong:1,diem:1},y:c=>{const d=V.d();d.heir={set:true,n:C.a.n.replace(/^(Hoàng tử|Hoàng tôn) /,''),age:R(18,30)};d.cr=null;Q.log('Hòa giải tranh ngôi',`${G.nameOf(c)} đứng ra hòa giải, ${C.a.n} được lập làm thái tử, ${C.b.n} được giữ đất phong.`);return 'Hai bên chịu nhường. Vua lập thái tử, thân vương giữ đất phong. Một cuộc đổ máu được tránh.'+fx(c,{fame:25,cfame:15,fav:15})},n:c=>'Lời hòa giải rơi vào khoảng không. Cả hai phe đều nghi mình.'+fx(c,{risk:10})}]}},
 {id:'tc_danh_trao',t:'Chiếu thư bị đánh tráo',k:'Tranh ngôi',fixed:1,
  x:c=>`${N(c)} biết được một chuyện động trời: chiếu thư lập người nối ngôi đã bị người của ${crN('b')} đánh tráo.`,
  o:c=>{const C=cr();if(!C)return NO;return [
