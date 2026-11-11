@@ -33,7 +33,7 @@ const TUOC_LAND=[0,20,35,60,100,160];
 const RANKS=['Cửu phẩm','Bát phẩm','Thất phẩm','Lục phẩm','Ngũ phẩm','Tứ phẩm','Tam phẩm','Nhị phẩm','Nhất phẩm'];
 const SALARY=[2800,3300,4500,6000,8000,12000,20000,32000,52000];
 const VACANCY=[0.6,0.5,0.4,0.3,0.22,0.15,0.1,0.06,0.03];
-const ARMY=[['Binh sĩ',450,0],['Ngũ trưởng',700,20],['Thập trưởng',1000,50],['Bách hộ',2200,120],['Thiên hộ',5000,260],['Phó tướng',10000,500],['Tướng quân',20000,850],['Đại tướng quân',40000,1300]];
+const ARMY=[['Binh sĩ',450,0],['Ngũ trưởng',700,20],['Thập trưởng',1000,50],['Bách hộ',2200,120],['Thiên hộ',5000,260],['Phó tướng',10000,500],['Tướng quân',20000,850],['Đại tướng quân',40000,1500]];
 
 /* nghề: inc = đồng/tháng ở bậc đầu, lv: [tên, hệ số, yêu cầu], phys = tuổi nên nghỉ (nghề nặng nhọc) */
 const L=(n,mul,req)=>({n,mul,req:req||{}});

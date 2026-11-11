@@ -15,7 +15,7 @@ Lập ngày 11/11/2026, sau khi có hai file mày thêm vào: `BachNienTheGia_Te
 | Bản | Chủ đề | Vì sao nằm ở vị trí này |
 |---|---|---|
 | **6.5.1** | Vua, thiên hạ và độ khó đường lên ngôi | Chặn việc game kết thúc sớm, sửa lỗi ending mà báo cáo test chỉ ra |
-| **6.5.2** | Chức quan gắn với nơi ở, chiến công, quan võ | Hai đường lên ngôi (Quyền thần, Võ quan) đều đi qua quan trường; lỗi vị trí gây vô lý nhiều nhất |
+| **6.5.2** | Chức quan gắn với nơi ở, chiến công, quan võ; gia phả (trục xuất, lọc theo chi) | Hai đường lên ngôi (Quyền thần, Võ quan) đều đi qua quan trường; lỗi vị trí gây vô lý nhiều nhất |
 | **6.5.3** | Quân ngũ: sự kiện theo cấp, gia đình người đi lính, việc học trong quân | Đường Võ quan, và lỗi nặng mày đã gặp khi test |
 | **6.5.4** | Gia tộc: sinh con, gia quy, thần cấp, sức khỏe, gia thế | Nền cho nhiều đời; mốc gia thế và Hầu tước liên quan tới ending |
 | **6.5.5** | Kinh tế: cơ sở kinh doanh, giao thương, nghề phụ, tiền theo quỹ | Quyết định tốc độ giàu, tức tốc độ tới ending |
@@ -51,15 +51,17 @@ Lý do: nếu vua đầu yếu và thiên hạ loạn thì game có thể kết 
 
 Test: `node --check`, smoke 40 năm, chạy lại ba đường lên ngôi bằng admin, kiểm tra vua đầu là Trường Thịnh.
 
-### 6.5.2 · Chức quan gắn với nơi ở, chiến công, quan võ
+### 6.5.2 · Chức quan gắn với nơi ở, chiến công, quan võ, gia phả
 
 1. **Chức quan gắn đúng vị trí:** nhậm chức ở nơi nào thì nhân vật phải **thật sự ở nơi đó** trên bản đồ (hiện chức ở một nơi mà người thì không). 6.4.1.6 đã làm cho chi họ xa; bản này mở rộng cho mọi người nhậm chức, và sự kiện/kỳ ngộ lấy theo nơi ở (nối với 6.5.9).
 2. **Chiến công:** mọi người bắt đầu từ 0 dù chức gì. Thêm nguồn chiến công cho cả quan võ đang đóng quân (không chỉ lúc có chiến tranh). **Đại tướng quân cần 1.500 chiến công.** Rà các chức lân cận cho hợp mốc.
 3. **Quan võ cũng từ quan được** như quan văn (xin về hưu, cáo quan, hậu quả tương ứng).
 4. **Trí tuệ trong thăng tiến quan võ:** người chỉ có võ không lên cao được. Chức từ một mốc trở lên đòi thêm trí (hoặc mưu) bên cạnh võ lực. Mốc đặt theo phẩm cấp.
 5. Rà các chỗ vô lý khi nhậm chức (hồi tị, bỏ ghế, về hưu) xem còn sót gì.
+6. **Trục xuất là biến mất khỏi gia phả** (thêm 11/11/2026): người bị trục xuất bị xóa khỏi bảng gia phả, không hiện nữa, **không làm mờ**. Chỉ hiện lại khi sau này họ xin về và được chấp thuận (sự kiện `v62_tro_ve` hiện có, chỗ quay lại phải chuyển `left` về trạng thái sống trong họ). Rà các nơi còn hiện người bị trục xuất: cây gia phả, danh sách người, chi họ, thống kê. Con cháu của người bị trục xuất cũng không hiện theo (hiện `lift` ở bản vẽ cây đang nâng con cháu lên thay cha mẹ; xem lại cho khớp ý này).
+7. **Xem chi họ hay nhà chính thì ẩn hết phần còn lại** (thêm 11/11/2026): chọn bộ lọc nhà chính hoặc một chi thì cây chỉ vẽ đúng nơi đó, các nhân vật khác **ẩn đi hoàn toàn**, không làm mờ (hiện `engine.js` đang bật lớp `dim` ở chỗ lọc `chiF` trong trang gia phả). Vẽ lại cây theo bộ lọc, chứ không chỉ đổi kiểu hiển thị.
 
-Test: nhậm chức rồi kiểm tra vị trí bản đồ, thăng một quan võ lên Đại tướng quân qua admin, từ quan.
+Test: nhậm chức rồi kiểm tra vị trí bản đồ, thăng một quan võ lên Đại tướng quân qua admin, từ quan; trục xuất một người rồi xem cây gia phả, cho họ quay về; chọn từng chi và nhà chính trên trang gia phả.
 
 ### 6.5.3 · Quân ngũ
 
@@ -185,3 +187,5 @@ Giai đoạn hoàn thiện như `ke-hoach-phat-trien.md` mục 5: chỉ số vư
 **Chốt 11/11/2026:** (1) người ở xa vẫn được mở đường lên ngôi nhưng lộ tăng; (2) vua thứ hai là vua lên ngôi sau tranh giành căng thẳng (anh em ruột, anh em họ, chú cháu), vua thứ ba trở đi bốc ngẫu nhiên; (3) 40 đến 50 năm của vua đầu tính từ lúc mở game; (4) làm 6.5.1 trước, giao thương đề xuất sau; (5) tao dựng bảng chia nhóm đề xuất rồi mày sửa.
 
 **6.5.1 đã làm** (xem `bao-cao-v6.5.1.md`). Còn treo từ bản này: bảng vua vẫn tính tầm nhìn theo phẩm quan, chưa theo chức ở kinh thành (chờ 6.5.2); hai bonus cứng ở bước cuối của Võ quan và Khởi nghĩa chưa bỏ; chưa đo lại tỉ lệ thắng (6.5.10).
+
+**6.5.2 đã làm** (xem `bao-cao-v6.5.2.md`): trục xuất biến khỏi gia phả, lọc theo chi ẩn hẳn, Đại tướng quân 1.500 công, quan võ giải ngũ, cổng trí cho quan võ, `whereP`. **Còn treo:** gia chủ được bổ ghế ở tỉnh khác vẫn ở nhà (chờ mày chọn cách sửa); sự kiện và kỳ ngộ theo nơi ở từng người (làm ở 6.5.9).
