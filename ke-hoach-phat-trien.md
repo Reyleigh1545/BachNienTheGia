@@ -155,3 +155,15 @@ Ghi tiếp vào đây khi mày gửi. Lỗi thuộc diện sửa ngay (nguyên t
 - Chi họ xa lập ở nơi nhậm chức: có nơi ở, dấu ⌂ trên bản đồ, gửi quỹ về, mức gắn bó, có thể thành chi độc lập.
 - Gia đình người đi lính: vợ con theo vào trại gia binh, về phép, cưới vợ nhân dịp phép, tỉ lệ có con.
 - 24 sự kiện.
+
+**6.4.1.7 đã làm (11/11/2026):**
+- Hoàng đế (tuổi, sức khỏe, tài, đức, uy, đa nghi, loại vua) và thiên hạ (dân tâm, quốc khố, loạn). Vua băng hà theo tuổi và sức khỏe.
+- 8 sự kiện thời thế theo loại vua.
+- Tranh ngôi 7 bước (tuyến 6). Thanh trừng khi vua đa nghi, 10 sự kiện (tuyến 4).
+- 9 danh hiệu cấp Thần, mỗi cái hai bước khảo nghiệm.
+- Thiên mệnh: cái thế sau khi người giữ danh hiệu qua đời, và thiên mệnh tự nhiên 1/2000. Kèm sự kiện thức tỉnh và kiếp nạn.
+- Con đường vượt mốc riêng cho mốc 120 và 140.
+- Chiến tranh tại nơi ở: 6 sự kiện. Người võ giỏi nhất nhà che chở cả nhà.
+- Người nhà chính đi lính do người chơi điều khiển.
+- Phe trong triều ẩn tới khi nhà có quan. Thế lực các phe chỉ biết khi có quan từ Ngũ phẩm.
+- 52 sự kiện.
