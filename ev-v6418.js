@@ -112,7 +112,7 @@ const bt=(id,t,x,nm)=>v(id,t,()=>x,(a)=>{const u=U();const df=Math.round(66-(u.t
 bt('ts_v6','Trận đầu: vây thành biên ải','Hịch đã truyền, thành đầu tiên chắn đường là thành biên ải. Thắng thì thiên hạ biết quân này không phải giặc cỏ.','Thành biên ải');
 bt('ts_v7','Trận thứ hai: đánh quân tiếp viện','Triều đình đã sai quân tới ứng cứu, hai bên gặp nhau giữa đường.','Quân tiếp viện');
 bt('ts_v8','Trận thứ ba: cửa ải kinh đô','Chỉ còn cửa ải cuối trước khi tới kinh thành. Triều đình dồn hết lực lượng phòng thủ ở đây.','Cửa ải');
-L.push(stp('ts_v_cuoi','vo','Đánh vào kinh thành',(a)=>`Kinh thành ngay trước mắt. ${hint('bien')} Thắng là làm vua, bại thì cả họ không còn.`,(a,d)=>[
+L.push(stp('ts_v_cuoi','vo','Đánh vào kinh thành',(a)=>`Kinh thành ngay trước mắt. ${hint('bien')} Thắng là làm vua, bại thì họa diệt tộc treo ngay trên đầu.`,(a,d)=>[
   {l:'Đánh thẳng vào kinh',f:c=>{if(chance(Math.min(0.9,T.win('bien')+0.05))){T.crown(a,'vo');return '<b>Quân vào kinh thành!</b> Cửa cung bị phá, triều đình đổi chủ.'}return T.fail('đánh vào kinh thất bại')}},
   {l:'Vây thành, chờ trong thành tự loạn',f:c=>{wait();return 'Vây kín bốn cửa. Mỗi ngày trong thành thêm người trốn ra.'}}]));
 /* ===================== Đường 3: khởi nghĩa ===================== */

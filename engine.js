@@ -1,4 +1,4 @@
-/* Bách Niên Thế Gia v6.4.1.8 · engine (v6.4.1.8: ba đường cướp ngôi, lên ngôi, hậu sử; v6.4.1.7: hoàng đế và thiên hạ, kế vị, thanh trừng, danh hiệu cấp Thần, thiên mệnh, chiến tranh tại nơi ở, mốc chỉ số riêng; v6.4.1.6: tình duyên, chi họ xa ở nơi nhậm chức, gia đình người đi lính; v6.4.1.5.1: chỉ số lớn chậm theo tư chất, khoa thi khó hơn và tối đa 100 điểm, chức tạm khi chờ ghế, bỏ chú thích dưới lựa chọn, nội trợ, gia phả, họ khác; v6.4.1.5: quan hệ giữa các họ, hôn nhân và gả đi, họ gốc · hộ · chi, ruộng riêng cho chi, sửa lỗi test; v6.4.1.4: quan trường, phe phái, tội trạng, thang hậu quả tới tru di, sử ký quan trường; v6.4.1.3: quyền điều khiển và tự quyết theo tính cách, thư nhà, gia quy chia nhóm phạt, uy gia pháp, sửa hàng đợi sự kiện; v6.4.1.2: cân bằng độ khó: khoa cử theo chỉ tiêu, tước tích công trạng, bậc gia tộc, danh vọng cá nhân, kinh doanh, bớt hộp thoại; v6.4.1.1: trang admin, tàng thư theo hộ, người trông cơ sở, truyền việc khi nghỉ hưu, thu nhỏ gia phả) */
+/* Bách Niên Thế Gia v6.5.1 · engine (v6.5.1: vua đầu Trường Thịnh, tranh ngôi cuối đời, ba đường lên ngôi khó hơn; v6.4.1.8: ba đường cướp ngôi, lên ngôi, hậu sử; v6.4.1.7: hoàng đế và thiên hạ, kế vị, thanh trừng, danh hiệu cấp Thần, thiên mệnh, chiến tranh tại nơi ở, mốc chỉ số riêng; v6.4.1.6: tình duyên, chi họ xa ở nơi nhậm chức, gia đình người đi lính; v6.4.1.5.1: chỉ số lớn chậm theo tư chất, khoa thi khó hơn và tối đa 100 điểm, chức tạm khi chờ ghế, bỏ chú thích dưới lựa chọn, nội trợ, gia phả, họ khác; v6.4.1.5: quan hệ giữa các họ, hôn nhân và gả đi, họ gốc · hộ · chi, ruộng riêng cho chi, sửa lỗi test; v6.4.1.4: quan trường, phe phái, tội trạng, thang hậu quả tới tru di, sử ký quan trường; v6.4.1.3: quyền điều khiển và tự quyết theo tính cách, thư nhà, gia quy chia nhóm phạt, uy gia pháp, sửa hàng đợi sự kiện; v6.4.1.2: cân bằng độ khó: khoa cử theo chỉ tiêu, tước tích công trạng, bậc gia tộc, danh vọng cá nhân, kinh doanh, bớt hộp thoại; v6.4.1.1: trang admin, tàng thư theo hộ, người trông cơ sở, truyền việc khi nghỉ hưu, thu nhỏ gia phả) */
 (function(){
 'use strict';
 /* ================= tiện ích ================= */
@@ -312,6 +312,7 @@ function newGame(o){
   S={t:0,money:0,fame:0,hung:25,on:60,royal:0,people:[],head:null,queue:[],sched:[],cool:{},log:[],won:{},over:false,lastNet:null,
     epi:false,epiRisk:0,war:null,recruit:0,disaster:null,tierSeen:0,hh:{h0:{home:0,life:1,name:'Nhà chính'}},
     farm:{own:0,rent:0,fief:0,hired:0,alloc:{lua:0},store:false,unlock:['lua','ngo','dau','bong','che','mia']},mk:{},kho:{},biz:[],trips:[],cand:[],candT:-1,rules:[],surname:o.surname,region:o.region||'trung',ruleT:-99,ver:6.2,slot:o.slot||1,poem:o.poem??null,origin:o.origin||null,kyT:{},opt:{preview:false},ver:6.3};
+  S.dyn=mkDyn(0,true);
   (REGIONS[S.region].unlock||[]).forEach(k=>{if(!S.farm.unlock.includes(k))S.farm.unlock.push(k)});
   for(const g in GOODS)S.mk[g]=0.9+Math.random()*0.2;
   const h=mkPerson({g:o.g,surname:o.surname,given:o.given,age:18,gn:o.gn,tg:o.tg,hh:'h0',traits:false});
@@ -1216,7 +1217,11 @@ const meetsPost=(c,key)=>{const T=seatTm(key);if(!T)return false;for(const k in 
 /* nhà vua và triều đại */
 const ERA_A=['Hưng','Thái','Vĩnh','Bảo','Cảnh','Thịnh','Chính','Thuận','Hoằng','Gia'];
 const ERA_B=['Bình','Hòa','Định','Trị','Đức','Phúc','Long','Minh','An','Thái'];
-function mkDyn(t){return {name:'Đại Nguyễn',emp:'Nguyễn Thành Trung',era:'Hưng Bình',from:t,len:R(24,34)*12,n:1,hist:[],newT:-99}}
+function mkDyn(t,first){const d={name:'Đại Nguyễn',emp:'Nguyễn Thành Trung',era:'Hưng Bình',from:t,len:R(24,34)*12,n:1,hist:[],newT:-99};
+  /* v6.5.1: ván mới có vua đầu là minh quân Trường Thịnh, ở ngôi 40 đến 50 năm tính từ lúc mở game (d.fixed là tháng băng hà). Tới cuối đời thì nổ ra tranh ngôi căng thẳng. */
+  if(first){d.era='Trường Thịnh';d.fixed=t+R(40,50)*12+R(0,11);d.k={age:R(28,34),hp:R(85,98),tai:R(82,95),duc:R(75,92),uy:R(70,88),nghi:R(10,30)};d.dt=R(72,88);d.qk=R(68,88);d.loan=R(3,10);
+    d.heir={set:false,n:mkGiven('nam'),age:R(2,8)}}
+  return d}
 /* ================= v6.4.1.7: hoàng đế và thiên hạ ================= */
 /* d.k: vua đang trị vì (age tuổi, hp sức khỏe, tai tài, duc đức, uy uy quyền, nghi đa nghi; 0..100).
    d.dt dân tâm thiên hạ, d.qk quốc khố, d.loan mức loạn (0..100). d.heir: thái tử (set đã lập hay chưa).
@@ -1233,8 +1238,13 @@ function dynYear(){
   k.age++;k.hp=clamp(k.hp+R(-6,4)-(k.age>50?(k.age-50)/3:0),0,100);k.uy=clamp(k.uy+R(-3,3)+(k.tai-50)/40+(S.war?-1:0),0,100);
   const W0=KT_W[kType(k)];d.dt=clamp(d.dt+W0.dt+R(-3,3)+(S.war?-2:0)+(S.disaster?-2:0)+(d.qk<20?-2:0),0,100);
   d.qk=clamp(d.qk+W0.qk+R(-3,3)+(S.war?-3:0),0,100);d.loan=clamp(d.loan+W0.loan+R(-3,3)+(d.dt<30?3:0)+(d.dt>65?-2:0),0,100);
-  if(!d.heir.set&&k.age>=28&&chance(0.15)){d.heir.set=true;log(`Hoàng đế lập ${d.heir.n} làm thái tử.`,'gd')}
   d.heir.age=Math.max(0,(d.heir.age||0)+1);
+  if(d.fixed&&S.t<d.fixed+120){
+    /* vua đầu: giữ đúng tư cách minh quân đến lúc gần mất, không lập thái tử, không chết sớm. Cuối đời thì tranh ngôi nổ ra. */
+    if(S.t<d.fixed-60){k.hp=Math.max(k.hp,80);k.tai=Math.max(k.tai,78);k.duc=Math.max(k.duc,70);k.nghi=Math.min(k.nghi,35)}
+    else if(!d.cr&&S.t>=d.fixed-40)crStart(d,true);
+    return}
+  if(!d.heir.set&&k.age>=28&&chance(0.15)){d.heir.set=true;log(`Hoàng đế lập ${d.heir.n} làm thái tử.`,'gd')}
   /* khủng hoảng kế vị: vua già yếu mà chưa lập thái tử */
   if(!d.cr&&!d.heir.set&&(k.age>=55||k.hp<40)&&chance(0.25))crStart(d);
   /* vua băng hà theo tuổi và sức khỏe */
@@ -1246,7 +1256,9 @@ function kingDie(d,why){d=d||dynEns();const old=d.emp,oldEra=d.era;
   let nm,na;const cr=d.cr;
   if(cr){const win=crRes(d);nm=win.n;na=win.age}else if(d.heir&&d.heir.set){nm=d.heir.n;na=d.heir.age}else{nm=mkGiven('nam');na=R(8,30)}
   d.n++;d.emp='Nguyễn '+pick(['Thành','Đức','Hữu','Phúc','Quang','Thế','Văn'])+' '+nm;
-  d.era=pick(ERA_A)+' '+pick(ERA_B);d.from=S.t;d.len=R(14,36)*12;d.newT=S.t;d.k=mkKing(na);d.cr=null;
+  d.era=pick(ERA_A)+' '+pick(ERA_B);d.from=S.t;d.len=R(14,36)*12;d.newT=S.t;d.k=mkKing(na);d.cr=null;d.fixed=null;
+  if(cr){/* vua lên ngôi sau tranh ngôi: uy yếu, đa nghi, thiên hạ xáo động */
+    d.k.uy=R(25,45);d.k.nghi=R(60,85);d.loan=clamp((d.loan||0)+R(8,16),0,100);d.dt=clamp((d.dt||50)-R(4,9),0,100);d.k.age=Math.max(d.k.age,na)}
   d.heir={set:false,n:mkGiven('nam'),age:Math.max(0,na-R(16,26))};
   log(`Hoàng đế ${old} ${why||'băng hà'}. ${d.emp} lên ngôi, đổi niên hiệu ${d.era}.${d.k.age<16?' Vua còn nhỏ, triều chính trong tay quan nhiếp chính.':''}`,'gd');
   qtLog('Đổi đời vua',`Hoàng đế ${old} ${why||'băng hà'}, ${d.emp} lên ngôi (niên hiệu ${d.era}).`)}
@@ -1262,15 +1274,21 @@ function thoiTheTxt(){const d=dynEns();const k=d.k;const t=kType(k);
   return `${KTX[t]}; ${dtx}, ${qtx}, ${ltx}.${clear?ktx+ntx+htx:''}`}
 function thoiTheCard(){const d=dynEns();const k=d.k;const AD=window.BN_ADMIN;
   return `<section class="card"><span class="eyebrow">Thời thế</span><h2>Triều ${esc(d.name)} · ${esc(d.emp)}</h2><p class="kvline">${thoiTheTxt()}</p>
-   ${d.cr?`<p class="kvline down">Triều đình đang tranh ngôi: ${esc(d.cr.a.n)} và ${esc(d.cr.b.n)}.${d.cr.ours!=='n'?` Nhà mình đứng về phía ${esc(d.cr[d.cr.ours].n)}.`:''}</p>`:''}
+   ${d.cr?`<p class="kvline down">Triều đình đang tranh ngôi: ${esc(d.cr.a.n)} và ${esc(d.cr.b.n)}.${d.cr.kin&&CR_KIN[d.cr.kin]?' '+CR_KIN[d.cr.kin]:''}${d.cr.ours!=='n'?` Nhà mình đứng về phía ${esc(d.cr[d.cr.ours].n)}.`:''}</p>`:''}
    ${AD?`<p class="kvline muted"><small>(admin) ${KT_N[kType(k)]} · tuổi ${k.age} · sức ${Math.round(k.hp)} · tài ${k.tai} · đức ${k.duc} · uy ${Math.round(k.uy)} · nghi ${k.nghi} · dân tâm ${Math.round(d.dt)} · quốc khố ${Math.round(d.qk)} · loạn ${Math.round(d.loan)}</small></p>`:''}</section>`}
 /* ---------- khủng hoảng kế vị (tuyến 6 của file quan trường) ---------- */
 const CR_STEPS=['tc_vua_benh','tc_loi_keo','tc_chieu_binh','tc_lam_chung','tc_phe_lap','tc_danh_trao','tc_gioi_nghiem'];
-function crStart(d){d.cr={st:0,t:S.t,next:S.t+R(1,4),a:{n:'Hoàng tử '+mkGiven('nam'),f:'hoang',pow:R(40,60)},b:{n:'Thân vương '+mkGiven('nam'),f:'quyen',pow:R(35,65)},ours:'n',act:0};
-  log('Hoàng đế lâm bệnh mà chưa lập thái tử. Các hoàng tử, thân vương bắt đầu lôi kéo đại thần.','hi');qtLog('Khủng hoảng kế vị',`Hoàng đế ${d.emp} lâm bệnh, chưa lập thái tử. ${d.cr.a.n} và ${d.cr.b.n} tranh ngôi.`)}
+const CR_KIN={anhem:'Hai người là anh em ruột, cùng con vua, nay thành đối thủ của nhau.',anhho:'Hai người là anh em họ, một bên là con vua, một bên là con của thân vương, ai cũng nói mình mới đáng ngồi ngai vàng.',chucau:'Người chú là em ruột nhà vua, người cháu là hoàng tôn. Chú muốn nối ngôi anh, cháu muốn giữ ngôi của ông.'};
+function crStart(d,hard){const kin=hard?pick(['anhem','anhho','chucau']):'anhem';
+  const an=kin==='chucau'?'Hoàng tôn '+mkGiven('nam'):'Hoàng tử '+mkGiven('nam');
+  const hp=hard?()=>R(46,56):null;
+  d.cr={st:0,t:S.t,next:S.t+R(1,4),kin,a:{n:an,f:'hoang',pow:hp?hp():R(40,60)},b:{n:'Thân vương '+mkGiven('nam'),f:'quyen',pow:hp?hp():R(35,65)},ours:'n',act:0};
+  if(hard)d.loan=clamp((d.loan||0)+R(4,9),0,100);
+  log(hard?'Hoàng đế tuổi đã cao, long thể suy yếu mà chưa lập thái tử. Triều đình ngầm chia hai phe, không khí căng như dây đàn.':'Hoàng đế lâm bệnh mà chưa lập thái tử. Các hoàng tử, thân vương bắt đầu lôi kéo đại thần.','hi');
+  qtLog('Khủng hoảng kế vị',`Hoàng đế ${d.emp} lâm bệnh, chưa lập thái tử. ${d.cr.a.n} và ${d.cr.b.n} tranh ngôi. ${CR_KIN[kin]}`)}
 const crActor=()=>alive().filter(p=>inClan(p)&&p.job==='quan'&&p.lv>=3).sort((a,b)=>b.lv-a.lv)[0]||((tierIdx()>=4||alive().some(p=>inClan(p)&&p.job==='quan_ngu'&&p.lv>=5))?head():null);
 function crMonth(){const d=S.dyn;if(!d||!d.cr||S.t<d.cr.next)return;const cr=d.cr;
-  if(cr.st>=CR_STEPS.length){kingDie(d,'băng hà giữa lúc tranh ngôi');return}
+  if(cr.st>=CR_STEPS.length){if(d.fixed&&S.t<d.fixed)return;kingDie(d,'băng hà giữa lúc tranh ngôi');return}
   const who=crActor();const ev=CR_STEPS[cr.st];cr.st++;cr.next=S.t+R(4,8);
   if(who&&EVMAP[ev])enqueue('ev',who.id,{ev,data:{}});else{cr.a.pow+=R(-5,5);cr.b.pow+=R(-5,5)}}
 /* ai thắng: phe mạnh hơn, cộng phần nhà mình góp; thắng thì phò tá có công, thua thì bị thanh toán */
@@ -1281,7 +1299,7 @@ function crRes(d){const cr=d.cr;const pa=cr.a.pow+R(-20,20),pb=cr.b.pow+R(-20,20
   else if(cr.ours!=='n'){offs.forEach(p=>{qtAdd(p,{risk:cr.safe?25:45,fav:-30});if(cr.act>=2){qtAdd(p,{crime:4});const q=qtOf(p);if(q.st<2){q.st=2;enqueue('ev',p.id,{ev:'qt_dan_hac'})}}});cf(-25,'Theo nhầm phe tranh ngôi');
     qtLog('Theo nhầm phe tranh ngôi',`Họ ${esc(S.surname)} đứng về phía ${cr[cr.ours].n}. ${win.n} lên ngôi và bắt đầu thanh toán.`);log(`${win.n} thắng trong cuộc tranh ngôi. Nhà mình đứng nhầm phe, tân đế bắt đầu thanh toán.`,'hi')}
   else{offs.forEach(p=>qtAdd(p,{fav:-5}));log(`${win.n} thắng trong cuộc tranh ngôi. Nhà mình đứng ngoài, không được gì cũng không mất gì.`)}
-  return {n:win.n.replace(/^(Hoàng tử|Thân vương) /,''),age:R(18,40)}}
+  return {n:win.n.replace(/^(Hoàng tử|Hoàng tôn|Thân vương) /,''),age:R(18,40)}}
 /* ---------- nhà vua với triều chính: thăng chức, quan tham, sự kiện thời thế ---------- */
 const kingPromoF=()=>({minh:1.25,thu:1,hon:0.85,bao:0.75,au:0.9})[kingT()]||1;
 function kingMonth(){const d=S.dyn;if(!d||!d.k||!head())return;crMonth();
@@ -1328,7 +1346,7 @@ function thanYear(){if(!head())return;S.than=S.than||{};
 function thanGrant(c,id){S.than=S.than||{};S.than[id]=c.id;addTrait(c,'than_'+id);c.fame+=200;cf(80,`Có người được tôn là ${THAN[id].n}`);
   qtLog(`Phong ${THAN[id].n}`,`${nameOf(c)} được thiên hạ tôn là ${THAN[id].n}.`);log(`${nameOf(c)} được thiên hạ tôn là ${THAN[id].n}.`,'gd')}
 const thanFail=(c,id)=>{c.flags['thT_'+id]=S.t+60};
-/* thiên mệnh lúc sinh: 1/2000 tự nhiên; nếu một danh hiệu cấp Thần trong họ đã khuất mà chưa ai mang cái thế thì 3% (con cháu trực hệ của người khuất 6%) */
+/* thiên mệnh lúc sinh: 1/2000 đứa trẻ có một thiên mệnh, chọn đều trong khoảng 11 loại (nên mỗi loại, kể cả Đế vương chi tướng, chỉ khoảng 1/22.000); nếu một danh hiệu cấp Thần trong họ đã khuất mà chưa ai mang cái thế thì 3% (con cháu trực hệ của người khuất 6%) */
 function tmBirth(p){p.tmChk=1;const have=t=>alive().some(x=>inClan(x)&&(x.traits||[]).includes(t));
   const pool=[];Object.entries(S.thanDead||{}).forEach(([id,v])=>{const T=THAN[id];if(!T||have(T.tm)||thanHolder(id))return;const up=x=>x&&(x.parents.includes(v.by)||x.parents.some(i=>{const q=P(i);return q&&q.parents.includes(v.by)}));pool.push([T.tm,up(p)?0.06:0.03])});
   for(const [t,pr] of pool)if(chance(pr)){tmGive(p,t);return}
@@ -3409,9 +3427,9 @@ function usNext(){const U=usU();if(!U)return;U.st++;U.pending=false;U.next=S.t+R
 function usWin(kind){const U=usU();if(!U)return 0;
   let p=(kind==='thien'?U.danh*0.5+U.the*0.25+U.tai*0.1+(100-U.lo)*0.15:U.the*0.45+U.danh*0.15+U.tai*0.15+(100-U.lo)*0.25)/100;
   const d=S.dyn&&S.dyn.k?S.dyn:null;
-  if(d){const t=kType(d.k);p+=({hon:0.06,bao:0.08,au:0.1,thu:0,minh:-0.1}[t]||0)+(d.loan>=50?0.05:0)+(d.dt<35?0.05:0)+(d.cr?0.06:0)-(d.k.uy>=75?0.05:0)}
-  const a=P(U.who);if(a){const T=tmOf(a);if(T&&T.tm==='devuong')p+=0.07}
-  return clamp(p-0.08,0.05,0.88)}
+  if(d){const t=kType(d.k);p+=({hon:0.05,bao:0.06,au:0.08,thu:0,minh:-0.1}[t]||0)+(d.loan>=50?0.04:0)+(d.dt<35?0.04:0)+(d.cr?0.05:0)-(d.k.uy>=75?0.05:0)-(d.dt>=70?0.04:0)}
+  const a=P(U.who);if(a){const T=tmOf(a);if(T&&T.tm==='devuong')p+=0.03}
+  return clamp(p-0.16,0.04,0.8)}
 function usAbandon(){const U=usU();if(!U)return '';const a=P(U.who);const lo=U.lo;const leak=chance(lo/160);
   S.usurp=null;S.usNo=S.t+R(120,240);
   let t=lo<20?'Mọi dấu vết được xóa sạch, như chưa từng có chuyện gì.':'Người trong cuộc được giải tán, thư từ bị đốt.';
@@ -3437,7 +3455,7 @@ function usMonth(){if(!head()||S.over)return;
   if(!a||a.dead!=null||!inClan(a)){const n=usActors(U.path).find(p=>p.id!==U.who);
     if(n){U.who=n.id;a=n;log(`${nameOf(n)} nối tiếp mưu đại sự.`,'hi')}
     else{S.usurp=null;S.usNo=S.t+120;log('Mưu đại sự tan vỡ vì người cầm đầu không còn.','hi');qtLog('Mưu đại sự tan vỡ','Người cầm đầu không còn, mưu đại sự tan theo.');return}}
-  U.lo=clamp(U.lo+0.25+(U.the>60?0.15:0)+(U.st>=3?0.15:0),0,100);
+  U.lo=clamp(U.lo+0.25+(U.the>60?0.15:0)+(U.st>=3?0.15:0)+(a.away?0.2:0),0,100);
   if(U.pending&&S.t-(U.pt||0)>24)U.pending=false;
   if(U.lo<45)U.warned=0;
   if(U.lo>=60&&!U.warned){U.warned=1;usEnq('ts_lo_tin',a)}
@@ -3478,7 +3496,7 @@ function hauSu(qh,nh){const K=S.usCoro;const U=K.U;const a=P(K.who);ensurePerson
   while(yr<320&&i<TH.length){
     if(i>0){q=clamp(Math.round(q*0.5+(i===1?hq*0.15:0)+R(22,78)*(i===1?0.35:0.5)),8,95)}
     const ty=typ(q);s=clamp(s+(q-52)*0.3+R(-7,7)-(i>=3?4:0)-(ty==='hon'?3:ty==='bao'?6:0),0,100);
-    const L=i===0?L0:clamp(Math.round(R(6,26)+(s-45)/7-(ty==='bao'?4:0)),3,42);
+    let L=i===0?L0:clamp(Math.round(R(6,26)+(s-45)/7-(ty==='bao'?4:0)),3,42);L=Math.max(1,Math.min(L,320-yr));
     const pool=NOTE[ty].filter(x=>!used.has(x));const nt=pick(pool.length?pool:NOTE[ty]);used.add(nt);
     reigns.push({n:TH[i],y0:yr+1,y1:yr+L,ty,note:nt});yr+=L;i++;
     if(s<=10){dead=true;cause=pick(CAUSE);break}}
@@ -4431,7 +4449,7 @@ function mainMenu(){
   running=false;S=null;page='giapha';brandHead();
   const m=meta();const last=m.last&&m.slots[m.last]&&!m.slots[m.last].over?m.last:null;
   const any=Object.keys(m.slots).length||loadOld();
-  openModal(`<div class="menu"><div class="sealbig" aria-hidden="true">家</div><h2>Bách Niên Thế Gia</h2><p class="muted">Từ túp lều tranh đến danh gia vọng tộc</p><p class="muted" style="font-size:.78rem;margin-top:-.4rem">Phiên bản 6.4.1.8${window.BN_ADMIN?' · admin':''}</p>
+  openModal(`<div class="menu"><div class="sealbig" aria-hidden="true">家</div><h2>Bách Niên Thế Gia</h2><p class="muted">Từ túp lều tranh đến danh gia vọng tộc</p><p class="muted" style="font-size:.78rem;margin-top:-.4rem">Phiên bản 6.5.1${window.BN_ADMIN?' · admin':''}</p>
    <div class="choices">${last?`<button class="btn primary" data-m="cont"><strong>Tiếp tục</strong><small>${slotLine(last)}</small></button>`:''}
    <button class="btn ${last?'':'primary'}" data-m="new"><strong>Trò chơi mới</strong><small>Lập một dòng họ mới</small></button>
    <button class="btn" data-m="load" ${any?'':'disabled'}><strong>Tải bản lưu</strong><small>Ba ô lưu, mỗi ô một gia tộc</small></button>
