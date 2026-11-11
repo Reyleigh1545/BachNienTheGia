@@ -1,4 +1,4 @@
-/* Bách Niên Thế Gia v6.5.4.1 · engine (v6.5.4.1: hệ số tiền chỉ nhân mạnh cho sự kiện chi tiêu theo cỡ nhà; v6.5.4: kho sự kiện có metadata, gia tộc, kinh tế, học tập, chỉ số, nhánh rẽ đường lên ngôi; v6.5.3: gia chủ nhậm chức xa thì cả nhà dọn, bảng thời thế theo kinh thành, gia đình lính, sự kiện quân ngũ theo cấp; v6.5.2: gia phả ẩn người bị trục xuất và lọc theo chi, quan võ từ quan và cần trí, Đại tướng quân 1500 công, nơi ở của người nhậm chức; v6.5.1: vua đầu Trường Thịnh, tranh ngôi cuối đời, ba đường lên ngôi khó hơn; v6.4.1.8: ba đường cướp ngôi, lên ngôi, hậu sử; v6.4.1.7: hoàng đế và thiên hạ, kế vị, thanh trừng, danh hiệu cấp Thần, thiên mệnh, chiến tranh tại nơi ở, mốc chỉ số riêng; v6.4.1.6: tình duyên, chi họ xa ở nơi nhậm chức, gia đình người đi lính; v6.4.1.5.1: chỉ số lớn chậm theo tư chất, khoa thi khó hơn và tối đa 100 điểm, chức tạm khi chờ ghế, bỏ chú thích dưới lựa chọn, nội trợ, gia phả, họ khác; v6.4.1.5: quan hệ giữa các họ, hôn nhân và gả đi, họ gốc · hộ · chi, ruộng riêng cho chi, sửa lỗi test; v6.4.1.4: quan trường, phe phái, tội trạng, thang hậu quả tới tru di, sử ký quan trường; v6.4.1.3: quyền điều khiển và tự quyết theo tính cách, thư nhà, gia quy chia nhóm phạt, uy gia pháp, sửa hàng đợi sự kiện; v6.4.1.2: cân bằng độ khó: khoa cử theo chỉ tiêu, tước tích công trạng, bậc gia tộc, danh vọng cá nhân, kinh doanh, bớt hộp thoại; v6.4.1.1: trang admin, tàng thư theo hộ, người trông cơ sở, truyền việc khi nghỉ hưu, thu nhỏ gia phả) */
+/* Bách Niên Thế Gia v6.5.4.2 · engine (v6.5.4.2: sửa hệ số tiền áp nhầm cho khoản thu, eligibleWhy thêm lvr và hai điều kiện metadata; v6.5.4.1: hệ số tiền chỉ nhân mạnh cho sự kiện chi tiêu theo cỡ nhà; v6.5.4: kho sự kiện có metadata, gia tộc, kinh tế, học tập, chỉ số, nhánh rẽ đường lên ngôi; v6.5.3: gia chủ nhậm chức xa thì cả nhà dọn, bảng thời thế theo kinh thành, gia đình lính, sự kiện quân ngũ theo cấp; v6.5.2: gia phả ẩn người bị trục xuất và lọc theo chi, quan võ từ quan và cần trí, Đại tướng quân 1500 công, nơi ở của người nhậm chức; v6.5.1: vua đầu Trường Thịnh, tranh ngôi cuối đời, ba đường lên ngôi khó hơn; v6.4.1.8: ba đường cướp ngôi, lên ngôi, hậu sử; v6.4.1.7: hoàng đế và thiên hạ, kế vị, thanh trừng, danh hiệu cấp Thần, thiên mệnh, chiến tranh tại nơi ở, mốc chỉ số riêng; v6.4.1.6: tình duyên, chi họ xa ở nơi nhậm chức, gia đình người đi lính; v6.4.1.5.1: chỉ số lớn chậm theo tư chất, khoa thi khó hơn và tối đa 100 điểm, chức tạm khi chờ ghế, bỏ chú thích dưới lựa chọn, nội trợ, gia phả, họ khác; v6.4.1.5: quan hệ giữa các họ, hôn nhân và gả đi, họ gốc · hộ · chi, ruộng riêng cho chi, sửa lỗi test; v6.4.1.4: quan trường, phe phái, tội trạng, thang hậu quả tới tru di, sử ký quan trường; v6.4.1.3: quyền điều khiển và tự quyết theo tính cách, thư nhà, gia quy chia nhóm phạt, uy gia pháp, sửa hàng đợi sự kiện; v6.4.1.2: cân bằng độ khó: khoa cử theo chỉ tiêu, tước tích công trạng, bậc gia tộc, danh vọng cá nhân, kinh doanh, bớt hộp thoại; v6.4.1.1: trang admin, tàng thư theo hộ, người trông cơ sở, truyền việc khi nghỉ hưu, thu nhỏ gia phả) */
 (function(){
 'use strict';
 /* ================= tiện ích ================= */
@@ -176,8 +176,10 @@ const tkBase=()=>{const m=S?Math.max(0,S.money):0;return clamp(1+Math.log10(1+m/
 let MMCTX=null;
 const mm=v=>Math.round(v*60*(MMCTX&&MMCTX.ms?tkMoney():tkBase()));
 const MS_RE=/tiệc|yến tiệc|đám cưới|lễ cưới|sính|mừng thọ|lễ mừng|đám tang|tang lễ|biếu|hối lộ|quyên|từ thiện|chủ tế|khao quân|cúng|xây từ đường|xây nhà|sửa nhà|tế lễ|lễ vật|trọng thưởng|chiêu đãi/i;
+/* v6.5.4.2: sự kiện có chữ biếu/hối lộ/tiệc nhưng là NHẬN tiền hoặc chi nhỏ thì không dùng hệ số mạnh */
+const MS_NO=new Set(['n633_quan_le','qt3_nhan_thay','nd631_hoi_lo','q_hoi_lo','n633_bep_doc']);
 function wrapEvMoney(){
-  EVENTS.forEach(e=>{if(e._mw)return;e._mw=1;e.ms=!e.ky&&MS_RE.test(typeof e.t==='string'?e.t:'');
+  EVENTS.forEach(e=>{if(e._mw)return;e._mw=1;e.ms=!e.ky&&!MS_NO.has(e.id)&&MS_RE.test(typeof e.t==='string'?e.t:'');
     const wf=f=>typeof f==='function'?function(){const p=MMCTX;MMCTX=e;try{return f.apply(this,arguments)}finally{MMCTX=p}}:f;
     const wo=arr=>Array.isArray(arr)?arr.map(o=>{if(!o||typeof o!=='object')return o;const q=Object.assign({},o);['f','y','n','yy','nn','c'].forEach(k=>{if(q[k])q[k]=wf(q[k])});return q}):arr;
     if(typeof e.o==='function'){const o0=e.o;e.o=function(){const p=MMCTX;MMCTX=e;try{return wo(o0.apply(this,arguments))}finally{MMCTX=p}}}else e.o=wo(e.o);
@@ -827,11 +829,11 @@ function eligible(e,c){
 /* v6.4.1.1 (admin): giống eligible() nhưng trả về điều kiện đầu tiên bị trượt; rỗng là đủ điều kiện */
 function eligibleWhy(e,c){
   const T=[[()=>e.arc||e.fixed,'chỉ do cốt truyện gọi, không bốc ngẫu nhiên'],[()=>c.away&&!(e.job&&jobMatch(e,c)),'người này đang đi xa'],
-   [()=>e.once&&c.seen[e.id],'chỉ xảy ra một lần, đã xảy ra'],[()=>!kyOk(e,c),'kỳ ngộ chưa đủ điều kiện (kyOk)'],
+   [()=>{const M=e.meta;if(!M||e.fixed||e.arc||e.ky)return false;return awayFromHome(c)&&AWAY_BLOCK.has(M.d+'/'+M.s)},'người này đang ở xa nhà, không gặp chuyện làng và mùa vụ'],[()=>{const M=e.meta;return !!M&&!e.fixed&&!e.arc&&!e.ky&&M.sit==='war'&&!(S.war||(S.w&&S.w.ph&&Object.values(S.w.ph).some(v=>v>=1)))},'chưa có chiến sự'],[()=>e.once&&c.seen[e.id],'chỉ xảy ra một lần, đã xảy ra'],[()=>!kyOk(e,c),'kỳ ngộ chưa đủ điều kiện (kyOk)'],
    [()=>(S.cool[e.id]||-1e9)>S.t,`đang hồi chung, còn ${(S.cool[e.id]||0)-S.t} tháng`],[()=>(c.seen[e.id]||-1e9)>S.t-(e.pcd||60),'người này mới gặp gần đây'],
    [()=>!jobMatch(e,c),'sai nghề: cần '+(e.job||[]).join(', ')],[()=>!ctxOk(e,c),'sai hoàn cảnh (ctx)'],
    [()=>e.ptag&&!((c.job==='quan'||c.job==='quan_ngu')&&c.post&&window.D.OFFICES[c.post]&&e.ptag.includes(window.D.OFFICES[c.post].tag)),'sai loại việc của chức: '+(e.ptag||[]).join(', ')],
-   [()=>e.rmin!=null&&!(c.job==='quan'&&c.lv>=e.rmin),'phẩm quá thấp'],[()=>e.rmax!=null&&c.job==='quan'&&c.lv>e.rmax,'phẩm quá cao'],
+   [()=>e.lvr&&c.job==='quan_ngu'&&(c.lv<e.lvr[0]||c.lv>e.lvr[1]),'sai cấp quân ngũ (lvr)'],[()=>e.rmin!=null&&!(c.job==='quan'&&c.lv>=e.rmin),'phẩm quá thấp'],[()=>e.rmax!=null&&c.job==='quan'&&c.lv>e.rmax,'phẩm quá cao'],
    [()=>e.st!=null&&stg(c)<e.st,'chưa đủ bậc nghề'],[()=>e.stMax!=null&&stg(c)>e.stMax,'bậc nghề quá cao'],
    [()=>e.age&&(age(c)<e.age[0]||age(c)>e.age[1]),e.age?`tuổi phải từ ${e.age[0]} đến ${e.age[1]}`:''],[()=>e.sea&&!e.sea.includes(season()),'sai mùa'],
    [()=>e.tier&&(tierIdx()<e.tier[0]||tierIdx()>e.tier[1]),'sai bậc gia tộc'],[()=>e.fame&&c.fame+S.fame*0.2<e.fame,`danh vọng chưa tới ${e.fame}`],
@@ -4568,7 +4570,7 @@ function mainMenu(){
   running=false;S=null;page='giapha';brandHead();
   const m=meta();const last=m.last&&m.slots[m.last]&&!m.slots[m.last].over?m.last:null;
   const any=Object.keys(m.slots).length||loadOld();
-  openModal(`<div class="menu"><div class="sealbig" aria-hidden="true">家</div><h2>Bách Niên Thế Gia</h2><p class="muted">Từ túp lều tranh đến danh gia vọng tộc</p><p class="muted" style="font-size:.78rem;margin-top:-.4rem">Phiên bản 6.5.4.1${window.BN_ADMIN?' · admin':''}</p>
+  openModal(`<div class="menu"><div class="sealbig" aria-hidden="true">家</div><h2>Bách Niên Thế Gia</h2><p class="muted">Từ túp lều tranh đến danh gia vọng tộc</p><p class="muted" style="font-size:.78rem;margin-top:-.4rem">Phiên bản 6.5.4.2${window.BN_ADMIN?' · admin':''}</p>
    <div class="choices">${last?`<button class="btn primary" data-m="cont"><strong>Tiếp tục</strong><small>${slotLine(last)}</small></button>`:''}
    <button class="btn ${last?'':'primary'}" data-m="new"><strong>Trò chơi mới</strong><small>Lập một dòng họ mới</small></button>
    <button class="btn" data-m="load" ${any?'':'disabled'}><strong>Tải bản lưu</strong><small>Ba ô lưu, mỗi ô một gia tộc</small></button>

@@ -176,9 +176,3 @@ Ghi tiếp vào đây khi mày gửi. Lỗi thuộc diện sửa ngay (nguyên t
 - Thất bại đi qua thang hậu quả quan trường; có chi trốn đi xa thì chỉ tam tộc.
 - Lên ngôi: đặt quốc hiệu, niên hiệu, hậu sử, hết game.
 - 27 sự kiện.
-
----
-
-## 7. Đổi kế hoạch (11/11/2026, sau 6.4.1.8)
-
-Các bản tiếp theo đổi thành **v6.5.x**; kế hoạch chi tiết từng bản nằm ở `ke-hoach-v6.5.md`. Thứ tự: chỉnh để ván chơi tới được cái kết trước (6.5.1 đến 6.5.10), nội dung mới (giang hồ, kỳ ngộ gia tộc, cốt truyện lớn, tăng số sự kiện) từ 6.5.11. Mục 4 ở trên chỉ còn áp dụng cho phần nội dung của 6.5.11 trở đi.
