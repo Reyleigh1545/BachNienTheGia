@@ -26,7 +26,7 @@ const L=[];
 /* ===================== Mở đầu, lộ tin, phát giác, nội phản ===================== */
 L.push(
 {id:'ts_mo_dau',t:'Lời thì thầm trong đêm',k:K,fixed:1,
- x:(c,d)=>{const a=G.P(d.who);const P=d.path;const dy=S().dyn&&S().dyn.k?G.vua.txt():'';
+ x:(c,d)=>{const a=G.P(d.who);const P=d.path;const dy=S().dyn&&S().dyn.k?G.vua.txt(1):'';
   return P==='quyen'?`${N(a)} ngồi ghế Nhất phẩm đã lâu. Quyền trong tay đã gần bằng quyền vua, mà ngôi vua lúc này ${pick(['chẳng vững','nhiều người dè bỉu','đang trong tay một người không xứng'])}. Nhiều người đã hiểu ý và âm thầm ngỏ lời. ${dy}`:
    P==='vo'?`${N(a)} là Đại tướng quân, binh quyền cả nước nằm trong tay. Triều đình ${pick(['bạc đãi võ tướng','đa nghi với người cầm quân','rối ren'])}. Dưới trướng đã có người rỉ tai: "Có binh trong tay, hà tất cúi đầu mãi?" ${dy}`:
    `${N(a)} giờ là cái tên mà dân quê ở đâu cũng nhắc, ${pick(['võ công khiến người ta phục','tướng mạo khiến người ta kính sợ'])}. Dân tình ${pick(['khổ vì sưu thuế','oán quan tham','đói kém'])}, người ta bắt đầu thì thầm rằng thiên mệnh đã đổi chủ. ${dy}`},

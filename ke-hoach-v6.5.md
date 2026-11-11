@@ -189,3 +189,7 @@ Giai đoạn hoàn thiện như `ke-hoach-phat-trien.md` mục 5: chỉ số vư
 **6.5.1 đã làm** (xem `bao-cao-v6.5.1.md`). Còn treo từ bản này: bảng vua vẫn tính tầm nhìn theo phẩm quan, chưa theo chức ở kinh thành (chờ 6.5.2); hai bonus cứng ở bước cuối của Võ quan và Khởi nghĩa chưa bỏ; chưa đo lại tỉ lệ thắng (6.5.10).
 
 **6.5.2 đã làm** (xem `bao-cao-v6.5.2.md`): trục xuất biến khỏi gia phả, lọc theo chi ẩn hẳn, Đại tướng quân 1.500 công, quan võ giải ngũ, cổng trí cho quan võ, `whereP`. **Còn treo:** gia chủ được bổ ghế ở tỉnh khác vẫn ở nhà (chờ mày chọn cách sửa); sự kiện và kỳ ngộ theo nơi ở từng người (làm ở 6.5.9).
+
+**Chốt 11/11/2026 (sau 6.5.2):** gia chủ nhậm chức xa thì chọn cách A (dời cả nhà tới nơi đó, hoặc từ chối chức). Bảng thời thế đổi theo file docx "Rà soát": chụp mỗi năm, thấy rõ khi có người ở kinh thành, tiêu đề "Triều … · niên hiệu · Hoàng Đế …".
+
+**6.5.3 đã làm** (xem `bao-cao-v6.5.3.md`): gia chủ nhậm chức xa, bảng thời thế, gia đình lính (con theo mẹ, học trong doanh, chọn lúc 14 tuổi), khóa `lvr` và 24 sự kiện quân ngũ theo cấp. **Còn treo:** thêm sự kiện quân ngũ cho đủ (6.5.11 trở đi), kỳ ngộ chung tách khỏi người trong quân (làm cùng 6.5.9), quan khác của gia tộc phạm hồi tị khi gia chủ dời nhà.
