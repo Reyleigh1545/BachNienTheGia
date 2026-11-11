@@ -1,4 +1,4 @@
-/* Bách Niên Thế Gia v6.5.3 · bảng admin (chỉ nạp ở admin.html, phải nạp TRƯỚC engine.js)
+/* Bách Niên Thế Gia v6.5.4.1 · bảng admin (chỉ nạp ở admin.html, phải nạp TRƯỚC engine.js)
    - Hiện tỉ lệ thành của từng lựa chọn có gieo xúc xắc
    - Máy tự chọn: Cao / Vừa / Thấp / Ngẫu nhiên. Không bao giờ chọn lựa chọn không gieo nếu hộp có lựa chọn gieo.
      Hộp chỉ toàn lựa chọn không gieo: chạy thử từng lựa chọn (previewScore), Cao lấy cái lợi nhất, Vừa cái ở giữa, Thấp cái thiệt nhất.
@@ -112,6 +112,26 @@ function whyEv(id){const g=G();const e=AD().EVMAP()[id];const c=g.P(AD().getSel(
 
 /* ---------- giao diện ---------- */
 let tab='chon',open=false,note='';
+/* ---------- kho sự kiện (v6.5.4) ---------- */
+const KF={d:'',tr:'',ra:'',who:'',q:'',sel:''};
+const DOMN={life:'Đời sống',family:'Gia đình',economy:'Nghề và kinh tế',society:'Xã hội',education:'Học hành',government:'Quan trường',military:'Quân đội',jianghu:'Giang hồ',story:'Cốt truyện',encounter:'Kỳ ngộ',dynasty:'Hoàng quyền',unclassified:'Chưa phân loại'};
+const TRN={random:'Ngẫu nhiên',fixed:'Cố định',arc:'Cốt truyện',encounter:'Kỳ ngộ'};
+const RAN={common:'Thường',uncommon:'Ít gặp',rare:'Hiếm',very_rare:'Rất hiếm',unique:'Một lần',na:'Không áp dụng'};
+const WHON={any:'Ai cũng gặp',army:'Quân ngũ',official:'Quan',trade:'Có nghề riêng',child:'Trẻ nhỏ',head:'Gia chủ'};
+const kfList=()=>{const s=KF.q.trim().toLowerCase();return AD().EVENTS().filter(e=>{const m=e.meta||{};return (!KF.d||m.d===KF.d)&&(!KF.tr||m.tr===KF.tr)&&(!KF.ra||m.ra===KF.ra)&&(!KF.who||m.who===KF.who)&&(!s||e.id.toLowerCase().includes(s)||String(e.t||'').toLowerCase().includes(s))})};
+function kfBody(){const L=AD().EVENTS();const cnt={};L.forEach(e=>{const m=e.meta||{};cnt[m.d]=(cnt[m.d]||0)+1});
+  const opt=(o,cur)=>Object.entries(o).map(([k,v])=>`<option value="${k}" ${cur===k?'selected':''}>${v}</option>`).join('');
+  const R=kfList();const e=KF.sel?AD().EVMAP()[KF.sel]:null;const m=e&&e.meta||{};
+  return `<h4>Kho sự kiện · ${L.length} sự kiện</h4>
+   <div class="adgrid">${Object.entries(DOMN).map(([k,v])=>`<div class="adf"><span>${v}</span><b>${cnt[k]||0}</b></div>`).join('')}</div>
+   <div class="adrow"><select class="adsel" data-kf="d"><option value="">Mọi nhóm</option>${opt(DOMN,KF.d)}</select><select class="adsel" data-kf="tr"><option value="">Mọi cách kích hoạt</option>${opt(TRN,KF.tr)}</select></div>
+   <div class="adrow"><select class="adsel" data-kf="ra"><option value="">Mọi độ hiếm</option>${opt(RAN,KF.ra)}</select><select class="adsel" data-kf="who"><option value="">Ai gặp cũng được</option>${opt(WHON,KF.who)}</select></div>
+   <input class="adq" data-kfq type="search" placeholder="Tìm theo id hoặc tên" value="${esc(KF.q)}">
+   <p class="admut">${R.length} sự kiện khớp. Bấm tên để xem chi tiết.</p>
+   <div class="adlist">${R.slice(0,60).map(x=>`<div><span><button class="adlink" data-kfsel="${esc(x.id)}"><b>${esc(x.t||x.id)}</b></button> <small>${esc(x.id)} · ${DOMN[(x.meta||{}).d]||''} / ${esc((x.meta||{}).s||'')}</small></span></div>`).join('')}</div>
+   ${e?`<h4>${esc(e.t||e.id)}</h4><p class="admut">id <b>${esc(e.id)}</b> · nhóm ${DOMN[m.d]||m.d} / ${esc(m.s)} · ${TRN[m.tr]||m.tr} · độ hiếm ${RAN[m.ra]||m.ra} · ai gặp: ${WHON[m.who]||m.who}${m.sit&&m.sit!=='any'?' · hoàn cảnh: '+esc(m.sit):''}</p>
+   <p class="admut">trọng số w ${e.w==null?'(mặc định 1)':e.w} · cd ${e.cd==null?'(mặc định)':e.cd} · pcd ${e.pcd==null?'(mặc định 60)':e.pcd}${e.job?' · nghề '+esc(e.job.join(', ')):''}${e.lvr?' · cấp quân '+e.lvr.join('–'):''}${e.once?' · một lần':''}${e.age?' · tuổi '+e.age.join('–'):''}</p>
+   <div class="adrow"><button class="btn small" data-ev="${esc(e.id)}">Gọi cho người đang chọn</button><button class="btn small" data-why="${esc(e.id)}">Vì sao chưa ra?</button></div>`:''}`}
 const msg=t=>{note=t||'';const n=document.querySelector('#adm .adnote');if(n)n.textContent=note};
 const seg=(name,cur,list)=>`<div class="adseg">${list.map(([v,l])=>`<button data-set="${name}" data-v="${v}" aria-pressed="${cur===v}">${l}</button>`).join('')}</div>`;
 function body(){const g=G(),S=g&&g.S();
@@ -132,6 +152,7 @@ function body(){const g=G(),S=g&&g.S();
     <p class="admut">Đường chọn sẽ bắt đầu ngay cho người đang chọn (hoặc gia chủ), không cần đủ địa vị. "Ép sang bước cuối" bỏ qua các bước giữa. Đang chạy thì thấy thước đo ở trang Gia tộc.</p>
     <h4>Gọi sự kiện cho người đang chọn</h4><input class="adq" type="search" placeholder="Tìm theo id hoặc tên sự kiện" value="${esc(q)}">
     <div class="adlist">${findEv().map(e=>`<div><span><b>${esc(e.t||e.id)}</b> <small>${esc(e.id)}${e.ky?' · kỳ ngộ':''}${e.arc||e.fixed?' · cốt truyện':''}</small></span><button data-ev="${esc(e.id)}">Gọi</button><button data-why="${esc(e.id)}">Vì sao?</button></div>`).join('')}</div>`}
+  if(tab==='kho')return kfBody();
   if(tab==='tk'){if(!S)return '<p class="admut">Chưa có ván.</p>';const L=S.stat||[];const fm=g.fmtMoney||(v=>v);
     const rows=L.map((o,i)=>{const nx=L[i+1];const dm=(nx?nx.m0:S.money)-(o.m0||0);return `<tr><td>${o.y}</td><td>${o.pick}</td><td>${o.show}</td><td>${o.drop}</td><td>${o.auto}${o.big?` (${o.big})`:''}</td><td>${o.other}</td><td>${fm(Math.round(o.evm||0))}</td><td>${fm(Math.round(dm))}</td></tr>`}).reverse().join('');
     return `<h4>Hộp thoại theo năm (12 năm gần nhất)</h4>
@@ -150,7 +171,7 @@ function body(){const g=G(),S=g&&g.S();
 function draw(){let el=document.getElementById('adm');
   if(!el){el=document.createElement('div');el.id='adm';document.body.appendChild(el)}
   el.innerHTML=`<button class="adtog" data-tog>${open?'✕ Đóng':'⚙ Admin'}${A.play?' · đang chạy':A.auto!=='off'?' · tự chọn':''}${A.force!=='none'?' · ép':''}</button>
-   ${open?`<div class="adpanel"><nav>${[['chon','Tự chọn'],['chinh','Chỉnh'],['choi','Tự chơi'],['tk','Thống kê']].map(([k,l])=>`<button data-tab="${k}" aria-pressed="${tab===k}">${l}</button>`).join('')}</nav>
+   ${open?`<div class="adpanel"><nav>${[['chon','Tự chọn'],['chinh','Chỉnh'],['choi','Tự chơi'],['tk','Thống kê'],['kho','Kho']].map(([k,l])=>`<button data-tab="${k}" aria-pressed="${tab===k}">${l}</button>`).join('')}</nav>
    <div class="adbody">${body()}</div><p class="adnote">${esc(note)}</p></div>`:''}`;
   const $=s=>el.querySelector(s),$$=s=>el.querySelectorAll(s);
   $('[data-tog]').onclick=()=>{open=!open;draw()};
@@ -160,9 +181,12 @@ function draw(){let el=document.getElementById('adm');
   const dl=$('[data-delay]');if(dl)dl.onchange=()=>{A.delay=Math.max(0,+dl.value||0);saveCfg()};
   const ap=$('[data-apply]');if(ap)ap.onclick=()=>applyEdit(el);
   $$('[data-tsf]').forEach(b=>b.onclick=()=>{const g=G();const c=g.P(AD().getSel())||g.P(g.S().head);const u=g.ts.force(b.dataset.tsf,c);msg(u?`Đã bắt đầu "${g.ts.N[b.dataset.tsf]}" cho ${g.nameOf(c)}.`:'Không bắt đầu được.');draw()});
-  const tf=$('[data-tsfast]');if(tf)tf.onclick=()=>{const g=G();const u=g.ts.U();if(!u)return msg('Chưa có đường nào đang chạy.');u.st=g.ts.steps[u.path].length-1;u.the=80;u.danh=70;u.tai=60;u.lo=25;u.pending=false;u.next=g.S().t+1;msg('Đã ép sang bước cuối.');draw()};
+  const tf=$('[data-tsfast]');if(tf)tf.onclick=()=>{const g=G();const u=g.ts.U();if(!u)return msg('Chưa có đường nào đang chạy.');u.st=g.ts.stepsOf(u).length-1;u.the=80;u.danh=70;u.tai=60;u.lo=25;u.pending=false;u.next=g.S().t+1;msg('Đã ép sang bước cuối.');draw()};
   const tc=$('[data-tscrown]');if(tc)tc.onclick=()=>{const g=G();const c=g.P(AD().getSel())||g.P(g.S().head);g.ts.crown(c,'thử');if(!AD().modalOpen())AD().nextPopup();msg('Đã gọi đăng cơ.');draw()};
-  const qq=$('.adq');if(qq)qq.oninput=()=>{q=qq.value;const pos=qq.selectionStart;draw();const n=el.querySelector('.adq');n.focus();n.setSelectionRange(pos,pos)};
+  $$('[data-kf]').forEach(s=>s.onchange=()=>{KF[s.dataset.kf]=s.value;draw()});
+  $$('[data-kfsel]').forEach(b=>b.onclick=()=>{KF.sel=b.dataset.kfsel;draw()});
+  const kq=$('[data-kfq]');if(kq)kq.oninput=()=>{KF.q=kq.value;const pos=kq.selectionStart;draw();const n=el.querySelector('[data-kfq]');n.focus();n.setSelectionRange(pos,pos)};
+  const qq=$('.adq:not([data-kfq])');if(qq)qq.oninput=()=>{q=qq.value;const pos=qq.selectionStart;draw();const n=el.querySelector('.adq');n.focus();n.setSelectionRange(pos,pos)};
   $$('[data-ev]').forEach(b=>b.onclick=()=>callEv(b.dataset.ev));
   $$('[data-why]').forEach(b=>b.onclick=()=>whyEv(b.dataset.why));
   const pl=$('[data-play]');if(pl)pl.onclick=()=>startPlay(+$('[data-years]').value||1);
