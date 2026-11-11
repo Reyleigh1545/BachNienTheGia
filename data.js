@@ -90,12 +90,12 @@ const FOCUS={
 
 /* trường học: học phí đồng/tháng */
 const SCHOOL={
-  1:{nha:{n:'Ở nhà',fee:0,g:{}},lang:{n:'Trường làng',fee:60,g:{tri:4}},tu:{n:'Tư thục',fee:250,g:{tri:6,eq:1},tier:1},giasu:{n:'Gia sư riêng',fee:1500,g:{tri:8,mi:1,eq:1},tier:3},
+  1:{doanh:{n:'Học trong doanh trại',fee:0,g:{tri:3,vo:3,suc:1},army:1},nha:{n:'Ở nhà',fee:0,g:{}},lang:{n:'Trường làng',fee:60,g:{tri:4}},tu:{n:'Tư thục',fee:250,g:{tri:6,eq:1},tier:1},giasu:{n:'Gia sư riêng',fee:1500,g:{tri:8,mi:1,eq:1},tier:3},
      vodo:{n:'Võ đường làng',fee:100,g:{vo:5,suc:2}},nucong:{n:'Nữ công gia chánh',fee:60,g:{mi:2,eq:3},anyGirl:1}},
-  2:{nha:{n:'Ở nhà',fee:0,g:{}},huyen:{n:'Trường huyện',fee:400,g:{tri:7},tier:1},danhsu:{n:'Theo danh sư',fee:2000,g:{tri:10,eq:2},tier:3},
+  2:{doanh:{n:'Học trong doanh trại',fee:0,g:{tri:4,vo:4,suc:2},army:1},nha:{n:'Ở nhà',fee:0,g:{}},huyen:{n:'Trường huyện',fee:400,g:{tri:7},tier:1},danhsu:{n:'Theo danh sư',fee:2000,g:{tri:10,eq:2},tier:3},
      vodd:{n:'Võ đường',fee:350,g:{vo:7,suc:3}},hocy:{n:'Học việc nhà thuốc',fee:150,g:{tri:3},pre:{y:3}},hocbuon:{n:'Theo phường buôn',fee:80,g:{eq:4},pre:{tieunhi:3}},
      hoctho:{n:'Học việc phường thợ',fee:50,g:{vo:2},pre:{tho:3}},nucong:{n:'Nữ công gia chánh',fee:120,g:{mi:3,eq:3},anyGirl:1}},
-  3:{nha:{n:'Ở nhà',fee:0,g:{}},phu:{n:'Phủ học',fee:800,g:{tri:9},tier:2},qtg:{n:'Quốc tử giám',fee:4000,g:{tri:13,eq:3},noble:1},
+  3:{doanh:{n:'Học trong doanh trại',fee:0,g:{tri:5,vo:6,suc:2},army:1},nha:{n:'Ở nhà',fee:0,g:{}},phu:{n:'Phủ học',fee:800,g:{tri:9},tier:2},qtg:{n:'Quốc tử giám',fee:4000,g:{tri:13,eq:3},noble:1},
      vop:{n:'Võ phái danh môn',fee:2500,g:{vo:12,suc:4},tier:3},vohk:{n:'Trường võ học',fee:1000,g:{vo:8,tri:2},tier:2},
      yhd:{n:'Y học đường',fee:1000,g:{tri:6},pre:{y:5},tier:2},thoi:{n:'Thương hội học việc',fee:400,g:{eq:4,tri:2},pre:{tieunhi:5}},
      khue:{n:'Khuê các cầm kỳ thi họa',fee:1200,g:{mi:6,tri:3,eq:2},tier:3,anyGirl:1}}};
