@@ -361,12 +361,14 @@ ul.plain{margin:4px 0 0;padding-left:18px;font-size:12.5px;display:grid;gap:3px}
 #adm .adrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:4px 0}
 #adm .adnote{margin:8px 0 0;color:var(--purple);font-weight:600;white-space:pre-wrap}
 #adm .adck{display:flex;gap:6px;align-items:center}
+#adm .adsel{font:inherit;padding:4px;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:4px;max-width:48%}
+#adm .adlist button.adlink{border:0;padding:0;text-align:left;background:transparent;color:var(--ink);text-decoration:underline dotted}
 </style>
 
 <div class="wrap" id="app"></div>
 <div class="overlay sheet" id="sheetO" hidden><div class="modal sheetm" id="sheetM" role="dialog" aria-modal="true" aria-label="Hồ sơ nhân vật"></div></div>
 <div class="tip" id="tip" hidden></div>
-<div class="verlbl" aria-hidden="true">v6.5.3 · admin</div>
+<div class="verlbl" aria-hidden="true">v6.5.4.1 · admin</div>
 <div class="overlay" id="overlay" hidden><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
 
 <script src="data.js"></script>
@@ -407,6 +409,8 @@ ul.plain{margin:4px 0 0;padding-left:18px;font-size:12.5px;display:grid;gap:3px}
 <script src="ev-v6417.js"></script>
 <script src="ev-v6418.js"></script>
 <script src="ev-v653.js"></script>
+<script src="ev-v654.js"></script>
+<script src="events-meta.js"></script>
 <script src="admin.js"></script>
 <script src="engine.js"></script>
 </body></html>

@@ -23,5 +23,7 @@ rep('</style>',`/* ===== bảng admin (chỉ có ở admin.html) ===== */
 #adm .adrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:4px 0}
 #adm .adnote{margin:8px 0 0;color:var(--purple);font-weight:600;white-space:pre-wrap}
 #adm .adck{display:flex;gap:6px;align-items:center}
+#adm .adsel{font:inherit;padding:4px;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:4px;max-width:48%}
+#adm .adlist button.adlink{border:0;padding:0;text-align:left;background:transparent;color:var(--ink);text-decoration:underline dotted}
 </style>`);
 if(crlf)s=s.replace(/\n/g,'\r\n');fs.writeFileSync('admin.html',s);console.log('admin.html ok');

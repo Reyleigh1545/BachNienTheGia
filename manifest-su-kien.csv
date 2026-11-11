@@ -1,0 +1,1295 @@
+﻿id,tệp,tiêu đề,nhãn k,trigger,domain,subdomain,độ hiếm,ai gặp,hoàn cảnh,nghề,căn cứ,độ tin,w,cd
+tet_nguyen_dan,ev-chung.js,Tết đến xuân về,,random,life,festival,common,any,any,,kw,thấp,1.4,11
+hoi_lang_xuan,ev-chung.js,Hội làng đầu xuân,,random,life,festival,common,any,any,,kw,thấp,,11
+xin_chu_dau_nam,ev-chung.js,Xin chữ đầu năm,,random,life,festival,common,any,any,,id,cao,,11
+mua_xuan_gieo_hat,ev-chung.js,Đất xuân mềm,,random,economy,land,common,any,any,,kw,thấp,,12
+thanh_minh,ev-chung.js,Tiết Thanh minh,,random,life,festival,common,any,any,,id,cao,,11
+lu_lut,ev-chung.js,Nước lũ tràn về,,random,life,season,common,any,any,,id,cao,0.8,24
+nang_han,ev-chung.js,Nắng hạn kéo dài,,random,life,season,common,any,any,,id,cao,0.8,24
+dua_thuyen,ev-chung.js,Hội đua thuyền Đoan Ngọ,,random,life,festival,common,any,any,,kw,thấp,,11
+muoi_dot,ev-chung.js,Muỗi độc mùa hè,,random,life,health,common,any,any,,id,cao,0.7,14
+kiet_ly,ev-chung.js,Đau bụng đi ngoài,,random,life,health,common,any,any,,id,cao,0.6,14
+ran_can,ev-chung.js,Rắn cắn,,random,life,health,uncommon,any,any,,id,cao,0.5,24
+trung_thu,ev-chung.js,Rằm tháng Tám,,random,life,festival,common,any,any,,id,cao,,11
+mua_gat,ev-chung.js,Được mùa,,random,life,season,common,any,any,,id,cao,,11
+thu_buon,ev-chung.js,Chiều thu,,random,life,season,common,any,any,,id,cao,,12
+ret_dam,ev-chung.js,Rét đậm,,random,life,season,common,any,any,,id,cao,1.1,12
+trom_cuoi_nam,ev-chung.js,Trộm cuối năm,,random,life,season,common,any,any,,id,cao,0.8,18
+chuan_bi_tet,ev-chung.js,Sắm Tết,,random,life,festival,common,any,any,,kw,thấp,,11
+ru_co_bac,ev-chung.js,Bạn rủ đánh bạc,,random,life,daily_life,common,any,any,,id,cao,1.1,
+cai_bac,ev-chung.js,Nợ bạc chồng chất,,random,life,daily_life,common,any,any,,id,cao,2,
+ru_ruou,ev-chung.js,Tiệc rượu thâu đêm,,random,life,daily_life,common,any,any,,id,cao,,
+cai_ruou,ev-chung.js,Gan đau âm ỉ,,random,life,daily_life,common,any,any,,id,cao,2,
+do_co,ev-chung.js,Món đồ cổ,,encounter,encounter,intellect,rare,any,any,,ky,vừa,,
+ban_do_co,ev-chung.js,Kho đồ cổ chật nhà,,random,education,study,common,any,any,,kw,thấp,1.5,
+tu_thien,ev-chung.js,Người hành khất ngoài cổng,,random,life,daily_life,common,any,any,,id,cao,,
+tu_thien_qua_ngot,ev-chung.js,Ân tình được đền đáp,,encounter,encounter,charm,rare,any,any,,ky,vừa,1.4,
+thuoc_bo,ev-chung.js,Lời mời mua thuốc bổ,,random,life,health,common,any,any,,kw,thấp,,
+nuoi_chim,ev-chung.js,Con họa mi,,random,family,children,common,any,any,,id,cao,,
+an_chay,ev-chung.js,Phát nguyện ăn chay,,random,life,daily_life,common,any,any,,id,cao,,
+pha_chay,ev-chung.js,Cỗ mặn nhà thông gia,,random,family,marriage,common,any,any,,kw,thấp,0.7,
+thanh_lau,ev-chung.js,Lầu hồng đèn đỏ,,random,life,daily_life,common,any,any,,id,cao,,
+thanh_lau_lo,ev-chung.js,Chuyện lầu xanh đến tai người nhà,,random,government,official_duty,common,any,any,,kw,thấp,1.6,
+sach_hiem,ev-chung.js,Bản sách quý,,encounter,encounter,intellect,rare,any,any,,ky,vừa,,
+xa_hoa_khoe,ev-chung.js,So bì với nhà hàng xóm,,random,economy,commerce,common,any,any,,kw,thấp,,
+xa_hoa_canh_tinh,ev-chung.js,Sổ sách báo động,,random,life,daily_life,common,any,any,,id,cao,1.6,
+u_uat,ev-chung.js,Nỗi u uất,,random,life,daily_life,common,any,any,,id,cao,2.2,
+het_u_uat,ev-chung.js,Ánh sáng cuối đường hầm,,random,life,daily_life,common,any,any,,id,cao,2,
+hung_khoi,ev-chung.js,Ngày đẹp trời,,random,life,daily_life,common,any,any,,id,cao,0.9,
+ganh_ti,ev-chung.js,Lời ra tiếng vào,,random,life,daily_life,common,any,any,,id,cao,,
+vay_nang_lai,ev-chung.js,Chủ nợ gõ cửa,,random,economy,household_finance,common,any,any,,id,cao,1.8,
+tra_no_lai,ev-chung.js,Đến hạn trả nợ,,fixed,economy,household_finance,na,any,any,,id,cao,,
+doi_kem,ev-chung.js,Giáp hạt đói kém,,random,life,season,common,any,any,,id,cao,,12
+lam_thue_nha_giau,ev-chung.js,Nhà giàu thuê người,,random,economy,employees,common,any,any,,id,cao,,
+bi_kham_nha,ev-chung.js,Kẻ lạ hỏi mua đất,,random,economy,land,common,any,any,,kw,thấp,,
+ho_hang_xin,ev-chung.js,Họ hàng xa tìm đến,,random,economy,commerce,common,any,any,,kw,thấp,1.2,
+quyen_gop_dinh,ev-chung.js,Trùng tu đình làng,,random,society,neighbors,common,any,any,,kw,thấp,,30
+yen_tiec_huyen,ev-chung.js,Thiệp mời yến tiệc,,random,life,festival,common,any,any,,id,cao,,
+ke_lua_dao,ev-chung.js,Cơ hội làm giàu,,encounter,encounter,health,rare,any,any,,ky,vừa,,
+gia_nhan_trom,ev-chung.js,Gia nhân gian dối,,random,economy,employees,common,any,any,,id,cao,,
+thuong_ngoan,ev-chung.js,Thưởng ngoạn trà đạo,,random,life,festival,common,any,any,,id,cao,,
+mua_nha_bon,ev-chung.js,Bị kẻ ganh ghét chơi xấu,,random,life,daily_life,common,any,any,,id,cao,,
+chu_te_dinh,ev-chung.js,Được mời làm chủ tế,,random,life,festival,unique,any,any,,id,cao,,
+quan_huyen_tham,ev-chung.js,Quan huyện ghé thăm,,random,government,official_duty,common,any,any,,kw,thấp,,
+vua_ban_bien,ev-chung.js,Biển ngạch vua ban,,encounter,encounter,ordinary,rare,any,any,,ky,vừa,,
+nguoi_xin_lam,ev-chung.js,Người xin vào làm,,random,economy,employees,common,any,any,,id,cao,,
+gay_chan,ev-chung.js,Ngã gãy chân,,random,life,health,uncommon,any,any,,id,cao,0.5,14
+bi_danh,ev-chung.js,Xô xát ngoài chợ,,random,economy,commerce,common,any,any,,kw,thấp,0.6,
+ho_lao,ev-chung.js,Ho ra máu,,random,life,health,uncommon,any,any,,id,cao,0.35,24
+trung_gio,ev-chung.js,Trúng gió,,random,life,health,common,any,any,,id,cao,0.6,14
+mat_mo,ev-chung.js,Mắt mờ,,random,life,health,uncommon,any,any,,id,cao,0.5,
+dau_lung,ev-chung.js,Đau lưng mỏi gối,,random,life,health,common,any,any,,id,cao,0.6,
+dau_mua,ev-chung.js,Lên đậu mùa,,random,life,health,unique,child,any,,id,cao,0.4,24
+chay_nha,ev-chung.js,Hỏa hoạn,,random,life,season,uncommon,any,any,,id,cao,0.35,36
+cho_dai,ev-chung.js,Chó dại,,random,life,health,uncommon,any,any,,id,cao,0.3,36
+tre_danh_nhau,ev-chung.js,Đánh nhau ở trường,,random,family,children,common,child,any,,id,cao,,
+tre_tron_hoc,ev-chung.js,Trốn học,,random,family,children,common,child,any,,id,cao,,
+tre_than_dong,ev-chung.js,Mầm non thần đồng,,encounter,encounter,ordinary,rare,child,any,,ky,vừa,,
+tre_meo_hoang,ev-chung.js,Mèo hoang,,random,family,children,common,child,any,,id,cao,,
+tre_bi_bat_nat,ev-chung.js,Bị bắt nạt,,random,family,children,common,child,any,,id,cao,,
+tre_nga_ao,ev-chung.js,Ngã xuống ao,,random,family,children,uncommon,child,any,,id,cao,0.5,24
+tre_nghich_lua,ev-chung.js,Nghịch lửa,,random,family,children,common,child,any,,id,cao,0.6,
+tre_tham_an,ev-chung.js,Đòi ăn quà,,random,family,children,common,child,any,,id,cao,,
+tre_ve_tranh,ev-chung.js,Bức tranh trên vách,,random,family,children,common,child,any,,id,cao,,
+tre_ky_vat,ev-chung.js,Con nhặt được của rơi,,encounter,encounter,wealth,rare,child,any,,ky,vừa,,
+tre_hoi_kho,ev-chung.js,Câu hỏi khó,,random,family,children,common,child,any,,id,cao,,
+tre_hoc_gioi_ve,ev-chung.js,Thầy khen,,random,family,children,common,child,any,,id,cao,,
+tre_luoi_hoc,ev-chung.js,Học vẹt,,random,family,children,common,child,any,,id,cao,,
+tre_doc_truyen,ev-chung.js,Mê truyện kiếm hiệp,,random,family,children,common,any,any,,id,cao,,
+tre_om_vat,ev-chung.js,Con ốm vặt,,random,family,children,common,child,any,,id,cao,0.8,
+thieu_nien_bo_nha,ev-chung.js,Muốn đi xa,,random,family,children,common,any,any,,id,cao,,
+thieu_nien_ban_xau,ev-chung.js,Kết bạn xấu,,random,family,children,common,any,any,,id,cao,,
+y_trung_nhan,ev-chung.js,Ý trung nhân,,random,economy,medicine,common,any,any,,id,cao,1.8,
+tai_gia,ev-chung.js,Duyên muộn,,random,life,disaster,common,any,any,,id,cao,1.2,
+cai_nhau,ev-chung.js,Vợ chồng xích mích,,random,family,spouse,common,any,any,,id,cao,,
+ky_niem_cuoi,ev-chung.js,Ngày cưới năm xưa,,random,family,marriage,common,any,any,,kw,thấp,,
+me_chong,ev-chung.js,Mẹ chồng nàng dâu,,random,family,spouse,common,any,any,,id,cao,,
+ghen_tuong,ev-chung.js,Ghen tuông,,random,family,spouse,common,any,any,,id,cao,,
+sinh_nhat_vo_chong,ev-chung.js,Lời đề nghị chia nhà,,random,family,spouse,unique,any,any,,id,cao,,
+gia_huan,ev-chung.js,Viết gia huấn,,random,family,spouse,unique,any,any,,id,cao,,
+mung_tho,ev-chung.js,Lễ mừng thọ,,random,life,festival,common,any,any,,kw,thấp,,
+tranh_gia_tai,ev-chung.js,Con cháu tranh gia tài,,random,family,children,common,any,any,,kw,thấp,,
+ve_vuon,ev-chung.js,Thú điền viên,,random,economy,land,common,any,any,,kw,thấp,,
+lam_quan_tai,ev-chung.js,Sắm cỗ áo quan,,random,life,health,unique,any,any,,id,cao,,
+tui_bac,ev-chung.js,Túi bạc bên đường,,encounter,encounter,wealth,rare,any,any,,ky,vừa,,
+dao_si_xem_tuong,ev-chung.js,Đạo sĩ xem tướng,,encounter,encounter,ordinary,rare,any,any,,ky,vừa,,
+chua_co,ev-chung.js,Ngôi chùa trên núi,,encounter,encounter,health,rare,any,any,,ky,vừa,,
+giac_mo_to,ev-chung.js,Giấc mơ lạ,,encounter,encounter,ordinary,rare,any,any,,ky,vừa,,
+cuu_chim,ev-chung.js,Cánh chim gãy,,random,life,health,common,any,any,,id,cao,,
+nguoi_la_tro,ev-chung.js,Khách lỡ đường,,encounter,encounter,ordinary,rare,any,any,,ky,vừa,,
+hoi_cho,ev-chung.js,Phiên chợ lạ,,random,economy,commerce,common,any,any,,kw,thấp,,
+gap_lai_ban_cu,ev-chung.js,Bạn cũ,,random,life,daily_life,common,any,any,,id,cao,,
+gioi_thieu_viec,ev-chung.js,Lời mời việc vặt,,random,life,daily_life,common,any,any,,id,cao,,
+dan_ca,ev-chung.js,Tiếng đàn đêm khuya,,random,life,festival,common,any,any,,id,cao,,
+tin_don_ky,ev-chung.js,Tin đồn đất lành,,encounter,encounter,profession,rare,any,any,,ky,vừa,,24
+cuu_nguoi_duoi_nuoc,ev-chung.js,Người đuối nước,,encounter,encounter,ordinary,rare,any,any,,ky,vừa,0.6,
+benh_dich,ev-chung.js,Nhiễm dịch,Dịch bệnh,fixed,life,disaster,na,any,any,,k,cao,,
+su_chay_vat,ev-nghe.js,Sai vặt suốt ngày,,random,economy,education_work,common,trade,any,su,job,cao,1.5,
+su_so_sach,ev-nghe.js,Sổ sách học phí,,random,economy,education_work,common,trade,any,su,job,cao,,
+su_sap_sach,ev-nghe.js,Sắp xếp thư phòng,,random,economy,education_work,common,trade,any,su,job,cao,,
+su_bi_coi_thuong,ev-nghe.js,Bị coi thường,,random,economy,education_work,common,trade,any,su,job,cao,,
+su_bi_bat_nat,ev-nghe.js,Trò đùa ác,,random,economy,education_work,common,trade,any,su,job,cao,,
+su_bi_cuop_cong,ev-nghe.js,Bị cướp công,,random,economy,education_work,common,trade,any,su,job,cao,,
+su_cham_bai,ev-nghe.js,Chấm bài thay thầy,,random,economy,education_work,common,trade,any,su,job,cao,1.3,
+su_day_thay,ev-nghe.js,Lần đầu đứng lớp,,random,economy,education_work,unique,trade,any,su,job,cao,,
+su_phu_huynh_phan_nan,ev-nghe.js,Phụ huynh khó tính,,random,economy,education_work,common,trade,any,su,job,cao,,
+su_hoc_tro_ngheo,ev-nghe.js,Học trò nghèo,,random,economy,education_work,common,trade,any,su,job,cao,,
+su_tro_ngheo_bao_an,ev-nghe.js,Học trò cũ trở về,,fixed,education,study,na,any,any,,kw,thấp,,
+su_tro_do_dat,ev-nghe.js,Học trò đỗ đạt,,random,economy,education_work,common,trade,any,su|biz:truong,job,cao,1.2,
+su_hoi_lo,ev-nghe.js,Phong bì của phú hộ,,random,economy,education_work,common,trade,any,su|biz:truong,job,cao,,
+su_tranh_luan,ev-nghe.js,Bình văn ở hội tao đàn,,random,economy,education_work,common,trade,any,su|biz:truong,job,cao,,
+su_don_day_sai,ev-nghe.js,Lời đồn dạy sai,,random,economy,education_work,common,trade,any,su|biz:truong,job,cao,,
+su_hoc_tro_hu,ev-nghe.js,Học trò hư,,random,economy,education_work,common,trade,any,su|biz:truong,job,cao,,
+su_van_bia,ev-nghe.js,Lời mời viết văn bia,,random,economy,education_work,common,trade,any,su|biz:truong,job,cao,,
+su_soan_sach,ev-nghe.js,Soạn sách,,random,economy,education_work,unique,trade,any,su|biz:truong,job,cao,,
+su_van_tu_nguc,ev-nghe.js,Văn tự ngục,,random,economy,education_work,common,trade,any,su|biz:truong,job,cao,0.6,
+su_mon_sinh_lam_quan,ev-nghe.js,Môn sinh đầy triều,,random,economy,education_work,common,trade,any,su|biz:truong,job,cao,,
+tr_tuyen_sinh,ev-nghe.js,Mùa tuyển học trò,,random,economy,business,common,trade,any,biz:truong,job,cao,,
+tr_thanh_tra,ev-nghe.js,Học quan tới kiểm tra,,random,economy,business,common,trade,any,biz:truong,job,cao,,
+n_dia_chu_ep,ev-nghe.js,Địa chủ ép tô,,random,economy,agriculture,common,trade,any,nong,job,cao,1.3,
+n_trau_om,ev-nghe.js,Con trâu ốm,,random,economy,agriculture,common,trade,any,nong,job,cao,,
+n_sau_benh,ev-nghe.js,Sâu cuốn lá,,random,economy,agriculture,common,trade,any,nong,job,cao,,
+n_tranh_nuoc,ev-nghe.js,Tranh nước,,random,economy,agriculture,common,trade,any,nong,job,cao,,
+n_giong_moi,ev-nghe.js,Giống lúa mới,,random,economy,agriculture,common,trade,any,nong,job,cao,,
+n_mua_ruong,ev-nghe.js,Ruộng bán rẻ,,random,economy,agriculture,common,trade,any,nong,job,cao,,
+n_thue_nguoi,ev-nghe.js,Thuê người làm,,random,economy,agriculture,common,trade,any,nong,job,cao,,
+n_ta_dien_xin,ev-nghe.js,Tá điền xin giảm tô,,random,economy,agriculture,common,trade,any,nong,job,cao,,
+n_kho_cuu_doi,ev-nghe.js,Mở kho cứu đói,,random,economy,agriculture,common,trade,any,nong,job,cao,,
+n_gieo_ma,ev-nghe.js,Gieo mạ,,random,economy,agriculture,common,trade,any,nong,job,cao,,
+t_hoc_viec,ev-nghe.js,Thợ học việc,,random,economy,crafts,common,trade,any,tho,job,cao,1.4,
+t_lam_hong,ev-nghe.js,Làm hỏng hàng của khách,,random,economy,crafts,common,trade,any,tho,job,cao,,
+t_bong_lo,ev-nghe.js,Tai nạn lò rèn,,random,economy,crafts,common,trade,any,tho|biz:xuong,job,cao,0.6,
+t_don_rieng,ev-nghe.js,Đơn hàng riêng,,random,economy,crafts,common,trade,any,tho,job,cao,1.2,
+t_thi_tai,ev-nghe.js,Hội thi tay nghề,,random,economy,crafts,common,trade,any,tho|biz:xuong,job,cao,,
+t_bi_kip,ev-nghe.js,Bí kíp gia truyền,,encounter,encounter,profession,rare,trade,any,tho|biz:xuong,ky,vừa,,
+t_don_quan,ev-nghe.js,Đơn hàng của quan,,random,economy,crafts,common,trade,any,tho|biz:xuong,job,cao,,
+t_hang_gia,ev-nghe.js,Kẻ nhái thương hiệu,,random,economy,business,common,trade,any,biz:xuong,job,cao,,
+t_danh_tuong,ev-nghe.js,Danh tượng,,random,economy,crafts,common,trade,any,tho|biz:xuong,job,cao,,
+tb_chu_mang,ev-nghe.js,Bị chủ mắng,,random,economy,commerce,common,trade,any,tieunhi|hangrong,job,cao,1.4,
+tb_khach_quyt,ev-nghe.js,Khách quỵt tiền,,random,economy,commerce,common,trade,any,tieunhi|hangrong|biz:tiem,job,cao,,
+tb_chu_gian,ev-nghe.js,Chủ hiệu gian lận,,random,economy,commerce,common,trade,any,tieunhi|hangrong,job,cao,,
+tb_moi_rieng,ev-nghe.js,Mối buôn riêng,,random,economy,commerce,common,trade,any,tieunhi|hangrong,job,cao,,
+tb_cho_phien,ev-nghe.js,Phiên chợ lớn,,random,economy,commerce,common,trade,any,tieunhi|hangrong|biz:tiem,job,cao,,
+ti_thue,ev-nghe.js,Thuế chợ tăng,,random,economy,business,common,trade,any,biz:tiem,job,cao,,
+ti_doi_thu,ev-nghe.js,Đối thủ hạ giá,,random,economy,business,common,trade,any,biz:tiem,job,cao,,
+ti_khach_sop,ev-nghe.js,Khách sộp,,random,economy,business,common,trade,any,biz:tiem,job,cao,,
+ti_hang_lau,ev-nghe.js,Lời mời buôn lậu,,random,economy,business,common,trade,any,biz:tiem,job,cao,,
+ti_thuong_hoi,ev-nghe.js,Thương hội mời gia nhập,,random,economy,business,unique,trade,any,biz:tiem,job,cao,,
+ti_no_kho_doi,ev-nghe.js,Nợ khó đòi,,random,economy,business,common,trade,any,biz:tiem,job,cao,,
+ti_thuong_hieu,ev-nghe.js,Thương hiệu lẫy lừng,,random,economy,business,common,trade,any,biz:tiem,job,cao,,
+y_nghien_thuoc,ev-nghe.js,Nghiền thuốc,,random,economy,medicine,common,trade,any,y,id,cao,1.4,
+y_boc_nham,ev-nghe.js,Bốc nhầm thuốc,,random,economy,medicine,common,trade,any,y|biz:yquan,id,cao,1.1,
+y_nguoi_ngheo,ev-nghe.js,Bệnh nhân nghèo,,random,economy,medicine,common,trade,any,y|biz:yquan,id,cao,,
+y_benh_la,ev-nghe.js,Bệnh lạ,,random,economy,medicine,common,trade,any,y|biz:yquan,id,cao,,
+y_hai_thuoc,ev-nghe.js,Hái thuốc trên núi,,random,economy,medicine,common,trade,any,y|biz:yquan,id,cao,,
+y_lang_bam,ev-nghe.js,Lang băm cạnh tranh,,random,economy,medicine,common,trade,any,y|biz:yquan,id,cao,,
+y_nha_giau_moi,ev-nghe.js,Nhà giàu mời chữa,,random,economy,medicine,common,trade,any,y|biz:yquan,id,cao,,
+y_cuu_san_phu,ev-nghe.js,Ca đẻ khó,,random,economy,medicine,common,trade,any,y|biz:yquan,id,cao,,
+y_danh_y,ev-nghe.js,Danh y một phương,,random,economy,medicine,common,trade,any,y|biz:yquan,id,cao,,
+y_chieumo,ev-nghe.js,Chiếu chỉ của hoàng thất,Chiêu mộ,fixed,encounter,profession,na,any,any,,ky,vừa,,
+yq_dich_quan,ev-nghe.js,Y quán ngày dịch,,random,economy,business,common,trade,any,biz:yquan,job,cao,,
+ng_hoang_tu,ev-nghe.js,Hoàng tử lâm bệnh,,random,economy,medicine,common,trade,any,nguy,job,cao,,
+ng_cung_dau,ev-nghe.js,Âm mưu trong cung,,random,economy,medicine,common,trade,any,nguy,job,cao,,
+ng_ong_bau,ev-nghe.js,Ông bầu bóc lột,,random,economy,crafts,common,trade,any,nghe,job,cao,1.4,
+ng_bi_treo,ev-nghe.js,Bị trêu ghẹo,,random,economy,crafts,common,trade,any,nghe,job,cao,,
+ng_dien_hong,ev-nghe.js,Đêm diễn hỏng,,random,economy,crafts,common,trade,any,nghe,job,cao,,
+ng_cong_tu,ev-nghe.js,Công tử theo đuổi,,random,economy,crafts,common,trade,any,nghe,job,cao,,
+ng_vao_phu,ev-nghe.js,Diễn ở phủ quan,,random,economy,crafts,common,trade,any,nghe,job,cao,,
+ng_sang_tac,ev-nghe.js,Cảm hứng sáng tác,,random,economy,crafts,common,trade,any,nghe,job,cao,,
+ng_vao_cung,ev-nghe.js,Tiến cung,,encounter,encounter,profession,rare,trade,any,nghe,ky,vừa,,
+tc_khuan_vac,ev-nghe.js,Tiêu đồ khuân vác,,random,dynasty,succession,common,trade,any,tieu,id,cao,1.3,
+tc_cuop_duong,ev-nghe.js,Sơn tặc chặn đường,,random,dynasty,succession,common,trade,any,tieu,id,cao,1.5,
+tc_hang_cam,ev-nghe.js,Hàng cấm,,random,dynasty,succession,common,trade,any,tieu,id,cao,,
+tc_phan_boi,ev-nghe.js,Kẻ phản bội trong đoàn,,random,dynasty,succession,common,trade,any,tieu,id,cao,,
+tc_ap_tieu_xa,ev-nghe.js,Chuyến tiêu ngàn dặm,,random,dynasty,succession,common,trade,any,tieu,id,cao,,
+tc_tong_tieu,ev-nghe.js,Tổng tiêu đầu,,random,dynasty,succession,common,trade,any,tieu,id,cao,,
+qn_tan_binh,ev-nghe.js,Tân binh,,random,military,barracks,common,army,any,quan_ngu,id,cao,1.4,
+qn_luyen_quan,ev-nghe.js,Thao trường,,random,military,barracks,common,army,any,quan_ngu,id,cao,1.2,
+qn_tuan_tra,ev-nghe.js,Tuần tra biên giới,,random,military,barracks,common,army,any,quan_ngu,id,cao,,
+qn_giao_tranh,ev-nghe.js,Giao tranh,,random,military,barracks,common,army,any,quan_ngu,id,cao,1.2,
+qn_thieu_luong,ev-nghe.js,Thiếu lương,,random,military,barracks,common,army,any,quan_ngu,id,cao,,
+qn_tran_lon,ev-nghe.js,Đại chiến,,random,military,barracks,common,army,any,quan_ngu,id,cao,0.8,
+qn_tuong_quan,ev-nghe.js,Tướng quân,,random,military,barracks,common,army,any,quan_ngu,id,cao,,
+hk_diet_cuop,ev-nghe.js,Ổ cướp trên núi,,random,jianghu,wandering,common,trade,any,hiep,job,cao,1.2,
+hk_luan_kiem,ev-nghe.js,Luận kiếm,,random,jianghu,wandering,common,trade,any,hiep,job,cao,,
+hk_truy_sat,ev-nghe.js,Bị truy sát,,random,jianghu,wandering,common,trade,any,hiep,job,cao,,
+hk_mon_phai,ev-nghe.js,Môn phái mời,,encounter,encounter,martial,rare,trade,any,hiep,ky,vừa,,
+vq_da_quan,ev-nghe.js,Kẻ đến đá quán,,random,economy,business,common,trade,any,biz:voquan,job,cao,1.3,
+vq_de_tu,ev-nghe.js,Đệ tử gây chuyện,,random,economy,business,common,trade,any,biz:voquan,job,cao,,
+q_cuu_pham,ev-nghe.js,Quan nhỏ bị chèn ép,,random,government,official_duty,common,official,any,quan,job,cao,1.4,
+q_thu_thue,ev-nghe.js,Đi thu thuế,,random,government,official_duty,common,official,any,quan,job,cao,,
+q_xu_an,ev-nghe.js,Xử án,,random,government,official_duty,common,official,any,quan,job,cao,1.4,
+q_hoi_lo,ev-nghe.js,Lễ vật đêm khuya,,random,government,official_duty,common,official,any,quan,job,cao,1.3,
+q_thien_tai,ev-nghe.js,Cứu trợ thiên tai,,random,government,official_duty,common,official,any,quan,job,cao,,
+q_phe_phai,ev-nghe.js,Bè phái triều đình,,random,government,official_duty,common,official,any,quan,job,cao,,
+q_su_than,ev-nghe.js,Tiếp sứ thần,,random,government,official_duty,common,official,any,quan,job,cao,,
+q_ban_tuoc,ev-nghe.js,Ban tước,,random,government,official_duty,common,official,any,quan,job,cao,,
+q_hactoi,ev-nghe.js,Bị hặc tội,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+sauthi,ev-nghe.js,Vinh quy bái tổ,Khoa cử,fixed,education,degree,na,any,any,,id,cao,,
+noi_cho,ev-nghe.js,Đi chợ,,random,family,household,common,trade,any,noi,job,cao,,
+noi_det_vai,ev-nghe.js,Dệt vải bán thêm,,random,family,household,common,trade,any,noi,job,cao,,
+noi_gio,ev-nghe.js,Giỗ tổ,,random,family,household,common,trade,any,noi,job,cao,,
+noi_gia_nhan,ev-nghe.js,Quản gia nhân,,random,family,household,common,trade,any,noi,job,cao,,
+noi_muoi_dua,ev-nghe.js,Muối dưa,,random,family,household,common,trade,any,noi,job,cao,,
+v_trieu_chinh,ev-nghe.js,Triều chính,,random,dynasty,court_climate,common,trade,any,vua,kw,thấp,2,
+c1_cau_am,ev-cot.js,Cậu ấm con quan huyện,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,trade,any,su|biz:truong,ky,vừa,0.7,24
+c1_b,ev-cot.js,Quan huyện triệu kiến,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c1_c,ev-cot.js,Mười năm sau,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c2_thuyen,ev-cot.js,Thuyền buôn mất tích,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,trade,any,tieunhi|hangrong|biz:tiem,ky,vừa,0.7,24
+c2_b,ev-cot.js,Manh mối,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c2_c,ev-cot.js,Hồi kết chuyến hàng,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c3_muoi,ev-cot.js,Vụ muối lậu,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,official,any,quan,ky,vừa,0.7,24
+c3_b,ev-cot.js,Gió đổi chiều,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c3_c,ev-cot.js,Kết cục vụ muối lậu,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c4_su_mon,ev-cot.js,Sư phụ bị hại,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,any,any,,ky,vừa,0.7,24
+c4_b,ev-cot.js,Đối mặt kẻ thù,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c4_c,ev-cot.js,Hồi kết ân oán,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c5_phuong,ev-cot.js,Phương thuốc cổ,Mở đầu cốt truyện,encounter,encounter,health,rare,trade,any,y|biz:yquan|nguy,ky,vừa,0.7,24
+c5_b,ev-cot.js,Thử thuốc,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c5_c,ev-cot.js,Thánh dược,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c6_ban_do,ev-cot.js,Tấm bản đồ,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,any,any,,ky,vừa,0.7,24
+c6_b,ev-cot.js,Hang đá trong núi,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c6_c,ev-cot.js,Kho báu,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c7_thu,ev-cot.js,Lá thư không ký tên,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,any,any,,ky,vừa,0.9099999999999999,24
+c7_b,ev-cot.js,Người viết thư,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c7_c,ev-cot.js,Duyên số,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c8_ruong,ev-cot.js,Địa chủ cướp ruộng,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,any,any,,ky,vừa,0.7,24
+c8_b,ev-cot.js,Ra công đường,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c8_c,ev-cot.js,Phán quyết,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c9_nhan_mon,ev-cot.js,Lệnh điều quân,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,army,any,quan_ngu,ky,vừa,0.7,24
+c9_b,ev-cot.js,Ải Nhạn Môn,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c9_c,ev-cot.js,Ải thành sau trận,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c10_thu_sinh,ev-cot.js,Thư sinh nghèo,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,any,any,,ky,vừa,0.7,24
+c10_b,ev-cot.js,Cố nhân,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c11_nguoi_la,ev-cot.js,Người lạ bị thương,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,any,any,,ky,vừa,0.5,24
+c11_b,ev-cot.js,Kẻ truy đuổi,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c11_c,ev-cot.js,Chiếu chỉ từ kinh thành,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c12_khuc_nhac,ev-cot.js,Khúc nhạc thất truyền,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,trade,any,nghe,ky,vừa,0.7,24
+c12_b,ev-cot.js,Ngôi chùa trên núi,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c12_c,ev-cot.js,Nghê Thường tái hiện,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c13_kiem,ev-cot.js,Đơn đặt kiếm,Mở đầu cốt truyện,encounter,encounter,martial,rare,trade,any,tho|biz:xuong,ky,vừa,0.7,24
+c13_b,ev-cot.js,Lò rèn đêm khuya,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c13_c,ev-cot.js,Giao kiếm,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c14_bat_coc,ev-cot.js,Con bị bắt cóc,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,any,any,,ky,vừa,0.7,24
+c14_b,ev-cot.js,Miếu hoang,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c15_nguoi_thu_ba,ev-cot.js,Người thứ ba,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,any,any,,ky,vừa,0.7,24
+c15_b,ev-cot.js,Sự thật,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+c16_cau_mua,ev-cot.js,Đại hạn,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,any,any,,ky,vừa,0.7,24
+c16_b,ev-cot.js,Mưa,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+th_a,ev-cot2.js,Thoái hôn,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,any,any,,ky,vừa,0.5,24
+th_b,ev-cot2.js,Ba năm sau,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+nb_a,ev-cot2.js,Ngọc bội vỡ trong từ đường,Mở đầu cốt truyện,encounter,encounter,treasure,very_rare,any,any,,ky,vừa,0.35,24
+nb_b,ev-cot2.js,Đêm đêm luyện công,Ngọc bội,arc,encounter,treasure,na,any,any,,k,cao,,
+nb_c,ev-cot2.js,Ngày phế vật ngẩng đầu,Ngọc bội,arc,encounter,treasure,na,any,any,,k,cao,,
+nb_d,ev-cot2.js,Kẻ thù của sư phụ,Ngọc bội,arc,encounter,treasure,na,any,any,,k,cao,,
+bd_a,ev-cot2.js,Bức tranh cũ ở chợ đồ cổ,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,any,any,,ky,vừa,0.45,24
+bd_b,ev-cot2.js,Bí mật trong tranh,Tàng bảo đồ,arc,story,arc,na,any,any,,k,cao,,
+bd_c,ev-cot2.js,Hang báu,Tàng bảo đồ,arc,story,arc,na,any,any,,k,cao,,
+tk_a,ev-cot2.js,Bà vú già trở về,Mở đầu cốt truyện,encounter,encounter,ordinary,very_rare,any,any,,ky,vừa,0.3,24
+tk_b,ev-cot2.js,Cửa phủ cao vời,Thân thế,arc,story,arc,na,any,any,,k,cao,,
+tk_c,ev-cot2.js,Kẻ bị tráo,Thân thế,arc,story,arc,na,any,any,,k,cao,,
+qh_hoc_sinh_gian,ev-quan.js,Sinh đồ gian lận,,random,government,official_duty,common,official,any,quan,job,cao,,
+qh_mo_truong,ev-quan.js,Học xá dột nát,,random,government,official_duty,common,official,any,quan,job,cao,,
+qh_tro_gioi,ev-quan.js,Học trò thiên tài,,random,government,official_duty,common,official,any,quan,job,cao,,
+qh_tro_gioi_b,ev-quan.js,Môn sinh đỗ đạt,Môn sinh,arc,education,scholar_reputation,na,any,any,,k,cao,,
+qa_an_oan,ev-quan.js,Vụ án oan,,random,government,official_duty,common,official,any,quan,job,cao,,
+qa_cuop_lon,ev-quan.js,Đại đạo hoành hành,,random,government,official_duty,common,official,any,quan,job,cao,,
+qa_tu_nguc,ev-quan.js,Tù nhân trong ngục,,random,government,official_duty,unique,official,any,quan,job,cao,,
+qd_doi_kem,ev-quan.js,Năm đói kém,,random,government,official_duty,common,official,any,quan,job,cao,,
+qd_de_vo,ev-quan.js,Đê sắp vỡ,,random,government,official_duty,common,official,any,quan,job,cao,,
+qd_hao_cuong,ev-quan.js,Hào cường chiếm đất,,random,government,official_duty,common,official,any,quan,job,cao,,
+qt_thue_cong,ev-quan.js,Sổ thuế thiếu hụt,,random,government,investigation,common,official,any,quan,id,cao,,
+qt_buon_lau,ev-quan.js,Thuyền buôn lậu,,random,government,investigation,common,official,any,quan,id,cao,,
+qt_cong_quy,ev-quan.js,Triều đình đòi thêm thuế,,random,government,investigation,common,official,any,quan,id,cao,,
+qg_dan_hac,ev-quan.js,Hặc tội quyền thần,,random,government,official_duty,common,official,any,quan,job,cao,,
+qg_tuan_tra,ev-quan.js,Tuần án các tỉnh,,random,government,official_duty,common,official,any,quan,job,cao,,
+qk_phe_phai,ev-quan.js,Đảng tranh,,random,government,official_duty,unique,official,any,quan,job,cao,,
+qk_phe_b,ev-quan.js,Ngôi báu định đoạt,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+qk_vua_hoi,ev-quan.js,Vua hỏi kế,,random,government,official_duty,common,official,any,quan,job,cao,,
+qk_soan_su,ev-quan.js,Soạn quốc sử,,random,government,official_duty,common,official,any,quan,job,cao,,
+qk_tiep_su,ev-quan.js,Tiếp sứ thần ngoại quốc,,random,government,official_duty,common,official,any,quan,job,cao,,
+q_tiec_dong_lieu,ev-quan.js,Tiệc đồng liêu,,random,government,official_duty,common,official,any,quan,job,cao,,
+q_thuoc_ha_nhung,ev-quan.js,Thuộc hạ nhũng nhiễu,,random,government,official_duty,common,official,any,quan,job,cao,,
+q_chen_ep,ev-quan.js,Thượng quan làm khó,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,official,any,quan,ky,vừa,0.6,24
+q_ce_b,ev-quan.js,Bị gài bẫy,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+q_ce_c,ev-quan.js,Gió đổi chiều,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+q_phuc_chuc,ev-quan.js,Mãn tang,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+tai_hien_ke_lu,ev-quan.js,Hiến kế trị thủy,Thiên tai,random,life,disaster,common,any,disaster,,k,cao,3,12
+tai_diet_chau,ev-quan.js,Diệt nạn châu chấu,Thiên tai,random,life,disaster,common,any,disaster,,k,cao,3,12
+tai_cuu_doi,ev-quan.js,Mở kho cứu đói,Thiên tai,random,life,disaster,common,head,disaster,,k,cao,2,12
+tai_bien_ai,ev-quan.js,Lập công nơi biên ải,Chiến sự,random,military,local_war,common,any,war,,k,cao,1,24
+tuoc_ky_ngo,ev-quan.js,Kỳ ngộ ngàn năm,Kỳ ngộ cực hiếm,fixed,encounter,ordinary,na,any,any,,ky,vừa,,
+md_mo_dau,ev-quan.js,Lời thì thầm trong đêm,Mở đầu cốt truyện,encounter,encounter,ordinary,very_rare,any,any,,ky,vừa,0.25,120
+md_b,ev-quan.js,Kết bè,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+md_c,ev-quan.js,Đêm trước khởi sự,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+bat_linh,ev-quan.js,Bắt lính,Chiến sự,fixed,military,local_war,na,any,war,,k,cao,,
+qn_het_chien,ev-quan.js,Chiến tranh kết thúc,Quân ngũ,fixed,military,barracks,na,any,any,,k,cao,,
+qn_tran_dau,ev-quan.js,Giáp trận,,random,military,barracks,common,army,any,quan_ngu,id,cao,2,2
+qn_do_tham,ev-quan.js,Đi do thám,,random,military,barracks,common,army,any,quan_ngu,id,cao,,
+qn_doanh_trai,ev-quan.js,Đời lính,,random,military,barracks,common,army,any,quan_ngu,id,cao,,
+qn_cuu_tuong,ev-quan.js,Cứu chủ tướng,,random,military,barracks,common,army,any,quan_ngu,id,cao,0.6,
+qn_dao_ngu,ev-quan.js,Rủ đào ngũ,,random,military,barracks,common,army,any,quan_ngu,id,cao,,
+qn_chien_loi,ev-quan.js,Chia chiến lợi phẩm,,random,military,barracks,common,army,any,quan_ngu,id,cao,,
+qn_thao_luyen,ev-quan.js,Thao luyện,,random,military,barracks,common,army,any,quan_ngu,id,cao,,
+qn_dep_phi,ev-quan.js,Tiễu phỉ,,random,military,barracks,common,army,any,quan_ngu,id,cao,,
+jh_het_tien,ev-quan.js,Túi rỗng,Giang hồ,fixed,jianghu,wandering,na,any,any,,id,cao,,
+jh_dau_vo,ev-quan.js,Lôi đài tỉ võ,,random,jianghu,wandering,common,trade,any,hiep,id,cao,,
+jh_cuu_nguoi,ev-quan.js,Đường gặp bất bình,,random,jianghu,wandering,common,trade,any,hiep,id,cao,,
+jh_bi_kip,ev-quan.js,Bí kíp thất truyền,,encounter,encounter,martial,rare,trade,any,hiep,ky,vừa,0.6,
+jh_truy_sat,ev-quan.js,Bị truy sát,,random,jianghu,wandering,common,trade,any,hiep,id,cao,,
+jh_hac_dao,ev-quan.js,Hắc đạo chiêu mộ,,random,jianghu,wandering,common,trade,any,hiep,id,cao,,
+jh_luan_kiem,ev-quan.js,Luận kiếm trên đỉnh núi,,random,jianghu,wandering,uncommon,trade,any,hiep,id,cao,0.4,
+jh_tieu_dao,ev-quan.js,Quán rượu ven đường,,random,jianghu,wandering,common,trade,any,hiep,id,cao,,
+tinh_hoi_xuan,ev-tinh.js,Gặp gỡ ngày hội,Tình duyên,random,family,romance,common,any,any,,k,cao,1.56,
+tinh_hoi_xuan_b,ev-tinh.js,Tình trong như đã,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+tinh_thu_tinh,ev-tinh.js,Lá thư không ký tên,Tình duyên,random,family,romance,common,any,any,,k,cao,1.3,
+tinh_dich,ev-tinh.js,Tình địch,Tình duyên,random,family,romance,common,any,any,,k,cao,1.3,
+tinh_thanh_mai,ev-tinh.js,Thanh mai trúc mã,Tình duyên,random,family,romance,unique,any,any,,k,cao,1.3,
+tinh_goa_bua,ev-tinh.js,Gá nghĩa lần hai,Tình duyên,random,family,romance,common,any,any,,k,cao,,
+tinh_tieu_thu,ev-tinh.js,Cành vàng lá ngọc,Tình duyên,random,family,romance,common,any,any,,k,cao,1.04,
+tinh_tieu_thu_b,ev-tinh.js,Nhà bên kia biết chuyện,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+tinh_tieu_thu_c,ev-tinh.js,Hẹn ba năm,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+tt_a,ev-tinh.js,Xe ngựa trên đèo,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,any,any,,ky,vừa,0.65,24
+tt_b,ev-tinh.js,Ân nhân,Thương Tâm Từ,arc,dynasty,emperor,na,any,any,,id,cao,,
+tt_c,ev-tinh.js,Thương gia nổi giận,Thương Tâm Từ,arc,dynasty,emperor,na,any,any,,id,cao,,
+tt_d,ev-tinh.js,Lời hẹn với Thương gia,Thương Tâm Từ,arc,dynasty,emperor,na,any,any,,id,cao,,
+lnh_a,ev-tinh.js,Tiếng đàn trên lầu Vọng Nguyệt,Mở đầu cốt truyện,encounter,encounter,ordinary,rare,any,any,,ky,vừa,0.52,24
+lnh_b,ev-tinh.js,Thân phận hoa khôi,Lạc Nhạn,arc,story,arc,na,any,any,,k,cao,,
+lnh_c,ev-tinh.js,Lạc gia phục hồi,Lạc Nhạn,arc,story,arc,na,any,any,,k,cao,,
+ns_xin_tien,ev-tinh.js,Nhà ngoại khó khăn,Thông gia,random,family,in_laws,common,any,any,,k,cao,,
+ns_quyen_the,ev-tinh.js,Nhà vợ quyền thế,Thông gia,random,family,in_laws,common,any,any,,k,cao,,
+ns_thu_han,ev-tinh.js,Thương gia báo thù,Thông gia,random,family,in_laws,common,any,any,,k,cao,,
+ns_me_chong,ev-tinh.js,Mẹ chồng nàng dâu,Gia đình,random,family,household,common,any,any,,k,cao,,
+ns_ve_ngoai,ev-tinh.js,Về thăm nhà ngoại,Thông gia,random,family,in_laws,common,any,any,,k,cao,,
+xg_cau_hon,ev-tinh.js,Nhà quyền quý cầu thân,Hôn sự,random,family,marriage,common,any,any,,id,cao,0.9,
+xg_o_re,ev-tinh.js,Kén rể,Hôn sự,random,family,marriage,common,any,any,,id,cao,0.6,
+nuoi_tre_bo_roi,ev-tinh.js,Đứa trẻ trước cổng,Con nuôi,random,family,children,common,any,any,,k,cao,0.7,36
+nuoi_chau_mo_coi,ev-tinh.js,Cháu mồ côi,Con nuôi,random,family,children,common,any,any,,k,cao,0.6,48
+nuoi_hiem_muon,ev-tinh.js,Hiếm muộn,Con nuôi,random,family,children,common,any,any,,k,cao,,
+thai_dong,ev-tinh.js,Động thai,Mang thai,fixed,family,pregnancy_birth,na,any,any,,k,cao,,
+gd_anh_em_cai,ev-tinh.js,Anh em xích mích,Gia đình,random,family,household,common,any,any,,k,cao,,
+gd_cha_con_nghe,ev-tinh.js,Cha mẹ ép nghề,Gia đình,random,family,household,common,any,any,,k,cao,,
+gd_ong_chau,ev-tinh.js,Ông bà dạy cháu,Gia đình,random,family,household,common,child,any,,k,cao,,
+gd_vo_chong_cai,ev-tinh.js,Vợ chồng to tiếng,Gia đình,random,family,household,common,any,any,,k,cao,,
+gd_hieu_thao,ev-tinh.js,Cha mẹ ốm nặng,Gia đình,random,family,household,common,any,any,,k,cao,,
+gd_anh_giup_em,ev-tinh.js,Đỡ đần em út,Gia đình,random,family,household,common,any,any,,k,cao,,
+gd_chi_dau,ev-tinh.js,Chị em dâu,Gia đình,random,family,household,common,any,any,,k,cao,,
+gd_con_tre_nghich,ev-tinh.js,Trẻ con nghịch dại,Gia đình,random,family,household,common,child,any,,k,cao,,
+gc_tranh_gia_tai,ev-tinh.js,Tranh gia tài,Gia pháp,random,family,family_rules,common,head,any,,k,cao,,
+gc_con_hu,ev-tinh.js,Con cháu hư hỏng,Gia pháp,random,family,family_rules,common,head,any,,k,cao,,
+gc_tu_duong,ev-tinh.js,Xây từ đường,Gia pháp,random,family,family_rules,unique,head,any,,k,cao,,
+gc_ho_xa,ev-tinh.js,Họ hàng xa tìm đến,Gia pháp,random,family,family_rules,common,head,any,,k,cao,,
+gc_phan_xu,ev-tinh.js,Phân xử chuyện nhà,Gia pháp,random,family,family_rules,common,head,any,,k,cao,,
+hh_xay_them,ev-tinh.js,Hộ riêng muốn nới nhà,Hộ ở riêng,random,family,household,common,any,any,,k,cao,,
+hh_hoa_hoan,ev-tinh.js,Nhà riêng bị cháy,Hộ ở riêng,random,family,household,uncommon,any,any,,k,cao,0.4,48
+hh_ve_chung,ev-tinh.js,Xin về ở chung,Hộ ở riêng,random,family,household,common,any,any,,k,cao,,
+hh_lam_an,ev-tinh.js,Hộ riêng làm ăn,Hộ ở riêng,random,family,household,common,any,any,,k,cao,,
+vv_tri_tang_kinh,ev-vuot.js,Tàng kinh các trên núi,Kỳ ngộ hiếm,encounter,encounter,rare,very_rare,any,any,,k,cao,0.45,18
+vv_tri_co_tran,ev-vuot.js,Ván cờ với ẩn sĩ,Kỳ ngộ hiếm,encounter,encounter,rare,very_rare,any,any,,k,cao,0.45,18
+vv_tri_bien_luan,ev-vuot.js,Đại hội biện luận,Kỳ ngộ hiếm,encounter,encounter,rare,very_rare,any,any,,k,cao,0.45,18
+vv_vo_tham_tham,ev-vuot.js,Hang sâu trong vực,Kỳ ngộ hiếm,encounter,encounter,rare,very_rare,any,any,,k,cao,0.45,18
+vv_vo_cao_thu,ev-vuot.js,Cao thủ hạ chiến thư,Kỳ ngộ hiếm,encounter,encounter,rare,very_rare,any,any,,k,cao,0.45,18
+vv_vo_binh_khi,ev-vuot.js,Thần binh xuất thế,Kỳ ngộ hiếm,encounter,encounter,rare,very_rare,any,any,,k,cao,0.25,18
+vv_suc_linh_chi,ev-vuot.js,Linh chi ngàn năm,Kỳ ngộ hiếm,encounter,encounter,rare,very_rare,any,any,,k,cao,0.45,18
+vv_suc_dao_si,ev-vuot.js,Đạo sĩ truyền phép dưỡng sinh,Kỳ ngộ hiếm,encounter,encounter,health,very_rare,any,any,,k,cao,0.45,18
+vv_mi_hoa_si,ev-vuot.js,Họa sư cung đình,Kỳ ngộ hiếm,encounter,encounter,rare,very_rare,any,any,,k,cao,0.45,18
+vv_mi_yen_tiec,ev-vuot.js,Yến tiệc vương phủ,Kỳ ngộ hiếm,encounter,encounter,rare,very_rare,any,any,,k,cao,0.45,18
+vv_eq_hoa_giai,ev-vuot.js,Hòa giải hai dòng họ,Kỳ ngộ hiếm,encounter,encounter,rare,very_rare,any,any,,k,cao,0.45,18
+vv_eq_thien_su,ev-vuot.js,Thiền sư hỏi đạo,Kỳ ngộ hiếm,encounter,encounter,intellect,very_rare,any,any,,k,cao,0.45,18
+nong_ban_ruong_re,ev-nghe2.js,Hàng xóm bán ruộng,,random,economy,agriculture,common,trade,any,nong,id,cao,1.3,
+nong_tra_no,ev-nghe2.js,Đến hạn trả nợ ruộng,Cốt truyện,arc,story,arc,na,any,any,,k,cao,,
+nong_dia_chu,ev-nghe2.js,Địa chủ cho thuê ruộng,,random,economy,agriculture,common,trade,any,nong,id,cao,,
+nong_ep_to,ev-nghe2.js,Địa chủ tăng tô,,random,economy,agriculture,common,trade,any,nong,id,cao,,
+nong_giong_chiem,ev-nghe2.js,Giống lúa phương Nam,,encounter,encounter,profession,rare,trade,any,nong,ky,vừa,0.8,
+nong_khoai_tay,ev-nghe2.js,Củ lạ từ thuyền buôn,,encounter,encounter,profession,rare,trade,any,nong|ngu|hangrong|tieunhi,ky,vừa,0.6,
+nong_duoc_lieu,ev-nghe2.js,Thầy lang dạy trồng thuốc,,encounter,encounter,profession,rare,trade,any,nong|y|tieuphu,ky,vừa,0.6,
+nong_tin_gia,ev-nghe2.js,Tin đồn giá cả,,random,economy,agriculture,common,trade,any,nong|hangrong|tieunhi|chu,id,cao,,
+nong_thuy_loi,ev-nghe2.js,Đào mương dẫn nước,,random,economy,agriculture,common,trade,any,nong,id,cao,,
+nong_sau_benh,ev-nghe2.js,Sâu bệnh,,random,economy,agriculture,common,trade,any,nong,id,cao,,
+nong_trau,ev-nghe2.js,Trâu cày,,random,economy,agriculture,common,trade,any,nong,id,cao,,
+nong_cuong_hao,ev-nghe2.js,Cường hào lấn ruộng,,random,economy,agriculture,common,trade,any,nong,id,cao,,
+nong_mua_thu,ev-nghe2.js,Ngày mùa,,random,economy,agriculture,common,trade,any,nong,id,cao,,
+nong_dien_chu,ev-nghe2.js,Lên điền chủ,,random,economy,agriculture,unique,trade,any,nong,id,cao,,
+kv_hang_nang,ev-nghe2.js,Bao hàng quá sức,,random,life,local_news,common,trade,any,khuanvac,id,cao,1.3,
+kv_hang_lau,ev-nghe2.js,Kiện hàng lạ,,random,life,local_news,common,trade,any,khuanvac,id,cao,,
+kv_bang_phai,ev-nghe2.js,Tranh bến,,random,life,local_news,common,trade,any,khuanvac,id,cao,0.8,48
+kv_cai_phu,ev-nghe2.js,Đầu nậu để ý,,random,life,local_news,common,trade,any,khuanvac,id,cao,,
+kv_chu_quyt,ev-nghe2.js,Chủ hàng quỵt tiền,,random,life,local_news,common,trade,any,khuanvac,id,cao,,
+tp_ho_du,ev-nghe2.js,Hổ dữ,,random,economy,commerce,common,trade,any,tieuphu,job,cao,1.2,
+tp_nhan_sam,ev-nghe2.js,Nhân sâm núi,,encounter,encounter,profession,rare,trade,any,tieuphu,ky,vừa,0.6,
+tp_an_si,ev-nghe2.js,Ẩn sĩ trong núi,,encounter,encounter,profession,rare,trade,any,tieuphu,ky,vừa,,
+tp_cam_rung,ev-nghe2.js,Quan cấm rừng,,random,economy,commerce,common,trade,any,tieuphu,job,cao,,
+tp_lac_rung,ev-nghe2.js,Lạc trong rừng sâu,,random,economy,commerce,common,trade,any,tieuphu,job,cao,,
+ng_bao,ev-nghe2.js,Giông bão trên sông,,random,economy,agriculture,common,trade,any,ngu,job,cao,1.2,
+ng_ngoc_trai,ev-nghe2.js,Con trai ngậm ngọc,,encounter,encounter,profession,rare,trade,any,ngu,ky,vừa,0.5,
+ng_cuu_nguoi,ev-nghe2.js,Người chết đuối,,random,economy,agriculture,common,trade,any,ngu,job,cao,,
+ng_thuy_tac,ev-nghe2.js,Thủy tặc,,random,economy,agriculture,common,trade,any,ngu,job,cao,,
+ng_thuyen_lon,ev-nghe2.js,Thuyền lớn rao bán,,random,economy,agriculture,common,trade,any,ngu,job,cao,,
+hr_mua_ma,ev-nghe2.js,Mưa giữa phiên chợ,,random,economy,commerce,common,trade,any,hangrong,job,cao,,
+hr_khach_quen,ev-nghe2.js,Khách quen,,random,economy,commerce,common,trade,any,hangrong,job,cao,,
+hr_bi_cuop_dat,ev-nghe2.js,Bị giành chỗ,,random,economy,commerce,common,trade,any,hangrong,job,cao,,
+hr_hang_moi,ev-nghe2.js,Mặt hàng mới,,random,economy,commerce,common,trade,any,hangrong|tieunhi,job,cao,,
+hau_vu_trom,ev-nghe2.js,Bị vu trộm,,random,government,entry,common,trade,any,hau,id,cao,,
+hau_tieu_thu,ev-nghe2.js,Tiểu thư nhà chủ,,random,government,entry,common,trade,any,hau,id,cao,,
+hau_bi_mat,ev-nghe2.js,Nghe lén bí mật,,random,government,entry,common,trade,any,hau,id,cao,,
+hau_theo_chu,ev-nghe2.js,Theo chủ lên kinh,,random,government,entry,common,trade,any,hau,id,cao,,
+hau_chuoc_than,ev-nghe2.js,Chủ trả tự do,,encounter,encounter,ordinary,rare,trade,any,hau,ky,vừa,,
+ch_dich_gia_suc,ev-nghe2.js,Dịch lở mồm long móng,,random,economy,agriculture,common,trade,any,chan|biz:trai,job,cao,,
+ch_trau_de,ev-nghe2.js,Trâu đẻ,,random,economy,agriculture,common,trade,any,chan,job,cao,,
+ch_trom_gia_suc,ev-nghe2.js,Trộm gia súc,,random,economy,agriculture,common,trade,any,chan|biz:trai,job,cao,,
+ch_giong_moi,ev-nghe2.js,Giống lợn mới,,random,economy,agriculture,common,trade,any,chan,job,cao,,
+nm_tuyen_nguoi,ev-nghe2.js,Nha môn tuyển người,,random,economy,employees,common,any,any,,id,cao,,24
+tl_so_sach,ev-nghe2.js,Sửa sổ hộ tịch,,random,government,official_duty,common,trade,any,thulai,job,cao,,
+tl_quan_tin,ev-nghe2.js,Được quan tin dùng,,random,government,official_duty,common,trade,any,thulai,job,cao,,
+nd_bat_trom,ev-nghe2.js,Bắt kẻ trộm,,random,economy,services,common,trade,any,nhadich,job,cao,,
+nd_ap_giai,ev-nghe2.js,Áp giải tù,,random,economy,services,common,trade,any,nhadich,job,cao,,
+nv_an_cap,ev-nghe2.js,Người làm ăn cắp,,random,economy,business,common,trade,any,chu,job,cao,,
+nv_loi_keo,ev-nghe2.js,Đối thủ lôi kéo người,,random,economy,business,common,trade,any,chu,job,cao,,
+nv_tai_nang,ev-nghe2.js,Người làm có tài,,random,economy,business,common,trade,any,chu,job,cao,,
+cs_kiem_tra,ev-nghe2.js,Quan đến kiểm tra,,random,economy,business,common,trade,any,chu,job,cao,,
+cs_khai_truong,ev-nghe2.js,Khách đông bất ngờ,,random,economy,business,common,trade,any,chu,job,cao,,
+buon_hang_hiem,ev-nghe2.js,Hàng hiếm về bến,,encounter,encounter,profession,rare,trade,any,tieunhi|hangrong|chu,ky,vừa,,
+buon_lua_dao,ev-nghe2.js,Lừa đảo,,random,economy,commerce,common,trade,any,tieunhi|hangrong|chu,job,cao,,
+t_n_hu_vang,ev-them.js,Hũ bạc dưới ruộng,Kỳ ngộ,encounter,encounter,wealth,rare,trade,any,nong,k,cao,0.6,
+t_n_dia_chu_ban,ev-them.js,Địa chủ sa sút bán ruộng,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,nong,k,cao,,
+t_n_duoc_mua,ev-them.js,Được mùa lớn,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,nong,k,cao,,
+t_n_lao_nong,ev-them.js,Lão nông truyền nghề,Kỳ ngộ,encounter,encounter,mentor,rare,trade,any,nong,k,cao,,
+t_n_khai_hoang,ev-them.js,Bãi bồi ven sông,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,nong,k,cao,,
+t_n_quan_mua_giong,ev-them.js,Quan huyện khuyến nông,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,nong,k,cao,,
+t_n_trau_de,ev-them.js,Trâu đẻ sinh đôi,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,nong,k,cao,0.7,
+t_n_cuu_nguoi,ev-them.js,Người ngã bên bờ ruộng,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,nong,k,cao,,
+t_n_hoi_lang,ev-them.js,Hội thi cấy lúa,Kỳ ngộ,encounter,encounter,health,rare,trade,any,nong,k,cao,,
+t_n_thuong_lai_xa,ev-them.js,Thương lái phương xa,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,nong,k,cao,,
+t_n_dien_trang_thue,ev-them.js,Điền trang cần người quản,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,nong,k,cao,,
+t_n_ca_ao,ev-them.js,Đào ao thả cá,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,nong,k,cao,,
+t_n_ly_truong,ev-them.js,Bầu lý trưởng,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,nong,k,cao,,
+t_n_giong_que,ev-them.js,Hạt giống ở chợ phiên,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,nong,k,cao,,
+t_q_chien_loi,ev-them.js,Chia chiến lợi phẩm,Kỳ ngộ,encounter,encounter,ordinary,rare,army,any,quan_ngu,k,cao,,
+t_q_hoc_chu,ev-them.js,Học chữ trong doanh,Kỳ ngộ,encounter,encounter,intellect,rare,army,any,quan_ngu,k,cao,,
+t_q_vo_su,ev-them.js,Lão binh dạy võ,Kỳ ngộ,encounter,encounter,martial,rare,army,any,quan_ngu,k,cao,,
+t_q_cuu_dong_doi,ev-them.js,Cõng bạn khỏi trận,Kỳ ngộ,encounter,encounter,ordinary,rare,army,any,quan_ngu,k,cao,,
+t_q_bat_do_tham,ev-them.js,Bắt sống thám báo,Kỳ ngộ,encounter,encounter,ordinary,rare,army,any,quan_ngu,k,cao,,
+t_q_tuong_de_mat,ev-them.js,Tướng quân để mắt,Kỳ ngộ,encounter,encounter,ordinary,rare,army,any,quan_ngu,k,cao,,
+t_q_dong_dien,ev-them.js,Đồn điền quân,Kỳ ngộ,encounter,encounter,ordinary,rare,army,any,quan_ngu,k,cao,,
+t_q_luong_thuong,ev-them.js,Triều đình khao quân,Kỳ ngộ,encounter,encounter,ordinary,rare,army,any,quan_ngu,k,cao,,
+t_q_ky_binh,ev-them.js,Tuyển kỵ binh,Kỳ ngộ,encounter,encounter,ordinary,rare,army,any,quan_ngu,k,cao,,
+t_q_binh_thu,ev-them.js,Cuốn binh thư rách,Kỳ ngộ,encounter,encounter,ordinary,rare,army,any,quan_ngu,k,cao,0.6,
+t_q_thu_nha,ev-them.js,Thư nhà,Kỳ ngộ,encounter,encounter,ordinary,rare,army,any,quan_ngu,k,cao,,
+t_q_cuop_kho,ev-them.js,Kho lương của giặc,Kỳ ngộ,encounter,encounter,wealth,rare,army,any,quan_ngu,k,cao,,
+t_q_nghi_phep,ev-them.js,Được về phép,Kỳ ngộ,encounter,encounter,ordinary,rare,army,any,quan_ngu,k,cao,,
+t_g_cho_vay,ev-them.js,Viên ngoại cho vay vốn,Kỳ ngộ,encounter,encounter,health,rare,any,any,,k,cao,,
+t_g_lam_thue_kinh,ev-them.js,Lên kinh làm thuê,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,,
+t_g_hoc_nghe,ev-them.js,Ông thợ nhận học trò,Kỳ ngộ,encounter,encounter,intellect,rare,any,any,,k,cao,,
+t_g_ban_hang_le,ev-them.js,Phiên chợ Tết,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,,
+t_g_nha_giau_hoi,ev-them.js,Nhà giàu dạm hỏi,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,,
+t_g_cua_roi,ev-them.js,Túi tiền đánh rơi,Kỳ ngộ,encounter,encounter,wealth,rare,any,any,,k,cao,,
+t_g_bao_an,ev-them.js,Người xưa báo ân,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,0.5,
+t_g_che_dong,ev-them.js,Mùa nông nhàn,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,,
+t_g_dan_den,ev-them.js,Đi phu đắp đê,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,,
+t_g_tho_dia,ev-them.js,Ngôi mộ tổ phát,Kỳ ngộ,encounter,encounter,ordinary,very_rare,head,any,,k,cao,0.4,
+t_g_hoc_bong,ev-them.js,Thầy đồ nhận học trò nghèo,Kỳ ngộ,encounter,encounter,health,rare,any,any,,k,cao,,
+t_c_quy_nhan,ev-them.js,Quý nhân phù trợ,Kỳ ngộ,encounter,encounter,mentor,rare,any,any,,k,cao,0.5,
+t_c_thao_duoc,ev-them.js,Cây thuốc quý,Kỳ ngộ,encounter,encounter,health,rare,any,any,,k,cao,,
+t_c_doi_cong,ev-them.js,Đổi công với hàng xóm,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,,
+t_c_dat_hang,ev-them.js,Đơn hàng bất ngờ,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,,
+t_c_giac_mo,ev-them.js,Giấc mơ lạ,Kỳ ngộ,encounter,encounter,ordinary,very_rare,any,any,,k,cao,0.4,
+t_c_thi_vo_lang,ev-them.js,Lễ hội võ làng,Kỳ ngộ,encounter,encounter,martial,rare,any,any,,k,cao,,
+v6_no_bac,ev-v6a.js,Sòng bạc đòi nợ,Tật xấu,fixed,life,health,na,any,any,,k,cao,,
+v6_trom_bat,ev-v6a.js,Bị bắt quả tang,Tật xấu,fixed,life,health,na,any,any,,k,cao,,
+v6_danh_nhau,ev-v6a.js,Ẩu đả ngoài quán,Tật xấu,fixed,life,health,na,any,any,,k,cao,,
+v6_say_ruou,ev-v6a.js,Say khướt giữa đường,Tật xấu,fixed,life,health,na,any,any,,k,cao,,
+v6_ru_ruou_tre,ev-v6a.js,Đám bạn rủ uống rượu,,random,life,daily_life,common,any,any,,id,cao,0.9,
+v6_choi_ga,ev-v6a.js,Sới chọi gà,,random,life,daily_life,common,any,any,,id,cao,0.8,
+v6_bac_thang,ev-v6a.js,Vận đỏ trên chiếu bạc,,random,life,daily_life,common,any,any,,id,cao,1.2,
+v6_vo_khoc,ev-v6a.js,Lời than của người bạn đời,,random,family,spouse,common,any,any,,id,cao,1.3,
+v6_tu_cai,ev-v6a.js,Một buổi sáng tỉnh ngộ,,random,life,daily_life,common,any,any,,id,cao,1,
+v6_tieng_tham,ev-v6a.js,Chuyện trăng hoa lộ ra,,random,government,official_duty,common,any,any,,kw,thấp,1.2,
+v6_xahoa_no,ev-v6a.js,Sổ nợ các hiệu buôn,,random,economy,commerce,common,any,any,,kw,thấp,1.2,
+v6_tre_an_cap,ev-v6a.js,Tiền trong rương bị hụt,,random,unclassified,unclassified,common,child,any,,none,không,0.7,
+v6_nhat_vang,ev-v6a.js,Túi bạc của người lỡ đường,,random,unclassified,unclassified,common,any,any,,none,không,0.9,
+v6_vu_oan,ev-v6a.js,Bị vu oan,,random,unclassified,unclassified,common,any,any,,none,không,0.8,
+v6_ban_vay,ev-v6a.js,Bạn thân hỏi vay,,random,family,marriage,common,any,any,,kw,thấp,0.9,60
+v6_hang_gia,ev-v6a.js,Món hời ở chợ,,random,economy,commerce,common,any,any,,kw,thấp,0.8,
+v6_bat_binh,ev-v6a.js,Chuyện bất bình ngoài chợ,,random,government,official_duty,common,any,any,,kw,thấp,0.9,
+v6_lo_tay,ev-v6a.js,Lỡ tay làm vỡ đồ quý,,random,economy,services,common,trade,any,hau,job,cao,0.9,
+v6_giup_hang_xom,ev-v6a.js,Hàng xóm neo đơn nhờ việc,,random,economy,commerce,common,any,any,,kw,thấp,0.9,
+v6_thach_tai,ev-v6a.js,Lời thách thức,,random,unclassified,unclassified,common,any,any,,none,không,0.8,
+v6_noi_xau,ev-v6a.js,Lời nói xấu sau lưng,,random,unclassified,unclassified,common,any,any,,none,không,0.9,
+v6_loi_hua,ev-v6a.js,Lời hứa khó giữ,,random,unclassified,unclassified,common,any,any,,none,không,0.7,
+v6_qua_bieu,ev-v6a.js,Gói quà nhờ việc,,random,unclassified,unclassified,common,any,any,,none,không,0.8,
+v6_xa_que,ev-v6a.js,Muốn đi xa lập nghiệp,,random,unclassified,unclassified,common,any,any,,none,không,0.7,
+v6_ganh_ti,ev-v6a.js,Phần hơn phần kém,,random,unclassified,unclassified,common,any,any,,none,không,0.8,
+v6_say_me,ev-v6a.js,Một niềm say mê mới,,random,unclassified,unclassified,common,any,any,,none,không,0.8,
+v6_tre_bi_danh,ev-v6a.js,Con bị đánh,,random,family,children,common,child,any,,kw,thấp,0.9,
+v6_tre_bi_lua,ev-v6a.js,Con bị lừa mất tiền,,random,family,children,common,child,any,,kw,thấp,0.7,
+v6_tre_lac,ev-v6a.js,Con đi lạc ở hội,,random,life,festival,common,child,any,,kw,thấp,0.6,24
+v6_tre_noi_doi,ev-v6a.js,Lời nói dối đầu tiên,,random,unclassified,unclassified,common,child,any,,none,không,0.8,
+v6_tre_chia_qua,ev-v6a.js,Chiếc bánh chia đôi,,random,economy,commerce,common,child,any,,kw,thấp,0.7,
+v6_tre_so_toi,ev-v6a.js,Sợ ma,,random,unclassified,unclassified,common,child,any,,none,không,0.7,
+v6_tre_viec_nha,ev-v6a.js,Việc nhà đầu tiên,,random,unclassified,unclassified,common,child,any,,none,không,0.8,
+v6_binh_thu,ev-v6a.js,Ông đồ già và cuốn binh thư,,random,education,study,common,any,any,,kw,thấp,0.6,
+v6_quan_tra,ev-v6a.js,Cuộc tranh luận ở quán trà,,random,unclassified,unclassified,common,any,any,,none,không,0.7,
+v6_so_sach,ev-v6a.js,Sổ sách lệch,,random,economy,commerce,common,trade,any,tieunhi|hau|chu|thulai|hangrong,job,cao,1,
+v6_don_tinh_xao,ev-v6a.js,Đơn hàng tinh xảo,,random,economy,crafts,common,trade,any,tho|biz:xuong,job,cao,1,
+v6_lo_chi_tieu,ev-v6a.js,Chi tiêu trong nhà,,random,family,household,common,trade,any,noi,job,cao,1.1,
+v6_mac_ca,ev-v6a.js,Mặc cả với khách lớn,,random,economy,commerce,common,trade,any,hangrong|tieunhi|biz:tiem,job,cao,1,
+v6_xt_nong,ev-v6a.js,Ruộng hương hỏa,Xuất thân,random,life,childhood,unique,any,any,,k,cao,3,
+v6_xt_tho,ev-v6a.js,Bộ đồ nghề của cha,Xuất thân,random,life,childhood,unique,any,any,,k,cao,3,
+v6_xt_buon,ev-v6a.js,Mối buôn cũ của cha,Xuất thân,random,life,childhood,unique,any,any,,k,cao,3,
+v6_xt_son,ev-v6a.js,Người quen cũ nơi rừng sông,Xuất thân,random,life,childhood,unique,any,any,,k,cao,3,
+v6_xt_ngheo,ev-v6a.js,Cai phu cũ,Xuất thân,random,life,childhood,unique,any,any,,k,cao,3,
+v6_xt_nho,ev-v6a.js,Bạn đồng môn của cha,Xuất thân,random,life,childhood,unique,any,any,,k,cao,3,
+v6_xt_vo,ev-v6a.js,Kẻ thù của tổ tiên,Xuất thân,random,life,childhood,unique,any,any,,k,cao,3,
+v6_xt_hat,ev-v6a.js,Gánh hát cũ,Xuất thân,random,life,childhood,unique,any,any,,k,cao,3,
+v6_xt_gia,ev-v6a.js,Chủ cũ nhờ việc,Xuất thân,random,life,childhood,unique,any,any,,k,cao,3,
+v6_ky_lao_nhan,ev-v6a.js,Lão nhân bên bến đò,,encounter,encounter,mentor,rare,any,any,,ky,vừa,1,
+v6_ky_thu_tich,ev-v6a.js,Thư tịch trong vách đất,,encounter,encounter,profession,rare,any,any,,ky,vừa,0.8,
+v6_ky_dao_si,ev-v6a.js,Đạo sĩ xem tâm tính,,encounter,encounter,ordinary,rare,any,any,,ky,vừa,0.9,
+v6_ky_thuong_nhan,ev-v6a.js,Đại thương nhân lỡ đường,,encounter,encounter,ordinary,rare,any,any,,ky,vừa,0.9,
+v6_ky_tai_bay,ev-v6a.js,Tai bay vạ gió,,encounter,encounter,health,rare,any,any,,ky,vừa,0.7,
+v6_ky_tre_thien_bam,ev-v6a.js,Thiên bẩm lộ ra,,encounter,encounter,intellect,rare,child,any,,ky,vừa,0.6,
+v61_phu_quan_de,ev-v61.js,Quan coi đê,Việc phụ,random,economy,services,common,any,any,,k,cao,1.2,24
+v61_phu_lu,ev-v61.js,Đê vỡ giữa đêm,Việc phụ,random,economy,services,common,any,any,,k,cao,0.6,60
+v61_phu_cai_an,ev-v61.js,Cai phu ăn bớt,Việc phụ,random,economy,services,common,any,any,,k,cao,0.9,36
+v61_cui_ho,ev-v61.js,Dấu chân hổ,Việc phụ,random,economy,services,common,any,any,,k,cao,1,36
+v61_cui_sam,ev-v61.js,Củ sâm dưới gốc tùng,Việc phụ,encounter,encounter,profession,rare,any,any,,ky,vừa,0.5,60
+v61_cui_kiem_lam,ev-v61.js,Lính kiểm lâm,Việc phụ,random,economy,services,common,any,any,,k,cao,0.8,36
+v61_ca_lon,ev-v61.js,Mẻ lưới nặng tay,Việc phụ,random,economy,services,common,any,any,,k,cao,1,24
+v61_ca_tranh,ev-v61.js,Tranh khúc sông,Việc phụ,random,economy,services,common,any,any,,k,cao,0.9,36
+v61_thue_chu_ac,ev-v61.js,Chủ nhà khắc nghiệt,Việc phụ,random,economy,services,common,any,any,,k,cao,1,30
+v61_thue_quy,ev-v61.js,Được chủ nhà quý,Việc phụ,random,economy,services,common,any,any,,k,cao,0.8,48
+v61_buon_lo,ev-v61.js,Ế hàng,Việc phụ,random,economy,services,common,any,any,,k,cao,1,24
+v61_buon_moi,ev-v61.js,Mối hàng mới,Việc phụ,random,economy,services,common,any,any,,k,cao,0.7,48
+v61_dan_khach,ev-v61.js,Tấm vải được khen,Việc phụ,random,economy,services,common,any,any,,k,cao,1,36
+v61_dan_hoa,ev-v61.js,Mẫu hoa văn lạ,Việc phụ,random,economy,services,uncommon,any,any,,k,cao,0.5,60
+v61_ta_dien_tron,ev-v61.js,Tá điền bỏ trốn,Ruộng đất,fixed,economy,land,na,any,any,,k,cao,,
+v61_ta_dien_on,ev-v61.js,Tá điền biết ơn,Ruộng đất,fixed,economy,land,na,any,any,,k,cao,,
+v61_ta_dien_xin_giam,ev-v61.js,Tá điền xin giảm tô,Ruộng đất,fixed,economy,land,na,any,any,,k,cao,,
+v61_tien_rieng_mat,ev-v61.js,Mất túi tiền riêng,Tiền riêng,random,unclassified,unclassified,common,any,any,,none,không,0.6,60
+v61_cho_vay_ban,ev-v61.js,Bạn xin vay tiền riêng,Tiền riêng,random,unclassified,unclassified,common,any,any,,none,không,0.8,72
+v61_ban_tra_no,ev-v61.js,Bạn cũ trả nợ,Tiền riêng,fixed,unclassified,unclassified,na,any,any,,none,không,,
+v61_gop_xay_tu_duong,ev-v61.js,Họ hàng góp tiền sửa từ đường,Gia tộc,random,economy,commerce,common,any,any,,kw,thấp,0.7,120
+v61_chi_ganh_dua,ev-v61.js,Chi phái ganh đua,Gia tộc,random,unclassified,unclassified,common,any,any,,none,không,0.6,72
+v61_chi_xin_hoc,ev-v61.js,Cháu chi phái xin về học,Gia tộc,random,education,study,common,any,any,,kw,thấp,0.6,60
+v61_noi_khong_cam,ev-v61.js,Không cam lòng bếp núc,Gia đình,random,family,household,common,any,any,,k,cao,1.2,48
+v61_noi_kheo,ev-v61.js,Chủ mẫu khéo vén,Gia đình,random,family,household,common,any,any,,k,cao,0.8,60
+v61_hiem_muon,ev-v61.js,Hiếm muộn,Gia đình,fixed,family,household,na,any,any,,k,cao,,
+v62_ngoai_tinh_lo,ev-v62.js,Chuyện không nên biết,Gia sự,fixed,family,household,na,any,any,,k,cao,,
+v62_xg_ve_tham,ev-v62.js,Con gái về thăm,Thông gia,fixed,family,in_laws,na,any,any,,k,cao,,
+v62_xg_bi_bat_nat,ev-v62.js,Con gái bị nhà chồng hắt hủi,Thông gia,fixed,family,in_laws,na,any,any,,k,cao,,
+v62_xg_thong_gia_nho,ev-v62.js,Thông gia nhờ vả,Thông gia,fixed,family,in_laws,na,any,any,,k,cao,,
+v62_xg_ly_hon_ve,ev-v62.js,Bị nhà chồng trả về,Thông gia,fixed,family,in_laws,na,any,any,,k,cao,,
+v62_tro_ve,ev-v62.js,Người cũ trở về,Gia sự,fixed,family,household,na,any,any,,k,cao,,
+v62_on_trom_nha,ev-v62.js,Công quỹ hao hụt,Gia sự,fixed,family,household,na,any,any,,k,cao,,
+v62_on_bo_nha,ev-v62.js,Muốn bỏ đi,Gia sự,fixed,family,household,na,any,any,,k,cao,,
+v62_on_cai_va,ev-v62.js,Cãi vã trong nhà,Gia sự,fixed,family,household,na,any,any,,k,cao,,
+v62_q_an_mang_dai,ev-v62.js,Án mạng trong phủ,Hình án,random,government,official_duty,uncommon,official,any,quan,job,cao,0.5,120
+v62_q_an_mang_tieu,ev-v62.js,Bị Án sát ty triệu hỏi,Hình án,random,government,official_duty,uncommon,official,any,quan,job,cao,0.5,120
+v62_q_huyen_bai_kien,ev-v62.js,Quan huyện đến chào,Thế gia,random,society,four_great_clans,common,any,any,,k,cao,0.8,48
+v62_q_ha_quan_cau,ev-v62.js,Quan dưới đến cầu cạnh,Hoạn lộ,random,government,official_duty,common,official,any,quan,job,cao,0.9,30
+v62_q_quyen_quy_moi,ev-v62.js,Thiếp mời của nhà quyền quý,Thế gia,random,society,four_great_clans,common,any,any,,k,cao,0.6,36
+v62_the_gia_bao_ve,ev-v62.js,Không ai dám động,Thế gia,random,society,four_great_clans,common,any,any,,k,cao,0.7,48
+v62_ghen_ti,ev-v62.js,Hàng xóm ghen ăn,Làng xóm,random,economy,commerce,common,any,any,,kw,thấp,0.8,48
+v62_ho_xa_xin_viec,ev-v62.js,Họ xa đến nương nhờ,Họ hàng,random,unclassified,unclassified,common,any,any,,none,không,0.7,48
+v62_trom_ngam_nha,ev-v62.js,Kẻ trộm để mắt,Gia sự,random,family,household,common,any,any,,k,cao,0.6,60
+v62_keu_goi_nghe_ten,ev-v62.js,Tiếng thơm lan xa,Danh vọng,random,unclassified,unclassified,uncommon,any,any,,none,không,0.5,60
+v62_det_ao_cuoi,ev-v62.js,Đơn hàng áo cưới,Dệt thêu,random,economy,crafts,common,trade,any,det,k,cao,1.2,24
+v62_det_hoa_van,ev-v62.js,Hoa văn mới,Dệt thêu,random,economy,crafts,common,trade,any,det,k,cao,1,36
+v62_det_khung_hong,ev-v62.js,Khung cửi gãy,Dệt thêu,random,economy,crafts,common,trade,any,det,k,cao,0.9,36
+v62_det_thi_theu,ev-v62.js,Hội thi thêu,Dệt thêu,random,economy,crafts,common,trade,any,det,k,cao,0.7,48
+v62_mo_sinh_nguoc,ev-v62.js,Ca sinh ngược,Bà đỡ,random,family,pregnancy_birth,common,trade,any,mo,k,cao,1.2,24
+v62_mo_nha_giau,ev-v62.js,Nhà giàu mời đỡ đẻ,Bà đỡ,random,family,pregnancy_birth,common,trade,any,mo,k,cao,1,24
+v62_mo_tre_bo_roi,ev-v62.js,Đứa bé bị bỏ lại,Bà đỡ,random,family,pregnancy_birth,common,trade,any,mo,k,cao,0.6,60
+v62_mo_thay_thuoc_ganh,ev-v62.js,Thầy lang ganh ghét,Bà đỡ,random,family,pregnancy_birth,common,trade,any,mo,k,cao,0.7,48
+v62_bep_yen_lon,ev-v62.js,Yến tiệc trăm mâm,Bếp núc,random,economy,services,common,trade,any,bep,k,cao,1.1,24
+v62_bep_khach_kho,ev-v62.js,Khách kén ăn,Bếp núc,random,economy,services,common,trade,any,bep,k,cao,1,24
+v62_bep_tuyen_vao_phu,ev-v62.js,Phủ quan tuyển đầu bếp,Bếp núc,random,economy,services,common,trade,any,bep,k,cao,0.6,60
+v62_bep_bot_xen,ev-v62.js,Phụ bếp ăn bớt,Bếp núc,random,economy,services,common,trade,any,bep,k,cao,0.8,36
+v62_dk_xem_mo,ev-v62.js,Xem đất đặt mộ,Địa lý,random,life,daily_life,common,trade,any,diaky,k,cao,1.2,24
+v62_dk_long_mach,ev-v62.js,Tranh long mạch,Địa lý,random,life,daily_life,common,trade,any,diaky,k,cao,0.8,48
+v62_dk_nha_moi,ev-v62.js,Chọn ngày dựng nhà,Địa lý,random,life,daily_life,common,trade,any,diaky,k,cao,1,24
+v62_dk_kham_thien,ev-v62.js,Khâm thiên giám tuyển người,Địa lý,random,life,daily_life,uncommon,trade,any,diaky,k,cao,0.4,120
+v62_cg_tri_a,ev-v62.js,Sách tuyệt bản,Cảnh giới,random,encounter,breakthrough,common,any,any,,k,cao,1,36
+v62_cg_tri_b,ev-v62.js,Luận đạo với cao nhân,Cảnh giới,random,encounter,breakthrough,common,any,any,,k,cao,0.8,48
+v62_cg_vo_a,ev-v62.js,Bức tường vô hình,Cảnh giới,random,encounter,breakthrough,common,any,any,,k,cao,1,36
+v62_cg_vo_b,ev-v62.js,Kiếm phổ thất truyền,Cảnh giới,encounter,encounter,breakthrough,rare,any,any,,k,cao,0.6,60
+v62_cg_suc_a,ev-v62.js,Phép dưỡng sinh,Cảnh giới,random,encounter,breakthrough,common,any,any,,k,cao,1,36
+v62_cg_suc_b,ev-v62.js,Suối nước ấm trong núi,Cảnh giới,random,encounter,breakthrough,common,any,any,,k,cao,0.7,48
+v62_cg_mi_a,ev-v62.js,Phong thái đến độ chín,Cảnh giới,random,encounter,breakthrough,common,any,any,,k,cao,1,36
+v62_cg_mi_b,ev-v62.js,Họa sĩ xin vẽ,Cảnh giới,random,encounter,breakthrough,common,any,any,,k,cao,0.7,48
+v62_cg_eq_a,ev-v62.js,Thấu lòng người,Cảnh giới,random,encounter,breakthrough,common,any,any,,k,cao,1,36
+v62_cg_eq_b,ev-v62.js,Hòa giải mối thù ba đời,Cảnh giới,random,encounter,breakthrough,common,any,any,,k,cao,0.6,60
+v62_tiet_phu,ev-v62.js,Tiết hạnh khả phong,Gia phong,random,unclassified,unclassified,unique,any,any,,none,không,2,
+v62_tai_gia_mai,ev-v62.js,Người mai mối,Hôn nhân,random,family,marriage,common,any,any,,k,cao,0.8,48
+v62_tre_hv_bi_mang,ev-v62.js,Bị thầy mắng,Học việc,random,education,study,common,any,any,,kw,thấp,1.2,24
+v62_tre_hv_gioi,ev-v62.js,Thầy khen sáng dạ,Học việc,random,education,study,common,any,any,,kw,thấp,1,36
+v62_tre_viec_nha,ev-v62.js,Đỡ đần việc nhà,Việc nhà,random,unclassified,unclassified,common,any,any,,none,không,1.2,24
+v62_tre_tu_hoc,ev-v62.js,Mượn sách,Tự học,random,unclassified,unclassified,common,any,any,,none,không,1.2,24
+v62_tre_theo_cha,ev-v62.js,Theo cha mẹ làm nghề,Gia giáo,random,unclassified,unclassified,common,any,any,,none,không,1.2,24
+v62_tre_gui_phat_hien,ev-v62.js,Thấy chuyện lạ ở cơ sở,Học việc,random,government,official_duty,common,any,any,,kw,thấp,0.8,36
+v62_gai_hoc_det,ev-v62.js,Khéo tay hay làm,Học nghề,random,unclassified,unclassified,common,any,any,,none,không,1,36
+v62_tu_lam_khach_quen,ev-v62.js,Khách quen,Tự làm,random,unclassified,unclassified,common,any,any,,none,không,1,24
+v62_tu_lam_trai_mua,ev-v62.js,Tháng ế ẩm,Tự làm,random,unclassified,unclassified,common,any,any,,none,không,0.9,24
+v63_k_sot_co_giat,ev-v63.js,Sốt cao co giật,Con nhỏ,random,family,children,common,child,any,,k,cao,1.6,3
+v63_k_tieu_chay,ev-v63.js,Nôn mửa tiêu chảy,Con nhỏ,random,family,children,common,child,any,,k,cao,1.3,3
+v63_k_cum_lanh_dong,ev-v63.js,Gió bấc,Con nhỏ,random,family,children,common,child,any,,k,cao,1.3,3
+v63_k_roi_ao,ev-v63.js,Mép ao,Con nhỏ,random,family,children,common,child,any,,k,cao,1.1,6
+v63_k_bong_bep,ev-v63.js,Bỏng nước sôi,Con nhỏ,random,family,children,common,child,any,,k,cao,1.1,6
+v63_k_thieu_sua,ev-v63.js,Sữa mẹ ít,Con nhỏ,random,family,children,unique,child,any,,k,cao,1.2,3
+v63_k_dich_tre,ev-v63.js,Dịch trong xóm,Con nhỏ,random,family,children,common,child,any,,k,cao,3,2
+v63_k_nuot_vat,ev-v63.js,Nuốt phải vật lạ,Con nhỏ,random,family,children,common,child,any,,k,cao,0.8,6
+v63_k_ban_khoan,ev-v63.js,Con khó nuôi,Con nhỏ,random,family,children,unique,child,any,,k,cao,0.9,6
+v63_k_chien_loan_tre,ev-v63.js,Tiếng trống giặc,Con nhỏ,random,family,children,common,child,any,,k,cao,3,3
+v63_k_nan_doi_tre,ev-v63.js,Năm đói kém,Con nhỏ,random,family,children,common,child,any,,k,cao,2.4,5
+v63_k_thoi_noi,ev-v63.js,Lễ thôi nôi,Con nhỏ,random,family,children,unique,child,any,,k,cao,3,1
+v63_k_biet_noi_som,ev-v63.js,Biết nói sớm,Con nhỏ,random,family,children,unique,child,any,,k,cao,1,
+v63_k_di_cho_lac,ev-v63.js,Lạc giữa hội chợ,Con nhỏ,random,family,children,common,child,any,,k,cao,1.1,8
+v63_k_tap_di,ev-v63.js,Tập đi,Con nhỏ,random,family,children,common,child,any,,k,cao,1,6
+v63_k_tam_song,ev-v63.js,Rủ nhau tắm sông,Con trẻ,random,family,children,common,child,any,,k,cao,1.4,5
+v63_k_leo_cay,ev-v63.js,Trèo cây hái quả,Con trẻ,random,family,children,common,child,any,,k,cao,1.2,5
+v63_k_ran_can_tre,ev-v63.js,Rắn cắn,Con trẻ,random,family,children,common,child,any,,k,cao,1.2,6
+v63_k_lac_rung,ev-v63.js,Lạc trong rừng,Con trẻ,random,family,children,common,child,any,,k,cao,1.1,8
+v63_k_uon_van,ev-v63.js,Giẫm phải đinh rỉ,Con trẻ,random,family,children,common,child,any,,k,cao,0.9,8
+v63_k_vet_nhiem,ev-v63.js,Vết thương mưng mủ,Con trẻ,random,family,children,common,child,any,,k,cao,1,6
+v63_k_trau_long,ev-v63.js,Trâu lồng,Con trẻ,random,family,children,common,child,any,,k,cao,0.9,8
+v63_k_cuop_cho,ev-v63.js,Đi chợ xa,Con trẻ,random,family,children,common,child,any,,k,cao,1.1,8
+v63_k_vo_su,ev-v63.js,Võ sư lưu lạc,Con trẻ,random,family,children,unique,child,any,,k,cao,1,
+v63_k_thay_do_quy,ev-v63.js,Thầy đồ quý trò,Con trẻ,random,family,children,unique,child,any,,k,cao,1,
+v63_k_cao_nhan,ev-v63.js,Cao nhân qua làng,Kỳ ngộ,encounter,encounter,mentor,rare,any,any,,k,cao,1,
+v63_k_cuu_nguoi_giau,ev-v63.js,Người lạ ngã ngựa,Con trẻ,random,family,children,unique,child,any,,k,cao,0.9,
+v63_k_dau_tre_xom,ev-v63.js,Trận quyền đầu làng,Con trẻ,random,family,children,common,child,any,,k,cao,1.1,6
+w63_dis_lu,(sinh bằng mã),Lũ lụt,Thiên tai,fixed,life,disaster,na,any,disaster,,k,cao,,
+w63_dis_chau,(sinh bằng mã),Nạn châu chấu,Thiên tai,fixed,life,disaster,na,any,disaster,,k,cao,,
+w63_dis_han,(sinh bằng mã),Đại hạn,Thiên tai,fixed,life,disaster,na,any,disaster,,k,cao,,
+w63_dis_bao,(sinh bằng mã),Bão biển,Thiên tai,fixed,life,disaster,na,any,disaster,,k,cao,,
+w63_dis_cat,(sinh bằng mã),Bão cát,Thiên tai,fixed,life,disaster,na,any,disaster,,k,cao,,
+w63_dis_lam,(sinh bằng mã),Dịch lam chướng,Thiên tai,fixed,life,disaster,na,any,disaster,,k,cao,,
+w63_dis_tuyet,(sinh bằng mã),Bão tuyết,Thiên tai,fixed,life,disaster,na,any,disaster,,k,cao,,
+w63_giac_tran,ev-v63.js,Giặc tràn tới,Chiến sự,fixed,military,local_war,na,any,war,,k,cao,,
+w63_chay_loan,ev-v63.js,Loạn quân kéo qua,Chiến sự,fixed,military,local_war,na,any,war,,k,cao,,
+w63_thue_luong,ev-v63.js,Thuế binh,Chiến sự,fixed,military,local_war,na,any,war,,k,cao,,
+w63_ti_nan,ev-v63.js,Dân tị nạn,Chiến sự,fixed,military,local_war,na,any,war,,k,cao,,
+w63_duong_xa,ev-v63.js,Việc dọc đường,Đường xa,fixed,society,clan_relations,na,any,any,,id,cao,,
+w63_ho_qua,ev-v63.js,Láng giềng đến chơi,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+w63_ho_canh_tranh,ev-v63.js,Họ khác tranh khách,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+w63_ho_tranh_chap,ev-v63.js,Tranh chấp với láng giềng,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+w63_ho_gia_nan,ev-v63.js,Láng giềng gặp nạn,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+w63_ho_tra_on,ev-v63.js,Báo đáp ân nghĩa,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+w63_ho_hoi_lang,ev-v63.js,Mời dự đám,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+w63_ho_xin_vay,ev-v63.js,Láng giềng xin vay,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+w63_ho_tra_no,ev-v63.js,Đến hạn trả nợ,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+w63_ho_ket_than,ev-v63.js,Ngỏ ý kết thông gia,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+w63_tin_xa,ev-v63.js,Thương nhân đường xa,Tin từ xa,fixed,life,local_news,na,any,any,,k,cao,,
+w631_su_hanh_cuoc,ev-v631a.js,Người chạy thư,Tin từ xa,fixed,life,local_news,na,any,any,,k,cao,,
+w631_linh_tram,ev-v631a.js,Lính trạm dừng ngựa,Tin từ xa,fixed,life,local_news,na,any,any,,k,cao,,
+w631_thay_lang_rong,ev-v631a.js,Thầy lang rong,Tin từ xa,fixed,life,local_news,na,any,any,,k,cao,,
+w631_nguoi_hat_rong,ev-v631a.js,Người hát rong,Tin từ xa,fixed,life,local_news,na,any,any,,k,cao,,
+w631_chu_thuyen,ev-v631a.js,Chủ thuyền ghé bến,Tin từ xa,fixed,life,local_news,na,any,any,,k,cao,,
+w631_ho_muon_trau,ev-v631a.js,Mượn trâu cày,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+w631_ho_gop_dinh,ev-v631a.js,Góp tiền sửa đình,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+w631_ho_dua_dam,ev-v631a.js,Họ khác mời kết bạn hàng,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+qn631_dien_vo,ev-v631a.js,Diễn võ cuối năm,,random,military,barracks,common,army,any,quan_ngu,id,cao,1.2,
+qn631_gac_kho,ev-v631a.js,Canh kho lương,,random,military,barracks,common,army,any,quan_ngu,id,cao,1,
+qn631_gac_ai,ev-v631a.js,Đêm gác ải,,random,military,barracks,common,army,any,quan_ngu,id,cao,1.1,
+qn631_ho_tong,ev-v631a.js,Hộ tống sứ đoàn,,random,military,barracks,common,army,any,quan_ngu,id,cao,0.8,
+qn631_dep_loan_doi,ev-v631a.js,Dẹp dân đói nổi loạn,,random,military,barracks,common,army,any,quan_ngu,id,cao,0.9,
+qn631_dong_don,ev-v631a.js,Mùa đông đóng quân,,random,military,barracks,common,army,any,quan_ngu,id,cao,1,
+qn631_bat_tu_binh,ev-v631a.js,Bắt tù binh,,random,military,barracks,common,army,any,quan_ngu,id,cao,1,
+qn631_tien_phong,ev-v631a.js,Chọn mũi tiên phong,,random,military,barracks,common,army,any,quan_ngu,id,cao,1.2,
+qn631_vo_cu,ev-v631a.js,Tiến cử thi võ cử,,random,military,barracks,common,army,any,quan_ngu,id,cao,0.7,
+qn631_day_tan_binh,ev-v631a.js,Dạy lính mới,,random,military,barracks,common,army,any,quan_ngu,id,cao,0.9,
+qn631_nghi_phep_que,ev-v631a.js,Phép về quê,,random,military,barracks,common,army,any,quan_ngu,id,cao,0.9,
+qn631_phat_dong_don,ev-v631a.js,Đồn điền quân,,random,military,barracks,common,army,any,quan_ngu,id,cao,1,
+kv631_dau_lung,ev-v631b.js,Lưng đau âm ỉ,,random,life,local_news,common,trade,any,khuanvac,id,cao,,
+kv631_lu_ben,ev-v631b.js,Nước lũ ngập bến,,random,life,local_news,common,trade,any,khuanvac,id,cao,,36
+kv631_tien_le,ev-v631b.js,Cai bến đòi tiền lệ,,random,life,local_news,common,trade,any,khuanvac,id,cao,,
+kv631_cuu_nguoi_duoi,ev-v631b.js,Cứu người đuối nước,,random,life,local_news,common,trade,any,khuanvac,id,cao,,48
+kv631_hang_quy,ev-v631b.js,Chuyển hòm hàng quý,,random,life,local_news,common,trade,any,khuanvac,id,cao,,
+tl631_sua_so,ev-v631b.js,Nhờ sửa sổ thuế,,random,government,official_duty,common,trade,any,thulai,job,cao,,
+tl631_hoc_luat,ev-v631b.js,Mượn sách luật,,random,government,official_duty,common,trade,any,thulai,job,cao,,
+tl631_vu_an_kho,ev-v631b.js,Hồ sơ vụ án khó,,random,government,official_duty,common,trade,any,thulai,job,cao,,
+nd631_bat_tron_thue,ev-v631b.js,Bắt người trốn thuế,,random,economy,services,common,trade,any,nhadich,job,cao,,
+nd631_dem_canh,ev-v631b.js,Đêm tuần canh,,random,economy,services,common,trade,any,nhadich,job,cao,,18
+nd631_hoi_lo,ev-v631b.js,Tiền hối lộ,,random,economy,services,common,trade,any,nhadich,job,cao,,
+ng631_bao_bien,ev-v631b.js,Giông bão giữa khơi,,random,economy,agriculture,common,trade,any,ngu,job,cao,,30
+ng631_mua_ca,ev-v631b.js,Mùa cá rộ,,random,economy,agriculture,common,trade,any,ngu,job,cao,,20
+ng631_hai_tac,ev-v631b.js,Gặp thuyền lạ,,random,economy,agriculture,common,trade,any,ngu,job,cao,,48
+tp631_gap_ho,ev-v631b.js,Dấu chân hổ,,random,economy,commerce,common,trade,any,tieuphu,job,cao,,48
+tp631_tram_huong,ev-v631b.js,Cây trầm hương,,random,economy,commerce,common,trade,any,tieuphu,job,cao,,120
+tp631_go_lim,ev-v631b.js,Cây lim cổ thụ,,random,economy,commerce,common,trade,any,tieuphu,job,cao,,
+hau631_chu_om,ev-v631b.js,Chủ nhà đổ bệnh,,random,government,entry,common,trade,any,hau,id,cao,,
+hau631_bi_vu,ev-v631b.js,Bị vu mất đồ,,random,government,entry,common,trade,any,hau,id,cao,,36
+hau631_chuoc_than,ev-v631b.js,Gom tiền chuộc thân,,random,government,entry,common,trade,any,hau,id,cao,,
+tho631_don_lon,ev-v631b.js,Đơn hàng lớn,,random,economy,crafts,common,trade,any,tho,job,cao,,
+tho631_thay_la,ev-v631b.js,Thợ lạ truyền mẹo,,random,economy,crafts,common,trade,any,tho,job,cao,,36
+tho631_dung_cu,ev-v631b.js,Dụng cụ hỏng giữa mùa đắt hàng,,random,economy,crafts,common,trade,any,tho,job,cao,,
+det631_tam_benh,ev-v631b.js,Tằm sinh bệnh,,random,economy,crafts,common,trade,any,det,job,cao,,30
+det631_mau_hoa_van,ev-v631b.js,Mẫu hoa văn lạ,,random,economy,crafts,common,trade,any,det,job,cao,,
+bep631_tiec_lon,ev-v631b.js,Đặt tiệc lớn,,random,economy,services,common,trade,any,bep,job,cao,,
+bep631_mon_gia_truyen,ev-v631b.js,Món gia truyền của bà cụ,,random,economy,services,common,trade,any,bep,job,cao,,
+chan631_dich_gia_suc,ev-v631b.js,Dịch lở mồm long móng,,random,economy,agriculture,common,trade,any,chan,job,cao,,36
+chan631_trom_gia_suc,ev-v631b.js,Mất trâu trong đêm,,random,economy,agriculture,common,trade,any,chan,job,cao,,30
+chan631_ngua_gioi,ev-v631b.js,Con ngựa cái giống tốt,,random,economy,agriculture,common,trade,any,chan,job,cao,,60
+tieu631_duong_binh_ach,ev-v631b.js,Đường qua vùng giao chiến,,random,economy,commerce,common,trade,any,tieu,job,cao,,24
+tieu631_ket_nghia,ev-v631b.js,Kết nghĩa anh em,,random,economy,commerce,common,trade,any,tieu,job,cao,,
+noi631_nuoi_lon,ev-v631b.js,Nuôi một lứa lợn,,random,family,household,common,trade,any,noi,job,cao,,
+noi631_hoc_tho_cam,ev-v631b.js,Học dệt thổ cẩm,,random,family,household,common,trade,any,noi,job,cao,,
+hr631_mua_tet,ev-v631b.js,Chợ Tết đông khách,,random,economy,commerce,common,trade,any,hangrong,job,cao,,11
+hr631_thu_thue_cho,ev-v631b.js,Lính chợ thu tiền chỗ ngồi,,random,economy,commerce,common,trade,any,hangrong,job,cao,,
+tn631_khach_sang,ev-v631b.js,Khách sang ghé quán,,random,economy,commerce,common,trade,any,tieunhi,job,cao,,
+nong631_khai_hoang,ev-v631b.js,Đất bồi ven sông,,random,economy,agriculture,common,trade,any,nong,id,cao,,60
+nong631_tranh_nuoc_ha,ev-v631b.js,Hạn tranh nước ruộng,,random,economy,agriculture,common,trade,any,nong,id,cao,,24
+nong631_ruong_cong,ev-v631b.js,Làng chia lại ruộng công,,random,economy,agriculture,common,trade,any,nong,id,cao,,120
+nong631_giong_moi,ev-v631b.js,Thương lái mang giống lạ,,random,economy,agriculture,common,trade,any,nong,id,cao,,60
+c631_tha_dieu,ev-v631c.js,Thả diều chiều gió,Con trẻ,random,family,children,common,child,any,,k,cao,,8
+c631_nghe_ba_ke,ev-v631c.js,Bà kể chuyện cổ,Con trẻ,random,family,children,common,child,any,,k,cao,,10
+c631_tam_song,ev-v631c.js,Rủ nhau tắm sông,Con trẻ,random,family,children,common,child,any,,k,cao,,10
+c631_chan_trau_choi,ev-v631c.js,Chăn trâu ngoài đồng,Con trẻ,random,family,children,common,child,any,,k,cao,,8
+c631_hoc_chu_chua,ev-v631c.js,Học chữ ở chùa,Con trẻ,random,family,children,common,child,any,,k,cao,,24
+c631_hoi_tre_lang,ev-v631c.js,Hội đấu vật mùa xuân,Con trẻ,random,family,children,common,child,any,,k,cao,,12
+c631_tre_di_cho,ev-v631c.js,Lần đầu theo cha mẹ đi chợ phiên,Con trẻ,random,family,children,common,child,any,,k,cao,,12
+c631_hoi_lang_xuan,ev-v631c.js,Hội làng mùa xuân,,random,life,festival,common,any,any,,kw,thấp,,11
+c631_cuoi_hang_xom,ev-v631c.js,Đám cưới nhà hàng xóm,,random,family,marriage,common,any,any,,kw,thấp,,9
+c631_dam_ma_lang,ev-v631c.js,Đám tang trong xóm,,random,unclassified,unclassified,common,any,any,,none,không,,9
+c631_cai_nhau_ranh_gioi,ev-v631c.js,Tranh cãi ranh giới vườn,,random,unclassified,unclassified,common,any,any,,none,không,,14
+c631_bao_boc_mai,ev-v631c.js,Bão tốc mái nhà,,random,unclassified,unclassified,common,any,any,,none,không,,20
+c631_chay_nha_lang,ev-v631c.js,Cháy nhà trong xóm,,random,unclassified,unclassified,common,any,any,,none,không,,24
+c631_ke_xin_an,ev-v631c.js,Kẻ xin ăn trước cửa,,random,unclassified,unclassified,common,any,any,,none,không,,6
+c631_thay_lang_dao,ev-v631c.js,Thầy lang dạo bán thuốc,,random,education,study,common,any,any,,kw,thấp,,11
+c631_hang_xom_muon_do,ev-v631c.js,Hàng xóm mượn dụng cụ,,random,economy,commerce,common,any,any,,kw,thấp,,9
+c631_trom_ga_dem,ev-v631c.js,Trộm gà trong đêm,,random,unclassified,unclassified,common,any,any,,none,không,,11
+c631_ban_cu_ghe,ev-v631c.js,Bạn cũ ghé thăm,,random,unclassified,unclassified,common,any,any,,none,không,,14
+c631_cho_phien,ev-v631c.js,Chợ phiên đầu tháng,,random,economy,commerce,common,any,any,,kw,thấp,,6
+c631_den_chua_cau_an,ev-v631c.js,Lên chùa cầu an,,random,life,festival,common,any,any,,kw,thấp,,11
+c631_lao_ke_chuyen,ev-v631c.js,Ông bà kể chuyện xưa,,random,government,official_duty,common,any,any,,kw,thấp,,10
+c631_dau_khop,ev-v631c.js,Đau nhức xương khớp,,random,unclassified,unclassified,common,any,any,,none,không,,10
+c631_hop_phu_lao,ev-v631c.js,Hội phụ lão mời dự,,random,life,festival,common,any,any,,kw,thấp,,14
+c631_ta_dien_xin_giam,ev-v631c.js,Tá điền xin giảm tô,,random,economy,land,common,head,any,,kw,thấp,,24
+c631_gia_nhan_xin_nghi,ev-v631c.js,Người làm xin về thăm mẹ ốm,,random,life,health,common,head,any,,kw,thấp,,18
+c631_khach_quy_ghe,ev-v631c.js,Khách quý xin trọ qua đêm,,random,unclassified,unclassified,common,head,any,,none,không,,24
+c631_cau_ben_lang,ev-v631c.js,Làng góp tiền sửa cầu,,random,society,neighbors,common,head,any,,kw,thấp,,36
+c631_don_thay_day,ev-v631c.js,Mời thầy đồ về dạy con,,random,education,study,common,head,any,,kw,thấp,,36
+c631_hoa_giai_vung,ev-v631c.js,Được mời hòa giải,,random,unclassified,unclassified,common,any,any,,none,không,,12
+c631_lam_chung_giay_to,ev-v631c.js,Làm chứng cho khế ước,,random,unclassified,unclassified,common,any,any,,none,không,,12
+c631_tien_cu_huong_truong,ev-v631c.js,Dân làng muốn cử làm hương trưởng,,random,society,neighbors,common,head,any,,kw,thấp,,60
+c631_quyen_quy_moi,ev-v631c.js,Quan lớn mời dự tiệc,,random,government,official_duty,common,any,any,,kw,thấp,,24
+c631_van_bia_tong_tu,ev-v631c.js,Xin văn bia cho từ đường,,random,unclassified,unclassified,common,head,any,,none,không,,120
+c631_day_chu_ban_dem,ev-v631c.js,Mở lớp dạy chữ cho trẻ làng,,random,family,children,common,any,any,,kw,thấp,,60
+c631_xin_thu_gioi_thieu,ev-v631c.js,Nhờ thư giới thiệu,,random,unclassified,unclassified,common,any,any,,none,không,,14
+c631_phat_gao_cuu_doi,ev-v631c.js,Phát gạo cho người đói,,random,unclassified,unclassified,common,head,any,,none,không,,24
+d631_thay_thuoc_hoi_huu,ev-v631d.js,Thầy thuốc về hưu trong làng,Kỳ ngộ,encounter,encounter,health,rare,any,any,,k,cao,1,
+d631_tho_ren_dao,ev-v631d.js,Thợ rèn dạo dựng lò tạm,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,1,
+d631_su_co_day_chu,ev-v631d.js,Sư cô dạy chữ ở am,Kỳ ngộ,encounter,encounter,health,rare,child,any,,k,cao,1,
+d631_kiem_khach_ghe_lang,ev-v631d.js,Kiếm khách dừng chân,Kỳ ngộ,encounter,encounter,martial,rare,any,any,,k,cao,1,
+d631_nha_buon_nhan_giup,ev-v631d.js,Thương nhân tìm người giữ sổ,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,1,
+d631_nguoi_bao_tro_hoc,ev-v631d.js,Nhà hảo tâm đỡ đầu việc học,Kỳ ngộ,encounter,encounter,intellect,rare,any,any,,k,cao,1,
+d631_thuyen_truong_nhan_con,ev-v631d.js,Thuyền trưởng cần một cậu bé,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,1,
+d631_nguoi_ke_su,ev-v631d.js,Người kể sử qua làng,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,1,
+d631_quan_xe_sa_lay,ev-v631d.js,Xe quan sa bùn,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,1,
+d631_thuong_gia_lac_tuyet,ev-v631d.js,Thương nhân lạc trong tuyết,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,1,
+d631_bao_cat_thuong_doan,ev-v631d.js,Thương đoàn lạc trong bão cát,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,1,
+d631_hang_duoc_lieu,ev-v631d.js,Hang đá có dược liệu quý,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,1,
+d631_ngoc_trai,ev-v631d.js,Ngọc trong con trai,Kỳ ngộ hiếm,encounter,encounter,treasure,very_rare,any,any,,k,cao,0.5,
+d631_tang_sap_thom,ev-v631d.js,Tảng sáp thơm trôi dạt,Kỳ ngộ hiếm,encounter,encounter,rare,very_rare,any,any,,k,cao,0.5,
+d631_ngua_hoang,ev-v631d.js,Đàn ngựa hoang ở thung lũng,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,1,
+d631_ban_hoc_lam_quan,ev-v631d.js,Bạn học cũ nay làm quan,Kỳ ngộ,encounter,encounter,health,rare,any,any,,k,cao,1,
+d631_dong_doi_cu,ev-v631d.js,Đồng đội cũ ghé thăm,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,1,
+d631_thuong_nhan_gop_von,ev-v631d.js,Thương nhân ngỏ lời góp vốn,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,1,
+d631_ban_nho_cho_von,ev-v631d.js,Bạn thuở nhỏ cho vay vốn,Kỳ ngộ,encounter,encounter,health,rare,any,any,,k,cao,1,
+d631_dao_si_chua_benh,ev-v631d.js,Thầy lang lạ chữa bệnh cũ,Kỳ ngộ,encounter,encounter,health,rare,any,any,,k,cao,1,
+d631_sach_co_trong_ruong,ev-v631d.js,Cuốn sách cổ trong rương,Kỳ ngộ,encounter,encounter,intellect,rare,any,any,,k,cao,1,
+d631_tui_hang_roi,ev-v631d.js,Túi hàng rơi bên đường,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,1,
+d631_cuu_nguoi_trong_lu,ev-v631d.js,Cứu người trong cơn lũ,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,1,
+d631_chi_huy_nhan_tai,ev-v631d.js,Chỉ huy để mắt đến,Kỳ ngộ,encounter,encounter,health,rare,army,any,quan_ngu,k,cao,1,
+d631_lao_tuong_truyen_phap,ev-v631d.js,Lão tướng nghỉ hưu truyền binh pháp,Kỳ ngộ,encounter,encounter,mentor,rare,army,any,quan_ngu,k,cao,1,
+d631_cuu_tuong_bi_thuong,ev-v631d.js,Cứu sĩ quan bị thương,Kỳ ngộ,encounter,encounter,ordinary,rare,army,any,quan_ngu,k,cao,1,
+d631_thay_dia_ly,ev-v631d.js,Thầy địa lý ghé nhà,Kỳ ngộ,encounter,encounter,health,rare,head,any,,k,cao,1,
+d631_su_gia_tuyen_duong,ev-v631d.js,Sứ giả tuyên dương gia đình hiếu nghĩa,Kỳ ngộ,encounter,encounter,ordinary,rare,head,any,,k,cao,1,
+d631_thuong_nhan_ngoai_quoc,ev-v631d.js,Thương nhân ngoại quốc bán hương liệu,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,1,
+d631_thuyen_nuoc_ngoai_mac_can,ev-v631d.js,Thủy thủ ngoại quốc mắc cạn,Kỳ ngộ,encounter,encounter,health,rare,any,any,,k,cao,1,
+d631_gieng_nuoc_moi,ev-v631d.js,Mạch nước ngầm dưới cát,Kỳ ngộ,encounter,encounter,ordinary,rare,head,any,,k,cao,1,
+d631_mach_quang_sat,ev-v631d.js,Vỉa quặng sắt trên đồi nhà,Kỳ ngộ hiếm,encounter,encounter,rare,very_rare,head,any,,k,cao,0.5,
+d631_goa_phu_hien_dat,ev-v631d.js,Bà góa hiến mảnh ruộng,Kỳ ngộ,encounter,encounter,ordinary,rare,head,any,,k,cao,1,
+d631_che_co_thu,ev-v631d.js,Gốc chè cổ thụ trên đồi,Kỳ ngộ,encounter,encounter,ordinary,rare,head,any,,k,cao,1,
+d631_nguoi_tai_tro_truong,ev-v631d.js,Quan về hưu lập trường làng,Kỳ ngộ,encounter,encounter,ordinary,rare,head,any,,k,cao,1,
+d631_hoi_thi_vo,ev-v631d.js,Hội thi võ trong huyện,Kỳ ngộ,encounter,encounter,martial,rare,any,any,,k,cao,1,
+d631_hoi_thi_hat,ev-v631d.js,Hội thi hát dịp xuân,Kỳ ngộ,encounter,encounter,intellect,rare,any,any,,k,cao,1,
+d631_hoc_nghe_gom,ev-v631d.js,Thợ gốm cần học việc,Kỳ ngộ,encounter,encounter,intellect,rare,any,any,,k,cao,1,
+d631_tho_san_gia_day_lan,ev-v631d.js,Thợ săn già truyền kinh nghiệm,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,tieuphu,k,cao,1,
+d631_chua_an_duong,ev-v631d.js,Sư già mời ở nhà tăng,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,0.6,
+d631_nguoi_than_thuat_lac,ev-v631d.js,Người thân thất lạc trở về,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,0.5,
+d631_thu_nguoi_xua,ev-v631d.js,Người xưa gửi thư,Kỳ ngộ,encounter,encounter,ordinary,very_rare,any,any,,k,cao,0.4,
+ct_tri0,(sinh bằng mã),Hội văn trong huyện,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_tri1,(sinh bằng mã),Văn xã mời chấm bài,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_tri2,(sinh bằng mã),Đốc học đề cử,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_tri3,(sinh bằng mã),Quốc tử giám mời,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_tri4,(sinh bằng mã),Suy tôn minh chủ văn đàn,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_tri5,(sinh bằng mã),Luận đạo ở thư viện cổ,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_tri6,(sinh bằng mã),Tiếng đọc sách trong văn miếu hoang,Kỳ ngộ hiếm,fixed,encounter,intellect,na,any,any,,k,cao,1,
+ct_tri7,(sinh bằng mã),Hòm giấy cổ chữ lạ,Kỳ ngộ hiếm,fixed,encounter,health,na,any,any,,k,cao,1,
+ct_tri8,(sinh bằng mã),Sao Văn Khúc sáng trước cửa,Kỳ ngộ hiếm,fixed,encounter,intellect,na,any,any,,k,cao,1,
+ct_vo0,(sinh bằng mã),Đài tỉ võ ngày hội,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_vo1,(sinh bằng mã),Võ quán lớn mời thử chiêu,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_vo2,(sinh bằng mã),Tiêu cục tuyển giáo đầu,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_vo3,(sinh bằng mã),Võ lâm hội mười năm,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_vo4,(sinh bằng mã),Chiến thư của kiếm khách,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_vo5,(sinh bằng mã),Thiên hạ võ hội,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_vo6,(sinh bằng mã),Ông già chơi cờ trên đỉnh núi,Kỳ ngộ hiếm,fixed,encounter,rare,na,any,any,,k,cao,1,
+ct_vo7,(sinh bằng mã),Mưa rừng,Kỳ ngộ hiếm,fixed,encounter,rare,na,any,any,,k,cao,1,
+ct_vo8,(sinh bằng mã),Sét đánh đầu núi,Kỳ ngộ hiếm,fixed,encounter,rare,na,any,any,,k,cao,1,
+ct_suc0,(sinh bằng mã),Hội đô vật,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_suc1,(sinh bằng mã),Lang trung bắt mạch,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_suc2,(sinh bằng mã),Thử đao ở tiêu cục,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_suc3,(sinh bằng mã),Thử gân cốt ở chùa cổ,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_suc4,(sinh bằng mã),Dịch lớn đi qua,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_suc5,(sinh bằng mã),Đạo sĩ nhìn tướng,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_suc6,(sinh bằng mã),Suối thuốc trên núi,Kỳ ngộ hiếm,fixed,encounter,health,na,any,any,,k,cao,1,
+ct_suc7,(sinh bằng mã),Động tiên,Kỳ ngộ hiếm,fixed,encounter,mentor,na,any,any,,k,cao,1,
+ct_suc8,(sinh bằng mã),Suối trường sinh,Kỳ ngộ hiếm,fixed,encounter,rare,na,any,any,,k,cao,1,
+ct_mi0,(sinh bằng mã),Nhã tập đầu xuân,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_mi1,(sinh bằng mã),Thi nhân xin làm thơ,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_mi2,(sinh bằng mã),Yến tiệc vương phủ,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_mi3,(sinh bằng mã),Họa sư vẽ chân dung,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_mi4,(sinh bằng mã),Hội hoa đăng ven sông,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_mi5,(sinh bằng mã),Phiên vương cho mời,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_mi6,(sinh bằng mã),Hồ sen đêm trăng,Kỳ ngộ hiếm,fixed,encounter,rare,na,any,any,,k,cao,1,
+ct_mi7,(sinh bằng mã),Sứ thần ngoại quốc,Kỳ ngộ hiếm,fixed,encounter,rare,na,any,any,,k,cao,1,
+ct_mi8,(sinh bằng mã),Hoa nở trái mùa,Kỳ ngộ hiếm,fixed,encounter,rare,na,any,any,,k,cao,1,
+ct_eq0,(sinh bằng mã),Hai nhà nhờ phân xử,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_eq1,(sinh bằng mã),Người cùng xóm giãi bày,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_eq2,(sinh bằng mã),Hương hội suy tôn,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_eq3,(sinh bằng mã),Hai làng sắp đánh nhau,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_eq4,(sinh bằng mã),Can ngăn quan quân,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_eq5,(sinh bằng mã),Năm đói  lòng người dao động,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_eq6,(sinh bằng mã),Kẻ ngờ nghệch hỏi,Kỳ ngộ hiếm,fixed,encounter,rare,na,any,any,,k,cao,1,
+ct_eq7,(sinh bằng mã),Gương đồng trong chùa,Kỳ ngộ hiếm,fixed,encounter,rare,na,any,any,,k,cao,1,
+ct_eq8,(sinh bằng mã),Tiếng trời,Kỳ ngộ hiếm,fixed,encounter,rare,na,any,any,,k,cao,1,
+ct_tri0b,(sinh bằng mã),Học trò đỗ đạt,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_tri1b,(sinh bằng mã),Thư sinh từ xa tìm đến,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_tri2b,(sinh bằng mã),Mời chấm khoa thi,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_tri3b,(sinh bằng mã),Nhà in khắc bộ chú giải,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_vo0b,(sinh bằng mã),Đồng đội truyền tai nhau,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_vo1b,(sinh bằng mã),Nhà giàu mời làm giáo đầu,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_vo2b,(sinh bằng mã),Chủ tướng cho thử,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_vo3b,(sinh bằng mã),Môn phái mời làm khách khanh,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_suc0b,(sinh bằng mã),Mùa gặt thiếu người,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_suc1b,(sinh bằng mã),Qua đèo tuyết,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_mi0b,(sinh bằng mã),Khách đến chỉ để nhìn,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_mi1b,(sinh bằng mã),Họa sĩ làng xin vẽ,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_eq0b,(sinh bằng mã),Bạn nghề tìm đến góp ý,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_eq1b,(sinh bằng mã),Dân đến nhờ xử giúp,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+ct_eq2b,(sinh bằng mã),Thợ thuyền cử người nói với chủ,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,1,
+stf_death,ev-v633a.js,Người làm qua đời,Kinh doanh,fixed,economy,business,na,any,any,,k,cao,,
+stf_retire,ev-v633a.js,Người làm xin nghỉ hưu,Kinh doanh,fixed,economy,business,na,any,any,,k,cao,,
+stf_quit,ev-v633a.js,Người làm xin thôi việc,Kinh doanh,fixed,economy,business,na,any,any,,k,cao,,
+stf_sick,ev-v633a.js,Người làm ngã bệnh,Kinh doanh,fixed,economy,business,na,any,any,,k,cao,,
+h_ng_hich,ev-v633b.js,Hịch quyên lương thảo,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_ng_dansot,ev-v633b.js,Người đan sọt bên đường,Kỳ ngộ,fixed,encounter,ordinary,na,any,any,,k,cao,,
+h_ng_cam,ev-v633b.js,Quả cam trong bàn tay,Kỳ ngộ,fixed,encounter,ordinary,na,any,any,,k,cao,,
+h_ng_duyet,ev-v633b.js,Lễ duyệt binh mùa thu,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_ng_cauthan,ev-v633b.js,Cô Lam Anh kén rể bằng tỉ võ,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_ng_nguaquy,ev-v633b.js,Ngựa chiến làm quà,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_ng_tuongqua,ev-v633b.js,Con trai đô đốc ghé nhà,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_ng_dem,ev-v633b.js,Tiếng ngâm thơ trên ải,Kỳ ngộ,fixed,encounter,ordinary,na,any,any,,k,cao,,
+h_vu_tienco,ev-v633b.js,Thư tiến cử,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_vu_thuphong,ev-v633b.js,Tàng thư các của Vũ phủ,Kỳ ngộ,fixed,encounter,wealth,na,any,any,,k,cao,,
+h_vu_trieunghi,ev-v633b.js,Triều nghị chia phe,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_vu_treomu,ev-v633b.js,Treo mũ từ quan,Kỳ ngộ,fixed,encounter,ordinary,na,any,any,,k,cao,,
+h_vu_tiec,ev-v633b.js,Tiệc thơ ở Vũ phủ,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_vu_cauthan,ev-v633b.js,Cô Thanh Vân đối thơ kén chồng,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_vu_giaothu,ev-v633b.js,Mời dạy con em Vũ phủ,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_vu_thicu,ev-v633b.js,Khoa thi do Vũ Thượng thư chủ khảo,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_du_phatthuoc,ev-v633b.js,Phát thuốc cứu dân,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_du_toathuoc,ev-v633b.js,Một toa thuốc quý,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_du_namduoc,ev-v633b.js,Nam dược trị Nam nhân,Kỳ ngộ,fixed,encounter,ordinary,na,any,any,,k,cao,,
+h_du_dongy,ev-v633b.js,Thái y viện tuyển học trò,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_du_vuon,ev-v633b.js,Vườn thuốc ở Dược Cốc,Kỳ ngộ,fixed,encounter,health,na,any,any,,k,cao,,
+h_du_cuoi,ev-v633b.js,Cô Tuệ Lâm tìm người cùng nghề,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_du_benhnhan,ev-v633b.js,Người bệnh không tên,Kỳ ngộ,fixed,encounter,health,na,any,any,,k,cao,,
+h_ki_yetkieu,ev-v633b.js,Người lặn dưới đáy nước,Kỳ ngộ,fixed,encounter,health,na,any,any,,k,cao,,
+h_ki_hotong,ev-v633b.js,Hộ tống hàng cho thủy sư,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_ki_haitac,ev-v633b.js,Đánh hải tặc Hải Minh,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_ki_cauthan,ev-v633b.js,Cô Hải Yến chọn chồng trên thuyền,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_ki_thuongloh,ev-v633b.js,Giấy thông hành của thủy sư,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_ki_bao,ev-v633b.js,Bão lớn  thuyền chiến cần chỗ trú,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_ki_thuyenma,ev-v633b.js,Con thuyền ma,Kỳ ngộ,fixed,encounter,ordinary,na,any,any,,k,cao,,
+h_ki_dongtau,ev-v633b.js,Đóng thuyền chiến cho thủy sư,Thế gia,fixed,society,four_great_clans,na,any,any,,k,cao,,
+h_xx_hoinghi,ev-v633b.js,Bốn nhà thế gia họp mặt,Kỳ ngộ,fixed,encounter,ordinary,na,any,any,,k,cao,,
+vil_a_ruong,ev-v633c.js,Cột mốc bị dời,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_a_buon,ev-v633c.js,Phí bảo hộ đường buôn,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_a_quan,ev-v633c.js,Lễ ra mắt của hào lý mới,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_a_hoc,ev-v633c.js,Nhờ viết gia phả,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_a_vo,ev-v633c.js,Bị mời làm hộ vệ,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_a_chung,ev-v633c.js,Thuế thêm của hào lý mới,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_b_tieusinh,ev-v633c.js,Một tiên sinh xin dạy học,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_b_thaylang,ev-v633c.js,Lang y lạ trong làng,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_b_thulai,ev-v633c.js,Thư lại kiểm sổ,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_b_giapha,ev-v633c.js,Người sưu tầm gia phả,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_b_tiec,ev-v633c.js,Bàn tiệc nhà hào lý,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_l_so,ev-v633c.js,Cuốn sổ thuế thứ hai,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_l_chung,ev-v633c.js,Người làng bị giấu,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_l_thu,ev-v633c.js,Lá thư lạc,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_l_dinh,ev-v633c.js,Họp dân ở đình làng,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_l_tho,ev-v633c.js,Lão thợ đóng kho,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_l_thuoc,ev-v633c.js,Thuốc giả cho lính đồn,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_l_thuyen,ev-v633c.js,Thuyền lậu ở Bạch Sa,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_l_gp,ev-v633c.js,Trang gia phả bị xé,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_l_ankhan,ev-v633c.js,Kẻ đồng bọn ăn năn,Kỳ ngộ,fixed,encounter,ordinary,na,any,any,,k,cao,,
+vil_l_ruong,ev-v633c.js,Rương sổ trôi sông,Kỳ ngộ,fixed,encounter,ordinary,na,any,any,,k,cao,,
+vil_l_linh,ev-v633c.js,Người lính cũ từ Nhạn Môn,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_l_cho,ev-v633c.js,Chợ muối bị độc quyền,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_l_hich,ev-v633c.js,Bài hịch của thầy đồ,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_l_gop,ev-v633c.js,Gom từng chút một,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_l_hoi,ev-v633c.js,Hỏi chuyện dân làng,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_l_dan,ev-v633c.js,Giúp dân qua cơn khó,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_p_thue,ev-v633c.js,Truy thuế khống,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_p_dot,ev-v633c.js,Kho bị cháy,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_p_bat,ev-v633c.js,Bắt giam một người,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_p_don,ev-v633c.js,Tin đồn bôi nhọ,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_p_cuop,ev-v633c.js,Cướp hàng giữa đường,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_p_phu,ev-v633c.js,Bắt đi phu dịch,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_p_chiem,ev-v633c.js,Chiếm ruộng bằng văn tự,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_p_doc,ev-v633c.js,Bữa cơm lạ vị,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_p_hon,ev-v633c.js,Cuộc hỏi cưới ép,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_p_trong,ev-v633c.js,Kẻ trong nhà,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_p_hoa,ev-v633c.js,Lời giảng hòa của mưu sĩ,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_p_triu,ev-v633c.js,Quan trên gọi lên đối chất,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_p_con,ev-v633c.js,Con em đánh nhau,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_p_thu,ev-v633c.js,Thư dọa nạt,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_r,ev-v633d.js,Kiên lên chức,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_d_1,ev-v633d.js,Khách lạ giữa đêm,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_d_2,ev-v633d.js,Mật thư bán ải,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_d_3,ev-v633d.js,Đêm Duy vượt ải,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_d_4,ev-v633d.js,Dư chấn,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_s_tinh,ev-v633d.js,Nhẫn đến bao giờ,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_z0,ev-v633d.js,Thời cơ đã chín,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_z_phap,ev-v633d.js,Đơn kiện lên công đường,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_z_vo,ev-v633d.js,Bắt giữ bằng võ lực,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_z_tai,ev-v633d.js,Bóp nghẹt tài lực,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_z_tam,ev-v633d.js,Dân chúng đồng thanh,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_e_kien,ev-v633d.js,Số phận của Phạm Trung Kiên,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_e_duy,ev-v633d.js,Số phận của Nguyễn Thành Duy,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_e_fade,ev-v633d.js,Ân oán lặng đi,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+n633_nong_gieng,ev-v633e.js,Mạch nước dưới ruộng khô,Việc nghề,random,economy,routine,common,trade,any,nong,k,cao,1,48
+n633_nong_luan,ev-v633e.js,Cụ già dạy luân canh,Việc nghề,random,economy,routine,common,trade,any,nong,k,cao,1,48
+n633_nong_trau,ev-v633e.js,Con trâu biết đường,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,nong,k,cao,0.6,
+n633_nong_sau,ev-v633e.js,Châu chấu về,Việc nghề,random,economy,routine,common,trade,any,nong,k,cao,1,96
+n633_tn_quanan,ev-v633e.js,Ông quan ăn quỵ,Việc nghề,random,economy,routine,common,trade,any,tieunhi|hangrong,k,cao,1,72
+n633_tn_khachla,ev-v633e.js,Vị khách chỉ gọi nước chè,Việc nghề,random,economy,routine,common,trade,any,tieunhi,k,cao,1,48
+n633_tn_trang,ev-v633e.js,Anh hàng rong khôn khéo,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,tieunhi|hangrong,k,cao,0.6,
+n633_kv_bao,ev-v633e.js,Bao hàng lạ,Việc nghề,random,economy,routine,common,trade,any,khuanvac,k,cao,1,72
+n633_kv_sat,ev-v633e.js,Người vác đá tìm được báu,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,khuanvac,k,cao,0.6,
+n633_kv_dinh,ev-v633e.js,Đình công ở bến,Việc nghề,random,economy,routine,common,trade,any,khuanvac,k,cao,1,96
+n633_tp_tran,ev-v633e.js,Con trăn tinh trong rừng,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,tieuphu,k,cao,0.6,
+n633_tp_bay,ev-v633e.js,Bẫy bị phá,Việc nghề,random,economy,routine,common,trade,any,tieuphu,k,cao,1,60
+n633_tp_het,ev-v633e.js,Rừng cấm của quan,Việc nghề,random,economy,routine,common,trade,any,tieuphu,k,cao,1,72
+n633_ngu_guom,ev-v633e.js,Lưỡi gươm trong lưới,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,ngu,k,cao,0.6,
+n633_ngu_thuyenhoa,ev-v633e.js,Chiếc thuyền hoa trên bãi cát,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,ngu,k,cao,0.6,
+n633_ngu_bao,ev-v633e.js,Bão giữa biển,Việc nghề,random,economy,routine,common,trade,any,ngu,k,cao,1,96
+n633_hr_gui,ev-v633e.js,Lời nhờ của bà lão,Việc nghề,random,economy,routine,common,trade,any,hangrong,k,cao,1,48
+n633_hr_tre,ev-v633e.js,Cây tre trăm đốt,Kỳ ngộ,encounter,encounter,health,rare,trade,any,hangrong|tieunhi,k,cao,0.6,
+n633_hau_rac,ev-v633e.js,Việc không ai biết,Việc nghề,random,economy,routine,common,trade,any,hau,k,cao,1,72
+n633_hau_cau,ev-v633e.js,Cậu chủ nhỏ lạc đường,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,hau,k,cao,0.6,
+n633_tho_no,ev-v633e.js,Khách lạ xin xem cơ nỏ,Việc nghề,random,economy,routine,common,trade,any,tho,k,cao,1,96
+n633_tho_nhan,ev-v633e.js,Học trò quá giỏi,Việc nghề,random,economy,routine,common,trade,any,tho,k,cao,1,72
+n633_tho_vang,ev-v633e.js,Chiếc chuông tìm được tiếng,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,tho,k,cao,0.6,
+n633_tho_thue,ev-v633e.js,Thuế lò,Việc nghề,random,economy,routine,common,trade,any,tho,k,cao,1,72
+n633_chan_benh,ev-v633e.js,Dịch trong chuồng,Việc nghề,random,economy,routine,common,trade,any,chan,k,cao,1,72
+n633_chan_ngua,ev-v633e.js,Ngựa non đi lạc,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,chan,k,cao,0.6,
+n633_y_ngheo,ev-v633f.js,Người bệnh không có tiền,Việc nghề,random,economy,routine,common,trade,any,y,k,cao,1,60
+n633_y_caitu,ev-v633f.js,Cây thuốc cải tử hoàn sinh,Kỳ ngộ,encounter,encounter,health,rare,trade,any,y,k,cao,0.6,
+n633_y_oan,ev-v633f.js,Bệnh nhân qua đời  nhà đòi lẽ,Việc nghề,random,economy,routine,common,trade,any,y,k,cao,1,96
+n633_y_thaycu,ev-v633f.js,Thầy cũ đến thăm,Việc nghề,random,economy,routine,common,trade,any,y,k,cao,1,120
+n633_su_dieu,ev-v633f.js,Đứa bé đứng ngoài cửa lớp,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,su,k,cao,0.6,
+n633_su_ve,ev-v633f.js,Bài vè châm biếm quan,Việc nghề,random,economy,routine,common,trade,any,su,k,cao,1,96
+n633_su_do,ev-v633f.js,Học trò đỗ đạt về thăm,Việc nghề,random,economy,routine,common,trade,any,su,k,cao,1,96
+n633_su_sach,ev-v633f.js,Trang sách quý gói xôi,Kỳ ngộ,encounter,encounter,intellect,rare,trade,any,su,k,cao,0.6,
+n633_nghe_chet,ev-v633f.js,Bài hát cho người sắp mất,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,nghe,k,cao,0.6,
+n633_nghe_doithu,ev-v633f.js,Gánh hát đối thủ,Việc nghề,random,economy,routine,common,trade,any,nghe,k,cao,1,72
+n633_nghe_lenh,ev-v633f.js,Quan sai hát chúc thọ,Việc nghề,random,economy,routine,common,trade,any,nghe,k,cao,1,96
+n633_tieu_mai,ev-v633f.js,Chuyến tiêu bị mai phục,Việc nghề,random,economy,routine,common,trade,any,tieu,k,cao,1,72
+n633_tieu_thung,ev-v633f.js,Cô dâu trong thùng hàng,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,tieu,k,cao,0.6,
+n633_tl_trong,ev-v633f.js,Trống kêu oan,Việc nghề,random,economy,routine,common,trade,any,thulai|nhadich,k,cao,1,96
+n633_tl_ho,ev-v633f.js,Hồ sơ bị xóa dòng,Việc nghề,random,economy,routine,common,trade,any,thulai,k,cao,1,72
+n633_nd_quen,ev-v633f.js,Bắt kẻ trộm là người quen,Việc nghề,random,economy,routine,common,trade,any,nhadich,k,cao,1,72
+n633_nd_vu,ev-v633f.js,Bắt oan người hiền,Việc nghề,random,economy,routine,common,trade,any,nhadich,k,cao,1,96
+n633_det_gam,ev-v633f.js,Mảnh gấm cháy dở,Kỳ ngộ,encounter,encounter,health,rare,trade,any,det,k,cao,0.6,
+n633_mo_dem,ev-v633f.js,Ca đẻ khó giữa đêm,Việc nghề,random,economy,routine,common,trade,any,mo,k,cao,1,60
+n633_bep_vi,ev-v633f.js,Món ăn tìm lại hương vị,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,bep,k,cao,0.6,
+n633_bep_doc,ev-v633f.js,Nghi hạ độc trong bữa tiệc,Việc nghề,random,economy,routine,common,trade,any,bep,k,cao,1,96
+n633_dk_dat,ev-v633f.js,Chọn đất cho người mất,Việc nghề,random,economy,routine,common,trade,any,diaky,k,cao,1,72
+n633_dk_hoa,ev-v633f.js,Mảnh đất nở hoa giữa đông,Kỳ ngộ,encounter,encounter,ordinary,rare,trade,any,diaky,k,cao,0.6,
+n633_quan_an,ev-v633g.js,Vụ án hai người nhận một con trâu,Việc nghề,random,economy,routine,common,official,any,quan,k,cao,1,72
+n633_quan_nuoc,ev-v633g.js,Ông lão bán nước dưới gốc đa,Kỳ ngộ,encounter,encounter,mentor,rare,official,any,quan,k,cao,0.6,
+n633_quan_le,ev-v633g.js,Lễ biếu của cấp dưới,Việc nghề,random,economy,routine,common,official,any,quan,k,cao,1,60
+n633_quan_de,ev-v633g.js,Lệnh đắp đê giữa mùa gặt,Việc nghề,random,economy,routine,common,official,any,quan,k,cao,1,96
+n633_quan_xa,ev-v633g.js,Điều lên miền núi,Việc nghề,random,economy,routine,common,official,any,quan,k,cao,1,120
+n633_qn_linh,ev-v633g.js,Tên lính trẻ sợ chiến trận,Việc nghề,random,economy,routine,common,army,any,quan_ngu,k,cao,1,60
+n633_qn_ngua,ev-v633g.js,Ngựa chiến bị thương,Kỳ ngộ,encounter,encounter,ordinary,rare,army,any,quan_ngu,k,cao,0.6,
+n633_qn_luong,ev-v633g.js,Quân lương bị cắt xén,Việc nghề,random,economy,routine,common,army,any,quan_ngu,k,cao,1,96
+n633_qn_lui,ev-v633g.js,Lệnh rút lui trái ý,Việc nghề,random,economy,routine,common,army,any,quan_ngu,k,cao,1,120
+n633_hiep_an,ev-v633g.js,Lão ăn mày đòi đấu võ,Kỳ ngộ,encounter,encounter,martial,rare,trade,any,hiep,k,cao,0.6,
+n633_hiep_quan,ev-v633g.js,Quán trọ ven đường,Việc nghề,random,economy,routine,common,trade,any,hiep,k,cao,1,72
+n633_hiep_no,ev-v633g.js,Món nợ ân tình,Kỳ ngộ,encounter,encounter,charm,rare,trade,any,hiep,k,cao,0.6,
+n633_hiep_no2,ev-v633g.js,Lời mời làm hộ vệ,Việc nghề,random,economy,routine,common,trade,any,hiep,k,cao,1,96
+n633_nguy_thuc,ev-v633g.js,Bệnh án nói thật,Việc nghề,random,economy,routine,common,trade,any,nguy,k,cao,1,120
+n633_nguy_thuoc,ev-v633g.js,Đơn thuốc cho vị hoàng tử nhỏ,Kỳ ngộ,encounter,encounter,health,rare,trade,any,nguy,k,cao,0.6,
+n633_chu_hun,ev-v633g.js,Thương nhân xin hùn vốn,Việc nghề,random,economy,routine,common,trade,any,chu,k,cao,1,72
+n633_chu_nha,ev-v633g.js,Con cháu tranh tài sản,Việc nghề,random,economy,routine,common,trade,any,chu,k,cao,1,120
+f633_gioong,ev-v633g.js,Đứa trẻ ba tuổi cất tiếng,Kỳ ngộ,encounter,encounter,ordinary,rare,child,any,,k,cao,0.6,
+f633_khachla,ev-v633g.js,Ba người khách lạ đêm giao thừa,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,0.6,
+f633_gieng,ev-v633g.js,Giếng làng cạn nước,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,0.6,
+f633_bado,ev-v633g.js,Bà đồng nói điều chưa đến,Kỳ ngộ,encounter,encounter,ordinary,rare,any,any,,k,cao,0.6,
+f633_cuoi,ev-v633g.js,Cây đa của ông Cuội,Kỳ ngộ,encounter,encounter,health,rare,any,any,,k,cao,0.6,
+hg_a_tiec,ev-v635a.js,Mời dự đám,Danh gia,fixed,society,local_elite,na,any,any,,k,cao,,
+hg_a_nhogiup,ev-v635a.js,Nhờ một việc,Danh gia,fixed,society,local_elite,na,any,any,,k,cao,,
+hg_a_honsu,ev-v635a.js,Ngỏ ý kết thân,Danh gia,fixed,society,local_elite,na,any,any,,k,cao,,
+hg_a_tranhchap,ev-v635a.js,Tranh chấp với danh gia,Danh gia,fixed,society,local_elite,na,any,any,,k,cao,,
+hg_a_ghetham,ev-v635a.js,Gia chủ ghé thăm,Danh gia,fixed,society,local_elite,na,any,any,,k,cao,,
+hg_a_monkhach,ev-v635a.js,Được nhận làm môn khách,Kỳ ngộ,fixed,encounter,ordinary,na,any,any,,k,cao,,
+hg_n_thu,ev-v635a.js,Thư từ xa,Danh gia,fixed,society,local_elite,na,any,any,,k,cao,,
+hg_n_sugia,ev-v635a.js,Sứ giả đi ngang,Danh gia,fixed,society,local_elite,na,any,any,,k,cao,,
+hg_n_tindon,ev-v635a.js,Tin đồn về một nhà có tiếng,Danh gia,fixed,society,local_elite,na,any,any,,k,cao,,
+hg_n_thuonglai,ev-v635a.js,Thương nhân thân tín của danh gia,Danh gia,fixed,society,local_elite,na,any,any,,k,cao,,
+hg_kn_khach,ev-v635a.js,Khách quý để lại một món,Kỳ ngộ,fixed,encounter,ordinary,na,any,any,,k,cao,,
+vil_b_nga,ev-v635b.js,Ngã rẽ,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_bp_don,ev-v635b.js,Đơn kiện đầu tiên,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_bp_thaykien,ev-v635b.js,Thầy cãi thuê,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_bp_quanhuyen,ev-v635b.js,Quan huyện nghiêng về ai,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_bv_tuan,ev-v635b.js,Lập đội canh,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_bv_dungdo,ev-v635b.js,Đụng độ ngoài chợ,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_bv_thaysu,ev-v635b.js,Võ sư tha hương,Kỳ ngộ,fixed,encounter,martial,na,any,any,,k,cao,,
+vil_bt_nguon,ev-v635b.js,Cắt nguồn hàng,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_bt_thuong,ev-v635b.js,Quỹ chung các nhà buôn,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_bt_ha,ev-v635b.js,Hắn hạ giá,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_bd_chan,ev-v635b.js,Phát chẩn mùa giáp hạt,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_bd_oan,ev-v635b.js,Dân kéo đến kể oan,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_bd_tin,ev-v635b.js,Tin đồn ngược,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_bn_ep,ev-v635b.js,Một bước ép thêm,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+vil_bn_nho,ev-v635b.js,Có người nhờ nhà mình đứng ra,Ân oán,fixed,story,an_oan,na,any,any,,k,cao,,
+v64_dan_kien_quan_tren,ev-v64.js,Dân kiện quan trên,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+v64_thu_lai_boi_gia,ev-v64.js,Thư lại đội giá thuế,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+v64_bo_lai_loi_lot,ev-v64.js,Đồng liêu rủ lo lót bộ Lại,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+v64_tien_nhiem_no,ev-v64.js,Quan tiền nhiệm để lại sổ nợ,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+v64_thanh_tra_ve,ev-v64.js,Đoàn thanh tra về địa phương,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+v64_thuong_quan_xa_hoa,ev-v64.js,Thượng quan về  đòi tiếp đón xa hoa,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+v64_giam_khao,ev-v64.js,Được cử làm giám khảo,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+v64_an_mang_quyen_quy,ev-v64.js,Án mạng nhà quyền quý,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+v64_so_can_gian,ev-v64.js,Dâng sớ can gián,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+v64_de_vo,ev-v64.js,Mưa lớn  đê vỡ,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+v64_cong_van_gap,ev-v64.js,Công văn khẩn của bộ,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+v64_nha_mon_tran_tinh,ev-v64.js,Nha môn thiếu thốn,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+v64_vo_nho_nha,ev-v64.js,Thư nhà gửi tới nhiệm sở,Gia đình,random,family,household,common,official,any,quan,k,cao,,
+v64_vo_chong_buon,ev-v64.js,Vợ buồn nơi đất khách,Gia đình,random,family,household,common,official,any,quan,k,cao,,
+v64_con_hoc_nha_mon,ev-v64.js,Con học chữ ngay tại nha môn,Gia đình,random,family,household,common,official,any,quan,k,cao,,
+v64_ho_hang_len_nho,ev-v64.js,Họ hàng lên nhờ vả,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+v64_to_cao_hoi_ti,ev-v64.js,Có kẻ tố trái lệ hồi tị,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+v64_dem_binh_yen,ev-v64.js,Một đêm yên ả ở nha môn,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+v64_vo_nhan_chuc,ev-v64.js,Nhận ấn đồn,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,
+v64_vo_hau_can_tham,ev-v64.js,Lương quân bị xén,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,
+v64_vo_tuan_bien,ev-v64.js,Tuần biên gặp toán lạ,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,
+v64_vo_doi_don,ev-v64.js,Lệnh điều đồn,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,
+v64_vo_tap_tran,ev-v64.js,Diễn tập quân vệ,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,
+v64_vo_cam_y,ev-v64.js,Cẩm y vệ nhờ việc,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,
+v64_vo_thuy_chien,ev-v64.js,Thuyền lạ ngoài cảng,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,
+v64_vo_thoi_binh,ev-v64.js,Thời bình  đồn trống,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,
+v64_dai_xa,ev-v64.js,Đại xá đầu triều vua mới,Triều đình,random,dynasty,court_climate,common,any,any,,k,cao,5,
+v64_vua_trieu_kien,ev-v64.js,Vua triệu kiến,Triều đình,random,dynasty,court_climate,common,official,any,quan,k,cao,1.2,
+v64_vua_ban_thuong,ev-v64.js,Vua ban thưởng công thần,Triều đình,random,dynasty,court_climate,common,official,any,quan,k,cao,0.8,
+v64_khoa_an,ev-v64.js,Ân khoa mừng vua mới,Triều đình,random,dynasty,court_climate,common,official,any,quan,k,cao,3,
+v641_vo_do,ev-v64.js,Bổ dụng sau võ cử,Võ cử,fixed,jianghu,martial_arts,na,any,any,,kw,thấp,,
+qt1_khuyen_hoc,ev-v6414.js,Khuyến học nhập sĩ,Quan trường,random,government,official_duty,common,head,any,,k,cao,0.6,120
+qt1_truong_thi,ev-v6414.js,Trường thi có biến,Quan trường,random,government,official_duty,common,any,any,,k,cao,,72
+qt1_yen_tan_khoa,ev-v6414.js,Yến tiệc tân khoa,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+qt1_quan_moi,ev-v6414.js,Quan mới nhận chức,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+qt1_mon_sinh,ev-v6414.js,Lời mời kết giao,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,72
+qt1_cong_dau,ev-v6414.js,Công trạng đầu tiên,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+qt1_dong_lieu_nan,ev-v6414.js,Đồng liêu gặp nạn,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,72
+qt1_buoc_ngoat,ev-v6414.js,Bước ngoặt quan trường,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,120
+qt1_chuc_beo,ev-v6414.js,Một chức quan béo bở,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,96
+qt1_tiec_dong_lieu,ev-v6414.js,Đồng liêu mời dự tiệc,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,48
+qt2_thiep_moi,ev-v6414.js,Thiếp mời từ phủ Thượng thư,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,72
+qt2_loi_khuyen,ev-v6414.js,Lời khuyên giữ mình,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,72
+qt2_hai_phe,ev-v6414.js,Hai phe cùng mời,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,96
+qt2_danh_sach,ev-v6414.js,Phe đòi danh sách môn sinh,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,96
+qt2_lo_quan_he,ev-v6414.js,Quan hệ với phe bị lộ,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,96
+qt2_lam_chung,ev-v6414.js,Phe yêu cầu làm chứng,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,96
+qt2_tu_khai,ev-v6414.js,Lệnh tự khai bè đảng,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,180
+qt2_day_len,ev-v6414.js,Phe muốn đẩy lên đứng đầu,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,120
+qt2_tiec_chia_phe,ev-v6414.js,Bữa tiệc chia phe,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,96
+qt2_mon_sinh_cau,ev-v6414.js,Môn sinh cầu kiến,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,72
+qt2_mon_sinh_phan,ev-v6414.js,Môn sinh phản chủ,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+qt3_bac_lot_tay,ev-v6414.js,Bạc trắng trong công văn,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,60
+qt3_so_that_lac,ev-v6414.js,Sổ sách thất lạc,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,96
+qt3_sua_an,ev-v6414.js,Quan trên yêu cầu sửa án,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,72
+qt3_thuong_nhan,ev-v6414.js,Thương nhân cầu cứu,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,72
+qt3_kho_luong,ev-v6414.js,Kho lương thất thoát,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,120
+qt3_kho_luong_tra,ev-v6414.js,Kẻ rút ruột kho lương,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+qt3_kho_luong_che,ev-v6414.js,Quan trên bảo che giấu,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+qt3_the_than,ev-v6414.js,Trở thành vật thế thân,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+qt3_dong_lieu_tham,ev-v6414.js,Đồng liêu bị tố tham ô,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,72
+qt3_nhan_thay,ev-v6414.js,Nhận hối lộ thay cấp trên,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,96
+qt3_mat_thu,ev-v6414.js,Mật thư trong thư phòng,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,120
+qt3_so_thue,ev-v6414.js,Sổ thuế bị sửa,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,96
+qt_be_dang_don,ev-v6414.js,Lời đồn bè đảng,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+qt_hac_ket_be,ev-v6414.js,Bị hặc tội kết bè,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+qt_giam_sat,ev-v6414.js,Bị ngự sử để mắt,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+qt_dan_hac,ev-v6414.js,Bị dâng sớ đàn hặc,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+qt_xet_an,ev-v6414.js,Công đường xét án,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+qt_that_the,ev-v6414.js,Quyền thần thất thế,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+qt_tru_di_canh_bao,ev-v6414.js,Mây đen trên đầu cả họ,Đại họa,fixed,government,investigation,na,any,any,,id,cao,,
+qt_chieu_tru_di,ev-v6414.js,Chiếu chỉ tru di,Đại họa,fixed,government,investigation,na,any,any,,id,cao,,
+qt_tro_lai,ev-v6414.js,Trở lại kinh thành,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,
+qt_mat_chi_gia,ev-v6414.js,Mật chỉ không rõ nguồn gốc,Quan trường,random,government,official_duty,uncommon,official,any,quan,k,cao,0.4,300
+qt_cuu_than,ev-v6414.js,Cựu thần ba triều,Quan trường,random,government,official_duty,uncommon,official,any,quan,k,cao,0.5,300
+qt_cuu_than_an,ev-v6414.js,Vụ án cũ trở lại,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+qt_hon_su,ev-v6414.js,Hôn sự chính trị,Quan trường,random,government,official_duty,uncommon,official,any,quan,k,cao,0.5,240
+qt_di_so,ev-v6414.js,Di sớ trước khi chết,Quan trường,random,government,official_duty,uncommon,official,any,quan,k,cao,0.4,360
+rg_thiep_moi,ev-v6415.js,Thiếp mời dự tiệc,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_ket_giao,ev-v6415.js,Lời ngỏ kết giao,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_hop_von,ev-v6415.js,Hai họ cùng làm ăn,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_nho_giup,ev-v6415.js,Họ khác gặp nạn,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_lay_long,ev-v6415.js,Mang lễ lấy lòng,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_ket_thong_gia,ev-v6415.js,Ngỏ lời kết thông gia,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_vun_dap,ev-v6415.js,Cơ hội vun đắp với danh gia,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_mung_tho,ev-v6415.js,Họ thân mừng thọ gia chủ,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_hoc_chung,ev-v6415.js,Con cháu hai họ học chung,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_dam_tang,ev-v6415.js,Đám tang nhà họ khác,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,0.4,
+rg_suy_cau_dua,ev-v6415.js,Họ suy yếu tìm chỗ dựa,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_lien_minh,ev-v6415.js,Đối thủ cũ đề nghị liên minh,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_hoa_giai,ev-v6415.js,Đề nghị hòa giải,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_nho_chuyen_cu,ev-v6415.js,Hậu duệ nhớ chuyện cũ,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_tranh_cai,ev-v6415.js,Giành mối làm ăn,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_chen_ep,ev-v6415.js,Bị nhà quyền thế chèn ép,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_canh_tranh,ev-v6415.js,Hai nhà cạnh tranh,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_tranh_ruong,ev-v6415.js,Tranh chấp ruộng nước,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_pha_co_so,ev-v6415.js,Cơ sở bị phá hoại,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_boi_nho,ev-v6415.js,Bị bôi nhọ danh tiếng,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_ngam_ngam,ev-v6415.js,Có kẻ ngấm ngầm gây khó,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_hanh_hung,ev-v6415.js,Người nhà bị hành hung,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_vu_cao,ev-v6415.js,Bị vu cáo lên quan,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+rg_song_con,ev-v6415.js,Một sống một còn,Họ khác,fixed,society,clan_relations,na,any,any,,k,cao,,
+hn_moi_xau,ev-v6415.js,Mối mai có tiếng xấu,Hôn nhân,random,family,marriage,common,any,any,,k,cao,0.6,60
+hn_sinh_le_cao,ev-v6415.js,Nhà gái đòi sính lễ cao,Hôn nhân,random,family,marriage,common,any,any,,k,cao,0.6,60
+hn_le_bi_pha,ev-v6415.js,Hôn lễ bị phá,Hôn nhân,random,family,marriage,uncommon,any,any,,k,cao,0.5,
+hn_nguoi_cu,ev-v6415.js,Người cũ trở lại,Hôn nhân,random,family,marriage,uncommon,any,any,,k,cao,0.5,
+hn_dau_bi_coi,ev-v6415.js,Nàng dâu bị coi thường,Hôn nhân,random,family,marriage,common,any,any,,k,cao,0.6,120
+hn_thong_gia_nang_do,ev-v6415.js,Thông gia nâng đỡ,Hôn nhân,random,family,marriage,uncommon,official,any,quan,k,cao,0.5,120
+hn_ep_gia,ev-v6415.js,Con không ưng mối nhà chọn,Hôn nhân,random,family,marriage,uncommon,any,any,,k,cao,0.5,96
+xg_qua_tet,ev-v6415.js,Quà Tết từ nhà con gái,Thông gia,fixed,family,in_laws,na,any,any,,k,cao,,
+xg_chu_mau,ev-v6415.js,Con gái làm chủ mẫu nhà chồng,Thông gia,fixed,family,in_laws,na,any,any,,k,cao,,
+xg_chau_ngoai,ev-v6415.js,Cháu ngoại đỗ đạt,Thông gia,fixed,family,in_laws,na,any,any,,k,cao,,
+xg_thong_gia_giup,ev-v6415.js,Thông gia giúp làm ăn,Thông gia,fixed,family,in_laws,na,any,any,,k,cao,,
+xg_nha_chong_nan,ev-v6415.js,Nhà chồng gặp đại họa,Thông gia,fixed,family,in_laws,na,any,any,,k,cao,,
+rd_gap,ev-v6416.js,Một lần gặp gỡ,Tình duyên,random,family,romance,common,any,any,,k,cao,1.2,
+rd_don_phuong,ev-v6416.js,Tương tư,Tình duyên,fixed,family,romance,na,any,any,,k,cao,,
+rd_thien_cam,ev-v6416.js,Qua lại,Tình duyên,fixed,family,romance,na,any,any,,k,cao,,
+rd_nay_sinh,ev-v6416.js,Tình ý,Tình duyên,fixed,family,romance,na,any,any,,k,cao,,
+rd_tieng_don,ev-v6416.js,Lời ra tiếng vào,Tình duyên,fixed,family,romance,na,any,any,,k,cao,,
+rd_ra_mat,ev-v6416.js,Xin cưới người thương,Tình duyên,fixed,family,romance,na,any,any,,k,cao,,
+rd_lua_chon,ev-v6416.js,Ngã rẽ,Tình duyên,fixed,family,romance,na,any,any,,k,cao,,
+rd_xa_cach,ev-v6416.js,Xa cách,Tình duyên,random,family,romance,common,any,any,,k,cao,0.6,60
+rd_tai_ngo,ev-v6416.js,Tái ngộ,Tình duyên,fixed,family,romance,na,any,any,,k,cao,,
+rd_lau_ngay,ev-v6416.js,Lâu ngày sinh tình,Tình duyên,random,family,romance,common,any,any,,k,cao,0.8,
+rd_tinh_phai,ev-v6416.js,Tình phai,Tình duyên,random,family,romance,common,any,any,,k,cao,0.6,
+br_dan_cau,ev-v6416.js,Dân địa phương cầu kiến,Chi họ,random,family,branch_clan,common,official,any,quan,k,cao,,72
+br_xay_nha,ev-v6416.js,Chi họ dựng nhà mới,Chi họ,random,family,branch_clan,common,any,any,,k,cao,,120
+br_ket_giao,ev-v6416.js,Họ địa phương muốn kết giao,Chi họ,random,family,branch_clan,common,any,any,,k,cao,,96
+br_quan_kho,ev-v6416.js,Quan trên địa phương gây khó,Chi họ,random,family,branch_clan,common,official,any,quan,k,cao,,96
+br_cuoi_ban_dia,ev-v6416.js,Con cháu chi xa lấy người bản địa,Chi họ,random,family,branch_clan,common,any,any,,k,cao,,96
+br_xin_vien_tro,ev-v6416.js,Chi xa xin viện trợ,Chi họ,fixed,family,branch_clan,na,any,any,,k,cao,,
+br_thien_tai,ev-v6416.js,Chi xa gặp nạn,Chi họ,random,family,branch_clan,common,any,any,,k,cao,0.6,120
+br_dong_gop,ev-v6416.js,Đòi chi xa đóng góp,Chi họ,random,family,branch_clan,common,head,any,,k,cao,0.6,120
+br_tach_ra,ev-v6416.js,Chi xa muốn tách ra,Chi họ,random,family,branch_clan,common,head,any,,k,cao,,180
+br_manh_hon,ev-v6416.js,Chi xa lớn mạnh hơn chính họ,Chi họ,random,family,branch_clan,common,head,any,,k,cao,,240
+lq_dua_vo,ev-v6416.js,Đưa vợ con theo vào doanh trại,Quân ngũ,fixed,military,barracks,na,any,any,,k,cao,,
+lq_phep,ev-v6416.js,Lính về phép,Quân ngũ,fixed,military,barracks,na,any,any,,k,cao,,
+lq_vo_nho,ev-v6416.js,Vợ lính ở quê,Quân ngũ,random,military,barracks,common,any,any,,k,cao,,60
+tt_tuyen_tu,ev-v6417.js,Lệnh tuyển tú,Thời thế,fixed,dynasty,court_climate,na,any,court,,k,cao,,
+tt_xay_cung,ev-v6417.js,Xây cung điện mới,Thời thế,fixed,dynasty,court_climate,na,any,court,,k,cao,,
+tt_suu_thue,ev-v6417.js,Sưu cao thuế nặng,Thời thế,fixed,dynasty,court_climate,na,any,court,,k,cao,,
+tt_dai_xa,ev-v6417.js,Đại xá thiên hạ,Thời thế,fixed,dynasty,court_climate,na,any,court,,k,cao,,
+tt_an_dien,ev-v6417.js,Khoa thi ân điển,Thời thế,fixed,dynasty,court_climate,na,any,court,,k,cao,,
+tt_vi_hanh,ev-v6417.js,Khách lạ trong làng,Thời thế,fixed,dynasty,court_climate,na,any,court,,k,cao,,
+tt_cau_hien,ev-v6417.js,Chiếu cầu hiền,Thời thế,fixed,dynasty,court_climate,na,any,court,,k,cao,,
+tt_dan_bien,ev-v6417.js,Dân biến,Thời thế,fixed,dynasty,court_climate,na,any,court,,k,cao,,
+tc_vua_benh,ev-v6417.js,Hoàng đế lâm bệnh,Tranh ngôi,fixed,dynasty,succession,na,any,court,,k,cao,,
+tc_loi_keo,ev-v6417.js,Bị lôi kéo,Tranh ngôi,fixed,dynasty,succession,na,any,court,,k,cao,,
+tc_chieu_binh,ev-v6417.js,Thân vương chiêu binh,Tranh ngôi,fixed,dynasty,succession,na,any,court,,k,cao,,
+tc_lam_chung,ev-v6417.js,Làm chứng cho một hoàng tử,Tranh ngôi,fixed,dynasty,succession,na,any,court,,k,cao,,
+tc_phe_lap,ev-v6417.js,Lời bàn phế lập,Tranh ngôi,fixed,dynasty,succession,na,any,court,,k,cao,,
+tc_danh_trao,ev-v6417.js,Chiếu thư bị đánh tráo,Tranh ngôi,fixed,dynasty,succession,na,any,court,,k,cao,,
+tc_gioi_nghiem,ev-v6417.js,Kinh thành giới nghiêm,Tranh ngôi,fixed,dynasty,succession,na,any,court,,k,cao,,
+qt4_trieu_kien,ev-v6417.js,Hoàng đế bí mật triệu kiến,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+qt4_mat_chi,ev-v6417.js,Mật chỉ tra xét đại thần,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+qt4_tu_sat_nguc,ev-v6417.js,Một vị quan tự sát trong ngục,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+qt4_danh_sach_bi_thu,ev-v6417.js,Danh sách môn sinh bị thu giữ,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+qt4_dong_minh_quay,ev-v6417.js,Đồng minh cũ quay lưng,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+qt4_goi_doi_chat,ev-v6417.js,Bị gọi lên đối chất,Quan trường,fixed,government,official_duty,na,any,any,,k,cao,,
+qt4_giao_binh_quyen,ev-v6417.js,Lệnh giao nộp binh quyền,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,120
+qt4_than_vuong_nghi,ev-v6417.js,Thân vương bị nghi mưu phản,Quan trường,random,government,official_duty,uncommon,official,any,quan,k,cao,0.4,180
+qt4_to_giac_tu_cuu,ev-v6417.js,Cơ hội tự cứu,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,120
+qt4_ngu_su_to,ev-v6417.js,Ngự sử tố bè đảng,Quan trường,random,government,official_duty,common,official,any,quan,k,cao,,120
+th_thany_1,(sinh bằng mã),Thần Y: Dịch lạ ở phủ bên,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_thany_2,(sinh bằng mã),Thần Y: Bệnh nhân của Thái y viện,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_vothan_1,(sinh bằng mã),Võ Thần: Thách đấu của võ lâm,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_vothan_2,(sinh bằng mã),Võ Thần: Giặc cướp trên núi,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_thanhnhan_1,(sinh bằng mã),Thánh Nhân: Đại hội luận đạo,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_thanhnhan_2,(sinh bằng mã),Thánh Nhân: Học trò khắp thiên hạ,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_thuongthanh_1,(sinh bằng mã),Thương Thánh: Cơn khủng hoảng giá lúa,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_thuongthanh_2,(sinh bằng mã),Thương Thánh: Đại thương hội ngoại quốc,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_camthanh_1,(sinh bằng mã),Cầm Thánh: Khúc nhạc trong cung,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_camthanh_2,(sinh bằng mã),Cầm Thánh: Kỳ phùng địch thủ,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_detieu_1,(sinh bằng mã),Thiên hạ đệ nhất tiêu: Chuyến tiêu qua Hắc Phong lĩnh,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_detieu_2,(sinh bằng mã),Thiên hạ đệ nhất tiêu: Thủ lĩnh lục lâm,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_thannong_1,(sinh bằng mã),Thần Nông: Hạn hán ba năm,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_thannong_2,(sinh bằng mã),Thần Nông: Nạn sâu bệnh,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_thantuong_1,(sinh bằng mã),Thần Tượng: Đúc chuông chùa lớn,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_thantuong_2,(sinh bằng mã),Thần Tượng: Thanh kiếm cho đại tướng,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_giamchinh_1,(sinh bằng mã),Giám Chính: Nhật thực,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_giamchinh_2,(sinh bằng mã),Giám Chính: Lịch mới cho cả nước,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+th_kn1,ev-v6417.js,Tiếng đồn về một bậc kỳ tài,Danh hiệu,fixed,encounter,divine_title,na,any,any,,k,cao,,
+tm_thuc_tinh,ev-v6417.js,Đứa trẻ khác thường,Thiên mệnh,fixed,family,children,na,any,any,,kw,thấp,,
+tm_kiep_nan,ev-v6417.js,Kiếp nạn,Thiên mệnh,fixed,unclassified,unclassified,na,any,any,,none,không,,
+ch_giac_den,ev-v6417.js,Giặc tràn qua làng,Binh lửa,fixed,military,local_war,na,any,war,,k,cao,,
+ch_cuop_luong,ev-v6417.js,Quân cướp lương,Binh lửa,fixed,military,local_war,na,any,war,,k,cao,,
+ch_lang_chay,ev-v6417.js,Làng bị đốt,Binh lửa,fixed,military,local_war,na,any,war,,k,cao,,
+ch_bat_phu,ev-v6417.js,Bắt phu ra trận,Binh lửa,fixed,military,local_war,na,any,war,,k,cao,,
+ch_cuu_nguoi,ev-v6417.js,Cứu người giữa binh lửa,Binh lửa,fixed,military,local_war,na,any,war,,k,cao,,
+ch_tan_quan,ev-v6417.js,Tàn quân ghé làng,Binh lửa,fixed,military,local_war,na,any,war,,k,cao,,
+ts_mo_dau,ev-v6418.js,Lời thì thầm trong đêm,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_lo_tin,ev-v6418.js,Tin đồn lọt ra ngoài,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_noi_phan,ev-v6418.js,Một thuộc hạ thân tín bị bắt,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_phat_giac,ev-v6418.js,Mưu đại sự sắp bại lộ,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_q1,(sinh bằng mã),Kết bè kéo cánh,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_q2,(sinh bằng mã),Kết thông gia,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_q3,(sinh bằng mã),Cài nội ứng trong cung,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_q4,(sinh bằng mã),Nắm cấm quân,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_q5,(sinh bằng mã),Tạo danh nghĩa,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_q6,(sinh bằng mã),Dồn của cải  chọn thời cơ,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_q_cuoi,(sinh bằng mã),Giờ quyết định,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_v1,(sinh bằng mã),Nuôi tư binh,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_v2,(sinh bằng mã),Thu phục các tướng,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_v3,(sinh bằng mã),Gom lương thảo,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_v4,(sinh bằng mã),Chờ thời,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_v5,(sinh bằng mã),Truyền hịch khởi binh,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_v6,(sinh bằng mã),Trận đầu: vây thành biên ải,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_v7,(sinh bằng mã),Trận thứ hai: đánh quân tiếp viện,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_v8,(sinh bằng mã),Trận thứ ba: cửa ải kinh đô,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_v_cuoi,(sinh bằng mã),Đánh vào kinh thành,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_n1,(sinh bằng mã),Hào kiệt quy tụ,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_n2,(sinh bằng mã),Phát lương cứu đói,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_n3,(sinh bằng mã),Chiêu mộ dân chúng,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_n4,(sinh bằng mã),Chiếm huyện,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_n5,(sinh bằng mã),Chiếm phủ,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_n6,(sinh bằng mã),Tiến về kinh thành,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_n_cuoi,(sinh bằng mã),Đánh vào kinh thành,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+lq_14_chon,ev-v653.js,Tuổi mười bốn trong doanh trại,Quân ngũ,fixed,military,barracks,na,any,any,,k,cao,,
+qn653_dem_gac,ev-v653.js,Đêm gác cổng,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,18
+qn653_ngua_benh,ev-v653.js,Ngựa chiến lên cơn bệnh,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,18
+qn653_thu_nha,ev-v653.js,Thư nhà,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,18
+qn653_thi_cung,ev-v653.js,Thi bắn cung trong trại,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,18
+qn653_ban_no,ev-v653.js,Bạn đồng ngũ mắc nợ,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,18
+qn653_hanh_quan_mua,ev-v653.js,Hành quân đêm mưa,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,18
+qn653_ky_lao_binh,ev-v653.js,Lão binh truyền đường đao,Kỳ ngộ quân ngũ,encounter,encounter,martial,rare,army,any,quan_ngu,k,cao,0.6,60
+qn653_ky_cuu_khach,ev-v653.js,Cứu thương nhân giữa đường,Kỳ ngộ quân ngũ,encounter,encounter,martial,rare,army,any,quan_ngu,k,cao,0.6,60
+qn653_duyet_doi,ev-v653.js,Duyệt đội ngũ,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,18
+qn653_an_chan,ev-v653.js,Phó tướng bảo xén lương,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,18
+qn653_linh_bo_tron,ev-v653.js,Lính trong đội bỏ trốn,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,18
+qn653_tiep_te,ev-v653.js,Đoàn tiếp tế bị phục kích,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,18
+qn653_giam_quan,ev-v653.js,Quan văn giám quân,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,18
+qn653_chon_dat,ev-v653.js,Chọn chỗ đóng quân,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,18
+qn653_ky_binh_thu,ev-v653.js,Cuốn binh thư trong kho cũ,Kỳ ngộ quân ngũ,encounter,encounter,martial,rare,army,any,quan_ngu,k,cao,0.6,80
+qn653_ky_tuong_gia,ev-v653.js,Tướng già nhận làm môn hạ,Kỳ ngộ quân ngũ,encounter,encounter,martial,rare,army,any,quan_ngu,k,cao,0.6,80
+qn653_trieu_hoi,ev-v653.js,Triệu về kinh báo cáo,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,36
+qn653_chia_quan,ev-v653.js,Hai mặt trận cùng cầu viện,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,36
+qn653_hang_tuong,ev-v653.js,Tướng địch xin hàng,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,48
+qn653_tien_cu,ev-v653.js,Tiến cử thuộc hạ,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,36
+qn653_quan_phi,ev-v653.js,Quân phí cạn,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,36
+qn653_vua_ban,ev-v653.js,Vua ban thưởng kèm điều kiện,Quân ngũ,random,military,barracks,common,army,any,quan_ngu,k,cao,,48
+qn653_ky_thien_thoi,ev-v653.js,Thiên thời giúp một trận,Kỳ ngộ quân ngũ,encounter,encounter,martial,rare,army,any,quan_ngu,k,cao,0.6,100
+qn653_ky_bao_kiem,ev-v653.js,Thanh bảo kiếm của người đi trước,Kỳ ngộ quân ngũ,encounter,encounter,martial,rare,army,any,quan_ngu,k,cao,0.6,100
+gt_nha_chat,ev-v654.js,Nhà đã chật,Gia sự,fixed,family,household,na,any,any,,k,cao,,
+ts_nh_q,(sinh bằng mã),Ba ngả đường,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_nh_v,(sinh bằng mã),Chọn thế đánh,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,
+ts_nh_n,(sinh bằng mã),Gốc của nghĩa quân,Mưu đại sự,fixed,dynasty,usurpation,na,any,any,,k,cao,,

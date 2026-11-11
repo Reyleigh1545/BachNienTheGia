@@ -424,8 +424,8 @@ const TRAITS61={
   muusi:{n:'Mưu sĩ',c:'p',d:'Trí tuệ rèn được tới 112, Cơ mưu tăng nhanh, việc lớn dễ thành',capUp:{tri:12},cond:.03},
   ythu:{n:'Y thư truyền đời',c:'p',d:'Trí tuệ tới 110, thông thạo nghề y tăng nhanh',capUp:{tri:10},mm:.4,mmJobs:['y','nguy']},
   tongsu:{n:'Võ đạo đại ngộ',c:'p',d:'Võ lực rèn được tới 118, ra trận lập công nhanh',capUp:{vo:18},merit:.3},
-  kimthan:{n:'Thân thể đúc thép',c:'p',d:'Võ lực và sức khỏe tới 110, ít bệnh tật',capUp:{vo:10,suc:10},sick:.6},
-  truongtho:{n:'Trường thọ',c:'p',d:'Già chậm hơn 10 năm, sức khỏe rèn tới 115',decl:10,capUp:{suc:15}},
+  kimthan:{n:'Thân thể đúc thép',c:'p',gene:'D',p:.012,d:'Võ lực và sức khỏe tới 110, ít bệnh tật',capUp:{vo:10,suc:10},sick:.6},
+  truongtho:{n:'Trường thọ',c:'p',gene:'D',p:.015,d:'Già chậm hơn 10 năm, sức khỏe rèn tới 115',decl:10,capUp:{suc:15}},
   phongnha:{n:'Phong nhã danh sĩ',c:'p',d:'Mị lực rèn được tới 115, danh vọng tự tăng',capUp:{mi:15},fame:3},
   thaunhan:{n:'Thấu nhân tâm',c:'p',d:'EQ rèn được tới 115, gia tộc ổn định hơn',capUp:{eq:15},on:2},
   tamtinh:{n:'Tâm tĩnh như nước',c:'p',d:'EQ tới 110, tâm trạng luôn vững',capUp:{eq:10},tam:6}};

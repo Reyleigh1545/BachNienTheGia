@@ -193,3 +193,60 @@ Giai đoạn hoàn thiện như `ke-hoach-phat-trien.md` mục 5: chỉ số vư
 **Chốt 11/11/2026 (sau 6.5.2):** gia chủ nhậm chức xa thì chọn cách A (dời cả nhà tới nơi đó, hoặc từ chối chức). Bảng thời thế đổi theo file docx "Rà soát": chụp mỗi năm, thấy rõ khi có người ở kinh thành, tiêu đề "Triều … · niên hiệu · Hoàng Đế …".
 
 **6.5.3 đã làm** (xem `bao-cao-v6.5.3.md`): gia chủ nhậm chức xa, bảng thời thế, gia đình lính (con theo mẹ, học trong doanh, chọn lúc 14 tuổi), khóa `lvr` và 24 sự kiện quân ngũ theo cấp. **Còn treo:** thêm sự kiện quân ngũ cho đủ (6.5.11 trở đi), kỳ ngộ chung tách khỏi người trong quân (làm cùng 6.5.9), quan khác của gia tộc phạm hồi tị khi gia chủ dời nhà.
+
+---
+
+## 6. Thứ tự mới sau khi đọc đề xuất kho sự kiện (11/11/2026)
+
+Mày thêm `BachNienTheGia_Event_Architecture_Proposal.md` (11 domain, trigger type, độ hiếm, metadata, manifest, tỷ trọng pool, admin). Bảng này **thay** cách đánh số từ 6.5.4 trở đi ở mục 1; nội dung từng bản cũ ở mục 2 vẫn giữ, chỉ đổi số.
+
+Số liệu kho hiện tại (6.5.3): **1.290 sự kiện**; 366 sự kiện cố định (`fixed`), 224 kỳ ngộ, 51 thuộc cốt truyện (`arc`), 465 có khóa nghề, **420 không có nhãn `k`** (chưa biết thuộc nhóm nào), không trùng ID. Có 825 sự kiện không khóa nghề (chung).
+
+| Bản | Chủ đề | Ghi chú |
+|---|---|---|
+| 6.5.1, 6.5.2, 6.5.3 | Đã xong | |
+| **6.5.4** | **Kiểm kê và gắn metadata** (không đổi cách game chạy) | Giai đoạn 0 đến 2 của đề xuất; thêm trang admin "Kho sự kiện" |
+| **6.5.5** | **Lọc theo nhóm và rà soát** | Bảng duyệt bỏ/giữ/sửa; lọc theo hoàn cảnh (quân ngũ, ở xa, nhậm chức, chiến tranh, dịch, hạn…); kỳ ngộ chia theo loại |
+| 6.5.6 | Gia tộc (mục 6.5.4 cũ) | |
+| 6.5.7 | Kinh tế (6.5.5 cũ) | |
+| 6.5.8 | Học tập, nghề, nữ nhi (6.5.6 cũ) | |
+| 6.5.9 | Chỉ số, nhân vật khởi đầu (6.5.7 cũ) | |
+| 6.5.10 | Nhánh rẽ ba đường lên ngôi (6.5.8 cũ) | |
+| 6.5.11 | Đo và cân bằng, chia quota theo domain (6.5.10 cũ + giai đoạn 5 của đề xuất) | |
+| 6.5.12 trở đi | Nội dung mới, viết thẳng vào khung nhóm | |
+
+### Ý kiến về đề xuất
+
+**Giữ nguyên:**
+- 11 domain, một domain chính cho mỗi sự kiện, chủ đề phụ ghi bằng tag.
+- Trigger type tách khỏi domain; arc, fixed, ending, scheduled không bốc chung với sự kiện thường.
+- Thêm metadata trước, di chuyển sau, chỉnh tỷ lệ cuối cùng; không đổi ID; manifest đầy đủ.
+- Phân biệt trọng số gốc, trọng số điều chỉnh, tỷ lệ pool và tần suất thực tế. Telemetry theo "cơ hội đủ điều kiện", không đếm thô.
+
+**Chỉnh lại cho khớp game và khớp điều mày muốn:**
+1. **Không tách file vật lý.** Tách 1.290 sự kiện ra khoảng 60 file nhỏ gây rủi ro nạp sai thứ tự (có sự kiện dùng hàm của file trước, `patchEvents` sửa sự kiện sau khi nạp) mà không giúp gì cho người chơi. Thay vào đó tao làm **bảng metadata riêng** (`events-meta.js`: `id` → domain, subdomain, trigger, rarity, tags, who, sit). Engine gắn vào sự kiện lúc nạp. Muốn tìm sự kiện thì dùng trang admin. File cũ giữ nguyên. Nếu sau này vẫn muốn tách file thì làm riêng, vì metadata đã có.
+2. **Thêm hai trục mà đề xuất còn thiếu**, lấy từ file docx của mày:
+   - `who`: ai gặp được (gia chủ, vợ chồng, con nhỏ, người già, quan văn, quan võ theo cấp, lính theo cấp, người ở xa).
+   - `sit`: hoàn cảnh (thái bình, sắp có chiến tranh, đang chiến tranh, sau chiến tranh, dịch, sau dịch, hạn, lũ, mất mùa) và nơi (vùng, tỉnh, nơi nhậm chức).
+   Hai trục này mới là thứ chặn được "quân ngũ gặp chuyện nhà", "cấp cao gặp chuyện cấp thấp", "người ở nơi nhậm chức gặp chuyện làng cũ". Đề xuất gốc chỉ có domain, nên chưa đủ.
+3. **Độ hiếm** chỉ là nhãn cho tới khi có bảng ánh xạ. Hiện kỳ ngộ đã có `ky`, `pcd`, `w`; tao dùng 6 mức làm nhãn thống kê, chưa đổi tần suất.
+4. **Quota theo domain (25/20/25/15/5/10)** để cuối (6.5.11), sau khi đo. Hiện bộ chọn (`pickEvent`) đã có cơ chế tăng xác suất sự kiện có khóa nghề (tối đa 45%); quota mới sẽ thay cơ chế đó, nên cần số liệu trước khi đổi.
+5. Mapping module cũ → domain: đề xuất gốc ghi rõ "chưa phân loại từng event". Tao phân loại **từng event** bằng quy tắc (nhãn `k`, khóa nghề, tiền tố ID, từ khóa trong tiêu đề) rồi xuất bảng cho mày duyệt. Chỗ nào quy tắc không chắc thì ghi `unclassified`, không đoán.
+
+### Việc trong 6.5.4
+1. Xuất manifest (CSV) toàn bộ 1.290 sự kiện: id, file nguồn, tiêu đề, `k`, trigger, nghề, điều kiện chính, domain và subdomain đề xuất, độ tin cậy.
+2. `events-meta.js` và phần engine gắn metadata lúc nạp (không đổi hành vi).
+3. Trang admin "Kho sự kiện": lọc theo domain, subdomain, trigger, độ hiếm, nghề; chi tiết một sự kiện; đếm theo nhóm; danh sách sự kiện chưa phân loại.
+4. Kiểm tra toàn vẹn: không trùng ID, domain hợp lệ, subdomain đúng domain.
+
+### Việc trong 6.5.5
+1. Bảng duyệt bỏ/giữ/sửa gửi mày (sự kiện trùng ý, sai nhóm, thiếu hợp lý).
+2. Khóa `who` và `sit` vào `eligible()`; quân ngũ, người ở xa, người nhậm chức, chiến tranh, dịch bệnh dùng pool theo hoàn cảnh.
+3. Kỳ ngộ chia loại theo đề xuất (võ học, y thuật, học vấn, tài lộc, nhân duyên, bảo vật, quý nhân, tuổi thọ, danh hiệu, thiên mệnh).
+4. Chuyển phần "kỳ ngộ chung tách khỏi người trong quân" và "quan khác phạm hồi tị khi gia chủ dời nhà" còn treo từ 6.5.3 vào đây.
+
+---
+
+## 8. Gộp thành một bản (11/11/2026)
+
+Mày muốn làm một lần và test một lần, nên các mục 6.5.4 đến 6.5.11 được gộp thành **v6.5.4** (xem `bao-cao-v6.5.4.md`): kho sự kiện và metadata, gia tộc, kinh tế (giao thương theo chênh giá), học tập, chỉ số, nhánh rẽ đường lên ngôi. Còn lại sau v6.5.4: đo tự nhiên từ lúc mở game tới ending (cần chạy nhiều ván), duyệt `manifest-su-kien.csv`, rà bỏ và gộp sự kiện trùng, quota theo nhóm, kỳ ngộ chung tách khỏi quân ngũ, nội dung mới (thế lực tự phát, giang hồ, kỳ ngộ gia tộc, cốt truyện lớn, tăng số sự kiện).
