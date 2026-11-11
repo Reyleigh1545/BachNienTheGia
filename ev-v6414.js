@@ -229,7 +229,7 @@ return [
   return o}},
 {id:'qt_chieu_tru_di',t:'Chiếu chỉ tru di',k:'Đại họa',fixed:1,
  x:(c,d)=>{const w=G.P(d.who);return `Quan quân vây kín cổng. Chiếu chỉ được đọc giữa sân: vì tội của ${w?esc(G.nameOf(w)):'kẻ phạm'}, họ ${esc(S().surname)} bị tru di.`},
- o:(c,d)=>{const w=G.P(d.who);const cuu=!!w&&Q.of(w).crime>=5;return [
+ o:(c,d)=>{const w=G.P(d.who);const esc0=G.alive().some(p=>G.inClan(p)&&p.hh!==G.mainHH()&&S().hh[p.hh]&&S().hh[p.hh].far);const cuu=!!w&&Q.of(w).crime>=5&&!esc0; /* v6.4.1.8: đã có một chi trốn đi xa thì chỉ tam tộc */return [
   {l:'Quỳ tiếp chỉ',f:c=>{S().tdq=null;return w?Q.truDi(w,cuu):''}},
   {l:'Liều mạng kháng chỉ, mở đường cho con cháu chạy',s:'Thành thì vài người thoát, bại thì không còn ai',r:[{vo:1,gan:0.6},75],y:c=>{S().tdq=null;return 'Trong lúc hỗn loạn, mấy đứa trẻ được đưa ra khỏi thành. '+(w?Q.truDi(w,false):'')},n:c=>{S().tdq=null;return w?Q.truDi(w,true):''}}]}},
 {id:'qt_tro_lai',t:'Trở lại kinh thành',k:K,job:QQ,pcd:9999,c:c=>c.lv>=4&&!!(S().qtHist&&S().qtHist.trudi),

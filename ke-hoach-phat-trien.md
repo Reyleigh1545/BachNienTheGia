@@ -167,3 +167,12 @@ Ghi tiếp vào đây khi mày gửi. Lỗi thuộc diện sửa ngay (nguyên t
 - Người nhà chính đi lính do người chơi điều khiển.
 - Phe trong triều ẩn tới khi nhà có quan. Thế lực các phe chỉ biết khi có quan từ Ngũ phẩm.
 - 52 sự kiện.
+
+**Chốt 11/11/2026:** cốt truyện ân oán Phạm Trung Kiên **vẫn giữ nguyên như hiện có**; chỉ việc nâng cấp nó (mục 8: đường kiện khó, cái kết thua thảm, báo thù, cân thưởng) lùi lại, chờ mày bảo mới làm. Bản tiếp theo đổi thành **6.4.1.8: ba đường lên ngôi và màn hậu sử** (game có cái kết). Sau đó là phần nội dung còn lại của v6.5.
+
+**6.4.1.8 đã làm (11/11/2026):**
+- Ba đường cướp ngôi (Quyền thần, Võ quan, Khởi nghĩa): đạt địa vị thì sau 12 đến 24 tháng tự kích hoạt; bỏ được bất cứ lúc nào, kể cả bước cuối.
+- Bốn thước đo: thế lực, danh nghĩa, tài lực, lộ.
+- Thất bại đi qua thang hậu quả quan trường; có chi trốn đi xa thì chỉ tam tộc.
+- Lên ngôi: đặt quốc hiệu, niên hiệu, hậu sử, hết game.
+- 27 sự kiện.

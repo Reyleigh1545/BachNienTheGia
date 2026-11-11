@@ -1,4 +1,4 @@
-/* Bách Niên Thế Gia v6.4.1.7 · bảng admin (chỉ nạp ở admin.html, phải nạp TRƯỚC engine.js)
+/* Bách Niên Thế Gia v6.4.1.8 · bảng admin (chỉ nạp ở admin.html, phải nạp TRƯỚC engine.js)
    - Hiện tỉ lệ thành của từng lựa chọn có gieo xúc xắc
    - Máy tự chọn: Cao / Vừa / Thấp / Ngẫu nhiên. Không bao giờ chọn lựa chọn không gieo nếu hộp có lựa chọn gieo.
      Hộp chỉ toàn lựa chọn không gieo: chạy thử từng lựa chọn (previewScore), Cao lấy cái lợi nhất, Vừa cái ở giữa, Thấp cái thiệt nhất.
@@ -126,6 +126,10 @@ function body(){const g=G(),S=g&&g.S();
     <h4>${c?esc(g.nameOf(c))+' · '+g.age(c)+' tuổi · '+esc(g.jobName(c)):'Chưa chọn người'}</h4>
     ${c?`<div class="adgrid">${num('p.age','Tuổi',g.age(c))}${PF.map(([k,l])=>num('p.'+k,l,c[k])).join('')}${SKF.map(([k,l])=>num('sk.'+k,l,c.sk&&c.sk[k])).join('')}</div>`:''}
     <button class="btn small primary" data-apply>Áp dụng</button>
+    <h4>Mưu đại sự (thử ba đường cướp ngôi)</h4>
+    <div class="adrow"><button class="btn small" data-tsf="quyen">Quyền thần</button><button class="btn small" data-tsf="vo">Võ quan</button><button class="btn small" data-tsf="nghia">Khởi nghĩa</button></div>
+    <div class="adrow"><button class="btn small" data-tsfast>Ép sang bước cuối</button><button class="btn small" data-tscrown>Lên ngôi ngay (thử hậu sử)</button></div>
+    <p class="admut">Đường chọn sẽ bắt đầu ngay cho người đang chọn (hoặc gia chủ), không cần đủ địa vị. "Ép sang bước cuối" bỏ qua các bước giữa. Đang chạy thì thấy thước đo ở trang Gia tộc.</p>
     <h4>Gọi sự kiện cho người đang chọn</h4><input class="adq" type="search" placeholder="Tìm theo id hoặc tên sự kiện" value="${esc(q)}">
     <div class="adlist">${findEv().map(e=>`<div><span><b>${esc(e.t||e.id)}</b> <small>${esc(e.id)}${e.ky?' · kỳ ngộ':''}${e.arc||e.fixed?' · cốt truyện':''}</small></span><button data-ev="${esc(e.id)}">Gọi</button><button data-why="${esc(e.id)}">Vì sao?</button></div>`).join('')}</div>`}
   if(tab==='tk'){if(!S)return '<p class="admut">Chưa có ván.</p>';const L=S.stat||[];const fm=g.fmtMoney||(v=>v);
@@ -155,6 +159,9 @@ function draw(){let el=document.getElementById('adm');
   const od=$('[data-odds]');if(od)od.onchange=()=>{A.odds=od.checked;saveCfg()};
   const dl=$('[data-delay]');if(dl)dl.onchange=()=>{A.delay=Math.max(0,+dl.value||0);saveCfg()};
   const ap=$('[data-apply]');if(ap)ap.onclick=()=>applyEdit(el);
+  $$('[data-tsf]').forEach(b=>b.onclick=()=>{const g=G();const c=g.P(AD().getSel())||g.P(g.S().head);const u=g.ts.force(b.dataset.tsf,c);msg(u?`Đã bắt đầu "${g.ts.N[b.dataset.tsf]}" cho ${g.nameOf(c)}.`:'Không bắt đầu được.');draw()});
+  const tf=$('[data-tsfast]');if(tf)tf.onclick=()=>{const g=G();const u=g.ts.U();if(!u)return msg('Chưa có đường nào đang chạy.');u.st=g.ts.steps[u.path].length-1;u.the=80;u.danh=70;u.tai=60;u.lo=25;u.pending=false;u.next=g.S().t+1;msg('Đã ép sang bước cuối.');draw()};
+  const tc=$('[data-tscrown]');if(tc)tc.onclick=()=>{const g=G();const c=g.P(AD().getSel())||g.P(g.S().head);g.ts.crown(c,'thử');if(!AD().modalOpen())AD().nextPopup();msg('Đã gọi đăng cơ.');draw()};
   const qq=$('.adq');if(qq)qq.oninput=()=>{q=qq.value;const pos=qq.selectionStart;draw();const n=el.querySelector('.adq');n.focus();n.setSelectionRange(pos,pos)};
   $$('[data-ev]').forEach(b=>b.onclick=()=>callEv(b.dataset.ev));
   $$('[data-why]').forEach(b=>b.onclick=()=>whyEv(b.dataset.why));

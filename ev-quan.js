@@ -174,7 +174,7 @@ A({id:'q_ce_c',t:'Gió đổi chiều',
     {l:'Ung dung đối đáp như hôm qua',r:[{eq:1,tri:0.6},60],y:c=>{G.grantTitle(c,R(2,3),'được thiên tử coi như tri kỷ');return 'Vua quý khí phách.'+G.tuocNote()+fx(c,{fame:R(90,130),hung:10})},n:c=>{G.grantTitle(c,1,'tiếp đãi thiên tử');return 'Vua thấy hơi ngạo, nhưng vẫn ghi công.'+G.tuocNote()+fx(c,{fame:40})}}]},
 
 /* ================= MƯU ĐẠI SỰ: nhiều bước, thời thế quyết định ================= */
-ST({id:'md_mo_dau',t:'Lời thì thầm trong đêm',w:0.25,cd:120,c:c=>age(c)>=28&&!S().royal&&(c.job==='quan'&&c.lv>=5||c.job==='quan_ngu'&&c.lv>=5||(c.tuoc||0)>=2||G.has(c,'thienmenh')&&c.vo+c.tri>=150)&&G.tierIdx()>=4,
+ST({id:'md_mo_dau',t:'Lời thì thầm trong đêm',w:0.25,cd:120,c:c=>false&&age(c)>=28&&!S().royal&&(c.job==='quan'&&c.lv>=5||c.job==='quan_ngu'&&c.lv>=5||(c.tuoc||0)>=2||G.has(c,'thienmenh')&&c.vo+c.tri>=150)&&G.tierIdx()>=4,
  x:c=>`${S().war?'Chiến loạn liên miên, ':'Vua mới lên ngôi còn trẻ, gian thần lộng quyền. '}${pick(['Một vị vương gia','Một đại tướng biên ải','Một nhóm cựu thần'])} cho người bí mật gặp ${N(c)}, ngỏ ý cùng mưu đại sự. Thành thì phong vương, bại thì cả họ không còn ai.`,
  o:[{l:'Nghe tiếp',s:'Bước lên con đường khó quay lại',f:c=>{c.flags.md=1;return 'Ngồi nghe đến canh ba.'+fx(c,{tam:-5})+nx(c,'md_b',4,10)}},
     {l:'Từ chối, giữ kín',r:[{eq:1},50],y:c=>'Khách lặng lẽ rời đi.',n:c=>'Khách sợ lộ, cho người theo dõi.'+fx(c,{tam:-8})},
@@ -188,7 +188,7 @@ A({id:'md_c',t:'Đêm trước khởi sự',
  x:c=>`Mọi thứ đã sẵn sàng. ${c.flags.lo?'Nhưng có tin đồn kế hoạch đã bị lộ ra ngoài.':'Nội ứng trong cung đã chờ.'} ${S().war?'Quân triều đình đang bận ngoài biên.':'Kinh thành canh phòng nghiêm ngặt.'}`,
  o:[{l:'Khởi sự',s:'Thành thì làm vua, bại thì tru di',f:c=>{
       const th=(c.flags.md||1)*6+(S().war?15:0)-(c.flags.lo?25:0)+G.famLuck()/5+(G.has(c,'thienmenh')?15:0)+(c.tri+c.vo+c.eq)/12;
-      if(chance(Math.min(0.8,Math.max(0.03,th/100)))){S().royal=1;c.job='vua';c.lv=0;c.away=null;G.log(`${G.nameOf(c)} khởi sự thành công, lên ngôi hoàng đế.`,'gd');return '<b>Khởi sự thành công!</b> Kinh thành đổi chủ. Họ '+esc(S().surname)+' trở thành hoàng tộc.'+fx(c,{fame:500,hung:30,on:-10})}
+      if(chance(Math.min(0.8,Math.max(0.03,th/100)))){G.ts.crown(c,'cũ');return '<b>Khởi sự thành công!</b> Kinh thành đổi chủ.'+fx(c,{fame:500,hung:30,on:-10})}
       G.wipeClan(`Mưu phản thất bại. ${G.nameOf(c)} bị lăng trì, cả họ ${S().surname} bị tru di cửu tộc.`);return ''}},
     {l:'Hoãn lại, chờ thời cơ',f:c=>{c.flags.lo=(c.flags.lo||0)+1;return 'Hoãn binh. Càng lâu càng dễ lộ.'+nx(c,'md_c',8,16)}},
     {l:'Tự thú, xin khoan hồng',r:[{eq:1,fame:0.4},70],y:c=>{if(c.job==='quan')G.quitOffice(c);const st=G.stripHonors(c,3,'tự thú tội mưu phản');return 'Được tha chết, tước hết chức tước.'+fx(c,{fame:-80,cfame:-60,tam:-20})+st},n:c=>{G.die(c,'bị xử trảm vì tội mưu phản');return 'Không được tha.'+fx(c,{cfame:-100})}}]}),
