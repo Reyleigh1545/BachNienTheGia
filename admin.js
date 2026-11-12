@@ -1,4 +1,4 @@
-/* Bách Niên Thế Gia v6.7.0-d0 · bảng admin (chỉ nạp ở admin.html, phải nạp TRƯỚC engine.js)
+/* Bách Niên Thế Gia v6.7.0-d1 · bảng admin (chỉ nạp ở admin.html, phải nạp TRƯỚC engine.js)
    - Hiện tỉ lệ thành của từng lựa chọn có gieo xúc xắc
    - Máy tự chọn: Cao / Vừa / Thấp / Ngẫu nhiên. Không bao giờ chọn lựa chọn không gieo nếu hộp có lựa chọn gieo.
      Hộp chỉ toàn lựa chọn không gieo: chạy thử từng lựa chọn (previewScore), Cao lấy cái lợi nhất, Vừa cái ở giữa, Thấp cái thiệt nhất.
@@ -153,6 +153,8 @@ function body(){const g=G(),S=g&&g.S();
     <h4>Gọi sự kiện cho người đang chọn</h4><input class="adq" type="search" placeholder="Tìm theo id hoặc tên sự kiện" value="${esc(q)}">
     <div class="adlist">${findEv().map(e=>`<div><span><b>${esc(e.t||e.id)}</b> <small>${esc(e.id)}${e.ky?' · kỳ ngộ':''}${e.arc||e.fixed?' · cốt truyện':''}</small></span><button data-ev="${esc(e.id)}">Gọi</button><button data-why="${esc(e.id)}">Vì sao?</button></div>`).join('')}</div>`}
   if(tab==='kho')return kfBody();
+  if(tab==='arc'){if(!S)return '<p class="admut">Chưa có ván.</p>';const j=o=>esc(JSON.stringify(o,null,1));const arcs=Object.entries(S.arcs||{});
+    return `<h4>Cốt truyện đang chạy / đã kết (ẩn với người chơi)</h4>${arcs.length?arcs.map(([k,v])=>`<pre style="white-space:pre-wrap;font-size:11px"><b>${esc(k)}</b> ${j(Object.assign({},v,{hist:undefined}))}</pre>`).join(''):'<p class="admut">Chưa có cốt truyện nào bắt đầu.</p>'}<h4>Hạt giống thế giới</h4><pre style="white-space:pre-wrap;font-size:11px">${j(S.wr||{})}</pre>`}
   if(tab==='tk'){if(!S)return '<p class="admut">Chưa có ván.</p>';const L=S.stat||[];const fm=g.fmtMoney||(v=>v);
     const rows=L.map((o,i)=>{const nx=L[i+1];const dm=(nx?nx.m0:S.money)-(o.m0||0);return `<tr><td>${o.y}</td><td>${o.pick}</td><td>${o.show}</td><td>${o.drop}</td><td>${o.auto}${o.big?` (${o.big})`:''}</td><td>${o.other}</td><td>${fm(Math.round(o.evm||0))}</td><td>${fm(Math.round(dm))}</td></tr>`}).reverse().join('');
     return `<h4>Hộp thoại theo năm (12 năm gần nhất)</h4>
@@ -171,7 +173,7 @@ function body(){const g=G(),S=g&&g.S();
 function draw(){let el=document.getElementById('adm');
   if(!el){el=document.createElement('div');el.id='adm';document.body.appendChild(el)}
   el.innerHTML=`<button class="adtog" data-tog>${open?'✕ Đóng':'⚙ Admin'}${A.play?' · đang chạy':A.auto!=='off'?' · tự chọn':''}${A.force!=='none'?' · ép':''}</button>
-   ${open?`<div class="adpanel"><nav>${[['chon','Tự chọn'],['chinh','Chỉnh'],['choi','Tự chơi'],['tk','Thống kê'],['kho','Kho']].map(([k,l])=>`<button data-tab="${k}" aria-pressed="${tab===k}">${l}</button>`).join('')}</nav>
+   ${open?`<div class="adpanel"><nav>${[['chon','Tự chọn'],['chinh','Chỉnh'],['choi','Tự chơi'],['tk','Thống kê'],['kho','Kho'],['arc','Cốt truyện']].map(([k,l])=>`<button data-tab="${k}" aria-pressed="${tab===k}">${l}</button>`).join('')}</nav>
    <div class="adbody">${body()}</div><p class="adnote">${esc(note)}</p></div>`:''}`;
   const $=s=>el.querySelector(s),$$=s=>el.querySelectorAll(s);
   $('[data-tog]').onclick=()=>{open=!open;draw()};
