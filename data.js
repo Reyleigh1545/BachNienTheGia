@@ -424,8 +424,8 @@ const TRAITS61={
   muusi:{n:'Mưu sĩ',c:'p',d:'Trí tuệ rèn được tới 112, Cơ mưu tăng nhanh, việc lớn dễ thành',capUp:{tri:12},cond:.03},
   ythu:{n:'Y thư truyền đời',c:'p',d:'Trí tuệ tới 110, thông thạo nghề y tăng nhanh',capUp:{tri:10},mm:.4,mmJobs:['y','nguy']},
   tongsu:{n:'Võ đạo đại ngộ',c:'p',d:'Võ lực rèn được tới 118, ra trận lập công nhanh',capUp:{vo:18},merit:.3},
-  kimthan:{n:'Thân thể đúc thép',c:'p',gene:'D',p:.012,d:'Võ lực và sức khỏe tới 110, ít bệnh tật',capUp:{vo:10,suc:10},sick:.6},
-  truongtho:{n:'Trường thọ',c:'p',gene:'D',p:.015,d:'Già chậm hơn 10 năm, sức khỏe rèn tới 115',decl:10,capUp:{suc:15}},
+  kimthan:{n:'Thân thể đúc thép',c:'p',gene:'D',p:.012,d:'Võ lực tới 110, ít bệnh tật.',capUp:{vo:10},sick:.6},
+  truongtho:{n:'Trường thọ',c:'p',gene:'D',p:.015,d:'Già chậm hơn 10 năm.',decl:10},
   phongnha:{n:'Phong nhã danh sĩ',c:'p',d:'Mị lực rèn được tới 115, danh vọng tự tăng',capUp:{mi:15},fame:3},
   thaunhan:{n:'Thấu nhân tâm',c:'p',d:'EQ rèn được tới 115, gia tộc ổn định hơn',capUp:{eq:15},on:2},
   tamtinh:{n:'Tâm tĩnh như nước',c:'p',d:'EQ tới 110, tâm trạng luôn vững',capUp:{eq:10},tam:6}};
@@ -626,23 +626,23 @@ const CTFX={
     mm:[.3,.35,.4,.5,.6,.7,.85,1,1.3],inc:[.04,.05,.06,.08,.1,.12,.15,.18,.22],mmJobs:['quan','chu','hangrong','tieunhi','mo','hau','thulai']}};
 const CT_NUM=v=>String(v).replace('.',',');
 const CT_TXT={
-  exam:v=>`điểm thi +${v}`,teach:v=>`con cháu trong nhà học nhanh thêm ${Math.round(v*100)}%`,
-  fame:v=>`danh vọng bản thân tăng ${CT_NUM(v)} mỗi năm`,merit:v=>`chiến công thu được nhiều thêm ${Math.round(v*100)}%`,
-  cond:v=>`việc khó dễ thành hơn (${CT_NUM(+(v*100).toFixed(1))}%)`,hp:v=>`hồi sức nhanh thêm ${CT_NUM(v)} mỗi tháng`,
-  sick:v=>`khi có dịch chỉ còn ${Math.round(v*100)}% nguy cơ nhiễm`,decl:v=>`già chậm hơn ${v} năm`,
-  tam:v=>`tâm trạng luôn cao hơn ${CT_NUM(v)}`,duyen:v=>`cơ duyên +${v}`,on:v=>`gia tộc hòa thuận thêm ${CT_NUM(v)}`,
-  match:v=>`khi mai mối gặp được người có giá trị cao hơn`,exam:v=>`điểm thi +${v}`,inc:v=>`thu nhập thêm ${Math.round(v*100)}%`};
+  exam:v=>`điểm thi +${v}`,teach:v=>`con cháu học nhanh thêm ${Math.round(v*100)}%`,
+  fame:v=>`danh vọng +${CT_NUM(v)} mỗi năm`,merit:v=>`chiến công thêm ${Math.round(v*100)}%`,
+  cond:v=>`việc khó dễ thành hơn (+${CT_NUM(+(v*100).toFixed(1))}%)`,hp:v=>`hồi sức +${CT_NUM(v)} mỗi tháng`,
+  sick:v=>`khi có dịch chỉ còn ${Math.round(v*100)}% nguy cơ nhiễm`,decl:v=>`già chậm ${v} năm`,
+  tam:v=>`tâm trạng +${CT_NUM(v)}`,duyen:v=>`cơ duyên +${v}`,on:v=>`nhà hòa thuận thêm ${CT_NUM(v)}`,
+  match:v=>`gặp được mối tốt hơn khi mai mối`,inc:v=>`thu nhập nghề liên quan +${Math.round(v*100)}%`};
 (function(){
   for(const k in CTFX){const F=CTFX[k];
     STITLE[k].forEach(([th,name],i)=>{
       const T={n:name,c:'p',ct:1,ck:k,ci:i};const parts=[];
       for(const f in F){if(f==='mmJobs')continue;const v=F[f][i];T[f]=v;
-        if(f==='mm')parts.push(`thông thạo nghề ${F.mmJobs.map(j=>JOBS[j].n.toLowerCase()).join(', ')} tăng thêm ${CT_NUM(v)} mỗi năm`);
-        else if(f==='inc')parts.push(`thu nhập nghề ${F.mmJobs.map(j=>JOBS[j].n.toLowerCase()).join(', ')} cao thêm ${Math.round(v*100)}%`);
+        if(f==='mm')parts.push(`thông thạo nghề liên quan +${CT_NUM(v)} mỗi năm`);
+        else if(f==='inc')parts.push(`thu nhập nghề liên quan +${Math.round(v*100)}%`);
         else parts.push(CT_TXT[f](v))}
       if(F.mmJobs){if(F.mm)T.mmJobs=F.mmJobs;if(F.inc)T.incJobs=F.mmJobs}
       const txt=parts.map((s,j)=>j?s:s.charAt(0).toUpperCase()+s.slice(1)).join('; ');
-      T.d=`Danh hiệu về ${SN[k].toLowerCase()} (từ ${th}), do người đời công nhận. ${txt}`;
+      T.d=k==='suc'?`${txt}. Sinh ra đã có.`:`${txt}.`; /* v6.7.0-d2: chỉ ghi tác dụng */
       TRAITS['ct_'+k+'_'+i]=T})}
 })();
 

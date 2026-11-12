@@ -7,13 +7,13 @@ const {R,pick,chance,fx,esc}=G;
 const S=()=>G.S();const m=v=>G.mm(v);const FM=v=>G.fmtMoney(v);const N=c=>esc(c.given);
 const rich=v=>()=>G.money()>=m(v);
 const pay=(l,v,o)=>Object.assign({l:`${l} (${FM(m(v))})`,c:rich(v)},o);
-const LAW=o=>Object.assign({k:'Luật pháp',cd:48,pcd:96},o);
-const GH=o=>Object.assign({k:'Giang hồ',cd:36,pcd:96},o);
-const LO=o=>Object.assign({k:'Thế lực',cd:48,pcd:120},o);
-const GS=o=>Object.assign({k:'Gia sản',cd:48,pcd:120,head:1},o);
-const KN=o=>Object.assign({k:'Kỳ ngộ',ky:1,good:1,u:'person',pcd:240,w:0.5},o);
-const TG=o=>Object.assign({k:'Thế giới',cd:60,pcd:120},o);
-const CD=o=>Object.assign({k:'Triều đình',cd:60,pcd:120},o);
+const LAW=o=>Object.assign({tags:{},k:'Luật pháp',cd:48,pcd:96},o);
+const GH=o=>Object.assign({tags:{},k:'Giang hồ',cd:36,pcd:96},o);
+const LO=o=>Object.assign({tags:{},k:'Thế lực',cd:48,pcd:120},o);
+const GS=o=>Object.assign({tags:{},k:'Gia sản',cd:48,pcd:120,head:1},o);
+const KN=o=>Object.assign({tags:{},k:'Kỳ ngộ',ky:1,good:1,u:'person',pcd:240,w:0.5},o);
+const TG=o=>Object.assign({tags:{},k:'Thế giới',cd:60,pcd:120},o);
+const CD=o=>Object.assign({tags:{},k:'Triều đình',cd:60,pcd:120},o);
 const kidsOf=c=>G.kidsOf(c).filter(k=>k.dead==null&&G.inClan(k));
 const farmOk=()=>S().farm&&(S().farm.own>0||S().farm.fief>0);
 return [
@@ -49,12 +49,12 @@ LAW({id:'lw_22',t:'Mảnh đất bỏ hoang bên cạnh',head:1,age:[25,70],tier
   pay('Xin cấp đất theo đúng lệ',30,{f:c=>{S().farm.own+=1;return 'Quan huyện cấp văn tự đàng hoàng. Một mẫu ruộng thêm vào nhà.'+fx(c,{money:-m(30)})}}),
   {l:'Bỏ ý định',f:c=>'Đất vẫn bỏ hoang.'}]}),
 /* ===================== GIANG HỒ ===================== */
-GH({id:'gj_01',t:'Quán rượu bên đường',age:[18,60],w:0.8,
+GH({id:'gj_01',ms:1,t:'Quán rượu bên đường',age:[18,60],w:0.8,
  x:c=>`${N(c)} ghé quán rượu bên đường nghỉ chân. Góc quán có người khách đeo kiếm, cứ nhìn qua rồi lại cúi xuống chén.`,
  o:c=>[pay('Mời hắn một bình rượu',3,{r:[{eq:0.8,khau:0.5},55],y:c=>'Hắn cười, kể vài chuyện giang hồ mới nghe lần đầu.'+fx(c,{eq:1,fame:1,tam:3,money:-m(3)}),n:c=>'Hắn lạnh nhạt, chuyện câu được câu chăng.'+fx(c,{money:-m(3)})}),
   {l:'Giả vờ không để ý',f:c=>'Uống xong rượu, đi tiếp.'},
   {l:'Rời quán sớm',f:c=>'Có điều gì đó không ổn, mình lên đường trước khi trời tối.'+fx(c,{tam:-1})}]}),
-GH({id:'gj_08',t:'Người lạ ra tay cứu mạng',age:[16,70],ky:1,good:1,u:'person',pcd:240,w:0.4,
+GH({id:'gj_08',ms:1,t:'Người lạ ra tay cứu mạng',age:[16,70],ky:1,good:1,u:'person',pcd:240,w:0.4,
  x:c=>`Giữa đường vắng, ${N(c)} bị mấy kẻ lạ chặn lại. Đang lúc nguy, một khách áo vải bước ra, chỉ vài chiêu đã đuổi bọn chúng đi.`,
  o:c=>[{l:'Xin được học vài chiêu',r:[{eq:0.7,tri:0.4},50],y:c=>'Vị khách bật cười, chỉ cho vài điều căn bản rồi biến mất.'+fx(c,{vo:R(2,4),eq:1,fame:2}),n:c=>'Vị khách chỉ lắc đầu, để lại một lời khuyên.'+fx(c,{tam:2})},
   pay('Tạ ơn bằng bạc',10,{f:c=>'Vị khách không nhận, chỉ xin cái bánh. Mình thấy mình nợ một ân tình.'+fx(c,{money:-m(10),fame:2,duyen:0})}),
@@ -64,7 +64,7 @@ GH({id:'gj_09',t:'Hẹn đấu dưới trăng',age:[20,48],c:c=>c.g==='nam'&&c.v
  o:c=>[{l:'Nhận lời',r:[{vo:1,suc:0.3,tri:0.3},50],y:c=>'Hơn mười chiêu, hắn thua mà phục. Tin lan nhanh.'+fx(c,{fame:8,vo:R(1,3),tam:4}),n:c=>'Thua một chiêu, ngã đau. Hắn chắp tay, bỏ đi, nhưng tin cũng lan.'+fx(c,{suc:-R(6,12),fame:-3,tam:-4})},
   {l:'Từ chối, mời hắn uống rượu',r:[{eq:0.8,khau:0.4},60],y:c=>'Hắn cười lớn, hóa ra cũng là người dễ chuyện.'+fx(c,{fame:2,eq:1}),n:c=>'Hắn coi là nhát gan, bỏ đi.'+fx(c,{fame:-2})},
   {l:'Đóng cửa, không tiếp',f:c=>'Hắn đứng đó nửa canh giờ rồi đi. Đêm yên.'+fx(c,{fame:-1})}]}),
-GH({id:'gj_12',t:'Lão thợ rèn kiếm',ky:1,good:1,u:'person',pcd:240,w:0.4,age:[18,65],c:c=>c.vo>=45,
+GH({id:'gj_12',ms:1,t:'Lão thợ rèn kiếm',ky:1,good:1,u:'person',pcd:240,w:0.4,age:[18,65],c:c=>c.vo>=45,
  x:c=>`Người ta mách ${N(c)} một lão thợ rèn sống ẩn trong núi, mỗi đời chỉ rèn vài thanh kiếm cho đúng người.`,
  o:c=>[pay('Đến đặt một thanh kiếm',20,{r:[{eq:0.6,vo:0.5},55],y:c=>'Lão ngắm mình hồi lâu rồi gật đầu. Thanh kiếm xong, nhẹ như không.'+fx(c,{money:-m(20),vo:R(3,6),fame:3}),n:c=>'Lão lắc đầu, trả lại bạc, bảo "chưa phải người".'+fx(c,{tam:-3})}),
   {l:'Chỉ ngồi xem lão làm việc',f:c=>'Cả buổi chiều chỉ nghe tiếng búa. Có điều gì đó đọng lại.'+fx(c,{vo:1,tam:2})}]}),
@@ -77,7 +77,7 @@ GH({id:'gj_72',t:'Tiêu xa bị cướp',job:['tieu'],age:[20,60],
  o:c=>[{l:'Quyết đánh',r:[{vo:0.8,muu:0.4},45],y:c=>'Chặn được bọn cướp, đồ và người đều an toàn. Tiếng tăm cả tiêu cục lên theo.'+fx(c,{fame:8,vo:1,m:2}),n:c=>'Thua sút. Hàng mất, mình bị thương.'+fx(c,{suc:-R(8,15),fame:-6,money:-m(30)})},
   {l:'Thương lượng, trả tiền mãi lộ',f:c=>'Bọn cướp nhận tiền, để đi. Tiêu cục mang tiếng yếu thế.'+fx(c,{money:-m(15),fame:-2})},
   {l:'Bỏ hàng, đưa người chạy',f:c=>'Giữ được người, mất hàng. Chủ hàng chửi cả tháng.'+fx(c,{money:-m(40),fame:-3,tam:-3})}]}),
-GH({id:'gj_45',t:'Chân khí đảo lộn',age:[20,60],c:c=>c.vo>=75&&c.suc>=30,w:0.5,cd:120,
+GH({id:'gj_45',ms:1,t:'Chân khí đảo lộn',age:[20,60],c:c=>c.vo>=75&&c.suc>=30,w:0.5,cd:120,
  x:c=>`Đang luyện công, ${N(c)} bỗng thấy chân khí chạy ngược, mắt hoa, tay chân run. Đây là điềm xấu mà sách võ đều nhắc tới.`,
  o:c=>[{l:'Ngừng luyện, tĩnh dưỡng',f:c=>'Nằm nghỉ mấy ngày, chân khí dần ổn lại.'+fx(c,{suc:-3,tam:-2})},
   {l:'Gắng luyện tiếp để áp xuống',r:[{suc:0.7,tri:0.4},45],y:c=>'Chân khí khuất phục, công lực tiến bộ rõ rệt.'+fx(c,{vo:R(2,4),tam:3}),n:c=>'Chân khí phản lại, hộc máu. Căn cơ tổn thương.'+fx(c,{suc:-R(12,22),hpMax:-R(2,4),tam:-6})},
@@ -176,7 +176,7 @@ KN({id:'kn_31',t:'Cao nhân dạy kiếm',age:[16,50],c:c=>c.vo>=40,w:0.4,
  x:c=>`Trên đường núi, ${N(c)} gặp một người đàn ông gầy gò đang múa kiếm trên bãi đá. Thấy có người nhìn, ông dừng lại: "Muốn học không?"`,
  o:c=>[{l:'Quỳ xuống xin học',r:[{eq:0.6,vo:0.5},60],y:c=>'Ông dạy ba ngày, mỗi ngày một thế. Rồi biến mất sau làn sương.'+fx(c,{vo:R(4,8),eq:1,tam:5}),n:c=>'Ông lắc đầu: "Chưa đủ duyên." Rồi tiếp tục múa kiếm.'+fx(c,{tam:-2})},
   {l:'Đứng xem từ xa',f:c=>'Xem cả ngày. Có vài thế đọng lại trong đầu.'+fx(c,{vo:1,tam:2})}]}),
-KN({id:'kn_45',t:'Quyển da ghi võ công',age:[18,60],c:c=>c.vo>=50&&c.tri>=45,w:0.3,
+KN({id:'kn_45',ms:1,t:'Quyển da ghi võ công',age:[18,60],c:c=>c.vo>=50&&c.tri>=45,w:0.3,
  x:c=>`Trong một hiệu sách cũ, ${N(c)} lật phải quyển da đã sờn, chữ chi chít: một đường quyền pháp thất truyền. Lời bên lề cảnh báo: "chớ luyện vội".`,
  o:c=>[pay('Mua, đem về tự luyện',15,{r:[{tri:0.7,suc:0.4},50],y:c=>'Luyện ngày đêm, quả có tiến bộ. Chân khí vững hơn bao giờ hết.'+fx(c,{money:-m(15),vo:R(5,9),tam:4}),n:c=>'Luyện vội, chân khí rối loạn.'+fx(c,{money:-m(15),suc:-R(10,18),hpMax:-R(1,3)})}),
   pay('Mua, nhờ thầy võ xem trước',25,{f:c=>'Thầy võ chỉ ra chỗ nguy hiểm, bảo luyện chậm. Tiến bộ vừa, an toàn.'+fx(c,{money:-m(25),vo:R(3,5),tam:3})}),
@@ -217,12 +217,12 @@ TG({id:'tg_26',t:'Tiền giả lưu hành',job:['tieunhi','tieuphu','hangrong','
   {l:'Chỉ nhận bạc nén',f:c=>'Khách than phiền. Một vài khách bỏ đi.'+fx(c,{money:-m(3)})},
   {l:'Báo quan',f:c=>'Quan cử người kiểm tra chợ. Tin nhà tốt.'+fx(c,{fame:2})}]}),
 /* ===================== TRIỀU ĐÌNH ===================== */
-CD({id:'cd_01',t:'Người lạ theo dõi',job:['quan'],c:c=>c.lv>=3,age:[28,70],w:0.6,
+CD({id:'cd_01',ms:1,t:'Người lạ theo dõi',job:['quan'],c:c=>c.lv>=3,age:[28,70],w:0.6,
  x:c=>`Đã ba hôm, ${N(c)} thấy cùng một người đàn ông áo xám đứng ở đầu ngõ, lúc nào cũng nhìn về phía cổng nhà. Hắn không giống kẻ bán hàng rong.`,
  o:c=>[{l:'Cho người theo dõi lại',r:[{muu:0.7,tri:0.4},50],y:c=>'Biết hắn là người của một quan lớn trong phe khác, chỉ dò xét. Mình ghi nhớ.'+fx(c,{tam:1,risk:-5}),n:c=>'Bị phát hiện. Từ đó người ta càng nghi.'+fx(c,{risk:8,tam:-2})},
   {l:'Giữ nếp sống bình thường',f:c=>'Vài ngày sau người đó biến mất. Chưa biết là gì.'+fx(c,{risk:2})},
   pay('Mời người đó vào nhà, hỏi thẳng',10,{r:[{eq:0.8,khau:0.5},45],y:c=>'Hắn lúng túng rồi thú thật. Mình biết ai sai hắn đến.'+fx(c,{money:-m(10),risk:-3,fame:1}),n:c=>'Hắn bỏ chạy ngay trong đêm.'+fx(c,{money:-m(10),risk:6})})]}),
-CD({id:'cd_31',t:'Xin tập ấm cho con',job:['quan'],c:c=>c.lv>=4&&kidsOf(c).some(k=>G.age(k)>=8&&G.age(k)<=22),age:[30,75],
+CD({id:'cd_31',ms:1,t:'Xin tập ấm cho con',job:['quan'],c:c=>c.lv>=4&&kidsOf(c).some(k=>G.age(k)>=8&&G.age(k)<=22),age:[30,75],
  x:c=>{const k=kidsOf(c).find(k=>G.age(k)>=8&&G.age(k)<=22);return `Lệ triều cho con quan từ Tứ phẩm được tập ấm, vào Giám sinh hoặc nhận chức nhỏ không qua thi. ${N(c)} đang nhìn ${k?esc(k.given):'đứa con'} và nghĩ ngợi.`},
  o:c=>{const k=kidsOf(c).find(k=>G.age(k)>=8&&G.age(k)<=22);return [
   pay('Xin tập ấm cho con',50,{f:c=>{if(k)k.flags.am=1;return 'Con được vào Giám sinh. Thanh lưu hơi nhìn nghiêng, nhưng đường đi nhẹ nhàng hơn.'+fx(c,{money:-m(50),fame:-2,cfame:2})+(k?fx(k,{tam:3}):'')}}),

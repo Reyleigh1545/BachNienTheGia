@@ -9,8 +9,8 @@ const BASE={lw:['society','law'],gj:['jianghu','wandering'],lo:['society','outla
  pv:['dynasty','regent_prince'],cc:['dynasty','warlord'],nt:['dynasty','consort_clan'],ps:['economy','ruin'],tn:['society','annexation'],lc:['life','chaos'],dn:['economy','projects']};
 const add={};
 for(const f of files){const t=fs.readFileSync(path.join(dir,f),'utf8');
-  const re=/\b(?:id:'([a-z]+_[A-Za-z0-9_]+)'),?t:'([^']*)'([^\n]*)/g;let m;
-  while((m=re.exec(t))){const id=m[1],rest=m[3];if(have.has(id))continue;const pre=id.split('_')[0];if(!BASE[pre])continue;
+  const re=/\bid:'([a-z]+_[A-Za-z0-9_]+)'([^\n]{0,80}?)\bt:'([^']*)'([^\n]*)/g;let m;
+  while((m=re.exec(t))){const id=m[1],rest=m[2]+m[4];if(have.has(id))continue;const pre=id.split('_')[0];if(!BASE[pre])continue;
     const ky=/\bky:1/.test(rest)||/KN\(/.test(t.slice(Math.max(0,m.index-6),m.index));
     const q=/job:\['quan'\]/.test(rest)||/QD\(/.test(t.slice(Math.max(0,m.index-6),m.index));
     let [d,s]=BASE[pre];if(q){d='government';s='official_duty'}
