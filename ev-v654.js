@@ -16,7 +16,7 @@ const step=(id,path,t,x,opts)=>({id,t,k:K,fixed:1,x:(c,d)=>live(path)?x(A(d),d):
 return [
 {id:'gt_nha_chat',t:'Nhà đã chật',k:'Gia sự',fixed:1,
  x:c=>`Nhà chính giờ đông người quá. Chỗ ngủ, bếp núc, kho chứa đều bắt đầu thiếu. Vợ chồng trẻ chưa dám sinh thêm vì không còn chỗ, người già than ồn ào. Nếu muốn thêm người thì phải nâng nhà, hoặc cho con cháu ra ở riêng.`,
- o:c=>[{l:'Đã rõ, sẽ tính chuyện nâng nhà',f:c=>'Gia chủ ghi nhớ. Vào trang Gia tộc, mục nhà cửa, để nâng nhà hoặc lập chi mới.'+fx(c,{tam:1})}]},
+ o:c=>[{l:'Chia một chi mới ra ở riêng',f:c=>G.qt.autoSplit()},{l:'Đã rõ, sẽ tính chuyện nâng nhà',f:c=>'Gia chủ ghi nhớ. Vào trang Gia tộc, mục nhà cửa, để nâng nhà hoặc lập chi mới.'+fx(c,{tam:1})}]},
 
 /* ===================== Quyền thần: bước rẽ nhánh ===================== */
 step('ts_nh_q','quyen','Ba ngả đường',a=>`Bè cánh trong triều đã có, nhưng phải chọn thế dựa chính: ${N(a)} nên nắm lấy binh quyền trong tay các tướng, kết thân với sĩ phu để dựng danh nghĩa, hay dùng của cải mua chuộc quan lại và lòng dân kinh thành? Mỗi ngả đi một nẻo, và sẽ quyết định cách ra tay cuối cùng.`,a=>[
