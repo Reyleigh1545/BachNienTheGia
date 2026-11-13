@@ -93,7 +93,7 @@ A({id:'qh_tro_gioi_b',t:'Môn sinh đỗ đạt',k:'Môn sinh',
     {l:'Làm đúng phép, không nhận quà',f:c=>'Báo cáo trung thực.'+fx(c,{fame:8,liem:3})}]},
 /* triều đình */
 {id:'qk_phe_phai',t:'Đảng tranh',job:Q,rmin:3,once:1,c:()=>{const d=G.S().dyn;return !!d&&!d.cr&&!!d.heir&&!!d.heir.set&&!d.fixed},
- x:c=>{const d=G.S().dyn;const riv=c.flags.pheRiv=c.flags.pheRiv||G.mkGiven('nam');c.flags.pheK={n:d.n,heir:d.heir.n,riv};return `Trong triều chia hai phe: phe Thái tử ${d.heir.n} và phe Hoàng tử ${riv}. Cả hai đều cho người đến dò ý ${N(c)}.`},
+ x:c=>{const d=G.S().dyn;const F=G.fam.ens();const op=F.vuong.concat(F.tu).filter(p=>p.dead==null&&p.id!==d.heir.id&&p.age>=15)[0];const riv=c.flags.pheRiv=c.flags.pheRiv||(op?op.n:G.mkGiven('nam'));c.flags.pheK={n:d.n,heir:d.heir.n,riv};return `Trong triều chia hai phe: phe Thái tử ${d.heir.n} và phe Hoàng tử ${riv}. Cả hai đều cho người đến dò ý ${N(c)}.`},
  o:[{l:'Theo phe Thái tử',f:c=>{c.flags.phe='tt';return 'Được phe Thái tử nâng đỡ.'+fx(c,{fame:4})}},
     {l:'Theo phe hoàng tử kia',f:c=>{c.flags.phe='th';return 'Được phe ấy nâng đỡ.'+fx(c,{fame:4})}},
     {l:'Trung lập, chỉ trung với vua',r:[{eq:1},60],y:c=>{c.flags.phe='tl';return 'Giữ được mình.'+fx(c,{eq:1})},n:c=>{c.flags.phe='tl';return 'Cả hai phe đều ghét.'+fx(c,{tam:-6})}}]},

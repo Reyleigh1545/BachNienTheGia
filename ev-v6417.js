@@ -17,10 +17,10 @@ L.push(
 {id:'tt_tuyen_tu',t:'Lệnh tuyển tú',k:'Thời thế',fixed:1,
  x:c=>{const g=daughter();return `Triều đình ban lệnh tuyển tú khắp nơi.${g?` ${N(g)} vừa tuổi cập kê, tên đã có trong sổ của quan huyện.`:' Nhà mình không có con gái hợp tuổi, chỉ nghe người làng than khóc.'}`},
  o:c=>{const g=daughter();if(!g)return [{l:'Thở phào',f:()=>'Nhà mình không phải lo.'}];const v=m(15);return [
-  {l:`Dâng ${g.given} vào cung`,ax:{tv:1},f:c=>{g.left='vaocung';g.leftT=S().t;G.cf(8,'Có con gái vào cung');return `${N(g)} theo xe hoa vào cung. Sống chết, vinh nhục từ nay ở trong tường thành.`+fx(c,{fame:5,tam:-6})}},
+  {l:`Dâng ${g.given} vào cung`,ax:{tv:1},f:c=>{g.left='vaocung';g.leftT=S().t;g.flags=g.flags||{};G.later(c,'vp_1',R(3,6),{g:g.id});G.cf(8,'Có con gái vào cung');return `${N(g)} theo xe hoa vào cung. Sống chết, vinh nhục từ nay ở trong tường thành.`+fx(c,{fame:5,tam:-6})}},
   {l:`Lo lót để được miễn (${FM(v)})`,c:()=>G.money()>=v,vio:'trugian',f:c=>{S().money-=v;return 'Tên con gái được gạch khỏi sổ.'}},
   {l:`Gả vội ${g.given} cho xong`,ax:{rong:-1},f:c=>{const pt=G.tinh.partner(g);G.tinh.marry(g,pt);return `Đám cưới làm trong ba ngày. ${N(g)} về nhà chồng trước khi quan tới.`}},
-  {l:'Giấu con đi nơi khác',r:[{tri:0.8,eq:0.6},55],ax:{gan:1},y:c=>'Qua được đợt tuyển.',n:c=>{g.left='vaocung';g.leftT=S().t;return 'Bị phát giác. Con gái vẫn bị đưa đi, nhà còn bị phạt.'+fx(c,{money:-m(8),tam:-10})}}]}},
+  {l:'Giấu con đi nơi khác',r:[{tri:0.8,eq:0.6},55],ax:{gan:1},y:c=>'Qua được đợt tuyển.',n:c=>{g.left='vaocung';g.leftT=S().t;g.flags=g.flags||{};G.later(c,'vp_1',R(3,6),{g:g.id});return 'Bị phát giác. Con gái vẫn bị đưa đi, nhà còn bị phạt.'+fx(c,{money:-m(8),tam:-10})}}]}},
 {id:'tt_xay_cung',t:'Xây cung điện mới',k:'Thời thế',fixed:1,
  x:c=>`Vua ${emp()} cho xây cung điện mới. Mỗi nhà phải góp người đi phu hoặc nộp tiền thay.`,
  o:c=>{const p=manAt();const v=m(10);return [
@@ -57,7 +57,9 @@ L.push(
   {l:'Đóng cửa giữ nhà',ax:{gan:1},f:c=>{if(chance(0.4)){const r=G.ch.raid(1);return 'Dân loạn tràn vào làng.'+bestTxt(r)+deadTxt(r)}return 'Dân loạn đi qua, may mà không ghé.'}}]}}
 );
 /* ===================== Khủng hoảng kế vị ===================== */
-const crSide=(c,s)=>{const C=cr();if(!C)return '';C.ours=s;if(s!=='n'&&c.job==='quan')Q.join(c,C[s].f);return ''};
+const crSide=(c,s)=>{const C=cr();if(!C)return '';C.ours=s;if(s!=='n'&&c.job==='quan')Q.join(c,C[s].f);if(s!=='n'){const p=G.fam.person(C[s].id);if(p){p.met=1;p.rel=Math.min(100,(p.rel||0)+15)}}return ''};
+const crLog=k=>{const C=cr();if(C){C.log=C.log||[];C.log.push(k)}};const crHas=k=>{const C=cr();return !!(C&&C.log&&C.log.includes(k))};
+const vuongOf=()=>{const C=cr();return C?G.fam.person(C.b.id):null};
 L.push(
 {id:'tc_vua_benh',t:'Hoàng đế lâm bệnh',k:'Tranh ngôi',fixed:1,
  x:c=>{const C=cr();return C?`Vua ${emp()} lâm bệnh nặng mà chưa lập thái tử. ${crN('a')} được các đại thần thuộc Hoàng đảng ủng hộ. ${crN('b')} được phe Quyền thần nâng đỡ. ${C.kin==='anhem'?'Hai người là anh em ruột.':C.kin==='anhho'?'Hai người là anh em họ, ai cũng muốn ngôi báu.':C.kin==='chucau'?'Người chú và người cháu đều nhăm nhe ngai vàng.':''} Ai cũng biết rồi sẽ phải chọn.`:''},
@@ -68,12 +70,12 @@ L.push(
   {l:'Nhận vàng, đổi phe',vio:'trugian',ax:{thanh:-2,tv:1},f:c=>{crSide(c,o);C[o].pow+=5;return 'Nhà mình đổi phe.'+fx(c,{money:m(20),cor:6})}},
   {l:'Trả lễ, giữ lòng như cũ',ax:{thanh:1,ht:1},f:c=>'Người kia ra về, mặt khó đăm đăm.'+fx(c,{fame:2})}]}},
 {id:'tc_chieu_binh',t:'Thân vương chiêu binh',k:'Tranh ngôi',fixed:1,
- x:c=>`Có tin ${crN('b')} bí mật chiêu binh mãi mã ở đất phong.`,
+ x:c=>{const p=vuongOf();const land=p&&p.land&&G.provN?G.provN(p.land):'';return `Có tin ${crN('b')} bí mật chiêu binh mãi mã${land?' ở đất phong '+land:' ở đất phong'}. ${p&&p.td==='nghi'?'Triều đình vốn đã nghi ông ấy từ trước.':''}`},
  o:c=>{const C=cr();if(!C)return NO;const v=m(30);return C.ours==='b'?[
-  {l:`Góp tiền nuôi quân (${FM(v)})`,c:()=>G.money()>=v,ax:{tv:1},f:c=>{S().money-=v;C.b.pow+=8;C.act++;return 'Thân vương ghi nhớ nhà mình.'}},
-  {l:'Chỉ góp lời, không góp tiền',f:c=>'Giữ một chân ngoài cuộc.'}]:[
-  {l:'Tâu lên vua',ax:{gan:1,ht:1},f:c=>{C.b.pow-=10;if(C.ours==='a')C.act++;G.alive().filter(p=>G.inClan(p)&&p.job==='quan').forEach(p=>Q.add(p,{fav:4}));return 'Vua giận, sai người tra xét đất phong.'}},
-  {l:'Làm ngơ',ax:{diem:1},f:c=>'Chuyện của nhà trời, nhà mình không dính vào.'}]}},
+  {l:`Góp tiền nuôi quân (${FM(v)})`,c:()=>G.money()>=v,ax:{tv:1},f:c=>{S().money-=v;C.b.pow+=8;C.act++;crLog('gopquan');const p=vuongOf();if(p)p.rel=Math.min(100,(p.rel||0)+20);return 'Thân vương ghi nhớ nhà mình. Số quân ở đất phong thêm đáng kể.'}},
+  {l:'Chỉ góp lời, không góp tiền',f:c=>{crLog('goploi');return 'Giữ một chân ngoài cuộc.'}}]:[
+  {l:'Tâu lên vua',ax:{gan:1,ht:1},r:[{tri:0.7,eq:0.6,fame:0.4},60],y:c=>{C.b.pow-=12;if(C.ours==='a')C.act++;crLog('tau');const p=vuongOf();if(p){p.td='phan';p.rel=Math.max(-100,(p.rel||0)-30)}G.alive().filter(q=>G.inClan(q)&&q.job==='quan').forEach(q=>Q.add(q,{fav:5}));return 'Vua giận, sai người tra xét đất phong. Quân của thân vương bị tản bớt, ông ấy ghi tên người tâu vào sổ hận.'+fx(c,{fame:6})},n:c=>{C.b.pow+=4;crLog('tau_hut');const p=vuongOf();if(p)p.rel=Math.max(-100,(p.rel||0)-15);return 'Lời tâu bị coi là vu cáo: vua tin thân vương hơn. Thân vương biết ai là người tâu.'+fx(c,{risk:12,fame:-4})}},
+  {l:'Làm ngơ',ax:{diem:1},f:c=>{crLog('lamngo');return 'Chuyện của nhà trời, nhà mình không dính vào.'}}]}},
 {id:'tc_lam_chung',t:'Làm chứng cho một hoàng tử',k:'Tranh ngôi',fixed:1,
  x:c=>`Trong triều đang tra một vụ có dính tới ${crN('a')}. Cả hai phe đều muốn ${N(c)} đứng ra làm chứng.`,
  o:c=>{const C=cr();if(!C)return NO;return [
@@ -81,11 +83,11 @@ L.push(
   {l:`Làm chứng có lợi cho ${C.b.n}`,ax:{tv:1},f:c=>{C.a.pow-=6;C.b.pow+=4;if(C.ours==='b')C.act++;else C.ours=C.ours==='n'?'b':C.ours;return 'Lời chứng làm hoàng tử lao đao.'+fx(c,{cor:2})}},
   {l:'Cáo bệnh, không ra làm chứng',ax:{diem:1},f:c=>'Cả hai phe đều không vui.'}]}},
 {id:'tc_phe_lap',t:'Lời bàn phế lập',k:'Tranh ngôi',fixed:1,
- x:c=>`Một đại thần dâng sớ: ${crN('a')} không đủ đức, xin lập ${crN('b')}. Cả triều nín thở chờ các quan lên tiếng.`,
+ x:c=>`${crHas('tau')?'Sau vụ tra xét đất phong, thế của thân vương đã yếu. ':crHas('gopquan')?'Quân ở đất phong đã đông đủ, phe thân vương cứng giọng hơn. ':''}Một đại thần dâng sớ: ${crN('a')} không đủ đức, xin lập ${crN('b')}. Cả triều nín thở chờ các quan lên tiếng.`,
  o:c=>{const C=cr();if(!C)return NO;return [
   {l:'Ủng hộ lời bàn',ax:{tv:1},f:c=>{C.b.pow+=8;if(C.ours==='b')C.act++;return 'Thêm một chữ ký vào tờ sớ.'}},
   {l:'Phản đối',ax:{ht:1,gan:1},f:c=>{C.a.pow+=8;if(C.ours==='a')C.act++;return 'Lời phản đối vang giữa triều.'}},
-  {l:'Đứng ra hòa giải hai bên',r:[{eq:1,tri:0.8,fame:0.3},78],ax:{rong:1,diem:1},y:c=>{const d=V.d();d.heir={set:true,n:C.a.n.replace(/^(Hoàng tử|Hoàng tôn) /,''),age:R(18,30)};d.cr=null;Q.log('Hòa giải tranh ngôi',`${G.nameOf(c)} đứng ra hòa giải, ${C.a.n} được lập làm thái tử, ${C.b.n} được giữ đất phong.`);return 'Hai bên chịu nhường. Vua lập thái tử, thân vương giữ đất phong. Một cuộc đổ máu được tránh.'+fx(c,{fame:25,cfame:15,fav:15})},n:c=>'Lời hòa giải rơi vào khoảng không. Cả hai phe đều nghi mình.'+fx(c,{risk:10})}]}},
+  {l:'Đứng ra hòa giải hai bên',r:[{eq:1,tri:0.8,fame:0.3},78],ax:{rong:1,diem:1},y:c=>{const d=V.d();const pa=G.fam.person(C.a.id),pb=G.fam.person(C.b.id);if(pa){pa.st='heir';pa.met=1;pa.rel=Math.min(100,(pa.rel||0)+25)}if(pb){pb.met=1;pb.rel=Math.min(100,(pb.rel||0)+20);if(pb.role==='tu'){const F=G.fam.ens();F.tu=F.tu.filter(x=>x.id!==pb.id);pb.role='vuong';pb.st='vuong';pb.td='trung';pb.land=pb.land||null;F.vuong.push(pb)}else pb.td='trung'}d.heir={set:true,n:pa?pa.n:C.a.n.replace(/^(Hoàng tử|Hoàng tôn) /,''),age:pa?pa.age:R(18,30),id:pa&&pa.id};d.cr=null;Q.log('Hòa giải tranh ngôi',`${G.nameOf(c)} đứng ra hòa giải, ${C.a.n} được lập làm thái tử, ${C.b.n} được giữ đất phong.`);return 'Hai bên chịu nhường. Vua lập thái tử, thân vương giữ đất phong. Một cuộc đổ máu được tránh.'+fx(c,{fame:25,cfame:15,fav:15})},n:c=>'Lời hòa giải rơi vào khoảng không. Cả hai phe đều nghi mình.'+fx(c,{risk:10})}]}},
 {id:'tc_danh_trao',t:'Chiếu thư bị đánh tráo',k:'Tranh ngôi',fixed:1,
  x:c=>`${N(c)} biết được một chuyện động trời: chiếu thư lập người nối ngôi đã bị người của ${crN('b')} đánh tráo.`,
  o:c=>{const C=cr();if(!C)return NO;return [
