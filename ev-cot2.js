@@ -61,8 +61,8 @@ A({id:'bd_c',t:'Hang báu',k:'Tàng bảo đồ',
     {l:'Báo quan, nộp kho báu',f:c=>'Được triều đình khen thưởng.'+fx(c,{money:m(R(15,30)),fame:R(20,30)})}]}),
 
 /* ========== GIẢ THIÊN KIM: thân thế bị tráo ========== */
-ST({id:'tk_a',t:'Bà vú già trở về',age:[14,24],c:c=>!c.inLaw&&!c.adopted&&c.parents.length>0,w:0.3,
- x:c=>`Một bà vú già hấp hối tìm đến, thú nhận năm xưa đã tráo ${N(c)} với con một nhà ${pick(['hầu phủ','phú thương','quan lớn'])} trong đêm hỗn loạn. Người thân thật của ${N(c)} đang ở kinh thành.`,
+ST({id:'tk_a',t:'Bà vú già trở về',age:[14,24],c:c=>!c.inLaw&&!!c.adopted,w:0.3,
+ x:c=>`Một bà vú già hấp hối tìm đến nhà ${N(c)}, thú nhận năm xưa chính bà đã gửi đứa trẻ này đi trong đêm hỗn loạn của một ${pick(['hầu phủ','nhà phú thương','nhà quan lớn'])}. Cha mẹ ruột của ${N(c)} vẫn còn, đang ở kinh thành.`,
  o:[{l:'Lên kinh tìm người thân thật',f:c=>'Mang theo chiếc khóa bạc làm tín vật.'+fx(c,{tam:-4})+nx(c,'tk_b',3,8)},
     {l:'Ơn sinh không bằng ơn dưỡng, ở lại',f:c=>'Cha mẹ nuôi ôm chầm lấy, khóc nức nở.'+fx(c,{eq:3,tam:6,on:4})}]}),
 A({id:'tk_b',t:'Cửa phủ cao vời',k:'Thân thế',
