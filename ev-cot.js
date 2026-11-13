@@ -182,7 +182,7 @@ A({id:'c11_b',t:'Kẻ truy đuổi',
     {l:'Cầm đao chặn cửa',c:(c,d)=>d.a==='giau',r:[{vo:1},70],y:c=>'Đánh lui bọn chúng!'+fx(c,{fame:5})+nx(c,'c11_c',12,30,{r:'cuu'}),n:c=>fx(c,{suc:-R(30,40),hpMax:-R(4,7)})+nx(c,'c11_c',12,30,{r:'cuu'})},
     {l:'Ra đón kiệu',c:(c,d)=>d.a==='chi',f:c=>'Người trên kiệu nhận ra ân nhân, sai người ban thưởng.'+fx(c,{money:m(60),fame:15})}]}),
 A({id:'c11_c',t:'Chiếu chỉ từ kinh thành',
- x:'Sứ giả mang chiếu đến: người được cứu đêm ấy chính là Thái tử, nay đã lên ngôi.',
+ x:'Sứ giả mang chiếu đến: người được cứu đêm ấy chính là một vị hoàng tử bị truy sát năm nào, nay đã vững chỗ đứng trong triều.',
  o:[{l:'Tiếp chỉ',f:c=>{G.grantTitle(c,2);return 'Được ban vàng.'+G.tuocNote()+fx(c,{money:m(300),fame:R(80,120),tam:15})}}]}),
 /* ========== 12. NGHỆ NHÂN: KHÚC NHẠC THẤT TRUYỀN ========== */
 ST({id:'c12_khuc_nhac',t:'Khúc nhạc thất truyền',job:['nghe'],st:1,
