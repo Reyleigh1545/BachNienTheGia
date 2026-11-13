@@ -137,7 +137,7 @@ const ev=[
  o:c=>[{l:'Siết kỷ luật, tập lại mỗi sáng',r:[{vo:1,eq:0.4},50],y:c=>'Đồn lại có sinh khí.'+fx(c,{merit:R(2,5),fame:3}),n:c=>'Lính oán thầm.'+fx(c,{tam:-4})},
   {l:'Cho lính làm thêm nghề phụ',f:c=>'Lính có thêm thu nhập, dân cũng quý.'+fx(c,{money:m(2),fame:1})}]},
 /* ================= NHÀ VUA VÀ TRIỀU ĐẠI ================= */
-{id:'v64_dai_xa',t:'Đại xá đầu triều vua mới',k:'Triều đình',w:5,
+{id:'v64_dai_xa',t:'Đại xá đầu triều vua mới',k:'Triều đình',w:5,c:()=>{const d=G.S().dyn;return !!d&&d.newT>=0&&G.S().t-d.newT<=18},
  x:c=>`Vua mới ${esc(emp())} lên ngôi, ban chiếu đại xá thiên hạ, miễn thuế nửa năm. Cả làng mở hội ăn mừng.`,
  o:c=>[{l:'Cùng dân làng mừng hội',f:c=>'Lòng dân hân hoan.'+fx(c,{tam:6,fame:3,money:-m(1)})},
   {l:'Nhân dịp dâng biểu chúc mừng',f:c=>'Tờ biểu ghi tên nhà mình vào sổ triều.'+fx(c,{fame:5,cfame:2})}]},

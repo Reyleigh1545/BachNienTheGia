@@ -125,10 +125,11 @@ return [
   {l:'Đưa vợ con theo',ax:{hd:1},f:c=>{[s,...kids].forEach(p=>{p.away={type:'follow',of:w.id,p:null}});return `${esc(s.given)}${kids.length?' cùng các con':''} theo ${N(w)} vào trại gia binh.`+fx(w,{tam:8})}},
   {l:'Để vợ con ở quê',f:c=>`${esc(s.given)} ở lại quê nhà, chờ ngày chồng về phép.`+fx(w,{tam:-4})}]}},
 {id:'lq_phep',t:'Lính về phép',k:'Quân ngũ',fixed:1,
- x:(c,d)=>{const w=P(d.who);return w?`${N(w)} được về phép một tháng.${!spIn(w)&&G.age(w)>=18?' Nhà mình đang tính chuyện vợ con cho người ấy.':''}`:''},
+ x:(c,d)=>{const w=P(d.who);return w?`${N(w)} được về phép một tháng.${!spIn(w)&&G.age(w)>=18?(w.flags.dinhhon?' Hôn sự gia tộc định sẵn, nhân dịp này về cưới.':(w.tinh&&w.tinh.pt&&!w.tinh.don&&w.tinh.st>=1?' Người trong lòng đang đợi, xin phép về cưới.':'')):''}`:''},
  o:(c,d)=>{const w=P(d.who);if(!w||!G.inClan(w)||!(w.away&&w.away.type==='army'))return [{l:'Cho qua',f:()=>''}];const s=spIn(w);const o=[];
-  if(!s&&G.age(w)>=18){o.push({l:'Nhân dịp phép cưới vợ, cưới xong đưa vợ theo doanh trại',f:c=>{const sp=G.mkSpouse(w,false);if(sp){sp.away={type:'follow',of:w.id,p:null}}w.flags.phepT=S().t;return `Đám cưới vội trong tháng phép. Vợ mới theo ${N(w)} ra trại.`+fx(w,{tam:12})}},
-    {l:'Nhân dịp phép cưới vợ, vợ ở lại quê nhà',f:c=>{G.mkSpouse(w,false);w.flags.phepT=S().t;return `Cưới xong được nửa tháng, ${N(w)} lại lên đường. Vợ mới ở nhà chờ.`+fx(w,{tam:8})}})}
+  const hon=!s&&G.age(w)>=18&&(!!w.flags.dinhhon||!!(w.tinh&&w.tinh.pt&&!w.tinh.don&&w.tinh.st>=1));const mk=()=>{w.flags.dinhhon=0;if(w.tinh&&w.tinh.pt&&!w.tinh.don&&w.tinh.st>=1){const pt=w.tinh.pt;G.romMarry(w,pt);return G.spouseOf(w)}return G.mkSpouse(w,false)};
+  if(hon){o.push({l:'Nhân dịp phép cưới vợ, cưới xong đưa vợ theo doanh trại',f:c=>{const sp=mk();if(sp){sp.away={type:'follow',of:w.id,p:null}}w.flags.phepT=S().t;return `Đám cưới vội trong tháng phép. Vợ mới theo ${N(w)} ra trại.`+fx(w,{tam:12})}},
+    {l:'Nhân dịp phép cưới vợ, vợ ở lại quê nhà',f:c=>{mk();w.flags.phepT=S().t;return `Cưới xong được nửa tháng, ${N(w)} lại lên đường. Vợ mới ở nhà chờ.`+fx(w,{tam:8})}})}
   if(s&&!s.away){o.push({l:'Vợ chồng đoàn tụ một tháng',f:c=>{w.flags.phepT=S().t;return 'Một tháng ngắn ngủi mà quý.'+fx(w,{tam:10})+fx(s,{tam:8})}},
     {l:'Lần này đưa vợ con theo luôn',f:c=>{const kids=G.kidsOf(w).filter(k=>G.inClan(k)&&G.age(k)<16&&!k.away);[s,...kids].forEach(p=>{p.away={type:'follow',of:w.id,p:null}});w.flags.phepT=S().t;return 'Cả nhà nhỏ theo người lính ra trại.'+fx(w,{tam:8})}})}
   o.push({l:'Về thăm nhà vài hôm rồi đi',f:c=>{w.flags.phepT=S().t;return 'Cơm nhà, mấy hôm là hết phép.'+fx(w,{tam:5})}});return o}},

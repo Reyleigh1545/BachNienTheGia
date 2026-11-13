@@ -495,7 +495,7 @@ return [
     {l:'Muối đủ ăn',f:c=>fx(c,{tam:2})}]},
 /* ===================== HOÀNG ĐẾ ===================== */
 {id:'v_trieu_chinh',t:'Triều chính',job:['vua'],w:2,
- x:c=>`Quần thần tâu về ${pick(['nạn đói phía Bắc','giặc biển phía Nam','quốc khố thiếu hụt','tranh chấp ngôi thái tử'])}.`,
+ x:c=>`Quần thần tâu về ${pick(['nạn đói phía Bắc','giặc biển phía Nam','quốc khố thiếu hụt',(()=>{const d=G.S().dyn;return d&&d.heir&&d.heir.set?'ngôi thái tử có người dòm ngó':'việc chưa lập thái tử'})()])}.`,
  o:[{l:'Quyết đoán xử lý',r:[{tri:1,eq:0.6},80],y:c=>fx(c,{fame:R(20,40),tam:4}),n:c=>fx(c,{fame:-20,tam:-8})},
     {l:'Giao cho đại thần',f:c=>fx(c,{tam:2})}]}
 ];});
