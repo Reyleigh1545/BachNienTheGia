@@ -65,24 +65,24 @@ HV({id:'hv_quoc_cong_que',t:'Quốc công ghé quê',job:null,head:1,age:[28,85]
 
 /* ===================== THƯỢNG QUAN, ĐỒNG LIÊU (người thật ở ghế) ===================== */
 TQ({id:'tq_yen_thuong_quan',t:'Thượng quan mở tiệc',age:[24,75],c:c=>c.seat&&c.lv>=1&&!!nbOf(c),w:1,
- x:c=>{const b=nbOf(c);return `${esc(b.st.n)}, ${b.st.age} tuổi, giữ ${esc(G.seatName(b.key))}, mở tiệc mời các quan thuộc hạ. ${b.st.tc==='tham lam'?'Ai cũng biết ông ta thích quà.':b.st.tc==='liêm khiết'?'Ông ta nổi tiếng thanh liêm, tiệc đạm bạc.':b.st.tc==='xu nịnh'?'Ông ta nói chuyện mềm như nước.':'Ông ta ít nói, quan sát nhiều.'}`},
+ x:c=>{const b=nbOf(c);if(!b)return 'Một ngày bình thường ở nha môn.';return `${esc(b.st.n)}, ${b.st.age} tuổi, giữ ${esc(G.seatName(b.key))}, mở tiệc mời các quan thuộc hạ. ${b.st.tc==='tham lam'?'Ai cũng biết ông ta thích quà.':b.st.tc==='liêm khiết'?'Ông ta nổi tiếng thanh liêm, tiệc đạm bạc.':b.st.tc==='xu nịnh'?'Ông ta nói chuyện mềm như nước.':'Ông ta ít nói, quan sát nhiều.'}`},
  o:c=>{const b=nbOf(c);if(!b)return [{l:'Đến dự',f:c=>''}];const bad=b.st.tc==='liêm khiết';return [
   pay('Dự tiệc, dâng quà hậu',12,{f:c=>{G.npc.add(b.st,'rel',bad?-12:15);return (bad?`${esc(b.st.n)} cau mày, trả quà. Nhà mình mang tiếng nịnh.`:`${esc(b.st.n)} nhận quà, mỉm cười. Mối quan hệ gần thêm một bước.`)+fx(c,{money:-m(12),liem:bad?0:-4,fame:bad?-3:2})}}),
   {l:'Dự tiệc, quà nhẹ đúng lễ',f:c=>{G.npc.add(b.st,'rel',bad?10:5);return `Một buổi tiệc xã giao. ${esc(b.st.n)} ghi nhận nhà mình đúng mực.`+fx(c,{fame:2})}},
   {l:'Cáo bận, không dự',f:c=>{G.npc.add(b.st,'rel',-8);return `${esc(b.st.n)} để ý ai vắng mặt.`}}]}}),
 TQ({id:'tq_xin_bao_lanh',t:'Xin thượng quan tiến cử',age:[26,75],c:c=>c.seat&&c.lv>=2&&!!nbOf(c)&&nbOf(c).st.rel>=15,w:1.4,
- x:c=>{const b=nbOf(c);return `${esc(b.st.n)} ${b.st.rel>=40?'vốn quý mến':'có thiện cảm với'} ${N(c)}. Nghe tin có một đợt điều động chức vụ, ${N(c)} thấy đây là dịp nhờ ông ta nói giúp một lời.`},
+ x:c=>{const b=nbOf(c);if(!b)return 'Một ngày bình thường ở nha môn.';return `${esc(b.st.n)} ${b.st.rel>=40?'vốn quý mến':'có thiện cảm với'} ${N(c)}. Nghe tin có một đợt điều động chức vụ, ${N(c)} thấy đây là dịp nhờ ông ta nói giúp một lời.`},
  o:c=>{const b=nbOf(c);if(!b)return [{l:'Thôi',f:c=>''}];const cm=G.npc.cmp(c,b.st);return [
   {l:`Nhờ ${b.st.n} tiến cử`,r:[{eq:1,khau:0.6,fame:0.4},clampN(40+b.st.rel/2+(cm.dt>0?8:0))],y:c=>{G.npc.add(b.st,'rel',6);c.flags.noPromoUntil=0;G.qt.add(c,{fav:8});return `${esc(b.st.n)} viết một lá thư tiến cử đúng lúc. Đường thăng tiến thông hơn.`+fx(c,{fame:4})},n:c=>{G.npc.add(b.st,'rel',-4);return `${esc(b.st.n)} hứa hẹn rồi quên. Lá thư không bao giờ đến nơi.`+fx(c,{tam:-4})}},
   {l:'Tự mình chứng minh, không nhờ vả',f:c=>{G.npc.add(b.st,'rel',3);return `${esc(b.st.n)} nghe nói, thầm gật đầu.`+fx(c,{fame:2,eq:1})}}]}}),
 TQ({id:'tq_chen_ep',t:'Bị thượng quan làm khó',age:[24,75],c:c=>c.seat&&c.lv>=1&&!!nbOf(c)&&(nbOf(c).st.oan>=20||(nbOf(c).st.tc==='tham lam'&&nbOf(c).st.rel<10)||G.mem.has('oan_thay:'+c.seat)),w:1.5,
- x:c=>{const b=nbOf(c);return `${esc(b.st.n)} ${b.st.oan>=20?'vốn có oán với nhà mình':'không được quà như ý'}, nay giao cho ${N(c)} một việc rất khó, hạn gấp, ai cũng biết là để làm khó.`},
+ x:c=>{const b=nbOf(c);if(!b)return 'Một ngày bình thường ở nha môn.';return `${esc(b.st.n)} ${b.st.oan>=20?'vốn có oán với nhà mình':'không được quà như ý'}, nay giao cho ${N(c)} một việc rất khó, hạn gấp, ai cũng biết là để làm khó.`},
  o:c=>{const b=nbOf(c);if(!b)return [{l:'Nhận việc',f:c=>''}];return [
   {l:'Nhận việc, làm hết sức',r:[{tri:1,eq:0.6,ql:0.5},52],y:c=>{G.npc.add(b.st,'oan',-6);G.npc.add(b.st,'rel',6);return `Việc xong đúng hạn. ${esc(b.st.n)} không ngờ, đành ghi công.`+fx(c,{fame:5,m:2})},n:c=>{G.qt.add(c,{risk:8});return 'Việc không kịp hạn, bị ghi lỗi trước mặt nha môn.'+fx(c,{fame:-4,tam:-6})}},
   {l:'Báo lên cấp trên nữa về việc bị làm khó',r:[{eq:1,khau:0.7},45],y:c=>{G.npc.add(b.st,'oan',10);return 'Cấp trên xét lại, thu hồi việc ấy. Nhưng thượng quan ghi thêm một món oán.'+fx(c,{fame:3})},n:c=>{G.npc.add(b.st,'oan',12);G.qt.add(c,{risk:10});return 'Cấp trên bênh thuộc hạ. Nhà mình mang tiếng bới lông tìm vết.'+fx(c,{fame:-5,tam:-5})}},
   pay('Dâng lễ để việc được nới tay',14,{f:c=>{G.npc.add(b.st,'oan',-12);return `${esc(b.st.n)} nhận lễ, nới hạn. Việc êm.`+fx(c,{money:-m(14),liem:-5})}})]}}),
 TQ({id:'tq_tranh_cong',t:'Đồng liêu tranh công',age:[24,70],c:c=>c.seat&&c.lv>=1&&!!peerOf(c),w:1,
- x:c=>{const b=peerOf(c);return `Một việc vừa xong, ${esc(b.st.n)} ở nha môn bên cạnh tuyên bố ông ta là người làm chính. Tờ trình lên trên chưa có tên ${N(c)}.`},
+ x:c=>{const b=peerOf(c);if(!b)return 'Một ngày bình thường ở nha môn.';return `Một việc vừa xong, ${esc(b.st.n)} ở nha môn bên cạnh tuyên bố ông ta là người làm chính. Tờ trình lên trên chưa có tên ${N(c)}.`},
  o:c=>{const b=peerOf(c);if(!b)return [{l:'Bỏ qua',f:c=>''}];return [
   {l:'Trình bày chứng cứ công trạng của mình',r:[{tri:1,eq:0.6},55],y:c=>{G.npc.add(b.st,'oan',8);c.cong=(c.cong||0)+15;return `Giấy tờ chứng minh đúng. Công được ghi cho mình, ${esc(b.st.n)} mất mặt.`+fx(c,{fame:5})},n:c=>{G.npc.add(b.st,'oan',6);return 'Chứng cứ thiếu một mảnh. Công về tay người khác.'+fx(c,{tam:-5})}},
   {l:'Nhường công, giữ hòa khí',f:c=>{G.npc.add(b.st,'rel',12);return `${esc(b.st.n)} cảm kích, nhớ ơn.`+fx(c,{tam:-2,eq:1})}}]}}),
@@ -92,7 +92,7 @@ TQ({id:'tq_hac_toi_nguoc',t:'Bị hặc tội ngược',age:[26,75],c:c=>c.seat&
   pay('Nhờ người trong triều nói giúp',20,{r:[{khau:1,eq:0.6},58],y:c=>{G.mem.clear('oan_thay:'+c.seat);return 'Có người đứng ra bảo lãnh. Chuyện lắng.'+fx(c,{money:-m(20)})},n:c=>{G.qt.add(c,{risk:10});return 'Tiền đi, người bảo lãnh nhận nhưng không nói gì.'+fx(c,{money:-m(20),tam:-5})}}),
   {l:'Xin từ chức tránh đòn',f:c=>{G.mem.clear('oan_thay:'+c.seat);return 'Dâng đơn xin về. Người ta thôi truy đuổi.'+fx(c,{fame:-8})}}]}),
 TQ({id:'tq_ket_nghia',t:'Kết nghĩa với đồng liêu',age:[26,65],c:c=>c.seat&&c.lv>=2&&!!peerOf(c)&&peerOf(c).st.rel>=10,w:0.8,pcd:96,
- x:c=>{const b=peerOf(c);return `${esc(b.st.n)}, ${b.st.age} tuổi, giữ ${esc(G.seatName(b.key))}, hay tìm ${N(c)} bàn chuyện. Hai người hợp tính. Ông ta đề nghị kết nghĩa anh em.`},
+ x:c=>{const b=peerOf(c);if(!b)return 'Một ngày bình thường ở nha môn.';return `${esc(b.st.n)}, ${b.st.age} tuổi, giữ ${esc(G.seatName(b.key))}, hay tìm ${N(c)} bàn chuyện. Hai người hợp tính. Ông ta đề nghị kết nghĩa anh em.`},
  o:c=>{const b=peerOf(c);if(!b)return [{l:'Từ tạ',f:c=>''}];return [
   {l:'Nhận lời, làm lễ kết nghĩa',f:c=>{G.npc.add(b.st,'rel',30);return `Hai người trao thiếp, uống rượu thề. ${esc(b.st.n)} từ nay là chỗ nhờ cậy, và cũng là người nhà mình phải bảo vệ.`+fx(c,{fame:3,tam:5})}},
   {l:'Từ tạ khéo, chỉ làm bạn',f:c=>{G.npc.add(b.st,'rel',6);return 'Hai bên vẫn qua lại, không ràng buộc.'}}]}}),

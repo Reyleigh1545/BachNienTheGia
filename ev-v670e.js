@@ -243,9 +243,9 @@ function pay0(l,v,o){return Object.assign({l:`${l} (${FM(m(v))})`,c:()=>G.money(
 const READY=(c,a)=>a.ch===5&&(H.sc()>=0.38||S().t-(a.fl.t5||S().t)>=36);
 const Z0=E('pm_z0','Thời cơ đã chín',c=>`Nhìn lại thế trận, nhà ${N(c)} hiểu mình đã đi đến cuối đường. Những gì có thể thu thập đã thu thập, những người có thể kéo đã kéo. Phía bên kia, ${KF()} cũng đã sẵn sàng. Đây là lúc phải quyết, và quyết xong thì không rút lại.`,
  c=>{const go=F('Đã đến lúc, ra tay',{t:'Nhà mình lấy hết can đảm. Những ngày sắp tới sẽ quyết định tất cả.',then:()=>{const a=arc();a.ch=6;a.fl.t6=S().t;return ''}});
-   const late=S().t-(arc().fl.t5||S().t)>=72;
+   const late=S().t-(arc().fl.t5||S().t)>=48;
    return late?[go]:[go,F('Chờ thêm một chút',{t:'Nhà mình dừng, lòng không yên.',u:{ky:3}})]},
- {ch:5,vw:20,vonce:false,vcd:12,vc:READY});
+ {ch:5,vw:20,vonce:false,vcd:24,vc:READY});
 /* mỗi đòn quyết định cộng hoặc trừ vào chênh lệch thế trận rồi tính ra cái kết */
 function pickEnd(bonus){const a=arc();const d=H.sc()-H.kp()+(Math.random()-0.5)*0.30+bonus;
   if(a.lock.br==='H'&&a.fl.sai&&d>-0.12)return d>0.1&&chance(0.3)?'E1':'E5';
@@ -273,6 +273,8 @@ function applyEnd(id){const a=arc();if(!a||a.end)return '';const hd=G.head();con
   else if(id==='E7'){G.qt.sentence(hd,5,'mưu nghịch')}
   else if(id==='E8'){nq.forEach(p=>G.qt.dismiss(p,'bỏ xứ'));s.money=Math.round(s.money*0.4);s.farm.own=Math.round(s.farm.own*0.5)}
   G.arc.end('pm',id);if(id==='E8')arc().q.until=s.t+360;
+  /* khép được ân oán (E1 đến E5): mỗi người làm quan trong nhà được thêm một bậc */
+  if(['E1','E2','E3','E4','E5'].includes(id)){let n=0;G.alive().filter(p=>G.inClan(p)&&p.job==='quan'&&p.lv<8).forEach(p=>{fx(p,{lv:1});n++});if(n)note+=` Triều đình thưởng công: ${n} người làm quan trong nhà được thăng thêm một bậc.`}
   G.arc.log('pm','Ân oán khép lại: '+id);
   return `<p class="muted">${ENDT[id]}${note}</p>`}
 const fight=(c,bonus,pre)=>pre+applyEnd(pickEnd(bonus));
