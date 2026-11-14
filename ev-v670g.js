@@ -25,7 +25,7 @@ HD({id:'tl_thong_gia_hau',t:'Nhà thông gia nhớ lễ cưới',c:()=>G.mem.has
   {l:'Cảm tạ, không làm chung',f:c=>{G.mem.clear('cuoi_hau');return 'Hai nhà giữ tình thân, không ràng buộc.'+fx(c,{tam:2})}}]}),
 {id:'mk_mach_nuoc',t:'Môn khách mách nước',k:'Dự án',tags:{},fixed:1,ms:1,head:1,
  x:c=>{const n=G.proj.n('monkhach');return `Trong số ${n} môn khách, có người nghe được một mối làm ăn sắp thành: một vụ ${pick(['gom hàng trước mùa','mua lại kho thóc bị vỡ nợ','nhận bao một công trình của huyện','đón đầu lệnh cấm sắp ban'])}. Ông ta xin phép nhà bỏ vốn.`},
- o:c=>{const n=G.proj.n('monkhach');const p=Math.min(80,50+n*1.5);return [
-  {l:`Bỏ vốn theo lời mách (${FM(m(10))})`,c:rich(10),r:[{tri:0.6,khau:0.6,eq:0.3},p],y:c=>'Mối làm ăn thành như lời môn khách. Lãi chia rõ ràng.'+fx(c,{money:m(30)-m(10)}),n:c=>'Mối làm ăn đổ vỡ giữa chừng. Vốn mất, môn khách xin lỗi.'+fx(c,{money:-m(10)})},
+ o:c=>{const n=G.proj.n('monkhach');const p=Math.min(85,55+n*1.5);return [
+  {l:`Bỏ vốn theo lời mách (${FM(m(10))})`,c:rich(10),r:[{tri:0.6,khau:0.6,eq:0.3},p],y:c=>{G.proj.led('monkhach','in',m(80));return 'Mối làm ăn thành như lời môn khách. Lãi chia rõ ràng.'+fx(c,{money:m(80)})},n:c=>{G.proj.led('monkhach','out',m(10));return 'Mối làm ăn đổ vỡ giữa chừng. Vốn mất, môn khách xin lỗi.'+fx(c,{money:-m(10)})}},
   {l:'Nghe rồi thôi',f:c=>'Nhà không động vốn.'}]}}
 ];});

@@ -74,21 +74,18 @@ D.LAW=[
  {id:'muu_phan',n:'Mưu phản',thien:'Danh lệ',lv:5,gr:3,tc:1}];
 /* ---------- dự án gia nghiệp: v = cỡ việc (thang CHI), mo = số tháng xây, up = phí duy trì mỗi tháng (cỡ việc), tier = bậc tối thiểu ---------- */
 D.PROJ=[
- {id:'tuduong',n:'Từ đường lớn',v:150,mo:12,up:2,tier:3,d:'Danh vọng gia tộc tăng mỗi năm, nhà hòa thuận hơn.'},
- {id:'nghiatrang',n:'Nghĩa trang gia tộc',v:120,mo:8,up:1,tier:2,d:'Giảm một nửa tiền tang lễ, con cháu hiếu hơn.'},
- {id:'nghiadien',n:'Nghĩa điền',v:250,mo:6,up:3,tier:3,need:'farm',d:'Mỗi năm thêm danh vọng và tiếng nhân đức, vùng quanh bớt đói nghèo.'},
- {id:'nghiathuc',n:'Nghĩa thục',v:200,mo:10,up:2,tier:3,need:'teacher',d:'Trẻ trong vùng được học. Mỗi năm thêm danh vọng, thỉnh thoảng có học trò xuất sắc.'},
- {id:'tangthu',n:'Tàng thư lầu',v:300,mo:14,up:2,tier:4,d:'Con cháu học nhanh hơn một chút, có thêm cơ hội gặp sách quý.'},
- {id:'khothoc',sc:{u:'kho',n0:1,min:1,max:5,step:1},n:'Kho thóc dự trữ',v:180,mo:6,up:2,tier:2,d:'Gặp thiên tai, dịch bệnh hay loạn thì mở kho phát chẩn: tốn ít, tiếng lớn.'},
- {id:'caudap',n:'Cầu, đê, đường làng',v:400,mo:12,up:1,tier:3,d:'Danh vọng và quan hệ với quan địa phương tăng, buôn bán thuận hơn.'},
- {id:'thuyenbuon',sc:{u:'thuyền',n0:2,min:1,max:12,step:1},n:'Đội thuyền buôn',v:350,mo:9,up:5,tier:4,d:'Mỗi năm thêm khoản thu từ các chuyến buôn, hòa vốn khoảng mười năm, có rủi ro bão.'},
+ {id:'nghiatrang',n:'Nghĩa trang gia tộc',v:120,mo:8,up:0.5,tier:2,d:'Giảm một nửa tiền tang lễ, con cháu hiếu hơn.'},
+ {id:'nghiathuc',n:'Nghĩa thục',v:200,mo:10,up:1.5,tier:3,need:'teacher',d:'Trẻ trong vùng được học. Mỗi năm thêm danh vọng, thỉnh thoảng có học trò xuất sắc.'},
+ {id:'tangthu',n:'Tàng thư lầu',v:300,mo:14,up:1.5,tier:4,d:'Con cháu học nhanh hơn một chút, có thêm cơ hội gặp sách quý.'},
+ {id:'khothoc',sc:{u:'kho',n0:1,min:1,max:5,step:1},n:'Kho thóc dự trữ',v:180,mo:6,up:1.5,tier:2,d:'Gặp thiên tai, dịch bệnh hay loạn thì mở kho phát chẩn: tốn ít, tiếng lớn.'},
+ {id:'thuyenbuon',sc:{u:'thuyền',n0:2,min:1,max:12,step:1},n:'Đội thuyền buôn',v:350,mo:9,up:4,tier:4,d:'Mỗi năm thêm khoản thu từ các chuyến buôn, hòa vốn khoảng bảy năm, có rủi ro bão.'},
  {id:'giabinh',sc:{u:'người',n0:20,min:10,max:300,step:10,cap:[0,0,25,50,90,150,250]},n:'Gia binh hộ viện',v:60,mo:3,up:4,tier:2,d:'Nhà ít bị cướp, người trẻ trong nhà luyện võ dần. Nuôi quá sức nhà thì triều đình nghi.'},
- {id:'monkhach',sc:{u:'người',n0:5,min:2,max:40,step:3},n:'Môn khách',v:40,mo:2,up:3,tier:3,d:'Quan trong họ ít bị tra xét hơn, mỗi năm có mối làm ăn do môn khách mách, và biết thêm tính tình, phe, ân oán của người đương chức.'},
+ {id:'monkhach',sc:{u:'người',n0:5,min:2,max:40,step:3},n:'Môn khách',v:40,mo:2,up:2,tier:3,d:'Quan trong họ ít bị tra xét hơn, mỗi năm có mối làm ăn do môn khách mách, và biết thêm tính tình, phe, ân oán của người đương chức.'},
  {id:'quyennap',n:'Quyên nạp hàm Giám sinh',v:500,mo:0,up:0,tier:3,once:1,d:'Miễn dao dịch, con cháu có tư cách đi thi. Thanh lưu chê.'},
  {id:'khaihoang',n:'Khai hoang',v:300,mo:24,up:0,tier:3,once:1,d:'Thêm ruộng, số mẫu theo vốn bỏ ra (rẻ hơn mua).'},
- {id:'chuamieu',n:'Trùng tu chùa miếu',v:150,mo:10,up:0,tier:2,d:'Tâm trạng cả nhà khá hơn, thêm danh vọng.'},
- {id:'hoiquan',n:'Hội quán ở kinh thành',v:300,mo:8,up:3,tier:4,d:'Người đi thi và làm quan ở kinh có chỗ trọ, bớt phí dời nhà.'},
- {id:'dinhkinh',n:'Dinh thự ở kinh thành',v:800,mo:18,up:5,tier:5,d:'Quan trong họ ở kinh được hậu thuẫn: thêm thánh ân mỗi năm.'},
- {id:'hocbong',sc:{u:'học trò',n0:5,min:2,max:40,step:3},n:'Học bổng cho học trò nghèo',v:40,mo:0,up:4,tier:2,d:'Nuôi học trò nghèo. Về sau có người biết ơn giúp nhà.'}];
+ {id:'chuamieu',n:'Trùng tu chùa miếu',v:150,mo:10,up:0,tier:2,d:'Tâm trạng cả nhà khá hơn mỗi năm, người ốm mau hồi sức hơn.'},
+ {id:'hoiquan',n:'Hội quán ở kinh thành',v:300,mo:8,up:2,tier:4,d:'Người đi thi và làm quan ở kinh có chỗ trọ, bớt phí dời nhà.'},
+ {id:'dinhkinh',n:'Dinh thự ở kinh thành',v:800,mo:18,up:3,tier:5,d:'Quan trong họ ở kinh được hậu thuẫn: thêm thánh ân mỗi năm.'},
+ {id:'hocbong',sc:{u:'học trò',n0:5,min:2,max:40,step:3},n:'Học bổng cho học trò nghèo',v:40,mo:0,up:2.5,tier:2,d:'Nuôi học trò nghèo. Về sau có người biết ơn giúp nhà.'}];
 
 })();
