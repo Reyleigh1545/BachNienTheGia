@@ -78,7 +78,7 @@ const ev=[
  o:c=>[{l:'Viết thư hồi âm, gửi quà về',c:()=>G.money()>=m(2),f:c=>{G.S().money-=m(2);return 'Thư đi thư lại, lòng nhẹ bớt.'+fx(c,{tam:6})}},
   {l:'Xin nghỉ phép về thăm nhà',r:[{eq:1},55],y:c=>'Được nghỉ một tháng, về quê sum họp.'+fx(c,{tam:12,fame:2}),n:c=>'Việc công chưa ai thay, chưa được nghỉ.'+fx(c,{tam:-4})},
   {l:'Gạt lòng, dồn sức làm việc',f:c=>'Công việc tiến nhanh hơn.'+fx(c,{m:2,tam:-3})}]},
-{id:'v64_vo_chong_buon',t:'Vợ buồn nơi đất khách',job:Q,k:'Gia đình',
+{id:'v64_vo_chong_buon',t:'Vợ buồn nơi đất khách',job:Q,k:'Gia đình',c:c=>!!spOf(c),
  x:c=>{const s=spOf(c);return `${s?esc(s.given):'Người nhà'} theo ${N(c)} lên ${esc(place(c))}, quen khí hậu, quen tiếng nói chưa tròn. Có hôm chị đứng bên cửa sổ nhìn về hướng quê nhà.`},
  o:c=>[{l:'Dành thời gian đưa đi chơi, làm quen',f:c=>{const s=spOf(c);if(s)fx(s,{tam:8});return 'Vợ chồng đi dạo chợ phiên, gặp vài bà vợ quan khác, vui hơn hẳn.'+fx(c,{tam:4})}},
   {l:'Cho phép về thăm quê vài tháng',f:c=>{const s=spOf(c);if(s)fx(s,{tam:10});return 'Vợ về quê ở với nhà ngoại ít lâu rồi mới trở lên.'+fx(c,{tam:-2})}},

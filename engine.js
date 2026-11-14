@@ -1,4 +1,4 @@
-/* Bách Niên Thế Gia v6.7.0-d5 · engine (v6.7.0-d5: rà soát quan trường, danh sách chờ, tạo nhân vật ngẫu nhiên, học tập, dự án có sổ thu chi, dời cơ sở, nhan sắc phai theo tuổi; v6.7.0-d4: hoàng tộc thật, người đương chức bền, thay người theo tài và công, Phò mã, Tú nữ, dự án đáng tiền hơn, sửa gia quy rượu thuốc; v6.7.0-d3: ân oán họ Phạm viết lại, hôn lễ ba mức, lính cưới vợ có định hôn, dự án có quy mô, kỳ ngộ thưởng gấp 2,5, sửa sự kiện lệch vương vị; v6.7.0-d2: rà tiền toàn bộ, sức khỏe bẩm sinh, Đại Minh luật, dự án gia nghiệp, bộ nhớ sự kiện; v6.7.0-d1: khung đại cốt truyện, hạt giống thế giới, sử sách, hậu sử chung; v6.7.0-d0: tiền theo bậc, chi họ dời hộ, khóa cướp ngôi theo đường, thất bại là tru di, sự kiện thử; v6.6.0: sửa lỗi, thuế gia nghiệp, chi theo phần quỹ, kết thúc đa dạng, đối thủ, tầng quyết định; v6.5.4.2: sửa hệ số tiền áp nhầm cho khoản thu, eligibleWhy thêm lvr và hai điều kiện metadata; v6.5.4.1: hệ số tiền chỉ nhân mạnh cho sự kiện chi tiêu theo cỡ nhà; v6.5.4: kho sự kiện có metadata, gia tộc, kinh tế, học tập, chỉ số, nhánh rẽ đường lên ngôi; v6.5.3: gia chủ nhậm chức xa thì cả nhà dọn, bảng thời thế theo kinh thành, gia đình lính, sự kiện quân ngũ theo cấp; v6.5.2: gia phả ẩn người bị trục xuất và lọc theo chi, quan võ từ quan và cần trí, Đại tướng quân 1500 công, nơi ở của người nhậm chức; v6.5.1: vua đầu Trường Thịnh, tranh ngôi cuối đời, ba đường lên ngôi khó hơn; v6.4.1.8: ba đường cướp ngôi, lên ngôi, hậu sử; v6.4.1.7: hoàng đế và thiên hạ, kế vị, thanh trừng, danh hiệu cấp Thần, thiên mệnh, chiến tranh tại nơi ở, mốc chỉ số riêng; v6.4.1.6: tình duyên, chi họ xa ở nơi nhậm chức, gia đình người đi lính; v6.4.1.5.1: chỉ số lớn chậm theo tư chất, khoa thi khó hơn và tối đa 100 điểm, chức tạm khi chờ ghế, bỏ chú thích dưới lựa chọn, nội trợ, gia phả, họ khác; v6.4.1.5: quan hệ giữa các họ, hôn nhân và gả đi, họ gốc · hộ · chi, ruộng riêng cho chi, sửa lỗi test; v6.4.1.4: quan trường, phe phái, tội trạng, thang hậu quả tới tru di, sử ký quan trường; v6.4.1.3: quyền điều khiển và tự quyết theo tính cách, thư nhà, gia quy chia nhóm phạt, uy gia pháp, sửa hàng đợi sự kiện; v6.4.1.2: cân bằng độ khó: khoa cử theo chỉ tiêu, tước tích công trạng, bậc gia tộc, danh vọng cá nhân, kinh doanh, bớt hộp thoại; v6.4.1.1: trang admin, tàng thư theo hộ, người trông cơ sở, truyền việc khi nghỉ hưu, thu nhỏ gia phả) */
+/* Bách Niên Thế Gia v6.7.0-d6 · engine (v6.7.0-d6: cân bằng chuỗi cốt truyện, sự kiện thường nối vào cốt truyện đang chạy; v6.7.0-d5.1: sửa lỗi từ hai save và bản rà soát ngoài; v6.7.0-d5: rà soát quan trường, danh sách chờ, tạo nhân vật ngẫu nhiên, học tập, dự án có sổ thu chi, dời cơ sở, nhan sắc phai theo tuổi; v6.7.0-d4: hoàng tộc thật, người đương chức bền, thay người theo tài và công, Phò mã, Tú nữ, dự án đáng tiền hơn, sửa gia quy rượu thuốc; v6.7.0-d3: ân oán họ Phạm viết lại, hôn lễ ba mức, lính cưới vợ có định hôn, dự án có quy mô, kỳ ngộ thưởng gấp 2,5, sửa sự kiện lệch vương vị; v6.7.0-d2: rà tiền toàn bộ, sức khỏe bẩm sinh, Đại Minh luật, dự án gia nghiệp, bộ nhớ sự kiện; v6.7.0-d1: khung đại cốt truyện, hạt giống thế giới, sử sách, hậu sử chung; v6.7.0-d0: tiền theo bậc, chi họ dời hộ, khóa cướp ngôi theo đường, thất bại là tru di, sự kiện thử; v6.6.0: sửa lỗi, thuế gia nghiệp, chi theo phần quỹ, kết thúc đa dạng, đối thủ, tầng quyết định; v6.5.4.2: sửa hệ số tiền áp nhầm cho khoản thu, eligibleWhy thêm lvr và hai điều kiện metadata; v6.5.4.1: hệ số tiền chỉ nhân mạnh cho sự kiện chi tiêu theo cỡ nhà; v6.5.4: kho sự kiện có metadata, gia tộc, kinh tế, học tập, chỉ số, nhánh rẽ đường lên ngôi; v6.5.3: gia chủ nhậm chức xa thì cả nhà dọn, bảng thời thế theo kinh thành, gia đình lính, sự kiện quân ngũ theo cấp; v6.5.2: gia phả ẩn người bị trục xuất và lọc theo chi, quan võ từ quan và cần trí, Đại tướng quân 1500 công, nơi ở của người nhậm chức; v6.5.1: vua đầu Trường Thịnh, tranh ngôi cuối đời, ba đường lên ngôi khó hơn; v6.4.1.8: ba đường cướp ngôi, lên ngôi, hậu sử; v6.4.1.7: hoàng đế và thiên hạ, kế vị, thanh trừng, danh hiệu cấp Thần, thiên mệnh, chiến tranh tại nơi ở, mốc chỉ số riêng; v6.4.1.6: tình duyên, chi họ xa ở nơi nhậm chức, gia đình người đi lính; v6.4.1.5.1: chỉ số lớn chậm theo tư chất, khoa thi khó hơn và tối đa 100 điểm, chức tạm khi chờ ghế, bỏ chú thích dưới lựa chọn, nội trợ, gia phả, họ khác; v6.4.1.5: quan hệ giữa các họ, hôn nhân và gả đi, họ gốc · hộ · chi, ruộng riêng cho chi, sửa lỗi test; v6.4.1.4: quan trường, phe phái, tội trạng, thang hậu quả tới tru di, sử ký quan trường; v6.4.1.3: quyền điều khiển và tự quyết theo tính cách, thư nhà, gia quy chia nhóm phạt, uy gia pháp, sửa hàng đợi sự kiện; v6.4.1.2: cân bằng độ khó: khoa cử theo chỉ tiêu, tước tích công trạng, bậc gia tộc, danh vọng cá nhân, kinh doanh, bớt hộp thoại; v6.4.1.1: trang admin, tàng thư theo hộ, người trông cơ sở, truyền việc khi nghỉ hưu, thu nhỏ gia phả) */
 (function(){
 'use strict';
 /* ================= tiện ích ================= */
@@ -226,7 +226,9 @@ function fx(c,d){
   const out=[];const over=!!d.over;let close=false;
   /* v6.7.0-d3: kỳ ngộ thưởng gấp 2,5 lần sự kiện thường cho các khoản tiền và danh vọng nhận được */
   const KYB=MMCTX&&MMCTX.ky?2.5:1;
-  for(const k in d){let v=d[k];if(KYB>1&&v>0&&['money','fame','cfame','hung','merit'].includes(k))v=Math.round(v*KYB);if(['over','lethal','habit','unhabit','trait','untrait','ax','sk'].includes(k)||!v)continue;
+  const CHN=MMCTX&&MMCTX.arc===1; /* v6.7.0-d6: bước chuỗi cốt truyện cũ: thưởng theo gia thế, phạt có trần */
+  for(const k in d){let v=d[k];if(KYB>1&&v>0&&['money','fame','cfame','hung','merit'].includes(k))v=Math.round(v*KYB);
+    if(CHN){const tt=mmTier();if(v>0&&k==='money')v=Math.round(v*MM_THU[tt]/MM_NHE[tt]);else if(v>0&&(k==='fame'||k==='cfame'))v=Math.round(v*(1+0.3*tt));else if(v<0&&k==='hpMax')v=Math.max(v,-3);else if(v<0&&k==='suc')v=Math.max(v,-30)}if(['over','lethal','habit','unhabit','trait','untrait','ax','sk'].includes(k)||!v)continue;
     if(k==='money'){const lb=isHead(c)||(age(c)<16&&inMain(c))?'Công quỹ':!inMain(c)&&S.hh[c.hh]?'Quỹ hộ':v>0?'Tiền riêng':'Tiền';if(v>0)gain(c,v);else charge(c,-v);out.push([lb,v,'$'])}
     else if(k==='purse'){c.purse+=v;out.push(['Túi riêng',v,'$'])}
     else if(k==='fame'){const o=c.fame;c.fame+=v;cf(v*0.3,v>=0?'Thành viên được tiếng tốt (kỳ ngộ)':'Thành viên mang tiếng xấu (kỳ ngộ)');out.push(['Danh vọng',Math.round(c.fame-o)])}
@@ -340,7 +342,7 @@ function log(m,c){if(DRY)return;S.log.unshift({t:dateStr(S.t),m:strip(m),c:c||''
 
 /* ================= hàng đợi, lên lịch ================= */
 function enqueue(kind,cid,data,front){const it=Object.assign({kind,cid},data||{});front?S.queue.unshift(it):S.queue.push(it)}
-function later(c,ev,months,data){S.sched.push({t:S.t+Math.max(1,months),cid:c.id,ev,data:data||{}})}
+function later(c,ev,months,data){S.sched.push({t:S.t+Math.max(1,months),cid:c.id,ev,data:data||{}});if(c.flags&&EVMAP&&EVMAP[ev]&&EVMAP[ev].arc===1)c.flags.chainUntil=Math.max(c.flags.chainUntil||0,S.t+Math.max(1,months)+6)}
 /* ================= khởi tạo ================= */
 function newGame(o){
   S={t:0,money:0,fame:0,hung:25,on:60,royal:0,people:[],head:null,queue:[],sched:[],cool:{},log:[],won:{},over:false,lastNet:null,
@@ -382,7 +384,7 @@ function advance(){
   }
   // kinh tế
   econMonth();habitBroke();
-  if(S.money<0){alive().forEach(p=>{addStat(p,'tam',S.money<-mm(3)?-2:-1);if(S.money<-mm(6))addStat(p,'suc',-0.3)});if(S.money<-mm(3))cf(-1,'Nợ nần (mỗi tháng nợ quá '+money(mm(3))+')');S.on=clamp(S.on-0.5,0,100);if(mo%3===1)log('Gia cảnh nợ nần, cả nhà lo âu. Hãy giảm mức sống hoặc bớt chi tiêu.','hi')}
+  if(S.money<0){alive().forEach(p=>{addStat(p,'tam',S.money<-mm(3)?-2:-1);if(S.money<-mm(6))addStat(p,'suc',-0.3)});if(S.money<-mm(3))cf(-1,'Nợ nần (mỗi tháng nợ quá '+money(mm(3))+')');S.on=clamp(S.on-0.5,0,100);if(mo%3===1&&(S.debtLogT||-99)<=S.t-12){S.debtLogT=S.t;log('Gia cảnh nợ nần, cả nhà lo âu. Hãy giảm mức sống hoặc bớt chi tiêu.','hi')}}
   // nợ quá sức: xử ở v62Month (debtTick)
   // danh vọng cá nhân thấm vào gia tộc
   if(mo===1){S.fwPrev=S.fw||{};S.fw={}}
@@ -877,8 +879,13 @@ function pickEvent(c,ky,baby){
   const pool=jobEv.length&&chance(c.away?1:Math.min(0.45,0.11*jobEv.length))?jobEv:ok;
   S.evn=S.evn||{};S.evLast=S.evLast||{};
   /* v6.3.1: dòng họ nhớ sự kiện vừa xảy ra với bất kỳ ai; càng gần càng khó lặp, hồi dần sau 8 năm (kỳ ngộ: 20 năm) */
+  const arcW=e=>{let w=1;const dm=e.meta&&e.meta.d;
+    if(c.flags.chainUntil>S.t&&(e.ky||dm==='encounter'))w*=0.3; /* đang giữa một chuỗi thì bớt kỳ ngộ khác chen vào */
+    for(const id in (S.arcs||{})){const a=S.arcs[id],d=ARC[id];if(!a||!a.on||a.end||!d||!d.theme)continue;const T=d.theme(a);if(!T)continue;
+      if(T.dom&&T.dom.includes(dm))w*=T.boost||1.4;if(T.quiet&&(e.ky||dm==='encounter'||dm==='jianghu'||dm==='dynasty'))w*=T.quiet}
+    return w};
   const wt=e=>{const last=S.evLast[e.id];const rec=last==null?1:clamp((S.t-last)/(e.rep||(e.ky?240:96)),0.12,1);
-    return (e.w||1)*(e.td&&noble(c)?0.03:1)*(e.good?(c.duyen>60?1.6:1.2):1)*(c.seen[e.id]?1:2)*rec/(1+(S.evn[e.id]||0)*0.3)};
+    return arcW(e)*(e.w||1)*(e.td&&noble(c)?0.03:1)*(e.good?(c.duyen>60?1.6:1.2):1)*(c.seen[e.id]?1:2)*rec/(1+(S.evn[e.id]||0)*0.3)};
   const tot=pool.reduce((a,e)=>a+wt(e),0);let r=Math.random()*tot;let ev=pool[0];
   for(const e of pool){r-=wt(e);if(r<=0){ev=e;break}}
   /* v6.4.1.3: chưa ghi nhận ở đây. Chỉ ghi lịch sử và thời gian hồi khi hộp thật sự mở (commitEv trong showPopup) */
@@ -964,7 +971,7 @@ function choicePopup(c,eyebrow,title,text,opts,arc,data,evId){
     }catch(e){console.error(e);r='Mọi chuyện trôi qua.'}
     if(S.over)return;
     if(evId){stt('evm',S.money-m0);ruleHit(c,o,true)}
-    r=withLead(c,o,r);
+    r=withLead(c,o,r);r+=arcTouch(c,evId);
     if(o.h&&hp&&hp.id!==c.id)r=`<i>${esc(hp.given)} ra mặt.</i> `+r;
     const axd=o.ax||autoAx(o.l);if(axd&&c.dead==null)r+=shiftAx(c,axd);
     log(`${nameOf(c)} · ${title}: ${r}`,/class="down"/.test(r)&&!/class="up"/.test(r)?'hi':'gd');
@@ -979,6 +986,11 @@ function choicePopup(c,eyebrow,title,text,opts,arc,data,evId){
   if(AD&&AD.onChoice)AD.onChoice({c,ok,probs,evId,data,opts});
 }
 /* v6.1: kết quả luôn có một câu dẫn trước phần cộng trừ */
+/* v6.7.0-d6: cốt truyện đang chạy có thể nhận một dấu nhỏ từ sự kiện thường vừa xảy ra (ARC.<id>.touch), tối đa mỗi sáu tháng một lần */
+function arcTouch(c,evId){if(!evId||!S.arcs||DRY)return '';const e=EVMAP[evId];if(!e||e.arc||e.fixed)return '';let out='';
+  for(const id in S.arcs){const a=S.arcs[id],d=ARC[id];if(!a||!a.on||a.end||!d||!d.touch)continue;if(S.t-(a.touchT||-99)<6)continue;
+    let t='';try{t=d.touch(a,e,c)||''}catch(er){}if(t){a.touchT=S.t;out+=`<p class="muted"><i>${t}</i></p>`}}
+  return out}
 function withLead(c,o,r){
   r=r||'';const plain=r.replace(/<span class="fx">[\s\S]*$/,'').replace(/<[^>]+>/g,'').trim();
   if(plain.length>=4)return r;
@@ -999,7 +1011,11 @@ function showPopup(it,c){
   switch(it.kind){
     case 'ev':{const ev=EVMAP[it.ev];if(!ev){skip();return}const d=it.data||{};
       if(it.ev==='bat_linh'&&(c.away||c.job==='quan_ngu')){skip();return}
-      if(/^tc_/.test(it.ev)&&!(S.dyn&&S.dyn.cr)){skip();return} /* v6.7.0-d4: bước tranh ngôi chỉ mở khi khủng hoảng còn đó */
+      if(/^tc_/.test(it.ev)&&!(S.dyn&&S.dyn.cr)){skip();return}
+      /* v6.7.0-d5.1: sự kiện cố định do hệ thống khác gọi thẳng (nhà chật, thời thế, sứ giả...) cũng phải cách nhau mười năm; bước nối tiếp trong chuỗi (có dữ liệu kèm theo) thì không bị chặn */
+      if(ev.fixed&&!ev.arc&&!it.rnd&&!d._force&&/^(gt_|hg_n_|hg_a_|tt_|v62_|v6_)/.test(it.ev)&&Object.keys(d).length===0){const kk='fx|'+it.ev;if((S.cool[kk]||-1e9)>S.t){skip();return}S.cool[kk]=S.t+120}
+      /* quan hệ với họ khác: cùng một họ thì mười năm, nói chung thì hai năm rưỡi giữa hai lần */
+      if(ev.fixed&&!ev.arc&&!it.rnd&&!d._force&&/^(rg_|w63_ho_|hg_n_|hg_a_)/.test(it.ev)&&!/tra_no|tra_han|khat|lai_|_tra/.test(it.ev)){const k1='fx|'+it.ev+'|'+JSON.stringify(d),k2='fx|'+it.ev;if((S.cool[k1]||-1e9)>S.t||(S.cool[k2]||-1e9)>S.t){skip();return}S.cool[k1]=S.t+120;S.cool[k2]=S.t+30} /* v6.7.0-d4: bước tranh ngôi chỉ mở khi khủng hoảng còn đó */
       if(ev.ct&&(ctRank(c,ev.ct[0])>=ev.ct[1]||c.away||c.dead!=null)){skip();return}
       if(d.oid){const o=P(d.oid);if(!o||!inClan(o)){skip();return}}
       if(d.xg){const o=P(d.xg);if(!o||o.dead!=null||!o.left){skip();return}}
@@ -4818,7 +4834,7 @@ function mainMenu(){
   running=false;S=null;page='giapha';brandHead();
   const m=meta();const last=m.last&&m.slots[m.last]&&!m.slots[m.last].over?m.last:null;
   const any=Object.keys(m.slots).length||loadOld();
-  openModal(`<div class="menu"><div class="sealbig" aria-hidden="true">家</div><h2>Bách Niên Thế Gia</h2><p class="muted">Từ túp lều tranh đến danh gia vọng tộc</p><p class="muted" style="font-size:.78rem;margin-top:-.4rem">Phiên bản 6.7.0-d5${window.BN_ADMIN?' · admin':''}</p>
+  openModal(`<div class="menu"><div class="sealbig" aria-hidden="true">家</div><h2>Bách Niên Thế Gia</h2><p class="muted">Từ túp lều tranh đến danh gia vọng tộc</p><p class="muted" style="font-size:.78rem;margin-top:-.4rem">Phiên bản 6.7.0-d6${window.BN_ADMIN?' · admin':''}</p>
    <div class="choices">${last?`<button class="btn primary" data-m="cont"><strong>Tiếp tục</strong><small>${slotLine(last)}</small></button>`:''}
    <button class="btn ${last?'':'primary'}" data-m="new"><strong>Trò chơi mới</strong><small>Lập một dòng họ mới</small></button>
    <button class="btn" data-m="load" ${any?'':'disabled'}><strong>Tải bản lưu</strong><small>Ba ô lưu, mỗi ô một gia tộc</small></button>
@@ -6172,7 +6188,7 @@ const G={inKinh,homeP,npc:{boss:npcBoss,add:npcAdd,cmp:seatCmp,ab:myAb},fam:{ens
   _v633:{HOUSE_DEF,hdef,house,houseName,houseRel,houseAlly,houseKid,vil,vilLog,vd,vAdd,kPow,vFlag,vStance,vilRoutes,vilReady,vilEnd,vilStart,vilQuan,vilFighters,vilYears,vPick,pickWho,KIEN,DUY,KRANK,achieve,cf,vBranch,vFi,VBR,hinfo,hnear,houseRefs,giftNorm,w_wed,w_mo,NEAR_MO,HOUSE_TIER},
   _v62:{willPopup,chunoPopup,debtTick,expelPopup2,doExpel,tumatPopup,oanPopup,tranhviPopup,ruleSlots,ruleWhy,addRule,dropRule,keugoiPopup,thiencoPopup,gateCheck,ttlPopup,wishPick,wishScore,obey,ctxOk,CTX,v62Month,v62Year,loveTick,outsTick,divorcePopup,vuotsinhPopup,rulepropPopup,ruleforcePopup,rulechgPopup,pieceF,jobDig,minDig}};
 /* v6.4.1.1: cổng riêng cho trang admin (admin.js). Bản thường không dùng tới */
-G._adm={monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
+G._adm={prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
   getSel:()=>sel,setSel:v=>{sel=v},running:()=>running,speed:()=>speed,setRun:(r,sp)=>{running=!!r;if(sp)speed=sp;renderTop()},
   setS:st=>{S=st;sel=P(sel)?sel:S.head;O.hidden=true;M.innerHTML='';render();nextPopup()},page:()=>page,ensurePersona};
 window.BNTG=G;
