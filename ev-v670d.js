@@ -63,7 +63,7 @@ G.arc.def('pm',{name:'Ân oán họ Phạm',gap:[4,9],
   if(dm==='economy'&&!['chu','tieunhi','tieuphu','hangrong','tieu','tho','ngu'].includes(c.job))return '';
   if(dm==='education'&&G.age(c)>=26)return '';
   if(dm==='family'&&!(e.meta&&e.meta.s&&/(marriage|birth|child|wed|inherit|household)/i.test(e.meta.s)))return '';const [txt,up2]=pick(L);for(const k in up2)G.arc.add('pm',k,up2[k]);return txt},
- start:()=>{const s=S();return s.t>=96&&hasQuan()&&!s.war&&chance(s.t>=120?0.06:0.04)},
+ start:()=>{const s=S();return s.t>=96&&hasQuan()&&chance(s.t>=120?0.06:0.04)},
  onStart:a=>{const w=(S().wr&&S().wr.pm)||{};a.fl.org=w.org||pick(['ruong','so','hon','buon']);a.fl.kind=w.kind||pick(['nguy','manh','muu']);
   const gy=Math.floor(S().t/12);
   a.K={n:'Phạm Trung Kiên',g:'Kiên',age:24+gy,rank:0,pow:R(18,24),life:R(70,88),ok:1,sched:[72,192,312,408,504],lag:0};

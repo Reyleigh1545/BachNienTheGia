@@ -17,5 +17,12 @@ window.EVMEM=Object.assign(window.EVMEM||{},{
  t_g_bao_an:{mem:{need:['cuu']}},
  kn_91:{mem:{need:['day_hoc']}},
  su_tro_do_dat:{mem:{need:['day_hoc']}},
- kn_95:{mem:{need:['cuu_oan']}}
+ kn_95:{mem:{need:['cuu_oan']}},
+ /* thêm ở đợt B */
+ tq_xin_bao_lanh:{led:{k:'tien_cu',lab:/tiến cử/}},
+ qn653_tien_cu:{led:{k:'tien_cu_nguoi',lab:/Tiến cử/}},
+ qn_cuu_tuong:{led:{k:'cuu',lab:/cõng/}},
+ su_mon_sinh_lam_quan:{mem:{need:['day_hoc']}},
+ lw_70:{mem:{need:['an']}},
+ lw_75:{mem:{need:['an']}}
 });

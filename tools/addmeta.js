@@ -6,10 +6,10 @@ const have=new Set([...meta.matchAll(/"([A-Za-z0-9_]+)":\[/g)].map(m=>m[1]));
 const files=fs.readdirSync(dir).filter(f=>/^ev-v67.*\.js$/.test(f));
 const BASE={lw:['society','law'],gj:['jianghu','wandering'],lo:['society','outlaw'],dh:['life','long_term'],kn:['encounter','rare'],tg:['life','world'],cd:['government','special_office'],
  pm:['story','arc'],bi:['military','border'],th:['economy','trade_guild'],kb:['education','academy'],gh:['jianghu','martial_arts'],ga:['family','legacy'],
- pv:['dynasty','regent_prince'],cc:['dynasty','warlord'],nt:['dynasty','consort_clan'],ps:['economy','ruin'],tn:['society','annexation'],lc:['life','chaos'],dn:['economy','projects']};
+ pv:['dynasty','regent_prince'],cc:['dynasty','warlord'],nt:['dynasty','consort_clan'],ps:['economy','ruin'],tn:['society','annexation'],lc:['life','chaos'],dn:['economy','projects'],qt5:['government','career']};
 const add={};
 for(const f of files){const t=fs.readFileSync(path.join(dir,f),'utf8');
-  const re=/\bid:'([a-z]+_[A-Za-z0-9_]+)'([^\n]{0,80}?)\bt:'([^']*)'([^\n]*)/g;let m;
+  const re=/\bid:'([a-z0-9]+_[A-Za-z0-9_]+)'([^\n]{0,80}?)\bt:'([^']*)'([^\n]*)/g;let m;
   while((m=re.exec(t))){const id=m[1],rest=m[2]+m[4];if(have.has(id))continue;const pre=id.split('_')[0];if(!BASE[pre])continue;
     const ky=/\bky:1/.test(rest)||/KN\(/.test(t.slice(Math.max(0,m.index-6),m.index));
     const q=/job:\['quan'\]/.test(rest)||/QD\(/.test(t.slice(Math.max(0,m.index-6),m.index));
