@@ -29,3 +29,11 @@ Bộ chạy `tools/chain.js` bắt đầu từ gốc mỗi chuỗi, chọn ngẫ
 - Chưa cân bằng **thời lượng** các chuỗi (hầu hết 3 đến 40 tháng) và chưa thêm phần thưởng thật cho các chuỗi đã liệt kê.
 - Đo bằng chọn ngẫu nhiên; chưa đo bằng người chơi thật.
 - Không đảm bảo tương thích save cũ.
+
+## 4. Sửa thêm sau khi xem save họ Triệu (phá đảo năm 48)
+- **Khủng hoảng kế vị lặp 6 lần:** hòa giải xong vua đầu vẫn bị giữ sống đến `d.fixed+120`, mỗi năm lại mở khủng hoảng mới. Nay chỉ mở khi chưa có thái tử; đã hòa giải và đến hạn thì thả vua về luật thường.
+- **Chi phí nuôi quân mưu đại sự** giờ hiện trong dòng tiền hằng tháng ("Nuôi quân cho mưu đại sự").
+- **Di truyền:** gen của con vốn cao (võ [83,98]) nhưng tiềm năng bẩm sinh chỉ bằng 45 đến 80% gen nên còn khoảng 50. Nâng lên 62 đến 92%.
+- **Người khởi đầu:** hai chỉ số cao nhất từ 80 xuống 60 (gen 62 đến 80).
+- **Màn giới thiệu:** gộp thành một đoạn, không còn nhắc họ Phạm.
+- **Chưa giải thích được:** ván Triệu không bao giờ mở cốt truyện họ Phạm dù có quan từ năm 14. Thử trong admin thì cốt truyện mở bình thường, nên chưa rõ nguyên nhân.
