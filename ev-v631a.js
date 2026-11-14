@@ -158,7 +158,7 @@ return [
 {id:'qn631_nghi_phep_que',t:'Phép về quê',job:QN,c:c=>!G.war()&&c.merit>=10,w:0.9,pcd:24,
  x:c=>`Doanh trại cho nghỉ phép dịp ${pick(['giỗ tổ','tết','mùa gặt'])}. ${N(c)} nhớ nhà.`,
  o:c=>[
-  {l:'Về thăm nhà cả tháng',f:c=>{busy(c,1);return 'Cha mẹ vợ con mừng khôn xiết. '+PR(c)[0].toUpperCase()+PR(c).slice(1)+' mang về ít tiền lương.'+fx(c,{tam:16,suc:4,money:m(5)})+G.fxAll({tam:3})}},
+  {l:'Về thăm nhà cả tháng',f:c=>{busy(c,1);return (c.spouse||G.kidsOf(c).some(k=>G.inClan(k)&&k.dead==null)?'Cha mẹ, vợ con mừng khôn xiết. ':'Cha mẹ mừng khôn xiết. ')+PR(c)[0].toUpperCase()+PR(c).slice(1)+' mang về ít tiền lương.'+fx(c,{tam:16,suc:4,money:m(5)})+G.fxAll({tam:3})}},
   {l:'Về chớp nhoáng, quay lại sớm để nhận việc',f:c=>'Chỉ ở nhà vài ngày, nhưng cấp trên để ý sự chuyên cần.'+fx(c,{tam:6,merit:R(3,6)})},
   {l:'Ở lại doanh luyện thêm',f:c=>fx(c,{vo:1,merit:R(2,4)})}]},
 {id:'qn631_phat_dong_don',t:'Đồn điền quân',job:QN,c:c=>!G.war()&&['xuan','ha'].includes(G.season()),w:1,pcd:18,

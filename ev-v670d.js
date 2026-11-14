@@ -48,7 +48,21 @@ const kids=()=>G.alive().filter(p=>G.inClan(p));
 
 /* ---------- khung ARC.pm ---------- */
 const CH2_MIN=['pm_b1','pm_b2','pm_b3','pm_b4','pm_b5','pm_b6','pm_b7','pm_b8','pm_b9','pm_b10','pm_b11','pm_b12','pm_b13','pm_b14'];
+/* sự kiện thường đang xảy ra giữa cốt truyện: theo dõi nối vào cốt truyện bằng một câu và một dấu rất nhỏ (xem arcTouch trong engine) */
+const TOUCH={
+ government:[['Một viên thư lại quen nói nhỏ: sổ sách của họ Phạm có chỗ không khớp.',{pf:1}],['Người của họ Phạm có mặt trong buổi việc ấy, và ghi nhớ nhà mình.',{ky:2}]],
+ society:[['Chuyện nhà mình được truyền miệng. Có người nhắc rằng mối oán với họ Phạm vẫn chưa ai quên.',{dt:1}],['Một người trong vùng kín đáo hỏi thăm chuyện cũ với họ Phạm.',{wit:1}]],
+ life:[['Dân trong vùng chuyện trò rồi lại nhắc tới họ Phạm, giọng nhỏ dần.',{dt:1}]],
+ economy:[['Người làm ăn cùng nghề thở dài về cách họ Phạm chèn ép, và hứa sẽ giúp khi cần.',{all:1}],['Hiệu buôn thân họ Phạm để ý đến khoản tiền nhà mình vừa động tới.',{ky:1}]],
+ family:[['Nhà thêm việc, thêm người, và thêm sức khi cần đối phó với họ Phạm.',{pw:1}]],
+ education:[['Học trò của nhà mình bắt đầu được người ta để ý. Có người nói đời sau sẽ có người dám nói thẳng.',{all:1}]]};
 G.arc.def('pm',{name:'Ân oán họ Phạm',gap:[4,9],
+ theme:a=>{if(a.ch<2||a.ch>5)return null;return {dom:['government','society','economy'],boost:1.25,quiet:a.ch>=4?0.5:0.8}},
+ touch:(a,e,c)=>{if(a.ch<2||a.ch>5||!chance(0.35))return '';const dm=(e.meta&&e.meta.d)||'';const L=TOUCH[dm];if(!L)return '';
+  if(dm==='government'&&!(c.job==='quan'||c.job==='quan_ngu'))return '';
+  if(dm==='economy'&&!['chu','tieunhi','tieuphu','hangrong','tieu','tho','ngu'].includes(c.job))return '';
+  if(dm==='education'&&G.age(c)>=26)return '';
+  if(dm==='family'&&!(e.meta&&e.meta.s&&/(marriage|birth|child|wed|inherit|household)/i.test(e.meta.s)))return '';const [txt,up2]=pick(L);for(const k in up2)G.arc.add('pm',k,up2[k]);return txt},
  start:()=>{const s=S();return s.t>=96&&hasQuan()&&!s.war&&chance(s.t>=120?0.06:0.04)},
  onStart:a=>{const w=(S().wr&&S().wr.pm)||{};a.fl.org=w.org||pick(['ruong','so','hon','buon']);a.fl.kind=w.kind||pick(['nguy','manh','muu']);
   const gy=Math.floor(S().t/12);
@@ -64,7 +78,8 @@ G.arc.def('pm',{name:'Ân oán họ Phạm',gap:[4,9],
     if(K.ok)K.pow=Math.min(100,K.pow+R(0,2)+(K.rank>=3?1:0));
     if(K.ok&&K.age>=K.life&&!a.fl.kdie){a.fl.kdie=1;K.ok=0;if(a.ch>=2&&!a.end)G.later(G.head(),'pm_n1',R(1,3))}}
   /* lịch lên chức của Kiên: không phụ thuộc người chơi */
-  if(K.ok&&K.rank<5&&s.t>=K.sched[K.rank]+(K.lag||0)&&a.ch>=1&&!s.war){K.rank++;K.pow=Math.min(100,K.pow+6);G.later(G.head(),'pm_r'+K.rank,R(1,2));if(K.rank===4)a.fl.nhat=s.t}
+  if(K.ok&&K.rank<5&&s.t>=K.sched[K.rank]+(K.lag||0)&&a.ch>=1&&!s.war){K.rank++;K.pow=Math.min(100,K.pow+6);G.later(G.head(),'pm_r'+K.rank,R(1,2));if(K.rank===4)a.fl.nhat=s.t;if(K.rank===5)a.fl.r5T=s.t}
+  if(K.ok&&K.rank>=5&&a.fl.r5T&&!a.fl.r6&&!a.end&&s.t>=a.fl.r5T+60&&!s.war){a.fl.r6=1;G.later(G.head(),'pm_r6',R(1,3))}
   /* chuyển chương */
   if(a.ch===1&&a.done.pm_a8!=null&&s.t-a.done.pm_a8>=3){a.ch=2;a.fl.t2=s.t}
   if(a.ch===2){const bn=CH2_MIN.filter(id=>a.done[id]!=null).length;const wealth=cnt('pf')+cnt('wit')+cnt('all')+cnt('pw');

@@ -210,7 +210,7 @@ TG({id:'tg_40',t:'Mùa bội thu',head:1,age:[25,75],c:c=>farmOk(),th:1,sea:['th
  x:c=>`Mưa thuận gió hòa, lúa chín vàng, bông nặng trĩu bờ. Tá điền cười suốt mùa gặt.`,
  o:c=>[{l:'Mở hội mừng mùa với làng',f:c=>'Cả làng vui. Nhà được kính nể.'+fx(c,{money:m(20),cfame:3,tam:5})},
   {l:'Bán lúa, giữ lại kho đủ dùng',f:c=>'Lúa bán hết giá. Kho đầy.'+fx(c,{money:m(60),tam:3})},
-  {l:'Thưởng thêm cho tá điền',f:c=>'Tá điền chăm chỉ, cảm kích nhớ ơn.'+fx(c,{money:m(25),cfame:2,on:2})}]}),
+  {l:'Thưởng thêm cho tá điền',f:c=>'Tá điền chăm chỉ, cảm kích nhớ ơn.'+fx(c,{money:-m(25),cfame:2,on:2})}]}),
 TG({id:'tg_26',t:'Tiền giả lưu hành',job:['tieunhi','tieuphu','hangrong','chu'],age:[20,65],w:0.5,ms:1,
  x:c=>`Một tuần nay, chợ ồn ào chuyện tiền giả: đồng đúc lẫn chì, nhìn như thật. Khách đưa tiền, ${N(c)} không còn tin tay mình.`,
  o:c=>[{l:'Kiểm từng đồng một',r:[{tri:0.5,eq:0.3},60],y:c=>'Bắt được vài đồng giả. Tiền thật vẫn đầy đủ.'+fx(c,{tam:1}),n:c=>'Sót vài đồng giả, mất chút ít.'+fx(c,{money:-m(8)})},
@@ -222,7 +222,7 @@ CD({id:'cd_01',ms:1,t:'Người lạ theo dõi',job:['quan'],c:c=>c.lv>=3,age:[2
  o:c=>[{l:'Cho người theo dõi lại',r:[{muu:0.7,tri:0.4},50],y:c=>'Biết hắn là người của một quan lớn trong phe khác, chỉ dò xét. Mình ghi nhớ.'+fx(c,{tam:1,risk:-5}),n:c=>'Bị phát hiện. Từ đó người ta càng nghi.'+fx(c,{risk:8,tam:-2})},
   {l:'Giữ nếp sống bình thường',f:c=>'Vài ngày sau người đó biến mất. Chưa biết là gì.'+fx(c,{risk:2})},
   pay('Mời người đó vào nhà, hỏi thẳng',10,{r:[{eq:0.8,khau:0.5},45],y:c=>'Hắn lúng túng rồi thú thật. Mình biết ai sai hắn đến.'+fx(c,{money:-m(10),risk:-3,fame:1}),n:c=>'Hắn bỏ chạy ngay trong đêm.'+fx(c,{money:-m(10),risk:6})})]}),
-CD({id:'cd_31',ms:1,t:'Xin tập ấm cho con',job:['quan'],c:c=>c.lv>=4&&kidsOf(c).some(k=>G.age(k)>=8&&G.age(k)<=22),age:[30,75],
+CD({id:'cd_31',ms:1,t:'Xin tập ấm cho con',job:['quan'],c:c=>c.lv>=5&&kidsOf(c).some(k=>G.age(k)>=8&&G.age(k)<=22),age:[30,75],
  x:c=>{const k=kidsOf(c).find(k=>G.age(k)>=8&&G.age(k)<=22);return `Lệ triều cho con quan từ Tứ phẩm được tập ấm, vào Giám sinh hoặc nhận chức nhỏ không qua thi. ${N(c)} đang nhìn ${k?esc(k.given):'đứa con'} và nghĩ ngợi.`},
  o:c=>{const k=kidsOf(c).find(k=>G.age(k)>=8&&G.age(k)<=22);return [
   pay('Xin tập ấm cho con',50,{f:c=>{if(k)k.flags.am=1;return 'Con được vào Giám sinh. Thanh lưu hơi nhìn nghiêng, nhưng đường đi nhẹ nhàng hơn.'+fx(c,{money:-m(50),fame:-2,cfame:2})+(k?fx(k,{tam:3}):'')}}),
