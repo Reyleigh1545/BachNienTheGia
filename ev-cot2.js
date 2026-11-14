@@ -12,14 +12,14 @@ const rose=c=>c.degree>=1||c.job==='quan'||(c.tuoc||0)>0||c.tri+c.vo+c.mi>=230||
 return [
 /* ========== THOÁI HÔN: ba mươi năm hà đông, ba mươi năm hà tây ========== */
 ST({id:'th_a',t:'Thoái hôn',age:[16,22],c:c=>!married(c)&&!c.inLaw&&G.tierIdx()<=2,
- x:c=>`Nhà ${pick(['Mộ Dung','Liễu','Tiêu','Bạch'])} từng đính ước với nhà ${N(c)} từ thuở hai đứa còn nằm nôi. Nay nhà họ phát đạt, kéo cả họ hàng đến giữa sân, trả lại tín vật, nói thẳng: "Nhà ngươi không xứng."`,
+ x:c=>{const sn=c.flags.thS=c.flags.thS||pick(['Mộ Dung','Liễu','Tiêu','Bạch']);return `Nhà ${sn} từng đính ước với nhà ${N(c)} từ thuở hai đứa còn nằm nôi. Nay nhà họ phát đạt, kéo cả họ hàng đến giữa sân, trả lại tín vật, nói thẳng: "Nhà ngươi không xứng."`},
  o:[{l:'Lặng lẽ nhận lại tín vật',f:c=>'Nuốt nhục vào lòng.'+fx(c,{tam:-12,eq:2})+nx(c,'th_b',36,48,{p:'nhan'})},
     {l:'Hẹn ba năm sau sẽ khiến họ hối hận',f:c=>'Cả sân im phăng phắc. Có người cười khẩy.'+fx(c,{tam:-6,fame:3})+nx(c,'th_b',36,40,{p:'hen'})},
     {l:'Tự tay xé hôn thư trước mặt họ',r:[{eq:0.6,mi:0.6},50],y:c=>'Khí phách khiến người xem nể phục.'+fx(c,{fame:8,tam:-3})+nx(c,'th_b',36,48,{p:'xe'}),n:c=>'Bị chê là trẻ con nóng nảy.'+fx(c,{fame:-4,tam:-8})+nx(c,'th_b',36,48,{p:'xe'})}]}),
 A({id:'th_b',t:'Ba năm sau',
- x:(c,d)=>rose(c)?`${N(c)} giờ đã khác xưa. Nhà họ ${pick(['Mộ Dung','Liễu','Tiêu','Bạch'])} lại sa sút vì làm ăn thua lỗ, cho người đến xin nối lại hôn ước${d.p==='hen'?', đúng như lời hẹn năm nào':''}.`:`Ba năm trôi qua mà ${N(c)} vẫn chưa làm nên chuyện gì. Nghe tin người kia đã gả vào một nhà quyền quý.`,
+ x:(c,d)=>rose(c)?`${N(c)} giờ đã khác xưa. Nhà họ ${c.flags.thS||pick(['Mộ Dung','Liễu','Tiêu','Bạch'])} lại sa sút vì làm ăn thua lỗ, cho người đến xin nối lại hôn ước${d.p==='hen'?', đúng như lời hẹn năm nào':''}.`:`Ba năm trôi qua mà ${N(c)} vẫn chưa làm nên chuyện gì. Nghe tin người kia đã gả vào một nhà quyền quý.`,
  o:c=>rose(c)?[
-    {l:'Bỏ qua chuyện cũ, nối lại hôn ước',c:c=>!married(c),f:c=>{G.mkSpouse(c,true,G.mkMatch(c,{age:age(c)-1,up:0.6,story:1}));return 'Người đời khen độ lượng.'+fx(c,{fame:R(10,20),tam:6})}},
+    {l:'Bỏ qua chuyện cũ, nối lại hôn ước',c:c=>!married(c),f:c=>{G.mkSpouse(c,true,G.mkMatch(c,Object.assign({age:age(c)-1,up:0.6,story:1},c.flags.thS?{surname:c.flags.thS}:{})));delete c.flags.thS;return 'Người đời khen độ lượng.'+fx(c,{fame:R(10,20),tam:6})}},
     {l:'Từ chối khéo, chúc họ yên ổn',f:c=>'Chuyện cũ khép lại nhẹ nhàng.'+fx(c,{fame:R(8,15),eq:2,tam:8})},
     {l:'Bắt họ quỳ xin trước sân như năm xưa',f:c=>'Hả hê một trận. Nhưng có người bảo mình hẹp hòi.'+fx(c,{tam:15,fame:-5})}]
    :[{l:'Gác chuyện cũ, sống tiếp',f:c=>fx(c,{eq:2,tam:-4})},{l:'Uống rượu giải sầu',f:c=>fx(c,{tam:-8,habit:chance(0.3)?'ruou':undefined})}]}),
@@ -67,7 +67,7 @@ ST({id:'tk_a',t:'Bà vú già trở về',age:[14,24],c:c=>!c.inLaw&&!!c.adopted
     {l:'Ơn sinh không bằng ơn dưỡng, ở lại',f:c=>'Cha mẹ nuôi ôm chầm lấy, khóc nức nở.'+fx(c,{eq:3,tam:6,on:4})}]}),
 A({id:'tk_b',t:'Cửa phủ cao vời',k:'Thân thế',
  x:c=>`Nhà kia đã nuôi đứa trẻ bị tráo mười mấy năm, thương như con ruột. Thấy ${N(c)} đến, họ vừa mừng vừa ngại.`,
- o:[{l:'Nhận lại tổ tông, nhưng vẫn giữ liên lạc với nhà nuôi',r:[{eq:1,mi:0.4},55],y:c=>'Hai nhà thành thông gia thân thiết. Gia tộc có thêm chỗ dựa lớn.'+fx(c,{fame:R(20,35),money:m(R(30,60)),hung:6}),n:c=>'Đứa trẻ bị tráo ghen ghét, gây khó dễ đủ đường.'+fx(c,{tam:-8})+nx(c,'tk_c',6,12)},
+ o:[{l:'Nhận lại tổ tông, nhưng vẫn giữ liên lạc với nhà nuôi',r:[{eq:1,mi:0.4},55],y:c=>'Hai nhà qua lại thân thiết như người một nhà. Gia tộc có thêm chỗ dựa lớn.'+fx(c,{fame:R(20,35),money:m(R(30,60)),hung:6}),n:c=>'Đứa trẻ bị tráo ghen ghét, gây khó dễ đủ đường.'+fx(c,{tam:-8})+nx(c,'tk_c',6,12)},
     {l:'Chỉ xin một lời công nhận rồi về',f:c=>'Nhà kia áy náy, gửi theo lễ vật hậu.'+fx(c,{money:m(R(20,40)),fame:8})},
     {l:'Đòi lại tất cả những gì của mình',f:c=>'Nhà kia đuổi ra.'+fx(c,{fame:-6,tam:-10})+nx(c,'tk_c',6,12)}]}),
 A({id:'tk_c',t:'Kẻ bị tráo',k:'Thân thế',

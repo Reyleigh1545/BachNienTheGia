@@ -13,10 +13,11 @@ const ST=o=>Object.assign({once:1,k:'Mở đầu cốt truyện',w:0.7,cd:24},o)
 const single=c=>!married(c)&&!c.left;
 const sib=(a,b)=>a.parents.length&&b.parents.length&&a.parents.some(p=>b.parents.includes(p));
 /* v6.3.2: người trong tình duyên có chỉ số và nghề theo địa vị; nhà quyền thế (lift 30 trở lên) và nhân vật có tên là người trong cốt truyện: giỏi hơn, có tài riêng */
-const lover=(c,lift,o)=>G.mkMatch(c,Object.assign({age:Math.max(16,age(c)+R(-4,2)),up:Math.max(-1,Math.min(3.5,(lift-G.tierIdx()*4)/8)),story:lift>=30?1:0},o||{}));
+const lover=(c,lift,o)=>{if(!o&&c.flags.lvP&&G.S().t-c.flags.lvP._t<=60)return c.flags.lvP;const p=lover0(c,lift,o);if(!o){p._t=G.S().t;c.flags.lvP=p}return p};
+const lover0=(c,lift,o)=>G.mkMatch(c,Object.assign({age:Math.max(16,age(c)+R(-4,2)),up:Math.max(-1,Math.min(3.5,(lift-G.tierIdx()*4)/8)),story:lift>=30?1:0},o||{}));
 const THUONG=c=>c.g==='nam'?{surname:'Thương',given:'Tâm Từ',main:'mi',traits:['khuynhthanh','phongnha'],min:{mi:84,tri:74,eq:70},job:'noi'}:{surname:'Thương',given:'Cảnh Hành',main:'tri',traits:['thongminh','muusi'],min:{tri:84,vo:70,eq:70,mi:72},job:'hiep',lv:1};
 const LACNHAN={surname:'Lạc',given:'Nhạn',g:'nữ',main:'mi',story:1,traits:['duyendang','phongnha'],min:{mi:88,tri:74,eq:72},job:'nghe',lv:2};
-const marry=(c,p,free)=>{G.mkSpouse(c,free,p);return ''};
+const marry=(c,p,free)=>{G.mkSpouse(c,free,p);delete c.flags.lvP;return ''};
 const ta=c=>c.g==='nam'?'nàng':'chàng';
 const fit=(c,need)=>G.tierIdx()>=need.t||c.fame+S().fame*0.2>=need.f||(c.tuoc||0)>0||c.job==='quan'&&c.lv>=need.q||c.degree>=need.d;
 return [
@@ -29,7 +30,7 @@ return [
 A({id:'tinh_hoi_xuan_b',t:'Tình trong như đã',c:single,
  x:c=>`Đã mấy lần hẹn hò bên bờ ao. Người ấy hỏi ${N(c)}: "Bao giờ thì nhà mình mang trầu cau sang?"`,
  o:[{l:'Về thưa gia đình, đi hỏi cưới',c:()=>G.money()>=m(4),f:c=>marry(c,lover(c,G.tierIdx()*4+4),false)+'Đám cưới đơn sơ mà vui.'+fx(c,{money:-m(4),tam:10})},
-    {l:'Hẹn đợi lập nghiệp đã',r:[{eq:1,mi:0.4},55],y:c=>'Người ấy gật đầu chờ.'+nx(c,'tinh_hoi_xuan_b',12,24),n:c=>'Người ấy giận dỗi, đi lấy chồng khác.'+fx(c,{tam:-12})},
+    {l:'Hẹn đợi lập nghiệp đã',r:[{eq:1,mi:0.4},55],y:c=>{c.flags.hxW=(c.flags.hxW||0)+1;if(c.flags.hxW>2){delete c.flags.lvP;c.flags.hxW=0;return 'Chờ mãi chưa thấy tin, người ấy nhận lời mai mối của nhà khác.'+fx(c,{tam:-8})}return 'Người ấy gật đầu chờ.'+nx(c,'tinh_hoi_xuan_b',12,24)},n:c=>'Người ấy giận dỗi, đi lấy chồng khác.'+fx(c,{tam:-12})},
     {l:'Lảng tránh',f:c=>'Mối tình tan dần.'+fx(c,{tam:-6})}]}),
 {id:'tinh_thu_tinh',t:'Lá thư không ký tên',k:'Tình duyên',age:[15,28],c:single,
  x:c=>`Mấy tháng nay, cứ rằm là trước cửa có một lá thư thơ tình viết chữ rất đẹp, kẹp một cánh hoa khô.`,

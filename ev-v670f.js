@@ -99,7 +99,7 @@ TQ({id:'tq_ket_nghia',t:'Kết nghĩa với đồng liêu',age:[26,65],c:c=>c.se
 
 /* ===================== PHÒ MÃ: cưới công chúa ===================== */
 {id:'pc_0',t:'Ánh mắt trong cung yến',k:'Duyên cung đình',tags:{},ms:1,age:[18,40],pcd:240,cd:120,w:0.6,
- c:c=>!c.spouse&&!c.inLaw&&c.job==='quan'&&c.lv>=3&&G.inKinh(c)&&tn()>=3&&!PC(c)&&!(c.flags&&c.flags.pcDone>S().t-120)&&F().cong.some(p=>p.dead==null&&p.met&&p.rel>=10&&!p.wed&&!p.hold&&p.age>=16&&p.age<=30),
+ c:c=>c.g==='nam'&&!c.spouse&&!c.inLaw&&c.job==='quan'&&c.lv>=3&&G.inKinh(c)&&tn()>=3&&!PC(c)&&!(c.flags&&c.flags.pcDone>S().t-120)&&F().cong.some(p=>p.dead==null&&p.met&&p.rel>=10&&!p.wed&&!p.hold&&p.age>=16&&p.age<=30),
  x:(c,d)=>{const L=F().cong.filter(p=>p.dead==null&&p.met&&p.rel>=10&&!p.wed&&!p.hold&&p.age>=16&&p.age<=30);d.p=d.p||(L.length?L[0].id:null);const p=d.p?cong(d.p):null;
   return p?`Từ lần gặp ở cung yến, ${esc(rname(p))}, ${p.age} tuổi, vẫn nhớ ${N(c)}. Một cung nữ thân cận của công chúa nhiều lần "tình cờ" gặp nhà mình ở hành lang. Người ta bắt đầu bàn tán.`:'Chuyện cũ.'},
  o:(c,d)=>{const p=d.p?cong(d.p):null;if(!p)return [{l:'Thôi',f:c=>''}];return [
@@ -150,7 +150,7 @@ vpGate('vp_5','Nhà ngoại được ban',(c,d,g)=>`Cháu ngoại của nhà ${N
  (c,d,g)=>[{l:'Nhận thưởng, cảm tạ, giữ phận',f:c=>{G.cf(15,'Nhà ngoại thích');G.grantTitle&&G.grantTitle(c,2);G.alive().filter(p=>G.inClan(p)&&p.job==='quan').forEach(p=>G.qt.add(p,{fav:12,risk:8}));G.later(c,'vp_6',R(80,140),{g:g.id});return 'Nhà mình nhận ơn vua, sống kín tiếng. Quan trong họ được trọng, và cũng bị để mắt hơn.'+fx(c,{money:m(60),fame:25})}},
   {l:'Từ chối ban thưởng quá lớn, xin giảm',f:c=>{G.later(c,'vp_6',R(80,140),{g:g.id});return 'Nhà mình xin nhận ít để tránh tiếng. Triều đình khen biết điều.'+fx(c,{fame:12,money:m(20)})}}]),
 vpGate('vp_6','Thế đổi trong cung',(c,d,g)=>{const ph=phiOf(g);return D().newT>=(g.flags.vp.t0||0)&&D().newT>0&&S().t-D().newT<60?`Vua mới lên ngôi. Các phi tần đời trước được xếp lại. ${ph&&g.flags.vp.kids?`${esc(g.given)} có con, được tôn làm thái phi, ở lại cung.`:`${esc(g.given)} không có con, theo lệ phải ra chùa tu hành.`}`:`Nhiều năm đã qua trong cung. ${esc(g.given)} đã ${g.flags.vp.kids?'có chỗ đứng vững nhờ con':'ở lại lặng lẽ, ít ai nhớ'}.`},
- (c,d,g)=>[{l:'Gửi thư thăm hỏi, giữ liên lạc',f:c=>{const ph=phiOf(g);if(g.flags.vp.kids){G.cf(8,'Thái phi nhà ngoại');return `${esc(g.given)} ở cung Thái phi, cháu ngoại lớn lên bên cạnh. Nhà ngoại giữ được chỗ dựa.`+fx(c,{fame:6})}g.left='tuhanh';return `${esc(g.given)} vào chùa, giữ liên lạc bằng thư. Nhà ngoại mất chỗ dựa trong cung.`+fx(c,{tam:-4})}}]),
+ (c,d,g)=>[{l:'Gửi thư thăm hỏi, giữ liên lạc',f:c=>{const ph=phiOf(g);if(g.flags.vp.kids){G.cf(8,'Thái phi nhà ngoại');return `${esc(g.given)} ở cung Thái phi, cháu ngoại lớn lên bên cạnh. Nhà ngoại giữ được chỗ dựa.`+fx(c,{fame:6})}if(D().newT>=0&&S().t-D().newT<60){g.left='tuhanh';return `${esc(g.given)} vào chùa theo lệ, giữ liên lạc bằng thư. Nhà ngoại mất chỗ dựa trong cung.`+fx(c,{tam:-4})}return `${esc(g.given)} ở lại cung lặng lẽ, ít ai nhớ. Thư từ vẫn qua lại đều.`+fx(c,{tam:-1})}}]),
 
 /* ===================== VƯƠNG PHI: thân vương dạm hỏi ===================== */
 FX({id:'vpv_1',t:'Thân vương dạm hỏi',k:'Duyên cung đình',head:1,age:[30,80],pcd:240,w:0.5,fixed:0,
