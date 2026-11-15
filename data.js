@@ -217,7 +217,7 @@ const BIZ={
 
 /* gia quy */
 const RULES={
-  hieuhoc:{n:'Trọng việc học',d:'Con cháu học nhanh hơn 15%, chi tiêu +5%'},
+  hieuhoc:{n:'Trọng việc học',d:'Con cháu học nhanh hơn 15%. Chi tiêu +5%, trẻ nhỏ mệt mỏi thêm mỗi năm'},
   cambac:{n:'Cấm cờ bạc rượu chè',d:'Khó nhiễm thói xấu, ổn định +4'},
   tietkiem:{n:'Cần kiệm',d:'Chi tiêu -10%, tâm trạng -3'},
   nghia:{n:'Trọng nghĩa',d:'Danh vọng gia tộc tăng dần, tốn 2% thu nhập'},
@@ -225,7 +225,7 @@ const RULES={
   hoathuan:{n:'Hòa thuận làm đầu',d:'Ổn định +4, EQ tăng thêm'},
   trongnong:{n:'Dĩ nông vi bản',d:'Hoa lợi ruộng +10%, buôn bán lãi -5%'},
   trongthuong:{n:'Trọng thương',d:'Buôn bán, kinh doanh lãi +8%, danh vọng gia tộc hao dần'},
-  thuongvo:{n:'Thượng võ',d:'Võ lực tăng nhanh 15%, chiến công +20%'},
+  thuongvo:{n:'Thượng võ',d:'Võ lực tăng nhanh 15%, chiến công +20%. Trẻ dễ bị thương, nhà bớt yên, chi tiêu +3%'},
   hieudao:{n:'Hiếu đạo làm đầu',d:'Con cháu hiếu thuận hơn, ổn định +3'},
   tuquyet:{n:'Con cháu tự quyết',d:'Tâm trạng +4, phỏng vấn nghề theo ý mình dễ đỗ hơn, kém hiếu thuận'},
   nuhoc:{n:'Nữ nhi được đi học',d:'Con gái được đến trường như con trai'},
@@ -502,9 +502,9 @@ Object.assign(RULES,{
   camxa:{n:'Cấm xa xỉ',d:'Không ai được sống xa hoa. Ít nhiễm thói phung phí, chi tiêu -5%'},
   kinhto:{n:'Kính tổ, giỗ chạp chu toàn',d:'Mỗi tháng tốn chút hương khói. Danh vọng và Ổn định tăng dần'},
   nghiadien:{n:'Lập nghĩa điền',d:'Năm phần trăm thu của gia tộc để cứu giúp người nghèo trong họ. Chi phái túng thiếu được tự động giúp, Ổn định +4',req:'tier3'},
-  thuhuong:{n:'Thư hương truyền gia',d:'Con cháu học nhanh thêm 20%, danh vọng tăng dần',req:'cunhan'},
-  thetap:{n:'Thế tập binh nghiệp',d:'Con trai nhà võ học võ nhanh hơn, vào quân được làm ngũ trưởng',req:'vo'},
-  vanvo:{n:'Văn võ song toàn',d:'Trí tuệ và võ lực đều tăng nhanh 8%'},
+  thuhuong:{n:'Thư hương truyền gia',d:'Con cháu học nhanh thêm 20%, danh vọng tăng dần. Chi tiêu +4%, trẻ phải ép mình đèn sách',req:'cunhan'},
+  thetap:{n:'Thế tập binh nghiệp',d:'Con trai nhà võ học võ nhanh hơn, vào quân được làm ngũ trưởng. Con trai hao sức luyện tập, nhà bớt yên',req:'vo'},
+  vanvo:{n:'Văn võ song toàn',d:'Trí tuệ và võ lực đều tăng nhanh 8%. Trẻ phải gánh cả hai, mệt hơn, chi tiêu +4%'},
   tuuhien:{n:'Chọn hiền làm chủ',d:'Gia chủ chọn người tài không theo thứ bậc, không ai được oán. Mất phần ổn định của trưởng ấu',req:'tier2'},
   camdang:{n:'Không kết bè phái',d:'Quan trong nhà ít bị cuốn vào đảng tranh, ít bị hặc tội, nhưng thăng chậm'},
   khoandung:{n:'Khoan dung',d:'Người nhà ít để bụng, oán giận nguôi nhanh. Gia pháp kém nghiêm'},
