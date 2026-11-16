@@ -73,6 +73,8 @@ D.LAW=[
  {id:'xay_trai',n:'Xây dựng trái phép',thien:'Công',lv:2,gr:1},{id:'lan_dat_cong',n:'Lấn đất công',thien:'Công',lv:3,gr:1},{id:'dao_de',n:'Đào đê trộm nước',thien:'Công',lv:4,gr:1},
  {id:'muu_phan',n:'Mưu phản',thien:'Danh lệ',lv:5,gr:3,tc:1}];
 /* ---------- dự án gia nghiệp: v = cỡ việc (thang CHI), mo = số tháng xây, up = phí duy trì mỗi tháng (cỡ việc), tier = bậc tối thiểu ---------- */
+/* v6.7.0-d8: số mẫu đất mỗi cơ sở cần (số nguyên: cố định; mảng [gốc, thêm mỗi đơn vị]); hội quán và dinh thự ở kinh thành không cần đất phong */
+D.PROJ_AC={nghiatrang:3,nghiathuc:4,tangthu:3,khothoc:[1,1],thuyenbuon:[1,0.5],giabinh:[2,0.1],monkhach:[1,0.15],hocbong:[1,0.1],chuamieu:2};
 D.PROJ=[
  {id:'nghiatrang',n:'Nghĩa trang gia tộc',v:120,mo:8,up:0.5,tier:2,d:'Giảm một nửa tiền tang lễ, con cháu hiếu hơn.'},
  {id:'nghiathuc',n:'Nghĩa thục',v:200,mo:10,up:1.5,tier:3,need:'teacher',d:'Trẻ trong vùng được học. Mỗi năm thêm danh vọng, thỉnh thoảng có học trò xuất sắc.'},
@@ -82,7 +84,6 @@ D.PROJ=[
  {id:'giabinh',sc:{u:'người',n0:20,min:10,max:300,step:10,cap:[0,0,25,50,90,150,250]},n:'Gia binh hộ viện',v:60,mo:3,up:4,tier:2,d:'Nhà ít bị cướp, người trẻ trong nhà luyện võ dần. Nuôi quá sức nhà thì triều đình nghi.'},
  {id:'monkhach',sc:{u:'người',n0:5,min:2,max:40,step:3},n:'Môn khách',v:40,mo:2,up:2,tier:3,d:'Quan trong họ ít bị tra xét hơn, mỗi năm có mối làm ăn do môn khách mách, và biết thêm tính tình, phe, ân oán của người đương chức.'},
  {id:'quyennap',n:'Quyên nạp hàm Giám sinh',v:500,mo:0,up:0,tier:3,once:1,d:'Miễn dao dịch, con cháu có tư cách đi thi. Thanh lưu chê.'},
- {id:'khaihoang',n:'Khai hoang',v:300,mo:24,up:0,tier:3,once:1,d:'Thêm ruộng, số mẫu theo vốn bỏ ra (rẻ hơn mua).'},
  {id:'chuamieu',n:'Trùng tu chùa miếu',v:150,mo:10,up:0,tier:2,d:'Tâm trạng cả nhà khá hơn mỗi năm, người ốm mau hồi sức hơn.'},
  {id:'hoiquan',n:'Hội quán ở kinh thành',v:300,mo:8,up:2,tier:4,d:'Người đi thi và làm quan ở kinh có chỗ trọ, bớt phí dời nhà.'},
  {id:'dinhkinh',n:'Dinh thự ở kinh thành',v:800,mo:18,up:3,tier:5,d:'Quan trong họ ở kinh được hậu thuẫn: thêm thánh ân mỗi năm.'},
