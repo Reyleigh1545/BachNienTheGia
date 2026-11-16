@@ -41,7 +41,7 @@ const JOBS={
   none:{n:'Nhàn rỗi',inc:0,st:'eq',stress:0,lv:[L('Nhàn rỗi',0)],d:'Chưa có nghề.'},
   huu:{n:'Nghỉ hưu',inc:0,st:'eq',stress:-4,lv:[L('Nghỉ hưu',0)],d:'Đã gác lại công việc, an hưởng tuổi già.'},
   noi:{n:'Nội trợ',inc:0,st:'eq',stress:2,lv:[L('Nội trợ',0),L('Người đảm việc nhà',0,{m:30}),L('Chủ mẫu',0,{m:70,eq:55})],d:'Lo toan việc nhà. Mỗi bậc giảm 6% chi tiêu của hộ.'},
-  nong:{n:'Nông',inc:0,st:'suc',stress:3,phys:58,start:1,gift:'1 mẫu ruộng',lv:[L('Tá điền',1),L('Nông phu',1,{land:3}),L('Phú nông',1,{land:15}),L('Điền chủ',1,{land:40})],d:'Cày cấy ruộng nhà và ruộng thuê. Thu nhập đến từ mùa vụ, xem trang Ruộng vườn. Bậc nghề lên theo số ruộng sở hữu.'},
+  nong:{n:'Nông',inc:0,st:'suc',stress:3,phys:58,start:1,gift:'Bộ nông cụ cũ',lv:[L('Tá điền',1),L('Nông phu',1,{land:3}),L('Phú nông',1,{land:15}),L('Điền chủ',1,{land:40})],d:'Làm thuê cày cấy cho nhà có ruộng, có công thì có ăn. Nhà không có ruộng riêng; chỉ khi có quan hoặc tước mới có đất phong để khai hoang và phát canh.'},
   tieunhi:{n:'Tiểu nhị',inc:450,st:'eq',stress:4,start:1,gift:'8 lạng bạc vốn liếng',lv:[L('Tiểu nhị',1),L('Người bán hàng',1.6,{m:20,eq:35}),L('Chưởng quỹ',3,{m:50,eq:50,tri:40}),L('Đại chưởng quỹ',5,{m:85,eq:70,tri:55})],d:'Chạy bàn, đứng quầy ở quán, hiệu buôn. Lên Người bán hàng thì mở được quán trà; lên Chưởng quỹ thì mở được hiệu buôn. Được đi buôn chuyến.'},
   khuanvac:{n:'Phu khuân vác',inc:500,st:'vo',stress:5,phys:48,start:1,gift:'Đòn gánh, xe cút kít và 6 lạng bạc',lv:[L('Phu khuân vác',1),L('Cai phu',1.8,{m:30,vo:40,eq:35}),L('Đầu nậu bến',3.5,{m:70,eq:55,vo:50})],d:'Bốc vác ở bến sông, chợ đầu mối. Nặng nhọc, dễ chấn thương.'},
   tieuphu:{n:'Tiều phu',inc:400,st:'suc',stress:4,phys:52,start:1,gift:'Rìu, cung tên và 6 lạng bạc',lv:[L('Tiều phu',1),L('Thợ săn',1.7,{m:30,vo:45}),L('Thợ săn có tiếng',2.6,{m:70,vo:65})],d:'Đốn củi, săn bắn trong núi. Dễ gặp kỳ ngộ sơn lâm.'},
@@ -322,7 +322,7 @@ const POEMS=[
 
 /* xuất thân của người khai sáng: jobs = nghề có thể, b = cộng chỉ số, ax = khuynh hướng tính cách, sk = năng lực phụ */
 const ORIGINS={
-  nongho:{n:'Nông hộ',d:'Mấy đời cày thuê cuốc mướn. Còn một mẫu ruộng hương hỏa.',jobs:['nong'],b:{suc:8},ax:{cc:12,tiet:6},sk:{ky:4}},
+  nongho:{n:'Nông hộ',d:'Mấy đời cày thuê cuốc mướn. Không có một tấc đất cắm dùi.',jobs:['nong'],b:{suc:8},ax:{cc:12,tiet:6},sk:{ky:4}},
   thuho:{n:'Nhà thợ',d:'Cha ông làm thợ, chăn nuôi. Có đồ nghề, ít ruộng.',jobs:['tho','chan'],b:{vo:5,suc:4},ax:{cc:10,yc:5},sk:{ky:12}},
   tieuthuong:{n:'Tiểu thương',d:'Con nhà buôn thúng bán mẹt, quen chợ búa từ nhỏ.',jobs:['hangrong','tieunhi'],b:{eq:8},ax:{hd:8,tv:6},sk:{khau:12,ql:4}},
   sondan:{n:'Sơn dân, ngư dân',d:'Lớn lên ở rừng núi hoặc sông nước, quen nắng gió.',jobs:['tieuphu','ngu'],b:{suc:6,vo:4},ax:{gan:12,dl:8},sk:{ky:4}},
@@ -378,7 +378,7 @@ const CLANOFF={
   tudu:{n:'Từ đường',pay:0.8,need:['eq',40],d:'Lo hương khói, giỗ chạp. Ổn định và danh vọng gia tộc tăng dần.'},
   giaothu:{n:'Giáo thụ',pay:1,need:['tri',60],d:'Dạy con cháu trong tộc. Trẻ ở nhà chính học nhanh hơn.'}};
 /* mức tô khi phát canh ruộng: phần hoa lợi thu về, tác động danh vọng mỗi năm theo 10 mẫu */
-const TOLV=[['Tô nhẹ',0.3,1.2,'Tá điền biết ơn, tiếng thơm lan xa'],['Tô vừa',0.4,0,'Như lệ thường trong làng'],['Tô nặng',0.5,-1.5,'Thu nhiều nhưng bị chê là địa chủ ác, tá điền dễ bỏ trốn']];
+const TOLV=[['Tô nhẹ',0.1,1.2,'Tá điền biết ơn, tiếng thơm lan xa'],['Tô vừa',0.2,0,'Như lệ thường trong làng'],['Tô nặng',0.3,-1.5,'Thu nhiều nhưng bị chê là địa chủ ác, tá điền dễ bỏ trốn']]; /* v6.7.0-d8: tô tính trên giá trị nông sản tá điền thu về */
 /* mức góp công quỹ của người đi làm ở nhà chính */
 const GOP=[[0,'Không góp',2],[0.1,'Một phần mười',0],[0.2,'Hai phần mười',-1],[0.3,'Ba phần mười',-2],[0.5,'Một nửa',-5]];
 /* mừng thọ */
