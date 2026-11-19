@@ -60,7 +60,7 @@ Kho hiện tại (d8): **1.693 sự kiện, 258 kỳ ngộ**. Mục tiêu dài h
 
 ## 3. Luật đã chốt: gia tộc, người, chỉ số
 
-**Nhân vật khởi đầu.** Tạo ván chỉ chọn họ, tên, giới tính; xuất thân, nghề, nơi lập nghiệp ngẫu nhiên. Hai chỉ số cao nhất trong trí, võ, mị lực, EQ được nâng lên ít nhất 60 (gen 62 đến 80; d6, trước đó d1 là 80). Có tỉ lệ mang sẵn thói quen tốt rẻ tiền (55%), tật xấu nhẹ (20%), đặc tính tốt (40%). **Họ Nguyễn là họ hoàng tộc, người chơi không chọn được**; NPC vẫn mang họ Nguyễn được.
+**Nhân vật khởi đầu.** Tạo ván chỉ chọn họ, tên, giới tính; xuất thân, nghề, nơi lập nghiệp ngẫu nhiên. Hai chỉ số cao nhất trong trí, võ, mị lực, EQ được nâng lên ít nhất 60 (gen 62 đến 80). Mức 60 do chủ dự án yêu cầu ở d6, thay mức 80 của d1. Có tỉ lệ mang sẵn thói quen tốt rẻ tiền (55%), tật xấu nhẹ (20%), đặc tính tốt (40%). **Họ Nguyễn là họ hoàng tộc, người chơi không chọn được**; NPC vẫn mang họ Nguyễn được.
 
 **Chỉ số.**
 - Trần mềm theo tư chất; lớn tự nhiên không cộng chồng lên phần học được.
@@ -121,7 +121,7 @@ Kho hiện tại (d8): **1.693 sự kiện, 258 kỳ ngộ**. Mục tiêu dài h
 
 Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc định thang CHI. Kỳ ngộ nhân **2,5** cho khoản nhận được (tiền, danh vọng, hưng thịnh, chiến công). Chuỗi cốt truyện cũ: thưởng tiền theo thang THU, danh vọng nhân `1 + 0,3 × bậc`; phạt sức khỏe tối đa 3 mỗi lần. Hết tiền thì mỗi người 30% bỏ một thói quen tốt tốn tiền; tật xấu không bỏ.
 
-**Đất (d8).** **Nhà thường không có ruộng.** Tá điền ở nhà chính đi làm thuê, công khoảng 450 đồng mỗi tháng theo tay nghề và tâm trạng. Trang "Ruộng vườn" đã bỏ; thay bằng trang **Đất phong**, chỉ hiện khi nhà có đất: đất phong theo tước, đất mua (chỉ khi nhà có người làm quan hoặc có tước, giá 60% giá mẫu ruộng cũ). Đất chia ba phần: cơ sở (dự án), ruộng đã khai hoang cho tá điền, đất hoang. Khai hoang một mẫu tốn 40% giá mẫu, mười hai tháng sau thành ruộng. Phát canh thu tô theo mùa gặt: 30% (nặng, mang tiếng địa chủ), 20% (vừa), 10% (nhẹ, có tiếng thơm).
+**Đất (d8).** **Nhà thường không có ruộng. Chi họ không có ruộng riêng: ruộng được phong và đất phong đều về nhà chính.** Tá điền ở nhà chính đi làm thuê, công khoảng 450 đồng mỗi tháng theo tay nghề và tâm trạng. Trang "Ruộng vườn" đã bỏ; thay bằng trang **Đất phong**, chỉ hiện khi nhà có đất: đất phong theo tước, đất mua (chỉ khi nhà có người làm quan hoặc có tước, giá 60% giá mẫu ruộng cũ). Đất chia ba phần: cơ sở (dự án), ruộng đã khai hoang cho tá điền, đất hoang. Khai hoang một mẫu tốn 40% giá mẫu, mười hai tháng sau thành ruộng. Phát canh thu tô theo mùa gặt: 30% (nặng, mang tiếng địa chủ), 20% (vừa), 10% (nhẹ, có tiếng thơm).
 
 **Dự án gia nghiệp** (trang Cơ ngơi). Mỗi dự án cần số mẫu đất trống theo độ lớn (nghĩa trang 3, nghĩa thục 4, tàng thư 3, chùa miếu 2, kho thóc 1 + 1 mỗi kho, thuyền buôn 1 + 0,5 mỗi thuyền, gia binh 2 + 0,1 mỗi người, môn khách 1 + 0,15, học bổng 1 + 0,1); hội quán, dinh thự ở kinh, quyên nạp không cần đất. Có số lượng, nút − và +, phí duy trì, nút Giải tán, sổ "đã chi, đã thu, lãi lỗ". Gia binh vượt sức nhà thì triều đình nghi. Việc lớn phải **đáng tiền**. Đã bỏ: từ đường lớn, nghĩa điền, cầu đê đường làng, khai hoang (dự án).
 
@@ -139,7 +139,9 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 **Ba đường lên ngôi:** Quyền thần, Võ quan, Khởi nghĩa. Đủ địa vị thì sau 12 đến 24 tháng tự kích hoạt; bỏ được bất cứ lúc nào; người đang ở xa vẫn mở được nhưng "lộ" tăng. Bốn thước đo: thế lực, danh nghĩa, tài lực, lộ. Nuôi quân tốn tiền theo số đội (100 người, 60 bạc mỗi tháng), hiện trong dòng tiền; hết tiền thì quân bỏ trốn. Bỏ ngang hay mất người cầm đầu chỉ khóa chính đường đó 10 năm. **Mưu phản thất bại là tru di**; hộp tru di chỉ còn "đưa một người cùng vợ con trốn đi lập chi ở xa" (để chỉ tam tộc) hoặc "phó mặc cho trời". Lên ngôi: người chơi đặt quốc hiệu, niên hiệu đầu tiên; màn hậu sử (không quá 320 năm); hết game.
 
-**Kết thúc khác:** tuyệt tự; tru di cửu tộc; các kết của cốt truyện. Nút **Sử sách** ở menu chính ghi 17 cái kết (11 thắng, 6 bại), mờ cho tới khi đạt, mở khóa 6 xuất thân mới. Mọi kết ngoài lên ngôi dùng màn Hậu sử chung. Không có hộp hỏi "khép lại ván" (đã bỏ hộp "Một trang sử").
+**Tru di:** quét cả người cưới vào và người ở rể; người ở rể đứng đầu mưu đại sự thì cả họ vẫn chịu. Chi ở xa không bị liên lụy thì **giữ nguyên tiền** của chi.
+
+**Kết thúc khác** (kết phụ, chủ dự án đã đồng ý): tuyệt tự; tru di cửu tộc; các kết của cốt truyện. Nút **Sử sách** ở menu chính ghi 17 cái kết (11 thắng, 6 bại), mờ cho tới khi đạt, mở khóa 6 xuất thân mới. Mọi kết ngoài lên ngôi dùng màn Hậu sử chung. Không có hộp hỏi "khép lại ván" (đã bỏ hộp "Một trang sử").
 
 **Hạt giống thế giới mỗi ván:** 9 môn phái (3 chính, 3 tà, 3 trung lập) rút từ 24 tên, 3 điểm nóng thế lực tự phát, mệnh thế, tính khí nước láng giềng. Hiện mới dùng tên môn phái trong sự kiện.
 
@@ -156,6 +158,7 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 ## 8. Bối cảnh, câu chữ
 
+- **Cho phép** vật phẩm từ phương Tây và cây trồng mới (thuốc lá Tây, khoai lang…) xuất hiện trong sự kiện.
 - Triều đại hư cấu **Đại Nguyễn**, hoàng đế khai quốc Nguyễn Thành Trung. Danh gia gọi theo kiểu "Hoàng Gia, Đào Gia, Cổ Nguyệt Gia", mỗi vùng có danh gia riêng.
 - Giữ xưng hô đúng vai vế trong lời kể (chỗ nhà Phạm còn lẫn "ông" và "hắn" với cùng một người).
 - Lời kể không được nhắc người không có thật (vợ, con mà nhân vật không có); chuỗi nhiều bước không được tạo lại người mới thay người cũ.
@@ -177,6 +180,7 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 - Mốc vượt và cổng sức khỏe; sức khỏe tối đa trên 100.
 - Tác dụng lên gia tộc của danh hiệu chỉ số.
 - Trang tra cứu luật.
+- Ruộng riêng của chi họ (chốt 09/11, bỏ 19/11).
 - Ruộng cho nhà thường, trang Ruộng vườn, dự án Khai hoang, từ đường lớn, nghĩa điền, cầu đê đường làng.
 - Danh sách tên bị cấm (Kiên, Duy…) và tự đổi tên người nhà.
 - Chuỗi ân oán `vil_*` cũ (đã thay bằng `ARC.pm`).
@@ -186,7 +190,7 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 ## 10. Ý mới của chủ dự án, chưa làm (chép nguyên văn)
 
-_(Trống. Ý mới ghi vào đây trước khi code.)_
+- **19/11/2026, tuyển phò mã.** Hỏi: người nhà chủ động (như hiện tại) hay triều đình khởi xướng như thời Minh? Chủ dự án trả lời: "Làm cả 2 đi." Nghĩa là giữ đường hiện có (`pc_0` đến `pc_6`, người nhà gặp công chúa trước) và thêm đường triều đình chọn phò mã. Chưa làm.
 
 ---
 
@@ -213,10 +217,4 @@ _(Trống. Ý mới ghi vào đây trước khi code.)_
 
 **Cân bằng (chỉ làm sau khi gameplay xong):** mọi con số các bản d1 đến d8 đều là ước lượng chưa đo: tốc độ lên quan (mong Nhất phẩm khoảng năm 38), giá đất, lương tá điền 450, số mẫu mỗi dự án, giá gia quy, xác suất cốt truyện hoàng thân, tỉ lệ thắng ba đường lên ngôi (mục tiêu tạm: người trung bình 10 đến 25%, người mạnh 40 đến 55%), snowball cơ duyên và tiền theo gia thế.
 
-**Cần chủ dự án chốt** (xem tin nhắn kèm bản `claude-md`; chốt xong thì ghi vào mục 3 đến 9 và xóa dòng ở đây):
-- Kết thúc: "lên ngôi là kết duy nhất, không thêm kết phụ" (chốt 07/11) hay 17 kết trong Sử sách (d1)?
-- Chi họ có còn ruộng riêng (chốt 09/11) sau khi d8 bỏ ruộng nhà thường không?
-- Nhân vật khởi đầu: hai chỉ số từ 80 (ý ở d1) hay 60 (d6 tự hạ)?
-- Rể đứng đầu mưu đại sự thì tru di có quét cả họ không; sau tru di chi xa còn giữ tiền không?
-- Bối cảnh thế giới: có cho vật Tây, cây mới (thuốc lá Tây, khoai lang) không?
-- Tuyển phò mã: người nhà chủ động (hiện tại) hay triều đình khởi xướng như thời Minh?
+**Kết thúc chưa thử:** chủ dự án mới đi thành công đường soán ngôi qua quan văn (Quyền thần). Võ quan, Khởi nghĩa và các kết phụ chưa ai chơi tới.
