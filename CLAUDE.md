@@ -5,7 +5,7 @@
 - File này mâu thuẫn với lời chủ dự án trong phiên hiện tại → theo lời chủ dự án, rồi **sửa file này ngay trong cùng commit**.
 - Các báo cáo `bao-cao-*.md` và kế hoạch cũ đã gộp vào đây rồi xóa khỏi repo (còn trong lịch sử git, commit trước `claude-md`). Chỉ mở lại khi cần chi tiết kỹ thuật cũ.
 
-Phiên bản hiện tại: **v6.7.0-d9.1** (nhãn `.verlbl` trong `index.html`). File này lập ngày 19/11/2026 từ các báo cáo v6.3.5 đến v6.7.0-d8.
+Phiên bản hiện tại: **v6.7.0-d9.2** (nhãn `.verlbl` trong `index.html`). File này lập ngày 19/11/2026 từ các báo cáo v6.3.5 đến v6.7.0-d8.
 
 ---
 
@@ -16,7 +16,7 @@ Phiên bản hiện tại: **v6.7.0-d9.1** (nhãn `.verlbl` trong `index.html`).
 3. **Ý mới của chủ dự án:** chép **nguyên văn** vào mục 10 trước khi code. Không diễn giải lại. Chỗ nào hiểu không chắc thì hỏi, không đoán. Làm xong thì chuyển ý đó thành luật ở mục 3 đến 8 và xóa khỏi mục 10.
 4. **Không tự đổi luật đã chốt** (mục 3 đến 8). Thấy luật có vấn đề thì nêu ra và hỏi. Không tự "cải tiến" con số hay cơ chế ngoài phạm vi được giao.
 5. **Không làm lại thứ trong mục 9 "Đã bỏ".**
-6. **Nhánh:** mỗi bản một nhánh tên theo số bản (ví dụ `v6.7.0-d9.1`). **Không merge vào `main`** khi chủ dự án chưa bảo.
+6. **Nhánh:** mỗi bản một nhánh tên theo số bản (ví dụ `v6.7.0-d9.2`). **Không merge vào `main`** khi chủ dự án chưa bảo.
 7. **Test:** mặc định chỉ `node --check` mọi file và một lần khởi động ngắn. Test kỹ hơn khi được bảo. Luôn nói rõ đã test gì, **chưa chơi tay** phần nào.
 8. **Không viết file báo cáo mới.** Cuối mỗi phiên: cập nhật mục liên quan trong file này (luật mới, đã bỏ, đang làm dở ở mục 11), ghi tóm tắt vào commit message.
 9. Sửa `index.html` xong thì chạy `node tools/make-admin.js` để dựng lại `admin.html`.
@@ -49,6 +49,7 @@ Game trình duyệt, JavaScript thuần, không build. Mô phỏng một gia t�
 | `ev-*.js` | Sự kiện, đẩy vào `window.EVF`. Dạng `{id,t,k,x,o:[{l,f\|r:[spec,khó],y,n}]}` cùng các khóa điều kiện `job, age, c, w, cd, pcd, fixed, arc…` |
 | `events-meta.js` | Metadata từng sự kiện (domain, subdomain, trigger, độ hiếm, `who`, `sit`). **Chưa chính xác**, thiếu sự kiện từ d4 trở đi |
 | `events-mem.js` | Khóa bộ nhớ theo id: `led` (ghi sổ sau lựa chọn), `mem` (điều kiện ký ức) |
+| `avatar2.js`, `ui2.js`, `ui2.css` | **Giao diện mới, chỉ nạp ở `admin.html`** (do `make-admin.js` chèn). `avatar2.js`: ảnh đại diện mới (`AVA2.svg`); `ui2.js`: thẻ chân dung, thanh kết quả, hồ sơ nhiều trang, ô đất (`UI2`); `ui2.css`: kiểu, mọi luật dưới `body.ui2`. Cờ `BN_ADMIN.ui2` (tắt bằng `?ui=old`). Engine chỉ gọi khi cờ bật (`U2()`), nên `index.html` chưa đổi |
 | `engine.js` | Toàn bộ logic, một IIFE, xuất `window.BNTG`. Khoảng 6.300 dòng dài |
 | `tools/` | `make-admin.js`, `addmeta.js`, `classify.js` (dựng lại `events-meta.js`), `chain.js` (đo chuỗi cốt truyện), `evcheck-save.js` + `evrules.json` (đối chiếu nhật ký popup trong save), `run.js` (chạy thử bằng Chrome headless, đường dẫn Chrome Windows), `roots.json`, `roots-gen.js` |
 
@@ -152,6 +153,15 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 ---
 
 ## 7. Giao diện
+
+**Giao diện mới (d9.2, chỉ admin, chờ chủ dự án duyệt trước khi đưa vào bản chính).** Ưu tiên máy tính. Nguyên tắc chủ dự án đã chốt: người chơi **ít phải gánh thông tin**; ảnh đại diện **thật đa dạng để dễ phân biệt**, có bộ riêng theo **nghề và địa vị**; test ở admin trước.
+- **Hộp sự kiện:** đầu hộp là thẻ chân dung (chấm tuổi, màu theo giới, thu nhập tháng) của người chính và người thứ hai; **thẻ bấm được để mở hồ sơ người đó**; lựa chọn là nút to, giá hiện bên nút. Khối chữ và thanh chỉ số dài cũ không còn ở đầu hộp.
+- **Kết quả:** thanh chỉ số kèm số cộng trừ (trí, võ, sức khỏe, mị lực, EQ, tâm trạng); mọi dòng cộng trừ khác vẫn hiện đủ (mục 0.12).
+- **Hồ sơ nhân vật chia trang:** Tổng quan, Tính cách và kỹ năng, Tâm tư, Việc và tiền, Gia đình, Việc nhà (trang rỗng tự ẩn). Không dồn một cuộn dài.
+- **Gia phả** là thẻ chân dung (nam xanh, nữ hồng, người mất xám).
+- **Đất phong:** ô đất từng mẫu (cơ sở theo màu từng loại, ruộng sọc xanh, khai hoang sọc vàng, đất hoang màu cát); bỏ các dòng số trùng với chú thích.
+- **Ảnh đại diện mới (`AVA2`):** sinh từ tên và id; 6 màu da, 4 dáng mặt, 6 kiểu mắt, 4 kiểu mày, 3 kiểu mũi, 4 kiểu miệng, 8 kiểu tóc mỗi giới, 6 kiểu râu, dấu hiệu riêng; trang phục theo nghề (26 nghề), áo bào và mũ theo phẩm quan, giáp và mũ theo cấp quân, áo tím cho người có tước, ngọc bội và hoa văn cho nhà giàu, tóc bạc và nếp nhăn theo tuổi.
+- Đã bỏ khỏi đề xuất (chủ dự án): thanh tab dưới cùng; trang cây chuyện đã trải qua.
 
 - Dòng phiên bản mờ ở góc phải dưới (`.verlbl`); bản admin thêm `· admin`. Đổi số khi ra bản mới.
 - Cơ ngơi và Gia tộc không được tràn thông tin: các thẻ triều đình, thời thế, hoàng tộc, cướp ngôi gom vào khối gập.
