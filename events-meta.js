@@ -26,3 +26,5 @@ Object.assign(window.EVMETA,{"tl_tang_bac":["society","chaos","random","common",
 Object.assign(window.EVMETA,{"kn_gia_pha_co":["life","encounter","random","common","any","any"],"kn_ho_hang_xa":["life","encounter","random","common","any","any"],"kn_gieng_co":["life","encounter","random","common","any","any"],"kn_thay_tuong":["life","encounter","random","common","any","any"],"kn_dong_ho_cu":["life","encounter","random","common","any","any"]});
 /* thêm tự động bởi tools/addmeta.js */
 Object.assign(window.EVMETA,{"tk_ban_khoan":["dynasty","honor","random","common","head","any"]});
+/* thêm tự động bởi tools/addmeta.js */
+Object.assign(window.EVMETA,{"qh_phien_linh":["military","conscript","random","common","any","any"],"qh_chuoc_so":["military","conscript","random","common","any","any"],"qh_nguoi_linh_ve":["military","conscript","random","common","any","any"],"dx_theo_doi":["government","eunuch","random","common","any","any"],"dx_nho_viec":["government","eunuch","random","common","any","any"],"dx_bi_to":["government","eunuch","random","common","any","any"]});
