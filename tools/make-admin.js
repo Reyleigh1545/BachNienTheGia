@@ -3,7 +3,8 @@ const fs=require('fs');let s=fs.readFileSync('index.html','utf8');const crlf=s.i
 const rep=(a,b)=>{if(s.split(a).length!==2)throw new Error('match '+a);s=s.replace(a,()=>b)};
 rep('<title>Bách Niên Thế Gia</title>','<title>Bách Niên Thế Gia · Admin</title>');
 {const a='<div class="verlbl" aria-hidden="true">';const i=s.indexOf(a);if(i<0)throw new Error('verlbl');const j=s.indexOf('</div>',i);s=s.slice(0,j)+' · admin'+s.slice(j)}
-rep('<script src="engine.js"></script>','<script src="admin.js"></script>\n<script src="engine.js"></script>');
+rep('<script src="engine.js"></script>','<script src="avatar2.js"></script>\n<script src="ui2.js"></script>\n<script src="admin.js"></script>\n<script src="engine.js"></script>');
+rep('</head>','<link rel="stylesheet" href="ui2.css">\n</head>');
 rep('</style>',`/* ===== bảng admin (chỉ có ở admin.html) ===== */
 #adm{position:fixed;left:10px;bottom:10px;z-index:9999;font-size:13px;max-width:min(420px,calc(100vw - 20px))}
 #adm .adtog{background:var(--purple);color:#fff;border:0;border-radius:6px;padding:7px 12px;font-weight:600;box-shadow:0 2px 8px #0004}

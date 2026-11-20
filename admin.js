@@ -1,4 +1,4 @@
-/* Bách Niên Thế Gia v6.7.0-d9.1 · bảng admin (chỉ nạp ở admin.html, phải nạp TRƯỚC engine.js)
+/* Bách Niên Thế Gia v6.7.0-d9.2 · bảng admin (chỉ nạp ở admin.html, phải nạp TRƯỚC engine.js)
    - Hiện tỉ lệ thành của từng lựa chọn có gieo xúc xắc
    - Máy tự chọn: Cao / Vừa / Thấp / Ngẫu nhiên. Không bao giờ chọn lựa chọn không gieo nếu hộp có lựa chọn gieo.
      Hộp chỉ toàn lựa chọn không gieo: chạy thử từng lựa chọn (previewScore), Cao lấy cái lợi nhất, Vừa cái ở giữa, Thấp cái thiệt nhất.
@@ -9,7 +9,8 @@
 (function(){
 'use strict';
 const CFG_KEY='bnthegia.adm.cfg';
-const A=window.BN_ADMIN={odds:true,auto:'off',force:'none',delay:250,play:false};
+const A=window.BN_ADMIN={odds:true,auto:'off',force:'none',delay:250,play:false,ui2:!/[?&]ui=old/.test(location.search)}; /* v6.7.0-d9.2: giao diện và ảnh đại diện mới, thêm ?ui=old để tắt */
+document.addEventListener('DOMContentLoaded',()=>document.body.classList.toggle('ui2',A.ui2));
 try{Object.assign(A,JSON.parse(localStorage.getItem(CFG_KEY)||'{}'),{play:false})}catch(e){}
 const saveCfg=()=>{try{localStorage.setItem(CFG_KEY,JSON.stringify({odds:A.odds,auto:A.auto,force:A.force,delay:A.delay}))}catch(e){}};
 
