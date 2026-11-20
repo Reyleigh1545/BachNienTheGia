@@ -24,3 +24,5 @@ Object.assign(window.EVMETA,{"gh_nhap_mon":["jianghu","martial_arts","random","c
 Object.assign(window.EVMETA,{"tl_tang_bac":["society","chaos","random","common","any","any"],"tl_nho_on_tang":["society","chaos","random","common","any","any"],"tl_thong_gia_hau":["society","chaos","random","common","any","any"],"tl_hoi_kin":["society","chaos","random","common","any","any"],"tl_thu_linh_moi":["society","chaos","random","common","any","any"],"tl_ty_nan":["society","chaos","random","common","any","any"],"tl_dep_loan":["society","chaos","random","common","any","any"]});
 /* thêm tự động bởi tools/addmeta.js */
 Object.assign(window.EVMETA,{"kn_gia_pha_co":["life","encounter","random","common","any","any"],"kn_ho_hang_xa":["life","encounter","random","common","any","any"],"kn_gieng_co":["life","encounter","random","common","any","any"],"kn_thay_tuong":["life","encounter","random","common","any","any"],"kn_dong_ho_cu":["life","encounter","random","common","any","any"]});
+/* thêm tự động bởi tools/addmeta.js */
+Object.assign(window.EVMETA,{"tk_ban_khoan":["dynasty","honor","random","common","head","any"]});

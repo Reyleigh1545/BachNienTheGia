@@ -225,6 +225,8 @@ return [
   if(cand.length)o.push({l:`Đưa ${cand[cand.length-1].given} cùng vợ con rời đi trong đêm, lập chi ở xa`,s:'Nếu tai họa ập xuống, nhánh này còn sống',ax:{muu:1},f:c=>{const p=cand[cand.length-1];const id=Q.newBranch(p,1,0);S().hh[id].far=1;const sp=G.spouseOf(p);[p,sp,...G.kidsOf(p)].forEach(x=>{if(x&&G.inClan(x))x.hh=id});return `Đêm ấy một chiếc thuyền nhỏ lặng lẽ xuôi dòng. ${esc(p.given)} mang theo cả nhà, đổi tên đổi họ sống nơi xa.`}});
   if(!us)o.push({l:'Dâng sớ nhận tội, xin cho một mình chịu',r:[{eq:1,tri:0.6},70],ax:{gan:1},y:c=>{sv();Q.of(w).crime=Math.min(4,Q.of(w).crime);return 'Vua đọc sớ, động lòng. Chỉ xử kẻ phạm tội. '+Q.sentence(w,4,'đại án')},n:c=>'Tờ sớ không được đoái hoài.'});
   if(!us&&((S().inlaws||[]).length||(Q.of(w).mon||0)>0))o.push({l:'Nhờ thông gia, môn sinh cầu tình',f:c=>{if(chance(0.3+0.08*(Q.of(w).mon||0))){sv();return 'Nhiều người cùng dâng sớ xin. Vua giảm án. '+Q.sentence(w,4,'đại án')}return 'Ai cũng sợ dây vào, chẳng ai dám đứng ra.'}});
+  /* d9.5: Thiết khoán (tk_ban_khoan) cứu được một lần khỏi án tru di, trừ mưu đại sự (us) */
+  if(!us&&S().tk)o.push({l:'Mang Thiết khoán vào cung trình lên',f:c=>{sv();S().tk=0;const L=Q.log?Q.log('Dùng Thiết khoán','Họ '+esc(S().surname)+' trình Thiết khoán, được tha khỏi án tru di. Tấm khoán sắt hết hiệu lực từ đó.'):0;return 'Vua xem tấm khoán sắt của tiên đế, trầm ngâm rất lâu rồi hạ chỉ miễn tội tru di. '+Q.sentence(w,4,'đại án')}});
   o.push({l:'Đành phó mặc cho trời',f:c=>'Cả nhà thắp hương, chờ.'});
   return o}},
 {id:'qt_chieu_tru_di',t:'Chiếu chỉ tru di',k:'Đại họa',fixed:1,
