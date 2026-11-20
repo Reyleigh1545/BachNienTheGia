@@ -18,7 +18,7 @@ const tense=()=>{const w=S().w;return !!S().war||!!(w&&w.ph&&Object.values(w.ph)
 const here=()=>S().loc&&S().loc.p;
 const disasterHere=()=>{const W=S().w;if(!W||!W.dis)return !!S().disaster;return W.dis.some(d=>S().t>=d.since-1&&S().t<d.until&&d.provs.includes(here()))||!!S().disaster};
 const busy=(c,mo)=>{c.busyUntil=Math.max(c.busyUntil||0,S().t+mo);return ''};
-const land=n=>{F().own=Math.max(0,F().own+n);return `<span class="fx"><span class="${n>0?'up':'down'}">Ruộng nhà ${n>0?'+':''}${n} mẫu</span></span>`};
+const land=n=>G.landDelta(n);
 const kho=(g,q)=>{S().kho[g]=(S().kho[g]||0)+q;return `<span class="fx"><span class="up">Kho: ${G.GOODS[g].n} +${q} ${G.GOODS[g].u}</span></span>`};
 const civil=c=>!['quan','nguy','quan_ngu'].includes(c.job);
 const V=o=>Object.assign({k:'Kỳ ngộ',ky:1,good:1,u:'person',pcd:200,w:1},o);

@@ -24,8 +24,8 @@ QT({id:'qt5_quy_nhan_tien_cu',t:'Người xưa nay đã có chỗ đứng',rmin:
  x:c=>`Một người ${L.has(c,'day_hoc')?'từng học dưới tay':'từng được giúp một phen'} của ${N(c)} nay có tiếng nói trong triều. Ông ta ghé thăm, ngỏ ý nói giúp cho ${N(c)} một lời khi có chỗ trống.`,
  o:c=>[{l:'Nhận lời, đa tạ',f:c=>{L.add('tien_cu',[c.id],null,{w:75});c.flags.noPromoUntil=0;return 'Một lời nhắc đúng lúc có thể đáng bằng nhiều năm khổ công.'+fx(c,{fav:6,tam:5})}},
   {l:'Từ chối, bảo mình tự lo được',f:c=>'Ông ta kính nể sự thanh liêm ấy.'+fx(c,{liem:4,fame:3})}]}),
-QT({id:'qt5_nguoi_bi_hac',t:'Người bị hặc năm xưa tìm đến',rmin:1,w:2,mem:{need:['bi_hac']},
- x:c=>`${esc(((L.find(c.id,'bi_hac')||{}).d||{}).n||'Người ấy')}, kẻ từng bị ${N(c)} dâng sớ hặc tội, nay xin gặp. Ông ta không còn chức quyền, nhưng còn bạn bè và còn nhớ.`,
+QT({id:'qt5_nguoi_bi_hac',t:'Người bị hặc năm xưa tìm đến',rmin:1,w:2,mem:{need:['bi_hac']},c:c=>{const e=L.find(c.id,'bi_hac');const n=e&&e.d&&e.d.np?L.np.get(e.d.np):null;return !n||n.ok},
+ x:c=>`${esc(((L.find(c.id,'bi_hac')||{}).d||{}).n||'Người ấy')}${(()=>{const e=L.find(c.id,'bi_hac');const n=e&&e.d&&e.d.np?L.np.get(e.d.np):null;return n?` (${L.np.age(n)} tuổi)`:''})()}, kẻ từng bị ${N(c)} dâng sớ hặc tội, nay xin gặp. Ông ta không còn chức quyền, nhưng còn bạn bè và còn nhớ.`,
  o:c=>[{l:'Tiếp, nghe ông ta nói',r:[{eq:1},60],y:c=>{L.drop(c,'bi_hac');return 'Ông ta kể phần mình. Hai bên không thân, nhưng oán đã nhạt.'+fx(c,{fame:3,tam:4})},n:c=>'Ông ta ra về trong im lặng, mang theo mối hận.'+fx(c,{tam:-4,risk:3})},
   {l:'Không tiếp',f:c=>'Cửa đóng. Chuyện cũ vẫn nằm đó.'+fx(c,{m:1})}]})
 ];});

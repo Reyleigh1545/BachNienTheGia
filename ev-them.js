@@ -6,7 +6,7 @@ const S=()=>G.S();
 const m=v=>G.mm(v);
 const N=c=>esc(c.given);
 const F=()=>S().farm;
-const land=n=>{F().own=Math.max(0,F().own+n);return `<span class="fx"><span class="${n>0?'up':'down'}">Ruộng nhà ${n>0?'+':''}${n} mẫu</span></span>`};
+const land=n=>G.landDelta(n);
 const kho=(g,q)=>{S().kho[g]=(S().kho[g]||0)+q;return `<span class="fx"><span class="up">Kho: ${G.GOODS[g].n} +${q} ${G.GOODS[g].u}</span></span>`};
 const NONG=['nong'],QN=['quan_ngu'];
 const V=o=>Object.assign({k:'Kỳ ngộ',good:1,pcd:120},o);
