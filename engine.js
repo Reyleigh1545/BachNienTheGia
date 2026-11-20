@@ -293,6 +293,8 @@ function income(c){
 const sideIncome=c=>{if(c.job!=='quan'||!inClan(c)||c.away)return 0;const O0=c.post?window.D.OFFICES[c.post]:null;return Math.round(SALARY[c.lv]*(100-c.liem)/100*2*(O0?O0.side:1)*(rule('thanhliem')?0.5:1))};
 const titlePay=()=>alive().reduce((s,p)=>s+TUOC_PAY[p.tuoc||0],0)+(S.royal?300000:0);
 const fiefIncome=()=>toIncome();
+/* d9.5: làm việc thiện chỉ trích khoảng 10% thu nhập tháng của người đó (trước là 600 đồng cố định, đầu game vượt cả thu nhập) */
+const habC=(c,x)=>x==='tuthien'?Math.round(0.1*income(c)):HABITS[x].cost;
 function personalSpend(c){
   const a=age(c);if(c.away&&c.away.type!=='trade'&&c.away.type!=='follow')return {base:0,ranh:0,hoc:0,thoi:0};
   const h=HH(c.hh)||HH(mainHH());const L=LIFE[h.life];
@@ -301,7 +303,7 @@ function personalSpend(c){
   let ranh=0,hoc=0,thoi=0;
   if(a>=6&&a<18&&c.school!=='nha'){const lvl=a<10?1:a<14?2:3;const sc=SCHOOL[lvl][c.school];if(sc){hoc=sc.fee*(clanLv()>=4?0.5:1);if(sc.chore)base*=0.6}}
   if(a>=6){const F=FOCUS[c.focus]||FOCUS.nghi;ranh=F.cost>0?F.cost*(1+h.life*0.25):0}
-  c.habits.forEach(x=>thoi+=HABITS[x].cost*(1+h.life*0.2)*(isVice(x)?0.3+vlv(c,x)/70:1));
+  c.habits.forEach(x=>thoi+=habC(c,x)*(1+h.life*0.2)*(isVice(x)?0.3+vlv(c,x)/70:1));
   const sp=1+tsum(c,'spend');
   return {base:base*sp,ranh:ranh>0?ranh*sp:ranh,hoc,thoi:thoi*sp};
 }
@@ -2934,8 +2936,7 @@ function econMonth(){
         if(vc>0){const lk=payVice(p,vc);if(lk)add(L.out,'tat',lk)}})}
     else h.money-=hhExpense(id).total}
   for(const k in CLANOFF){const p=offHolder(k);if(!p)continue;const pay=mmn(CLANOFF[k].pay);S.money-=pay;p.purse+=pay;add(L.out,'chuc',pay)}
-  if(S.money<0){let got=0;const who=[];alive().filter(p=>inClan(p)&&inMain(p)&&!isHead(p)&&p.purse>mmn(0.5)).forEach(p=>{if(S.money>=0)return;const w=(axv(p,'ht')+axv(p,'rong'))/2+relOf(p,head()||p)/5;if(w<45)return;const v=Math.round(Math.min(p.purse*0.3,-S.money));p.purse-=v;S.money+=v;got+=v;who.push(p.given)});
-    if(got){add(L.in,'cuu',got);if((S.cuuT||0)<=S.t){S.cuuT=S.t+6;log(`Công quỹ túng thiếu, ${who.slice(0,3).join(', ')}${who.length>3?' và mấy người nữa':''} góp tiền riêng đỡ đần.`,'gd')}}}
+  /* d9.5: bỏ việc người nhà tự góp tiền riêng đỡ công quỹ khi âm (chủ dự án: âm tiền thì cứ âm, không tự về 0) */
   L.net=S.money-m0;S.flow=L;S.lastNet=L.net-farmV;S.lastFarm=farmV;
 }
 /* tật xấu chỉ tiêu được bằng tiền riêng; hết tiền thì lén lấy của nhà một ít, còn lại là nợ nần, bứt rứt */
@@ -6411,7 +6412,7 @@ const G={landDelta,landLose,landOk:()=>landRight(),led:LEDAPI,inKinh,homeP,npc:{
   _v633:{HOUSE_DEF,hdef,house,houseName,houseRel,houseAlly,houseKid,vil,vilLog,vd,vAdd,kPow,vFlag,vStance,vilRoutes,vilReady,vilEnd,vilStart,vilQuan,vilFighters,vilYears,vPick,pickWho,KIEN,DUY,KRANK,achieve,cf,vBranch,vFi,VBR,hinfo,hnear,houseRefs,giftNorm,w_wed,w_mo,NEAR_MO,HOUSE_TIER},
   _v62:{willPopup,chunoPopup,debtTick,expelPopup2,doExpel,tumatPopup,oanPopup,tranhviPopup,ruleSlots,ruleWhy,addRule,dropRule,keugoiPopup,thiencoPopup,gateCheck,ttlPopup,wishPick,wishScore,obey,ctxOk,CTX,v62Month,v62Year,loveTick,outsTick,divorcePopup,vuotsinhPopup,rulepropPopup,ruleforcePopup,rulechgPopup,pieceF,jobDig,minDig}};
 /* v6.4.1.1: cổng riêng cho trang admin (admin.js). Bản thường không dùng tới */
-G._adm={crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
+G._adm={personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
   getSel:()=>sel,setSel:v=>{sel=v},running:()=>running,speed:()=>speed,setRun:(r,sp)=>{running=!!r;if(sp)speed=sp;renderTop()},
   setS:st=>{S=st;sel=P(sel)?sel:S.head;O.hidden=true;M.innerHTML='';render();nextPopup()},page:()=>page,ensurePersona};
 window.BNTG=G;
