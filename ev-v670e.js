@@ -266,7 +266,7 @@ function applyEnd(id){const a=arc();if(!a||a.end)return '';const hd=G.head();con
   if(id==='E1'||id==='E2'||id==='E5'){K.ok=0;G.qt.fall('quyen',id==='E1'?'bị xử theo luật':id==='E2'?'đổ sau cuộc giằng co':'bị người khác hạ');
     if(id==='E2'){s.money=Math.round(s.money*0.75);const vic=G.alive().filter(p=>G.inClan(p)&&p.id!==s.head&&G.age(p)>=16);if(vic.length&&chance(0.6)){const v=pick(vic);G.die(v,'mất trong cuộc giằng co với họ Phạm');note=' '+esc(G.nameOf(v))+' không qua khỏi.'}
       G.later(hd,'pm_s1',R(180,300))}
-    G.later(hd,'pm_g1',R(1,3));G.later(hd,'pm_g2',R(3,8))}
+    G.later(hd,'pm_g1',R(1,3));G.later(hd,'pm_g2',R(3,8));G.later(hd,'pm_thai_phi',R(24,60))}
   else if(id==='E3'){K.ok=0;G.later(hd,'pm_g2',R(3,8))}
   else if(id==='E4'){nq.forEach(p=>{try{G.qt.join(p,'quyen')}catch(e){}});s.money=Math.round(s.money*0.9)}
   else if(id==='E6'){nq.forEach(p=>G.qt.dismiss(p,'bị cả họ cách chức trong vụ phản tố'));s.noExamClan=s.t+1200;s.money=Math.round(s.money*0.6)}
@@ -328,9 +328,14 @@ const SS=[
  E('pm_s6','Khép lại hay tiếp nối',c=>c.flags.pmS==='hoa'?`Một năm sau, hai nhà cùng dự lễ cúng chung ở chùa. Cái gai lâu năm nhẹ hẳn.`:c.flags.pmS==='thu'?`Một năm sau, họ Phạm gửi một lá thư lạnh: "Từ nay, hai nhà là người lạ." Nhà mình giữ lá thư.`:`Nhà mình suy nghĩ lâu, rồi gửi lời đồng ý, muộn nhưng thật. Hai bên bắt đầu qua lại.`,
   c=>[F('Ghi chuyện vào gia phả',{t:'Gia phả thêm một trang mới.',u:{}})],{arc:undefined,fixed:1,vonce:true})];
 /* d9.5: rửa oan sau kết E8 (bỏ xứ). Hẹn mười hai đến mười tám năm sau, khi người cũ đã mất hoặc thất thế. */
+/* d9.5: Phạm Thái phi sau khi họ Phạm sụp (kết E1, E2, E5): bà bị giáng nhưng còn sống, gửi một lá thư tới nhà đã hạ họ Phạm. */
+const THAIPHI=E('pm_thai_phi','Thư của Phạm Thái phi',c=>`Mấy năm sau ngày họ Phạm sụp, một nội thị già lặng lẽ đem tới nhà ${N(c)} một lá thư. Người viết là Phạm Thái phi, nay bị giáng, ở một cung nhỏ lạnh lẽo. Thư không oán trách, chỉ xin nhà mình để cho con cháu họ Phạm còn sót lại được sống yên, và nhắn rằng bà biết rõ những gì đã xảy ra năm ấy.`,
+  c=>[F('Hồi âm, hứa không truy cùng giết tận',{t:'Nhà mình viết thư ngắn, không hứa nhiều nhưng cũng không đe. Vài năm sau có người họ Phạm âm thầm gửi lời cảm tạ.',u:{},f:{fame:6,tam:5}}),
+    F('Không đáp, giữ im lặng',{t:'Thư không hồi âm. Nội thị già ra về, không nói gì thêm.',u:{},f:{tam:-1}}),
+    F('Nhờ nội thị dò xem bà còn biết gì',{t:'Nội thị kể vài chuyện cũ về những người từng đứng sau họ Phạm. Có vài cái tên khiến nhà mình ghi nhớ.',u:{},f:{tri:1,tam:-2},cost:4})],{arc:undefined,fixed:1,vonce:true});
 const RUA=E('pm_rua_oan','Tờ chiếu rửa oan',c=>`Mười mấy năm sau ngày bỏ xứ, trong kinh có người dâng sớ xin xét lại vụ án cũ của họ ${esc(G.S().surname)}. Tờ chiếu từ cung đưa xuống: oan khuất đã rõ, họ Phạm năm xưa nay không còn giữ được thế. Triều đình cho phép con cháu nhà mình về quê cũ, hương khói được nối lại.`,
   c=>[F('Về quê cũ, nhận lại tên tuổi',{t:'Cả nhà bái tạ tổ tiên, dựng lại gian thờ cũ. Người trong làng ra đón.',u:{},f:{fame:25,tam:12,money:-m(3)},then:c=>{const a=arc();if(a&&a.q)a.q.until=G.S().t;G.cf(15,'Được rửa oan');return ' Con đường làm quan ở đất cũ mở lại.'}}),
     F('Ở yên chỗ mới, chỉ thắp hương từ xa',{t:'Nhà mình đã bén rễ nơi khác, không về nữa. Tên họ được trả lại trên giấy tờ là đủ.',u:{},f:{fame:10,tam:6},then:c=>{const a=arc();if(a&&a.q)a.q.until=G.S().t;return ''}}),
     F('Đòi triều đình trả lại ruộng nhà năm xưa',{t:'Hồ sơ tịch biên được lục lại. Một phần đất được trả, phần còn lại đã về tay người khác.',u:{},f:{fame:5,money:m(4)},then:c=>{G.landDelta(2);return ''}})],{arc:undefined,fixed:1,vonce:true});
-return [].concat(CALS,P,FG,VG,TG,MG,LG,HG,[Z0],ZS,GQ,NN,SS,[RUA]);
+return [].concat(CALS,P,FG,VG,TG,MG,LG,HG,[Z0],ZS,GQ,NN,SS,[RUA,THAIPHI]);
 });
