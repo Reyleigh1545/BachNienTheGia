@@ -21,13 +21,13 @@ const K=o=>Object.assign({k:'Kỳ ngộ',ky:1,good:1,u:'person',pcd:200,w:0.6,ag
 return [
 /* ===================== NÔNG ===================== */
 J({id:'n633_nong_gieng',t:'Mạch nước dưới ruộng khô',job:['nong'],c:c=>F().own>=1,
- x:c=>`Năm hạn, ruộng nhà ${N(c)} nứt như da trâu già. Cụ già làng bên bảo dưới góc ruộng phía đông có mạch nước chảy ngầm, nhưng đào xuống không biết sâu bao nhiêu, mà cũng không chắc có.`,
+ x:c=>`Năm hạn, đất nhà ${N(c)} nứt như da trâu già. Cụ già làng bên bảo dưới góc ruộng phía đông có mạch nước chảy ngầm, nhưng đào xuống không biết sâu bao nhiêu, mà cũng không chắc có.`,
  o:c=>{const pay=m(R(2,4));return [
-  {l:`Thuê người đào giếng đủ sâu (${fm(pay)})`,c:()=>G.money()>=pay,r:RR({suc:0.5,cc:0.5,tri:0.4},0.6),y:c=>`Ba hôm sau nước ứa lên đục ngầu rồi trong dần. Giếng cứu được cả ruộng nhà lẫn hai nhà bên cạnh.`+fx(c,{money:-pay,m:R(3,5),fame:2,tam:5}),n:c=>`Đào xuống chín thước vẫn khô, tiền công mất, ruộng vẫn nứt.`+fx(c,{money:-pay,tam:-4,suc:-2})},
+  {l:`Thuê người đào giếng đủ sâu (${fm(pay)})`,c:()=>G.money()>=pay,r:RR({suc:0.5,cc:0.5,tri:0.4},0.6),y:c=>`Ba hôm sau nước ứa lên đục ngầu rồi trong dần. Giếng cứu được cả đất nhà lẫn hai nhà bên cạnh.`+fx(c,{money:-pay,m:R(3,5),fame:2,tam:5}),n:c=>`Đào xuống chín thước vẫn khô, tiền công mất, ruộng vẫn nứt.`+fx(c,{money:-pay,tam:-4,suc:-2})},
   {l:'Tự đào cùng người nhà, ngày ngày',r:RR({suc:1,cc:0.7},0.5),y:c=>{busy(c,2);return `Hai tháng đào, tay phồng rộp. Nước đến vào đêm cuối, ai cũng ướt như chuột lột vì mừng.`+fx(c,{m:R(4,6),suc:-2,tam:6,hpMax:1})},n:c=>{busy(c,2);return `Đào mãi không ra, người kiệt lực. Cụ già chỉ lắc đầu: "Sai chỗ rồi."`+fx(c,{suc:-6,tam:-5})}},
   {l:'Bỏ ruộng ấy, chờ mưa',f:c=>`Mưa đến muộn một tháng, vụ ấy mất đến hai phần ba.`+fx(c,{money:-m(3),tam:-4})}]}}),
 J({id:'n633_nong_luan',t:'Cụ già dạy luân canh',job:['nong'],age:[22,60],c:c=>F().own>=2,
- x:c=>`Một cụ già đi ngang thấy ruộng nhà ${N(c)} bạc màu, bảo: "Ruộng cũng như người, mệt thì phải nghỉ. Mùa này trồng đậu, mùa sau mới lại cấy lúa." ${N(c)} nghi ngờ nhưng cụ nói rất chắc.`,
+ x:c=>`Một cụ già đi ngang thấy đất nhà ${N(c)} bạc màu, bảo: "Ruộng cũng như người, mệt thì phải nghỉ. Mùa này trồng đậu, mùa sau mới lại cấy lúa." ${N(c)} nghi ngờ nhưng cụ nói rất chắc.`,
  o:c=>[
   {l:'Nghe theo, đổi cách trồng ở một nửa ruộng',r:RR({cc:0.6,tri:0.6,ky:0.4},0.65),y:c=>`Năm sau lúa bông dày hơn hẳn. Hàng xóm kéo đến hỏi, ${N(c)} chỉ lại cách trồng.`+fx(c,{m:R(4,7),tri:1,fame:2,tam:4,sk:{ky:2}}),n:c=>`Đổi cách mà không hợp đất, năm đó giảm sản lượng. Cụ già đã đi xa, không hỏi lại được.`+fx(c,{money:-m(2),tam:-3})},
   {l:'Bỏ ngoài tai, làm như cũ',f:c=>`Ruộng vẫn thế, năm sau cũng thế.`+fx(c,{tam:-1})}]}),
@@ -39,7 +39,7 @@ K({id:'n633_nong_trau',t:'Con trâu biết đường',job:['nong'],age:[14,60],t
 J({id:'n633_nong_sau',t:'Châu chấu về',job:['nong'],c:c=>F().own>=2,cd:96,
  x:c=>`Một đám mây đen kéo lên từ phía nam, không phải mây: châu chấu. Chỉ trong nửa buổi, ruộng bên đã trơ gốc. Cả làng ra đốt rơm, gõ mõ, la hét, ${N(c)} đứng giữa quyết định.`,
  o:c=>[
-  {l:'Đốt rạ cả làng, tạo khói đuổi châu chấu',r:RR({cc:0.7,hd:0.5,tri:0.3},0.55),y:c=>`Khói bốc ngút trời, đàn châu chấu rẽ sang phía đồi. Ruộng nhà giữ được một nửa, cả làng nể mặt.`+fx(c,{fame:3,tam:4,m:R(2,4)}),n:c=>`Gió đổi chiều, khói thổi vào làng, châu chấu vẫn xuống. Mất gần sạch.`+fx(c,{money:-m(3),tam:-5})},
+  {l:'Đốt rạ cả làng, tạo khói đuổi châu chấu',r:RR({cc:0.7,hd:0.5,tri:0.3},0.55),y:c=>`Khói bốc ngút trời, đàn châu chấu rẽ sang phía đồi. Đất nhà giữ được một nửa, cả làng nể mặt.`+fx(c,{fame:3,tam:4,m:R(2,4)}),n:c=>`Gió đổi chiều, khói thổi vào làng, châu chấu vẫn xuống. Mất gần sạch.`+fx(c,{money:-m(3),tam:-5})},
   {l:'Gặt gấp phần lúa chưa chín',f:c=>`Cả nhà gặt như chạy giặc. Lúa non, hạt lép, nhưng còn hơn không có gì.`+fx(c,{money:-m(1),suc:-3,tam:-2})},
   {l:'Cầu trời, ngồi nhìn',f:c=>`Ruộng bị phá sạch. Không còn gì để trách ai.`+fx(c,{money:-m(4),tam:-6})}]}),
 /* ===================== TIỂU NHỊ / BÁN HÀNG ===================== */

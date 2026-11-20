@@ -200,7 +200,7 @@ KN({id:'kn_15',t:'Cây cổ thụ trong vườn',u:'clan',cyc:[40,90],head:1,age
  o:c=>[{l:'Lấy ra xem',r:[{tri:0.4,eq:0.3},60],y:c=>'Là mấy món đồ đồng cổ và một bức thư của tổ tiên.'+fx(c,{money:m(70),cfame:3,tam:4}),n:c=>'Chỉ là tổ ong và vài mảnh sành cũ.'+fx(c,{tam:-1})},
   {l:'Giữ nguyên, cho trồng lại cành',f:c=>'Cây tiếp tục sống thêm nhiều năm. Người làng nói nhà có phúc.'+fx(c,{cfame:2})}]}),
 KN({id:'kn_17',t:'Mạch khoáng nhỏ trên đất nhà',u:'clan',cyc:[60,120],head:1,age:[35,85],tier:[2,6],th:1,c:c=>farmOk(),
- x:c=>`Tá điền đào mương ở góc ruộng nhà ${N(c)} thấy lớp đất đỏ lạ, có ánh kim. Thợ mỏ đi qua xem thử, nói đây là một mạch khoáng nhỏ.`,
+ x:c=>`Tá điền đào mương ở góc đất nhà ${N(c)} thấy lớp đất đỏ lạ, có ánh kim. Thợ mỏ đi qua xem thử, nói đây là một mạch khoáng nhỏ.`,
  o:c=>[pay('Thuê thợ khai thử',30,{r:[{tri:0.5,muu:0.4},55],y:c=>'Khai được một lượng quặng đủ bán. Thu nhập thêm mấy năm.'+fx(c,{money:m(200),cfame:2}),n:c=>'Quặng nghèo, chi phí hơn thu.'+fx(c,{money:-m(30)})}),
   {l:'Bán đất khoáng cho thương nhân',f:c=>'Nhận một khoản ngay. Thương nhân hài lòng.'+fx(c,{money:m(90)})},
   {l:'Lấp lại, không để lộ',f:c=>'Chuyện được giữ kín.'+fx(c,{tam:1})}]}),

@@ -8,7 +8,7 @@ const N=c=>esc(c.given);
 const nx=(c,id,a,b,d)=>{G.later(c,id,R(a,b),d);return ''};
 const A=o=>Object.assign({arc:1,k:'Cốt truyện'},o);
 const F=()=>S().farm;
-/* v6.4.1.5: mua ruộng đang thuê thì ruộng thuê thành ruộng nhà */
+/* v6.4.1.5: mua ruộng đang thuê thì ruộng thuê thành đất nhà */
 const land=n=>{G.landDelta(n);return ''};
 const lc=()=>Math.round(G.landCost()*0.85);
 const NONG=['nong'],KV=['khuanvac'],TP=['tieuphu'],NG=['ngu'],HR=['hangrong'],HAU=['hau'],CH=['chan'],TL=['thulai'],ND=['nhadich'],CHU=['chu'];
@@ -17,7 +17,7 @@ return [
 /* ================= RUỘNG VƯỜN ================= */
 {id:'nong_ban_ruong_re',t:'Hàng xóm bán ruộng',job:NONG,pcd:30,w:1.3,
  x:c=>`Nhà bên cạnh ${pick(['con nợ bạc','sắp dọn lên phủ','cần tiền chữa bệnh'])}, rao bán ${R(1,3)} mẫu ruộng giá rẻ hơn chợ.`,
- o:c=>[{l:`Mua một mẫu (${G.fmtMoney(lc())})`,c:()=>G.money()>=lc(),f:c=>'Ruộng nhà thêm một mẫu.'+fx(c,{money:-lc(),tam:6})+land(1)},
+ o:c=>[{l:`Mua một mẫu (${G.fmtMoney(lc())})`,c:()=>G.money()>=lc(),f:c=>'Đất nhà thêm một mẫu.'+fx(c,{money:-lc(),tam:6})+land(1)},
     {l:"Vay nóng để mua hai mẫu",f:c=>{const owe=Math.round(2*lc()*1.35);G.later(c,'nong_tra_no',R(10,16),{owe});return `Thêm hai mẫu, nhưng mang nợ ${G.fmtMoney(owe)}.`+fx(c,{tam:3})+land(2)}},
     {l:'Đành để lỡ',f:c=>fx(c,{tam:-3})}]},
 A({id:'nong_tra_no',t:'Đến hạn trả nợ ruộng',
@@ -27,7 +27,7 @@ A({id:'nong_tra_no',t:'Đến hạn trả nợ ruộng',
     {l:'Xin khất',r:[{eq:1},55],y:c=>'Được khất nửa năm.'+nx(c,'nong_tra_no',5,7,{owe:Math.round(owe*1.1)}),n:c=>'Bị siết cả hai mẫu.'+land(-2)+fx(c,{tam:-12})}]}}),
 {id:'nong_dia_chu',t:'Địa chủ cho thuê ruộng',job:NONG,stMax:1,c:()=>false, /* d9: nhà không còn thuê ruộng */
  x:'Địa chủ đầu làng có mấy mẫu ruộng bỏ hoang, muốn cho thuê nộp tô nửa phần hoa lợi.',
- o:[{l:'Nhận cày thêm ba mẫu',f:c=>{F().rent+=3;return 'Thêm ruộng, thêm việc. Nhớ chia ruộng gieo trồng ở trang Ruộng vườn.'+fx(c,{tam:-1})}},
+ o:[{l:'Nhận cày thêm ba mẫu',f:c=>{F().rent+=3;return 'Thêm ruộng, thêm việc. Nhớ chia ruộng gieo trồng ở trang Đất phong.'+fx(c,{tam:-1})}},
     {l:'Mặc cả xuống bốn phần',r:[{eq:1},55],y:c=>{F().rent+=3;return 'Được giá tốt.'+fx(c,{money:m(2)})},n:c=>'Địa chủ phật ý, cho người khác thuê.'},
     {l:'Không nhận',f:c=>''}]},
 {id:'nong_ep_to',t:'Địa chủ tăng tô',job:NONG,c:()=>F().rent>0,
@@ -49,7 +49,7 @@ A({id:'nong_tra_no',t:'Đến hạn trả nợ ruộng',
     {l:'Không học',f:c=>''}]},
 {id:'nong_tin_gia',t:'Tin đồn giá cả',job:NONG.concat(['hangrong','tieunhi','chu']),
  x:c=>{const g=pick(['to','che','bong','duong','duoc']);c.flags.tin=g;return `Ngoài chợ đồn năm sau ${G.GOODS[g].n.toLowerCase()} sẽ lên giá vì ${pick(['kinh thành chuộng','phường dệt mở rộng','biên ải cần nhiều','mất mùa ở phủ bên'])}.`},
- o:[{l:'Tin, chuẩn bị đổi cây trồng',f:c=>{const g=c.flags.tin;if(chance(0.6)){S().mk[g]=Math.min(2.6,(S().mk[g]||1)+0.4);return 'Tin đúng! Giá đang lên, xem trang Ruộng vườn và Kho.'}S().mk[g]=Math.max(0.45,(S().mk[g]||1)-0.2);return 'Tin thất thiệt, giá còn xuống.'+fx(c,{tam:-3})}},
+ o:[{l:'Tin, chuẩn bị đổi cây trồng',f:c=>{const g=c.flags.tin;if(chance(0.6)){S().mk[g]=Math.min(2.6,(S().mk[g]||1)+0.4);return 'Tin đúng! Giá đang lên, xem trang Đất phong và Kho.'}S().mk[g]=Math.max(0.45,(S().mk[g]||1)-0.2);return 'Tin thất thiệt, giá còn xuống.'+fx(c,{tam:-3})}},
     {l:'Không tin',f:c=>''}]},
 {id:'nong_thuy_loi',t:'Đào mương dẫn nước',job:NONG,st:1,pcd:60,
  x:'Mấy năm hạn liên tiếp. Có người bàn đào con mương dẫn nước từ suối về ruộng.',
@@ -66,7 +66,7 @@ A({id:'nong_tra_no',t:'Đến hạn trả nợ ruộng',
     {l:'Tự kéo cày',f:c=>fx(c,{suc:-6,tam:-4})},
     {l:'Đổi công với hàng xóm',r:[{eq:1},40],y:c=>'Hàng xóm cho mượn trâu.'+fx(c,{eq:1}),n:c=>'Không ai rảnh.'+fx(c,{suc:-3})}]},
 {id:'nong_cuong_hao',t:'Cường hào lấn ruộng',job:NONG,c:()=>F().own>=2,pcd:60,
- x:'Nhà cường hào trong làng cắm cọc lấn sang bờ ruộng nhà mình, bảo là đất của tổ tiên họ.',
+ x:'Nhà cường hào trong làng cắm cọc lấn sang bờ đất nhà mình, bảo là đất của tổ tiên họ.',
  o:[{l:'Kiện lên huyện',c:()=>G.money()>=m(5),r:[{tri:0.6,eq:0.6,fame:0.3},62],y:c=>'Quan xử thắng.'+fx(c,{money:-m(5),fame:5}),n:c=>{land(-1);return 'Quan ăn tiền cường hào, xử thua, mất một mẫu.'+fx(c,{money:-m(5),tam:-10})}},
     {l:'Nhổ cọc',r:[{vo:1,eq:0.3},55],y:c=>'Cường hào chùn tay.'+fx(c,{fame:3}),n:c=>{land(-1);return 'Bị gia đinh nhà nó đánh, mất luôn mảnh ruộng.'+fx(c,{suc:-15,tam:-8})}},
     {l:'Nhịn cho yên',f:c=>{land(-1);return 'Mất một mẫu.'+fx(c,{tam:-10})}}]},
@@ -76,7 +76,7 @@ A({id:'nong_tra_no',t:'Đến hạn trả nợ ruộng',
     {l:'Tự làm, tiết kiệm',f:c=>fx(c,{suc:-5,m:1})},
     {l:'Mời cả xóm ăn cơm mới',f:c=>fx(c,{money:-m(1),fame:3,tam:6})}]},
 {id:'nong_dien_chu',t:'Lên điền chủ',job:NONG,st:2,c:()=>F().own>=30,once:1,
- x:c=>`Ruộng nhà ${N(c)} đã cò bay thẳng cánh. Tá điền trong vùng tranh nhau xin cày thuê.`,
+ x:c=>`Đất nhà ${N(c)} đã cò bay thẳng cánh. Tá điền trong vùng tranh nhau xin cày thuê.`,
  o:[{l:'Thuê tá điền, thu tô',f:c=>{F().hired+=4;return 'Nhà có thêm bốn người làm thuê.'+fx(c,{fame:10,hung:3})}},
     {l:'Giữ nếp cũ, tự tay cày cấy',f:c=>fx(c,{suc:2,fame:3})}]},
 

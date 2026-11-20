@@ -5,7 +5,7 @@
 - File này mâu thuẫn với lời chủ dự án trong phiên hiện tại → theo lời chủ dự án, rồi **sửa file này ngay trong cùng commit**.
 - Các báo cáo `bao-cao-*.md` và kế hoạch cũ đã gộp vào đây rồi xóa khỏi repo (còn trong lịch sử git, commit trước `claude-md`). Chỉ mở lại khi cần chi tiết kỹ thuật cũ.
 
-Phiên bản hiện tại: **v6.7.0-d9** (nhãn `.verlbl` trong `index.html`). File này lập ngày 19/11/2026 từ các báo cáo v6.3.5 đến v6.7.0-d8.
+Phiên bản hiện tại: **v6.7.0-d9.1** (nhãn `.verlbl` trong `index.html`). File này lập ngày 19/11/2026 từ các báo cáo v6.3.5 đến v6.7.0-d8.
 
 ---
 
@@ -16,7 +16,7 @@ Phiên bản hiện tại: **v6.7.0-d9** (nhãn `.verlbl` trong `index.html`). F
 3. **Ý mới của chủ dự án:** chép **nguyên văn** vào mục 10 trước khi code. Không diễn giải lại. Chỗ nào hiểu không chắc thì hỏi, không đoán. Làm xong thì chuyển ý đó thành luật ở mục 3 đến 8 và xóa khỏi mục 10.
 4. **Không tự đổi luật đã chốt** (mục 3 đến 8). Thấy luật có vấn đề thì nêu ra và hỏi. Không tự "cải tiến" con số hay cơ chế ngoài phạm vi được giao.
 5. **Không làm lại thứ trong mục 9 "Đã bỏ".**
-6. **Nhánh:** mỗi bản một nhánh tên theo số bản (ví dụ `v6.7.0-d9`). **Không merge vào `main`** khi chủ dự án chưa bảo.
+6. **Nhánh:** mỗi bản một nhánh tên theo số bản (ví dụ `v6.7.0-d9.1`). **Không merge vào `main`** khi chủ dự án chưa bảo.
 7. **Test:** mặc định chỉ `node --check` mọi file và một lần khởi động ngắn. Test kỹ hơn khi được bảo. Luôn nói rõ đã test gì, **chưa chơi tay** phần nào.
 8. **Không viết file báo cáo mới.** Cuối mỗi phiên: cập nhật mục liên quan trong file này (luật mới, đã bỏ, đang làm dở ở mục 11), ghi tóm tắt vào commit message.
 9. Sửa `index.html` xong thì chạy `node tools/make-admin.js` để dựng lại `admin.html`.
@@ -97,7 +97,7 @@ Kho hiện tại (d8): **1.693 sự kiện, 258 kỳ ngộ**. Mục tiêu dài h
 
 **Ghế quan.** Mỗi ghế gắn một nơi; nhậm chức thì **người thật sự ở nơi đó**. Gia chủ nhậm chức xa thì dời cả nhà hoặc từ chối. Hồi tị, chống trùng người nhà cùng nha môn. Nhiệm kỳ tự xử, chỉ ghi một dòng nhật ký. Ngự y ngồi ghế Thái y viện.
 
-**Thăng tiến.** Hộp "Đường thăng tiến" có bốn lựa chọn: Xin xét, Hặc tội, Lo lót, Yên phận (bỏ "nhắm ghế"). Danh sách ghế xếp cao xuống thấp, hiện tên, tuổi, tài, công người đương chức so với mình. Xin hụt thì vào **danh sách chờ**. Chỉ thăng lên ghế cao hơn (hoặc cùng bậc nhưng bổng và địa vị cao hơn). **Thời gian ở bậc:** muốn lên bậc `b` phải ngồi ít nhất `10 + 2b` tháng (từ bậc 0 tới Nhất phẩm tối thiểu khoảng 37 năm). Sức ép cạnh tranh tăng theo bậc. **Nút Thăng tiến** ở trang người khóa kèm lý do (đợi xét lại, phải ngồi thêm bao nhiêu tháng, chưa đủ thông thạo hoặc trí) và chỉ cho xin lên **đúng một bậc** (hoặc ghế cùng bậc có bổng cao hơn); danh sách chờ cũng phải đủ thời gian ở bậc, nên không thể bấm liên tục để leo bằng ghế trống (mô phỏng bấm mỗi tháng trong 60 năm: mỗi lần lên cách nhau 10 đến 18 tháng). Người đương chức là nhân vật bền (tài, công, phe, tính, cảm tình). Thua ghế trống thì một ứng viên NPC thật (tên, tuổi, ký ức) **ngồi vào ghế thật**; người bị mình thay hoặc hặc tội thành NPC thật nhớ mối oán (`doi_thu`, `bi_hac`) và có thể trở lại ở `qt5_*` khi còn sống. Khi vua nghi kỵ (`purgeYear`), người giữ ghế từ Tam phẩm thuộc phe bị nghi có thể bị cách chức.
+**Thăng tiến.** Hộp "Đường thăng tiến" có bốn lựa chọn: Xin xét, Hặc tội, Lo lót, Yên phận (bỏ "nhắm ghế"). Danh sách ghế xếp cao xuống thấp, hiện tên, tuổi, tài, công người đương chức so với mình. Xin hụt thì vào **danh sách chờ**. Chỉ thăng lên ghế cao hơn (hoặc cùng bậc nhưng bổng và địa vị cao hơn). **Thời gian ở bậc:** muốn lên bậc `b` phải ngồi ít nhất `10 + 2b` tháng (từ bậc 0 tới Nhất phẩm tối thiểu khoảng 37 năm). Sức ép cạnh tranh tăng theo bậc. **Nút Thăng tiến** ở trang người khóa kèm lý do (đợi xét lại, phải ngồi thêm bao nhiêu tháng, chưa đủ thông thạo hoặc trí) và chỉ cho xin lên **đúng một bậc** (hoặc ghế cùng bậc có bổng cao hơn); danh sách chờ cũng phải đủ thời gian ở bậc, nên không thể bấm liên tục để leo bằng ghế trống (mô phỏng bấm mỗi tháng trong 60 năm: mỗi lần lên cách nhau 10 đến 18 tháng). Người đương chức là nhân vật bền (tài, công, phe, tính, cảm tình). Ghế trống có **một đến ba ứng viên** cùng xin (hộp ghi số người; xác suất theo tài của mình so với ứng viên mạnh nhất); thua thì ứng viên mạnh nhất, thành NPC thật (tên, tuổi, ký ức), **ngồi vào ghế thật**; người bị mình thay hoặc hặc tội thành NPC thật nhớ mối oán (`doi_thu`, `bi_hac`) và có thể trở lại ở `qt5_*` khi còn sống. Khi vua nghi kỵ (`purgeYear`), người giữ ghế từ Tam phẩm thuộc phe bị nghi có thể bị cách chức. Mỗi năm người có kẻ thù NPC còn sống bị đàn hặc ngầm (`officeFeud`, rủi ro quan trường tăng, ghi `bi_dan_hac`). Hoàng tộc đã gặp và thế gia có quan hệ được tạo thành NPC theo yêu cầu (`npFam`, `npHouse`, sống chết theo nguồn); Phạm Xuân Huấn có hồ sơ (đã mất).
 
 **Quan trường, phe, tội.** Bốn phe; phe ẩn tới khi nhà có quan, thế lực các phe chỉ biết khi có quan từ Ngũ phẩm. Thang hậu quả: thăng, giữ chức, điều xa, giáng, cách chức và cấm cả họ thi một khoa, lưu đày và tịch biên, xử trảm, tru di tam tộc (chi xa sống sót thì chơi tiếp từ chi đó), tru di cửu tộc (hết game, chỉ khi mưu phản hoặc đã bỏ qua nhiều cảnh báo).
 
@@ -123,6 +123,8 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 **Đất (d8).** **Nhà thường không có ruộng. Chi họ không có ruộng riêng: ruộng được phong và đất phong đều về nhà chính.** Tá điền ở nhà chính đi làm thuê, công khoảng 450 đồng mỗi tháng theo tay nghề và tâm trạng. Trang "Ruộng vườn" đã bỏ; thay bằng trang **Đất phong**, chỉ hiện khi nhà có đất: đất phong theo tước, đất mua (chỉ khi nhà có người làm quan hoặc có tước, giá 60% giá mẫu ruộng cũ). Đất chia ba phần: cơ sở (dự án), ruộng đã khai hoang cho tá điền, đất hoang. Khai hoang một mẫu tốn 40% giá mẫu, mười hai tháng sau thành ruộng. Phát canh thu tô theo mùa gặt: 30% (nặng, mang tiếng địa chủ), 20% (vừa), 10% (nhẹ, có tiếng thơm).
 
+**Thua đất** (d9): từ bậc Hương thân trở lên, nhà có từ 3 mẫu đất hoặc ruộng thì có thể gặp `dp_dat_bi_doi` (kẻ có thế đòi đất: nhượng, kiện, lo lót) và `dp_cuong_hao` (lấn bờ); nhượng hay thua kiện để lại dấu `oan_dat` kèm một NPC thật, đời sau có `dp_nguoi_cu_doi_dat` (kẻ ấy trở lại, chỉ khi còn sống).
+
 **Sự kiện cho hoặc lấy đất** (d9) đi qua `G.landDelta(n)` và `G.landLose(n)`: nhà không có quan hoặc tước thì không giữ được đất, sự kiện cho đất đổi thành bán lại lấy tiền (một nửa giá mẫu); lấy đất thì trừ đất mua trước rồi mới tới ruộng khai hoang. Sự kiện chào mua đất (`n_mua_ruong`, `lw_31`, `lw_36`, mua lại của họ khác) chỉ ra cho nhà có quan hoặc tước. `nong_dia_chu` (thuê ruộng) đã tắt. Hàm `land()` trong các gói sự kiện nông cũ gọi `G.landDelta`.
 
 **Dự án gia nghiệp** (trang Cơ ngơi). Mỗi dự án cần số mẫu đất trống theo độ lớn (nghĩa trang 3, nghĩa thục 4, tàng thư 3, chùa miếu 2, kho thóc 1 + 1 mỗi kho, thuyền buôn 1 + 0,5 mỗi thuyền, gia binh 2 + 0,1 mỗi người, môn khách 1 + 0,15, học bổng 1 + 0,1); hội quán, dinh thự ở kinh, quyên nạp không cần đất. Có số lượng, nút − và +, phí duy trì, nút Giải tán, sổ "đã chi, đã thu, lãi lỗ". Gia binh vượt sức nhà thì triều đình nghi. Việc lớn phải **đáng tiền**. Đã bỏ: từ đường lớn, nghĩa điền, cầu đê đường làng, khai hoang (dự án).
@@ -133,7 +135,7 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 ## 6. Luật đã chốt: triều đình, cốt truyện, kết thúc
 
-**Vua và thiên hạ.** Vua đầu cố định: minh quân, niên hiệu **Trường Thịnh**, ở ngôi **25 đến 35 năm tính từ lúc mở game**. Vua thứ hai lên ngôi sau tranh giành căng thẳng (anh em, chú cháu); từ vua thứ ba bốc ngẫu nhiên. Bảng thời thế cập nhật mỗi năm, thấy rõ khi nhà có người ở kinh thành. **Hoàng tộc là người thật** (`S.dyn.fam`): hoàng hậu, phi, hoàng tử, thái tử, công chúa, thân vương có đất phong, quốc công; sinh, già, mất theo năm. Tranh ngôi dùng hoàng tử thật, mỗi bước một lần. Gặp hoàng tộc chỉ ở dịp hợp lý (yến cung từ Ngũ phẩm ở kinh, đại lễ từ Tứ phẩm…). Cốt truyện hoàng thân: Phò mã, Tú nữ, Vương phi.
+**Vua và thiên hạ.** Vua đầu cố định: minh quân, niên hiệu **Trường Thịnh**, ở ngôi **25 đến 35 năm tính từ lúc mở game**. Vua thứ hai lên ngôi sau tranh giành căng thẳng (anh em, chú cháu); từ vua thứ ba bốc ngẫu nhiên. Bảng thời thế cập nhật mỗi năm, thấy rõ khi nhà có người ở kinh thành. **Hoàng tộc là người thật** (`S.dyn.fam`): hoàng hậu, phi, hoàng tử, thái tử, công chúa, thân vương có đất phong, quốc công; sinh, già, mất theo năm. Tranh ngôi dùng hoàng tử thật, mỗi bước một lần. Gặp hoàng tộc chỉ ở dịp hợp lý (yến cung từ Ngũ phẩm ở kinh, đại lễ từ Tứ phẩm…). Cốt truyện hoàng thân: Phò mã, Tú nữ, Vương phi. Phò mã có hai đường (d9): người nhà chủ động (`pc_0` đến `pc_6`) và triều đình chọn (`pc_c0`: chiếu chọn phò mã cho người chưa vợ, quan từ Tứ phẩm ở kinh; nhận thì nhảy vào bước hoàng hậu cho gọi `pc_2`; từ chối khéo hoặc cáo bệnh thì có giá).
 
 **Ân oán họ Phạm** (viết lại ở d3, chạy trên khung `ARC.pm`). Mở khi nhà có quan văn từ Ngũ phẩm, từ năm 8. Người già kể chuyện cũ (bốn kiểu oán theo hạt giống ván). Chương 1 tiến chậm, chương 2 tìm chứng cứ và đòn phản kích theo tính cách Kiên, ngã rẽ vĩnh viễn, bảy đường, tám cái kết E1 đến E8, báo thù đời sau. Lịch thăng quan của Kiên theo năm ván; từ khi Kiên vào nội các mà ân oán chưa khép thì nhà mình bị chặn lên Nhất phẩm văn. Khép bằng E1 đến E5 thì mỗi quan trong nhà thêm một bậc. Tiến độ **ẩn hoàn toàn** với người chơi. Box ân oán ở trang Gia tộc đã ẩn.
 
@@ -162,7 +164,7 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 - **Cho phép** vật phẩm từ phương Tây và cây trồng mới (thuốc lá Tây, khoai lang…) xuất hiện trong sự kiện.
 - Triều đại hư cấu **Đại Nguyễn**, hoàng đế khai quốc Nguyễn Thành Trung. Danh gia gọi theo kiểu "Hoàng Gia, Đào Gia, Cổ Nguyệt Gia", mỗi vùng có danh gia riêng.
-- Giữ xưng hô đúng vai vế trong lời kể (chỗ nhà Phạm còn lẫn "ông" và "hắn" với cùng một người).
+- Giữ xưng hô đúng vai vế trong lời kể. (Chủ dự án đã xác nhận 20/11: xưng hô họ Phạm ổn, không phải sửa.)
 - Lời kể không được nhắc người không có thật (vợ, con mà nhân vật không có); chuỗi nhiều bước không được tạo lại người mới thay người cũ.
 
 ---
@@ -192,7 +194,7 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 ## 10. Ý mới của chủ dự án, chưa làm (chép nguyên văn)
 
-- **19/11/2026, tuyển phò mã.** Hỏi: người nhà chủ động (như hiện tại) hay triều đình khởi xướng như thời Minh? Chủ dự án trả lời: "Làm cả 2 đi." Nghĩa là giữ đường hiện có (`pc_0` đến `pc_6`, người nhà gặp công chúa trước) và thêm đường triều đình chọn phò mã. Chưa làm.
+(không có ý nào đang chờ)
 
 ---
 
@@ -201,14 +203,13 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 Ưu tiên theo mục 0.2 (gameplay trước). Xếp theo mức cần.
 
 **Gameplay còn hở**
-- **Sự kiện cũ nhắc ruộng:** phần cộng, trừ đất đã đi qua `G.landDelta` (d9). Còn lại: các sự kiện nông (`nong_*`, `nong631_*`, `n633_nong_*`) đọc `F().own` làm điều kiện (nhà không có đất thì không ra, đúng ý) nhưng lời kể vẫn nói "ruộng nhà"; chuỗi `vil_*` cũ đã tắt nên không rà. Chưa rà lời kể từng sự kiện.
-- "Thua đất khi lên hương thân" chưa làm (chưa có sự kiện đòi đất).
+- **Sự kiện cũ nhắc ruộng:** cộng, trừ đất đi qua `G.landDelta`; lời kể "ruộng nhà" đã đổi thành "đất nhà" (d9). Các sự kiện nông (`nong_*`, `nong631_*`, `n633_nong_*`) đọc `F().own` làm điều kiện nên chỉ ra cho nhà có đất mua. Chuỗi `vil_*` cũ đã tắt nên không rà.
 - **Gia tộc có thể teo:** hai save thật có 4 và 5 người sau 37 và 51 năm, save Tiêu có 88 người sau 98 năm. Ba ván bot ngẫu nhiên (d9) cho 1 đến 5 người vì **bot không tự cưới** (cưới đi qua nút Mối ở trang Gia tộc hoặc sự kiện, bot không bấm): đo bằng bot đó không đại diện. Muốn đo thật phải cho bot biết bấm Mối hoặc đo trên save người chơi.
-- Phần B quan trường còn thiếu: ứng viên tranh ghế chỉ xuất hiện khi mình xin hụt (chưa có nhiều ứng viên cùng lúc), thanh trừng giữa các quan chỉ theo vua nghi kỵ, chưa có thế gia thành NPC. Người giữ ghế (`S.off`) chỉ thành NPC khi bị thay, bị hặc, hoặc thắng ghế; hoàng tộc và Huấn, Vượng chưa vào sổ NPC chung (Kiên, Duy đã vào ở d8).
+- Phần B còn mỏng: người giữ ghế (`S.off`) chỉ thành NPC khi bị thay, bị hặc hoặc thắng ghế; thanh trừng giữa các quan mới là vua nghi kỵ và kẻ thù đàn hặc ngầm; thế gia chưa tham gia tranh ghế; Vượng chưa có hồ sơ riêng (đã nằm trong hoàng tộc nếu gặp).
 - Chưa làm: giang hồ (môn phái đầy đủ, cấp bậc, bí kíp, anh hùng đại hội), thế lực tự phát, kỳ ngộ gia tộc, cốt truyện lớn khác ngoài họ Phạm, quân hộ, thiết khoán, Đông xưởng, nghề mới cho đời sau.
 - Sự kiện "rửa oan" sau E8 và sự kiện riêng của Phạm Thái phi chưa có.
 - 39 chuỗi cũ chưa có câu nối riêng với cốt truyện; một số chuỗi (`c14_bat_coc`, `c15_nguoi_thu_ba`, `c7_thu`, `v61_cho_vay_ban`, `nong_ban_ruong_re`, `tinh_hoi_xuan`) thiếu phần thưởng thật.
-- Mới khoảng 20 trên 1.693 sự kiện dùng bộ nhớ.
+- Khoảng 30 trên 1.693 sự kiện dùng bộ nhớ (d9 thêm 9 sự kiện đọc: `ky_niem_cuoi`, `d631_thu_nguoi_xua`, `n633_hiep_no`, `lw_42`, `dh_50`, `gj_63`, `dh_59`, `v6_xt_vo`, `qt_tro_lai`).
 - Tru di cửu tộc chưa ghi cái kết vào Sử sách. Mưu đại sự chưa dừng khi vỡ nợ. Tang lễ sơ sài bị phạt nặng cả khi nhà đang nợ.
 
 **Kỹ thuật**

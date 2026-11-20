@@ -129,7 +129,7 @@ A({id:'c7_c',t:'Duyên số',
     {l:'Buông tay',f:c=>fx(c,{tam:-8,eq:2})}]}),
 /* ========== 8. NÔNG: ĐỊA CHỦ CƯỚP RUỘNG ========== */
 ST({id:'c8_ruong',t:'Địa chủ cướp ruộng',c:c=>S().farm.own>0&&age(c)>=18,
- x:c=>`Địa chủ họ ${pick(['Tôn','Khổng','Bạch'])} cho người cắm cọc lên ruộng nhà ${G.S().surname}, nói có giấy tờ mua bán từ đời ông nội.`,
+ x:c=>`Địa chủ họ ${pick(['Tôn','Khổng','Bạch'])} cho người cắm cọc lên đất nhà ${G.S().surname}, nói có giấy tờ mua bán từ đời ông nội.`,
  o:[{l:'Lục lại giấy tờ gốc',r:[{tri:1},50],y:c=>'Tìm được văn tự gốc.'+nx(c,'c8_b',2,4,{g:'co'}),n:c=>'Giấy tờ đã mục nát.'+nx(c,'c8_b',2,4,{g:'khong'})},
     {l:'Nhổ cọc',r:[{vo:1},55],y:c=>'Đuổi được người của hắn.'+nx(c,'c8_b',2,4,{g:'danh'}),n:c=>'Bị đánh.'+fx(c,{suc:-15,hpMax:-1})+nx(c,'c8_b',2,4,{g:'khong'})},
     {l:'Nhượng lại ruộng',f:c=>{G.landLose(1);return fx(c,{tam:-12})}}]}),

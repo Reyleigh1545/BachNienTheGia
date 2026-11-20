@@ -44,8 +44,8 @@ LAW({id:'lw_29',t:'Người hàng xóm vay tiền',head:1,age:[25,75],tier:[2,6]
   {l:'Cho vay nặng lãi',f:c=>'Hắn nhận tiền, cắn răng ký giấy. Người làng bàn tán.'+fx(c,{money:m(5),fame:-3,liem:-4})},
   {l:'Từ chối khéo',f:c=>'Hắn lủi thủi ra về.'}]}),
 LAW({id:'lw_22',t:'Mảnh đất bỏ hoang bên cạnh',head:1,age:[25,70],tier:[3,6],ms:1,c:c=>farmOk(),
- x:c=>`Bên cạnh ruộng nhà ${N(c)} có một mảnh đất công bỏ hoang, bờ ranh mờ. Quản gia nói chỉ cần dời cột mốc là thành đất nhà.`,
- o:c=>[{l:'Dời cột mốc',r:[{muu:0.6,khau:0.4},55],y:c=>{G.landDelta(1);return 'Không ai hay biết. Ruộng nhà rộng thêm một mẫu.'+fx(c,{fame:-1,liem:-4})},n:c=>'Bị người làng tố lên quan. Phải trả đất, nộp phạt.'+fx(c,{money:-m(40),fame:-6,liem:-4})},
+ x:c=>`Bên cạnh đất nhà ${N(c)} có một mảnh đất công bỏ hoang, bờ ranh mờ. Quản gia nói chỉ cần dời cột mốc là thành đất nhà.`,
+ o:c=>[{l:'Dời cột mốc',r:[{muu:0.6,khau:0.4},55],y:c=>{G.landDelta(1);return 'Không ai hay biết. Đất nhà rộng thêm một mẫu.'+fx(c,{fame:-1,liem:-4})},n:c=>'Bị người làng tố lên quan. Phải trả đất, nộp phạt.'+fx(c,{money:-m(40),fame:-6,liem:-4})},
   pay('Xin cấp đất theo đúng lệ',30,{f:c=>{G.landDelta(1);return 'Quan huyện cấp văn tự đàng hoàng. Một mẫu ruộng thêm vào nhà.'+fx(c,{money:-m(30)})}}),
   {l:'Bỏ ý định',f:c=>'Đất vẫn bỏ hoang.'}]}),
 /* ===================== GIANG HỒ ===================== */

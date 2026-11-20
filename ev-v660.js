@@ -10,7 +10,7 @@ const hasOff=()=>G.alive().some(p=>G.inClan(p)&&p.job==='quan'&&p.lv>=3);
 const pay=(l,v,o)=>Object.assign({l:`${l} (${FM(m(v))})`,c:()=>G.money()>=m(v)},o);
 return [
 {id:'rv_thon_tinh',t:'Họ lớn nhòm ngó ruộng đất',k:KR,fixed:1,
- x:c=>`Một họ lớn trong vùng sai người đến, nói ruộng nhà ${N(c)} nằm sát đất họ, xin nhường lại với giá rẻ. Ai cũng hiểu: không nhường thì sẽ có chuyện.`,
+ x:c=>`Một họ lớn trong vùng sai người đến, nói đất nhà ${N(c)} nằm sát đất họ, xin nhường lại với giá rẻ. Ai cũng hiểu: không nhường thì sẽ có chuyện.`,
  o:c=>[
   pay('Kiện lên quan',90,{r:[{tri:0.5,khau:0.7},55],y:c=>'Quan xử cho nhà thắng, họ lớn mất mặt.'+fx(c,{money:-m(90),cfame:6}),n:c=>{RV.add(1);return 'Thua kiện, mất thêm án phí, họ lớn càng hằn học.'+fx(c,{money:-m(130),cfame:-4})}}),
   {l:'Nhường một phần ruộng',f:c=>{const f=S().farm;if(f.own>0){f.own=Math.max(0,f.own-1);return 'Nhường một phần ruộng cho yên chuyện.'+fx(c,{cfame:-3,tam:-4})}return 'Không còn ruộng riêng để nhường, đành bù bằng tiền.'+fx(c,{money:-m(60),tam:-3})}},
