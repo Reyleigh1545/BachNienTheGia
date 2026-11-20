@@ -55,7 +55,7 @@ Game trình duyệt, JavaScript thuần, không build. Mô phỏng một gia t�
 
 Công cụ kiểm trong game: `G.led.audit()` (sổ và ký ức), `G.led.check()` (popup gọi sai người), `G.led.dump(người)`.
 
-Kho hiện tại (d9.5): **1.707 sự kiện, 258 kỳ ngộ**. Mục tiêu dài hạn 5.000 sự kiện và 500 kỳ ngộ, nhưng **nội dung mới làm sau khi gameplay xong** (mục 0.2).
+Kho hiện tại (d9.5): **1.712 sự kiện, 258 kỳ ngộ**. Mục tiêu dài hạn 5.000 sự kiện và 500 kỳ ngộ, nhưng **nội dung mới làm sau khi gameplay xong** (mục 0.2).
 
 ---
 
@@ -219,7 +219,7 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 - **Sự kiện cũ nhắc ruộng (d9.5):** 8 sự kiện cho đất, khai hoang, mua ruộng (`nong_ban_ruong_re`, `t_n_dia_chu_ban`, `t_n_khai_hoang`, `t_n_dien_trang_thue`, `t_q_dong_dien`, `nong631_khai_hoang`, `nong631_ruong_cong`, `d631_goa_phu_hien_dat`) chỉ ra khi nhà có quan hoặc tước (`LANDGIVE` trong `eligible`). Còn lại: cộng, trừ đất đi qua `G.landDelta`; lời kể "ruộng nhà" đã đổi thành "đất nhà" (d9). Các sự kiện nông (`nong_*`, `nong631_*`, `n633_nong_*`) đọc `F().own` làm điều kiện nên chỉ ra cho nhà có đất mua. Chuỗi `vil_*` cũ đã tắt nên không rà.
 - **Gia tộc có thể teo:** hai save thật có 4 và 5 người sau 37 và 51 năm, save Tiêu có 88 người sau 98 năm. Ba ván bot ngẫu nhiên (d9) cho 1 đến 5 người vì **bot không tự cưới** (cưới đi qua nút Mối ở trang Gia tộc hoặc sự kiện, bot không bấm): đo bằng bot đó không đại diện. Muốn đo thật phải cho bot biết bấm Mối hoặc đo trên save người chơi.
 - Phần B còn mỏng: người giữ ghế (`S.off`) chỉ thành NPC khi bị thay, bị hặc hoặc thắng ghế; thanh trừng giữa các quan mới là vua nghi kỵ và kẻ thù đàn hặc ngầm; thế gia chưa tham gia tranh ghế; Vượng chưa có hồ sơ riêng (đã nằm trong hoàng tộc nếu gặp).
-- Chưa làm: giang hồ đầy đủ (d9.5 mới có bản đầu 6 sự kiện, xem mục 6; thiếu chiến tranh giữa các phái, cấp bậc nội bộ, nhiều bí kíp), thế lực tự phát đầy đủ (mới có bản đầu 4 sự kiện), kỳ ngộ gia tộc, cốt truyện lớn khác ngoài họ Phạm, quân hộ, thiết khoán, Đông xưởng, nghề mới cho đời sau.
+- Chưa làm: giang hồ đầy đủ (d9.5 mới có bản đầu 6 sự kiện, xem mục 6; thiếu chiến tranh giữa các phái, cấp bậc nội bộ, nhiều bí kíp), thế lực tự phát đầy đủ (mới có bản đầu 4 sự kiện), kỳ ngộ gia tộc (d9.5 thêm 5: `kn_gia_pha_co`, `kn_ho_hang_xa`, `kn_gieng_co`, `kn_thay_tuong`, `kn_dong_ho_cu` trong `ev-v670l.js`, chạy tay 0 lỗi, còn thêm được nhiều), cốt truyện lớn khác ngoài họ Phạm, quân hộ, thiết khoán, Đông xưởng, nghề mới cho đời sau.
 - Sự kiện riêng của Phạm Thái phi chưa có. (d9.5 đã thêm `pm_rua_oan`: sau kết E8 mười hai đến mười tám năm thì có chiếu rửa oan, ba lựa chọn; hai lựa chọn đầu mở lại khóa quan văn ở đất cũ, lựa chọn ba đòi lại hai mẫu đất. Chạy tay từng lựa chọn, chưa chơi tới kết E8 thật.)
 - 39 chuỗi cũ chưa có câu nối riêng với cốt truyện; một số chuỗi (`c14_bat_coc`, `c15_nguoi_thu_ba`, `c7_thu`, `v61_cho_vay_ban`, `nong_ban_ruong_re`, `tinh_hoi_xuan`) thiếu phần thưởng thật.
 - Khoảng 34 trên 1.697 sự kiện dùng bộ nhớ (d9.4 thêm 4 sự kiện "người cũ": `gap_lai_ban_cu`, `c631_ban_cu_ghe`, `n633_y_thaycu`, `hn_nguoi_cu`; d9 thêm 9 sự kiện đọc: `ky_niem_cuoi`, `d631_thu_nguoi_xua`, `n633_hiep_no`, `lw_42`, `dh_50`, `gj_63`, `dh_59`, `v6_xt_vo`, `qt_tro_lai`).
