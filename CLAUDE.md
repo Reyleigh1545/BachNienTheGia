@@ -5,7 +5,7 @@
 - File này mâu thuẫn với lời chủ dự án trong phiên hiện tại → theo lời chủ dự án, rồi **sửa file này ngay trong cùng commit**.
 - Các báo cáo `bao-cao-*.md` và kế hoạch cũ đã gộp vào đây rồi xóa khỏi repo (còn trong lịch sử git, commit trước `claude-md`). Chỉ mở lại khi cần chi tiết kỹ thuật cũ.
 
-Phiên bản hiện tại: **v6.7.0-d9.2** (nhãn `.verlbl` trong `index.html`). File này lập ngày 19/11/2026 từ các báo cáo v6.3.5 đến v6.7.0-d8.
+Phiên bản hiện tại: **v6.7.0-d9.3** (nhãn `.verlbl` trong `index.html`). File này lập ngày 19/11/2026 từ các báo cáo v6.3.5 đến v6.7.0-d8.
 
 ---
 
@@ -16,7 +16,7 @@ Phiên bản hiện tại: **v6.7.0-d9.2** (nhãn `.verlbl` trong `index.html`).
 3. **Ý mới của chủ dự án:** chép **nguyên văn** vào mục 10 trước khi code. Không diễn giải lại. Chỗ nào hiểu không chắc thì hỏi, không đoán. Làm xong thì chuyển ý đó thành luật ở mục 3 đến 8 và xóa khỏi mục 10.
 4. **Không tự đổi luật đã chốt** (mục 3 đến 8). Thấy luật có vấn đề thì nêu ra và hỏi. Không tự "cải tiến" con số hay cơ chế ngoài phạm vi được giao.
 5. **Không làm lại thứ trong mục 9 "Đã bỏ".**
-6. **Nhánh:** mỗi bản một nhánh tên theo số bản (ví dụ `v6.7.0-d9.2`). **Không merge vào `main`** khi chủ dự án chưa bảo.
+6. **Nhánh:** mỗi bản một nhánh tên theo số bản (ví dụ `v6.7.0-d9.3`). **Không merge vào `main`** khi chủ dự án chưa bảo.
 7. **Test:** mặc định chỉ `node --check` mọi file và một lần khởi động ngắn. Test kỹ hơn khi được bảo. Luôn nói rõ đã test gì, **chưa chơi tay** phần nào.
 8. **Không viết file báo cáo mới.** Cuối mỗi phiên: cập nhật mục liên quan trong file này (luật mới, đã bỏ, đang làm dở ở mục 11), ghi tóm tắt vào commit message.
 9. Sửa `index.html` xong thì chạy `node tools/make-admin.js` để dựng lại `admin.html`.
@@ -155,12 +155,13 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 ## 7. Giao diện
 
 **Giao diện mới (d9.2, chỉ admin, chờ chủ dự án duyệt trước khi đưa vào bản chính).** Ưu tiên máy tính. Nguyên tắc chủ dự án đã chốt: người chơi **ít phải gánh thông tin**; ảnh đại diện **thật đa dạng để dễ phân biệt**, có bộ riêng theo **nghề và địa vị**; test ở admin trước.
+- **Khung hộp thoại cố định** (720 × 560): không co giãn theo số lựa chọn; chữ và lựa chọn cuộn trong khung riêng; lựa chọn có số thứ tự. Hồ sơ nhân vật cũng khung cố định (780 × 620): đầu trang có ảnh lớn, tên, nhãn; dưới là các nút trang dạng viên thuốc; trang Tổng quan có 4 ô thông tin nhanh (nghề, thu nhập, tiền riêng, vai trong nhà).
 - **Hộp sự kiện:** đầu hộp là thẻ chân dung (chấm tuổi, màu theo giới, thu nhập tháng) của người chính và người thứ hai; **thẻ bấm được để mở hồ sơ người đó**; lựa chọn là nút to, giá hiện bên nút. Khối chữ và thanh chỉ số dài cũ không còn ở đầu hộp.
 - **Kết quả:** thanh chỉ số kèm số cộng trừ (trí, võ, sức khỏe, mị lực, EQ, tâm trạng); mọi dòng cộng trừ khác vẫn hiện đủ (mục 0.12).
 - **Hồ sơ nhân vật chia trang:** Tổng quan, Tính cách và kỹ năng, Tâm tư, Việc và tiền, Gia đình, Việc nhà (trang rỗng tự ẩn). Không dồn một cuộn dài.
 - **Gia phả** là thẻ chân dung (nam xanh, nữ hồng, người mất xám).
 - **Đất phong:** ô đất từng mẫu (cơ sở theo màu từng loại, ruộng sọc xanh, khai hoang sọc vàng, đất hoang màu cát); bỏ các dòng số trùng với chú thích.
-- **Ảnh đại diện mới (`AVA2`):** sinh từ tên và id; 6 màu da, 4 dáng mặt, 6 kiểu mắt, 4 kiểu mày, 3 kiểu mũi, 4 kiểu miệng, 8 kiểu tóc mỗi giới, 6 kiểu râu, dấu hiệu riêng; trang phục theo nghề (26 nghề), áo bào và mũ theo phẩm quan, giáp và mũ theo cấp quân, áo tím cho người có tước, ngọc bội và hoa văn cho nhà giàu, tóc bạc và nếp nhăn theo tuổi.
+- **Ảnh đại diện mới (`AVA2`, kiểu hoạt hình đầu to, nét viền nâu, mắt có điểm sáng, má hồng; chủ dự án chê bản đầu "xấu" nên viết lại ở d9.3):** sinh từ tên và id; 6 màu da, 4 dáng mặt, 6 kiểu mắt, 4 kiểu mày, 3 kiểu mũi, 4 kiểu miệng, 8 kiểu tóc mỗi giới, 6 kiểu râu, dấu hiệu riêng; trang phục theo nghề (26 nghề), áo bào và mũ theo phẩm quan, giáp và mũ theo cấp quân, áo tím cho người có tước, ngọc bội và hoa văn cho nhà giàu, tóc bạc và nếp nhăn theo tuổi.
 - Đã bỏ khỏi đề xuất (chủ dự án): thanh tab dưới cùng; trang cây chuyện đã trải qua.
 
 - Dòng phiên bản mờ ở góc phải dưới (`.verlbl`); bản admin thêm `· admin`. Đổi số khi ra bản mới.

@@ -1,156 +1,145 @@
-/* Bách Niên Thế Gia v6.7.0-d9.2 · ảnh đại diện mới (chỉ bản admin dùng, bật bằng BN_ADMIN.ui2)
-   Sinh ra từ tên và id nên mỗi người một mặt riêng; nghề, cấp bậc, tước và gia thế đổi mũ, áo, phụ kiện.
-   Số biến thể: 6 màu da, 4 dáng mặt, 6 kiểu mắt, 4 kiểu mày, 3 kiểu mũi, 4 kiểu miệng, 8 kiểu tóc nam, 8 kiểu tóc nữ,
-   6 kiểu râu, 5 dấu hiệu riêng, 5 màu tóc, 12 màu nền, và hơn 25 bộ trang phục theo nghề. */
+/* Bách Niên Thế Gia v6.7.0-d9.3 · ảnh đại diện (chỉ bản admin dùng, bật bằng BN_ADMIN.ui2)
+   Kiểu hoạt hình đầu to, nét viền nâu, mắt to có điểm sáng, má hồng. Sinh từ tên và id nên mỗi người một mặt riêng;
+   nghề, cấp bậc, tước, gia thế và tuổi đổi mũ, áo, phụ kiện. */
 (function(){
 const hs=s=>{let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0};
 const P=(h,k,n)=>{let x=Math.imul(h^(k*2654435761),2246822519)>>>0;x^=x>>>13;x=Math.imul(x,3266489917)>>>0;return (x>>>8)%n};
-const SKIN=['#f6dcc0','#efcda8','#e2b68f','#d09d76','#b9825c','#9d6b49'];
-const HAIR=['#1b1714','#2c2019','#3f2b1d','#5a3a24','#2a2a33'];
-/* nền theo nhóm nghề */
+const SKIN=['#fbe3cc','#f6d5b6','#ebbf97','#d9a37a','#c28862','#a56f4d'];
+const HAIR=['#2a211d','#3a2b22','#4d3426','#6a4a30','#27273a'];
+const O='#4a3228';
 const BGH={nong:95,ngu:195,tieunhi:40,hangrong:35,khuanvac:28,tieuphu:110,tho:22,det:320,bep:18,mo:340,chan:75,y:150,nguy:160,su:228,nghe:285,diaky:260,tieu:355,hiep:12,thulai:205,nhadich:0,quan:6,quan_ngu:212,vua:46,chu:52,hau:218,noi:330,huu:30,none:60};
-/* áo theo nghề: [màu áo, màu cổ/viền] */
-const CL={nong:['#8a6a3d','#6a4f2a'],ngu:['#3f7380','#2c525c'],tieunhi:['#b79d74','#8d7650'],hangrong:['#a8794f','#7e5834'],khuanvac:['#7a6a58','#574a3c'],tieuphu:['#5f7a4a','#44592f'],
- tho:['#7b6a59','#4f4034'],det:['#b25c86','#8a3f66'],bep:['#e8e4da','#c9c3b4'],mo:['#e3dfd4','#b9b3a3'],chan:['#7f8a57','#5c6639'],y:['#4f8060','#355c43'],nguy:['#2f7a62','#c9a227'],
- su:['#33508c','#22386a'],nghe:['#7d4d83','#5b3361'],diaky:['#2e3a4f','#c9a227'],tieu:['#7c2d2d','#4d1818'],hiep:['#2f3d4a','#a5342a'],thulai:['#2f6a86','#1f4a60'],nhadich:['#2c2c33','#a5342a'],
- chu:['#8c5a1f','#c9a227'],hau:['#4d535a','#e9e2d3'],noi:['#a96a73','#7d4750'],huu:['#6d6a60','#4c4a42'],none:['#7a8090','#585d6b'],vua:['#d3a41f','#a5342a']};
-const QUANC=lv=>lv>=7?['#701212','#c9a227']:lv>=5?['#9a2c22','#d9b13b']:lv>=3?['#b04a2a','#d9c27a']:lv>=1?['#2f6a86','#9ac0d3']:['#3b6e5a','#9ac0a8'];
-const ARMC=lv=>lv>=6?['#5a5f66','#c9a227']:lv>=3?['#656a70','#a5342a']:['#7b6d56','#4d4333'];
+const CL={nong:['#9a7a4a','#6f5632'],ngu:['#4a8a98','#2f5f6b'],tieunhi:['#c4a97c','#8d7650'],hangrong:['#b9844f','#7e5834'],khuanvac:['#8a7966','#5f503f'],tieuphu:['#6f8e55','#4a6736'],
+ tho:['#8a7765','#5a4838'],det:['#c76a98','#8f3f68'],bep:['#f0ece2','#cfc8b6'],mo:['#ece8dc','#bdb6a4'],chan:['#8d9a60','#66723f'],y:['#5a9468','#386447'],nguy:['#36896f','#c9a227'],
+ su:['#3f5fa3','#2a427a'],nghe:['#8d5a93','#62386a'],diaky:['#38465e','#c9a227'],tieu:['#8f3535','#561d1d'],hiep:['#38495a','#b03a2e'],thulai:['#3a7a98','#245068'],nhadich:['#34343c','#b03a2e'],
+ chu:['#a06a24','#d4b13a'],hau:['#5a6068','#efe8d8'],noi:['#b8747d','#8a4f58'],huu:['#7d7a6d','#56544a'],none:['#7f8aa0','#5a6478'],vua:['#e0b02a','#b03a2e']};
+const QUANC=lv=>lv>=7?['#7d1a1a','#e0b83a']:lv>=5?['#a83428','#e0b83a']:lv>=3?['#bb5230','#e6cf85']:lv>=1?['#3a7a98','#a8cadb']:['#4a8068','#a8cdb6'];
+const ARMC=lv=>lv>=6?['#666c74','#e0b83a']:lv>=3?['#727880','#b03a2e']:['#8a7a60','#5a4c38'];
 function F(c,size,tier){
  const id=String(c.surname||'')+'|'+String(c.given||'')+'|'+String(c.id||'');const h=hs(id);const age=c._age!=null?c._age:(c.age||30);
  const f=c.g==='nữ';const job=c.job||'none';const lv=c.lv||0;const kid=age<12,teen=age>=12&&age<18,old=age>=55,vold=age>=70;
- const skin=SKIN[P(h,1,6)];const skinD=skin; const face=kid?1:P(h,2,4);
- let hair=HAIR[P(h,3,5)];if(age>=45&&P(h,4,3)===0)hair='#6a655e';if(old)hair=vold?'#e4e1da':'#aeaaa2';
- const eyeK=P(h,5,6),browK=P(h,6,4),noseK=P(h,7,3),mouthK=P(h,8,4);
- const hs_=f?P(h,9,8):P(h,9,8);
- const bg=BGH[job]!=null?BGH[job]:60;const bgc=`hsl(${(bg+P(h,10,5)*6)%360},${34+P(h,11,3)*6}%,${84+P(h,12,2)*3}%)`;
- const rich=(tier||0)>=4,mid=(tier||0)>=2;const noble=(c.tuoc||0)>0;
+ const skin=SKIN[P(h,1,6)];const face=kid?0:P(h,2,4);
+ let hair=HAIR[P(h,3,5)];if(age>=46&&P(h,4,3)===0)hair='#8a847b';if(old)hair=vold?'#ece9e2':'#bdb9b0';
+ const eyeK=P(h,5,6),browK=P(h,6,4),mouthK=P(h,8,3),hst=P(h,9,8);
+ const bgH=((BGH[job]!=null?BGH[job]:60)+P(h,10,5)*5)%360;
+ const rich=(tier||0)>=4,noble=(c.tuoc||0)>0;
  let robe=(CL[job]||CL.none)[0],trim=(CL[job]||CL.none)[1];
- if(job==='quan'){[robe,trim]=QUANC(lv)}else if(job==='quan_ngu'){[robe,trim]=ARMC(lv)}
- if(job==='none'||job==='huu'||job==='noi'){robe=`hsl(${(P(h,13,360))},${f?34:26}%,${f?50:42}%)`}
- if(noble&&job!=='quan'&&job!=='quan_ngu'){robe='#6a3f8a';trim='#c9a227'}
- else if(rich&&['none','noi','chu','hau'].indexOf(job)<0&&job!=='quan'&&job!=='quan_ngu'){trim='#c9a227'}
- let out='';const add=s=>out+=s;
- /* nền */
- add(`<circle cx="32" cy="32" r="32" fill="${bgc}"/>`);
+ if(job==='quan')[robe,trim]=QUANC(lv);else if(job==='quan_ngu')[robe,trim]=ARMC(lv);
+ if(job==='none'||job==='huu'||job==='noi')robe=`hsl(${P(h,13,360)},${f?36:28}%,${f?58:46}%)`;
+ if(noble&&job!=='quan'&&job!=='quan_ngu'){robe='#7a4c9c';trim='#e0b83a'}else if(rich&&!['none','noi','hau','quan','quan_ngu','vua','nong','ngu'].includes(job))trim='#e0b83a';
+ const gid='g'+(h%99991);
+ const ol=`stroke="${O}" stroke-width="1.25" stroke-linejoin="round" stroke-linecap="round"`;
+ const hairD=`stroke="${O}" stroke-width="1.25" stroke-linejoin="round"`;
+ let o='';const add=s=>o+=s;
+ add(`<defs><radialGradient id="${gid}" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="hsl(${bgH},45%,93%)"/><stop offset="1" stop-color="hsl(${bgH},38%,80%)"/></radialGradient></defs><circle cx="32" cy="32" r="32" fill="url(#${gid})"/>`);
  /* tóc sau */
- const long_=f?(hs_===2||hs_===3||hs_===5):(hs_===2);
- if(long_)add(`<path d="M14 36q-2-24 18-24q20 0 18 24v14q-5-4-6-12h-24q-1 8-6 12z" fill="${hair}"/>`);
- if(f&&hs_===3&&!kid)add(`<path d="M17 38q-4 8 0 16M47 38q4 8 0 16" stroke="${hair}" stroke-width="4.5" stroke-linecap="round" fill="none"/><circle cx="17" cy="55" r="2" fill="#a5342a"/><circle cx="47" cy="55" r="2" fill="#a5342a"/>`);
- /* thân áo */
- const sh=kid?'M12 64q2-12 20-13q18 1 20 13z':'M5 64q2-16 27-17q25 1 27 17z';
- add(`<path d="${sh}" fill="${robe}"/>`);
- /* kiểu cổ áo */
- if(job==='quan'){add(`<path d="M24 47l8 10 8-10" fill="${f?'#f3e6d0':'#efe6d4'}" stroke="${trim}" stroke-width="1.4"/><rect x="21" y="53" width="22" height="11" rx="1.5" fill="${trim}" opacity=".92"/><circle cx="32" cy="58.5" r="2.7" fill="${robe}"/><path d="M29 61l3-5 3 5z" fill="${trim}"/>`);
-  add(`<path d="M5 60h54" stroke="#16130f" stroke-width="1.5" opacity=".7"/>`)}
- else if(job==='quan_ngu'){add(`<path d="M5 64q1-9 8-13l8 3-3 10z M59 64q-1-9-8-13l-8 3 3 10z" fill="${trim}" opacity=".95"/><rect x="25" y="52" width="14" height="12" rx="2" fill="#4a4f55"/><circle cx="32" cy="58" r="2.2" fill="${trim}"/>`);}
- else if(job==='bep'||job==='tho'||job==='det'||job==='noi'){add(`<path d="M24 47l8 7 8-7" fill="#efe6d4"/><path d="M20 64v-9h24v9z" fill="${job==='tho'?'#5a4a3a':'#f2eee4'}" opacity=".95"/>`)}
- else if(job==='vua'){add(`<path d="M24 47l8 8 8-8" fill="#f3e6d0"/><circle cx="32" cy="59" r="4.2" fill="${trim}"/><path d="M29 59h6M32 56v6" stroke="#d3a41f" stroke-width="1"/>`)}
- else if(job==='nong'||job==='ngu'||job==='khuanvac'||job==='tieuphu'||job==='chan'){add(`<path d="M24 47l8 9 8-9" fill="${skin}"/><path d="M24 47l8 9 8-9" fill="none" stroke="${trim}" stroke-width="1.6"/>`)}
- else{add(`<path d="M24 47l8 10 8-10" fill="${f?'#f3e6d0':'#eadfc9'}" stroke="${trim}" stroke-width="1.2"/>`)}
- /* hoa văn theo gia thế */
- if((rich||noble)&&job!=='quan'&&job!=='quan_ngu'&&job!=='vua'&&job!=='nong'&&job!=='ngu'){add(`<circle cx="18" cy="58" r="2.6" fill="none" stroke="${trim}" stroke-width="1"/><circle cx="46" cy="58" r="2.6" fill="none" stroke="${trim}" stroke-width="1"/>`)}
- if(rich||noble||(job==='quan'&&lv>=3)){add(`<path d="M32 56v4" stroke="#7a5a2a" stroke-width=".8"/><circle cx="32" cy="61.5" r="2.4" fill="#4fb6a4"/><circle cx="32" cy="61.5" r="1" fill="#2a7a6c"/>`)}
- /* phụ kiện thân */
- if(job==='hiep')add(`<rect x="49" y="34" width="4" height="19" rx="1.5" fill="#6a4a2a" transform="rotate(18 51 44)"/><rect x="47.6" y="33" width="7" height="3" fill="#c9a227" transform="rotate(18 51 44)"/>`);
- if(job==='hangrong')add(`<path d="M2 44L40 54" stroke="#7a5a32" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="6" cy="50" rx="5" ry="2.4" fill="#b7975a"/>`);
- if(job==='y'||job==='nguy')add(`<path d="M18 48l22 14" stroke="#7a5a32" stroke-width="1.3"/><rect x="12" y="56" width="9" height="8" rx="3" fill="#c9a96a" stroke="#7a5a32" stroke-width=".8"/>`);
- if(job==='su')add(`<rect x="14" y="54" width="12" height="9" rx="1" fill="#efe6d0" stroke="#7a5a32" stroke-width=".8"/><path d="M16 57h8M16 60h8" stroke="#7a5a32" stroke-width=".6"/>`);
- if(job==='tieu')add(`<path d="M9 51q10 8 24 5" stroke="${trim}" stroke-width="2.6" fill="none"/>`);
- if(job==='nghe')add(`<circle cx="50" cy="58" r="3" fill="#d9a441"/><path d="M50 55v6M47 58h6" stroke="#7a4a1f" stroke-width=".8"/>`);
- /* cổ, đầu */
- add(`<rect x="27.5" y="39" width="9" height="10" rx="3" fill="${skin}"/>`);
- add(`<ellipse cx="19.5" cy="31" rx="2.4" ry="3.4" fill="${skin}"/><ellipse cx="44.5" cy="31" rx="2.4" ry="3.4" fill="${skin}"/>`);
- const FS=[`<ellipse cx="32" cy="30" rx="12.2" ry="14.8" fill="${skin}"/>`,`<ellipse cx="32" cy="31" rx="13.6" ry="13.6" fill="${skin}"/>`,
-  `<path d="M20 25q0-12 12-12t12 12q0 8-3 13q-4 6-9 6t-9-6q-3-5-3-13z" fill="${skin}"/>`,`<path d="M19.6 24q0-10 12.4-10t12.4 10v8q0 9-12.4 11.4q-12.4-2.4-12.4-11.4z" fill="${skin}"/>`];
+ const longH=f?(hst===2||hst===3||hst===5||hst===7):(hst===2);
+ if(!kid&&longH)add(`<path d="M13.5 36 Q11 12 32 10.5 Q53 12 50.5 36 L51 58 Q45 54 45 44 L19 44 Q19 54 13 58Z" fill="${hair}" ${hairD}/>`);
+ if(f&&hst===3&&!kid)add(`<path d="M15 38 Q9 48 14 60 M49 38 Q55 48 50 60" stroke="${hair}" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M15 38 Q9 48 14 60 M49 38 Q55 48 50 60" stroke="${O}" stroke-width=".7" fill="none" opacity=".6"/><circle cx="14" cy="60" r="2.2" fill="#c8453a" ${ol}/><circle cx="50" cy="60" r="2.2" fill="#c8453a" ${ol}/>`);
+ if(f&&hst===5&&!kid)add(`<path d="M46 20 Q60 26 54 50" stroke="${hair}" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="47" cy="21" r="2" fill="#c8453a" ${ol}/>`);
+ /* thân */
+ const kb=kid?2.5:0;
+ add(`<path d="M28.2 ${44+kb} v8 q3.8 3.2 7.6 0 v-8z" fill="${skin}" ${ol}/>`);
+ add(`<path d="M9 66 Q9 ${52+kb} 24 ${50+kb} L40 ${50+kb} Q55 ${52+kb} 55 66Z" fill="${robe}" ${ol}/>`);
+ if(job==='quan'){add(`<path d="M25 ${50.5+kb} L32 59 L39 ${50.5+kb}" fill="#f6ecd8" ${ol}/><rect x="21" y="57" width="22" height="9" rx="1.5" fill="${trim}" ${ol}/><circle cx="32" cy="61.5" r="2.6" fill="${robe}" ${ol}/>`)}
+ else if(job==='quan_ngu'){add(`<path d="M9 66 Q9 56 15 52 L23 55 L20 66z M55 66 Q55 56 49 52 L41 55 L44 66z" fill="${trim}" ${ol}/><rect x="26" y="56" width="12" height="10" rx="2" fill="#555b62" ${ol}/><circle cx="32" cy="61" r="2" fill="${trim}"/>`)}
+ else if(job==='bep'||job==='tho'||job==='det'||job==='noi'){add(`<path d="M25 ${50.5+kb} L32 58 L39 ${50.5+kb}" fill="#f6ecd8" ${ol}/><path d="M20 66 v-8 q12 4 24 0 v8z" fill="${job==='tho'?'#6a5645':'#fbf8f0'}" ${ol}/>`)}
+ else if(job==='vua'){add(`<path d="M25 ${50.5+kb} L32 58 L39 ${50.5+kb}" fill="#f6ecd8" ${ol}/><circle cx="32" cy="60.5" r="4.4" fill="${trim}" ${ol}/>`)}
+ else if(['nong','ngu','khuanvac','tieuphu','chan'].includes(job)){add(`<path d="M25 ${50.5+kb} L32 58 L39 ${50.5+kb}" fill="${skin}" ${ol}/>`)}
+ else{add(`<path d="M25 ${50.5+kb} L32 59 L39 ${50.5+kb}" fill="#f6ecd8" ${ol}/><path d="M32 59 v7" stroke="${trim}" stroke-width="1.2"/>`)}
+ if((rich||noble||(job==='quan'&&lv>=3))&&job!=='vua')add(`<circle cx="32" cy="63.5" r="2.3" fill="#58c0ae" ${ol}/>`);
+ if((rich||noble)&&!['quan','quan_ngu','vua','nong','ngu'].includes(job))add(`<circle cx="17" cy="60" r="2.4" fill="none" stroke="${trim}" stroke-width="1.1"/><circle cx="47" cy="60" r="2.4" fill="none" stroke="${trim}" stroke-width="1.1"/>`);
+ if(job==='hiep')add(`<rect x="50" y="36" width="4" height="20" rx="1.6" fill="#7a5632" transform="rotate(16 52 46)" ${ol}/><rect x="48.4" y="35" width="7.4" height="3.2" fill="#e0b83a" transform="rotate(16 52 46)" ${ol}/>`);
+ if(job==='hangrong')add(`<path d="M2 47 L42 58" stroke="#8a6a3e" stroke-width="2.6" stroke-linecap="round"/><ellipse cx="6" cy="53" rx="5.5" ry="2.6" fill="#c9a665" ${ol}/>`);
+ if(job==='y'||job==='nguy')add(`<path d="M18 52 L40 66" stroke="#8a6a3e" stroke-width="1.4"/><rect x="11" y="57" width="10" height="9" rx="3.4" fill="#d4b676" ${ol}/>`);
+ if(job==='su')add(`<rect x="13" y="56" width="13" height="10" rx="1.2" fill="#f4ead0" ${ol}/><path d="M15.5 59.5h8M15.5 62.5h8" stroke="#8a6a3e" stroke-width=".7"/>`);
+ if(job==='tieu')add(`<path d="M10 54 Q22 64 38 60" stroke="${trim}" stroke-width="3" fill="none" stroke-linecap="round"/>`);
+ if(job==='nghe')add(`<circle cx="50" cy="61" r="3.4" fill="#e0a843" ${ol}/>`);
+ /* tai và mặt */
+ add(`<circle cx="17.6" cy="34" r="2.9" fill="${skin}" ${ol}/><circle cx="46.4" cy="34" r="2.9" fill="${skin}" ${ol}/>`);
+ const FS=[`<ellipse cx="32" cy="32" rx="14.8" ry="15.2" fill="${skin}" ${ol}/>`,`<ellipse cx="32" cy="32.5" rx="13.6" ry="16" fill="${skin}" ${ol}/>`,
+  `<path d="M17.6 28 Q17 16.5 32 16.5 Q47 16.5 46.4 28 Q46 40 38.4 45.6 Q32 49 25.6 45.6 Q18 40 17.6 28Z" fill="${skin}" ${ol}/>`,
+  `<path d="M17.4 27 Q17.4 16.5 32 16.5 Q46.6 16.5 46.6 27 L46 38 Q45 47 32 48 Q19 47 18 38Z" fill="${skin}" ${ol}/>`];
  add(FS[face]);
+ add(`<ellipse cx="22.8" cy="40" rx="3.2" ry="2" fill="#f0867c" opacity=".38"/><ellipse cx="41.2" cy="40" rx="3.2" ry="2" fill="#f0867c" opacity=".38"/>`);
  /* tóc trước */
- const topCap=`<path d="M19 28q-1-15 13-15q14 0 13 15q-5-9-13-9q-8 0-13 9z" fill="${hair}"/>`;
- let hat='';
- const hatless=!['quan','quan_ngu','vua','nong','ngu','hangrong','bep','thulai','nhadich','diaky','chu','su','y','nguy','tieu','hiep','tho','khuanvac','det','mo','noi','hau'].includes(job);
+ const cap=`<path d="M16.4 32 Q13.5 11 32 10.6 Q50.5 11 47.6 32 Q46 23.5 40 21.5 Q32 26 24 21.5 Q18 23.5 16.4 32Z" fill="${hair}" ${hairD}/><path d="M23 15.5 Q30 12.4 38 14.4" stroke="#fff" stroke-width="1.6" fill="none" opacity=".28" stroke-linecap="round"/>`;
  if(f){
-  if(kid){add(`<circle cx="21" cy="16" r="4.6" fill="${hair}"/><circle cx="43" cy="16" r="4.6" fill="${hair}"/>${topCap}`)}
-  else{
-   const st=hs_;
-   if(st===0)add(`<circle cx="32" cy="9" r="6.5" fill="${hair}"/>${topCap}<path d="M25 9h14" stroke="#c9a227" stroke-width="1.4"/>`);
-   else if(st===1)add(`<circle cx="19" cy="14" r="6" fill="${hair}"/><circle cx="45" cy="14" r="6" fill="${hair}"/>${topCap}`);
-   else if(st===2)add(`${topCap}<path d="M32 15q-6 3-9 9M32 15q6 3 9 9" stroke="#00000022" stroke-width="1" fill="none"/>`);
-   else if(st===3)add(`${topCap}`);
-   else if(st===4)add(`${topCap}<circle cx="43" cy="20" r="5" fill="${hair}"/><path d="M38 14l9 10" stroke="#c9a227" stroke-width="1.6"/><circle cx="47" cy="25" r="1.6" fill="#c9a227"/>`);
-   else if(st===5)add(`${topCap}<path d="M22 17q10-8 20 0" fill="${hair}"/><path d="M45 16q6 4 4 14" stroke="${hair}" stroke-width="4" fill="none" stroke-linecap="round"/>`);
-   else if(st===6)add(`<path d="M17 28q-1-17 15-17t15 17q-6-8-15-8t-15 8z" fill="#c07a8a"/><path d="M17 27h30" stroke="#8a4a5a" stroke-width="1.2"/>`);
-   else add(`${topCap}<circle cx="32" cy="10" r="5.6" fill="${hair}"/><circle cx="26" cy="9" r="2.3" fill="#e58f86"/><circle cx="38" cy="9" r="2.3" fill="#f0c36a"/><circle cx="32" cy="6" r="2" fill="#e58f86"/>`);
-  }
-  if(rich||noble)add(`<path d="M21 38q-1 4 0 5M43 38q1 4 0 5" stroke="#c9a227" stroke-width="1.6" stroke-linecap="round"/>`);
+  if(kid)add(`<circle cx="19.5" cy="16.5" r="5.2" fill="${hair}" ${hairD}/><circle cx="44.5" cy="16.5" r="5.2" fill="${hair}" ${hairD}/>${cap}`);
+  else if(hst===0)add(`<circle cx="32" cy="8.5" r="6.4" fill="${hair}" ${hairD}/>${cap}<path d="M26.4 12.6 h11.2" stroke="#e0b83a" stroke-width="1.8" stroke-linecap="round"/>`);
+  else if(hst===1)add(`<circle cx="18.5" cy="14.5" r="6.2" fill="${hair}" ${hairD}/><circle cx="45.5" cy="14.5" r="6.2" fill="${hair}" ${hairD}/>${cap}<circle cx="18.5" cy="14.5" r="1.6" fill="#c8453a"/><circle cx="45.5" cy="14.5" r="1.6" fill="#c8453a"/>`);
+  else if(hst===4)add(`${cap}<circle cx="44.5" cy="21" r="5.4" fill="${hair}" ${hairD}/><path d="M38 14 L47 25" stroke="#e0b83a" stroke-width="1.8" stroke-linecap="round"/><circle cx="47" cy="25" r="1.8" fill="#e05a5a" ${ol}/>`);
+  else if(hst===6)add(`<path d="M16.4 32 Q13 10.5 32 10 Q51 10.5 47.6 32 Q44 21 32 21 Q20 21 16.4 32Z" fill="#cf7a8c" ${ol}/><path d="M18 25 Q32 17 46 25" stroke="#a85468" stroke-width="1.2" fill="none"/>`);
+  else if(hst===7)add(`${cap}<circle cx="32" cy="9.5" r="5.2" fill="${hair}" ${hairD}/><circle cx="26" cy="9" r="2.4" fill="#f08a80" ${ol}/><circle cx="38" cy="9" r="2.4" fill="#f3c862" ${ol}/>`);
+  else add(`${cap}<path d="M32 14 Q27 17 24 24 M32 14 Q37 17 40 24" stroke="${O}" stroke-width=".8" fill="none" opacity=".55"/>`);
+  if(rich||noble)add(`<circle cx="17.4" cy="38.5" r="1.4" fill="#e0b83a"/><circle cx="46.6" cy="38.5" r="1.4" fill="#e0b83a"/>`);
  }else{
-  const st=hs_;
-  if(kid)add(`${topCap}<circle cx="32" cy="10" r="3.4" fill="${hair}"/>`);
-  else if(st===0||st===1)add(`${topCap}<circle cx="32" cy="9" r="5" fill="${hair}"/>${st===1?'<path d="M25 11l14-3" stroke="#c9a227" stroke-width="1.6"/>':'<path d="M28 12h8" stroke="#7a4f32" stroke-width="1.6"/>'}`);
-  else if(st===2)add(`${topCap}`);
-  else if(st===3)add(`<path d="M19 26q0-12 13-12t13 12q-5-6-13-6t-13 6z" fill="${hair}"/>`);
-  else if(st===4)add(`<path d="M22 21q10-6 20 0" stroke="${hair}" stroke-width="1.4" opacity=".45" fill="none"/>`); /* đầu cạo */
-  else if(st===5)add(`${topCap}<circle cx="45" cy="34" r="3.6" fill="${hair}"/>`);
-  else if(st===6)add(`<path d="M18 28q-1-15 14-15q15 0 14 15q-3-6-10-8q-8 1-18 8z" fill="${hair}"/>`);
-  else add(`${topCap}<path d="M19 21h26" stroke="#a5342a" stroke-width="2.6"/>`);
+  if(kid)add(`${cap}<circle cx="32" cy="9" r="3.8" fill="${hair}" ${hairD}/>`);
+  else if(hst===0)add(`${cap}<circle cx="32" cy="8.5" r="5.6" fill="${hair}" ${hairD}/><path d="M27.4 12.5 h9.2" stroke="#c8453a" stroke-width="1.8" stroke-linecap="round"/>`);
+  else if(hst===1)add(`${cap}<circle cx="32" cy="8.5" r="5.6" fill="${hair}" ${hairD}/><path d="M24 11.5 L40 6.5" stroke="#e0b83a" stroke-width="1.9" stroke-linecap="round"/>`);
+  else if(hst===2||hst===5)add(cap);
+  else if(hst===3)add(`<path d="M16.4 32 Q13.5 11 32 10.6 Q50.5 11 47.6 32 Q43 24 32 23.5 Q21 24 16.4 32Z" fill="${hair}" ${hairD}/>`);
+  else if(hst===4)add(`<path d="M20 20 Q32 12 44 20" stroke="${O}" stroke-width="1" fill="none" opacity=".25"/><path d="M26 16 Q31 14 36 15" stroke="#fff" stroke-width="2" fill="none" opacity=".35" stroke-linecap="round"/>`);
+  else if(hst===6)add(`<path d="M16.4 32 Q13.5 11 32 10.6 Q50.5 11 47.6 32 Q44 24 36 21.5 Q27 22 16.4 32Z" fill="${hair}" ${hairD}/>`);
+  else add(`<path d="M16.4 32 Q13.5 11 32 10.6 Q50.5 11 47.6 32 Q46 23.5 40 21.5 Q32 26 24 21.5 Q18 23.5 16.4 32Z" fill="${hair}" ${hairD}/><path d="M21 17 L19 10 L25 14 L28 8 L32 13 L37 8 L39 14 L45 10 L43 18" fill="${hair}" ${hairD}/><path d="M17 23 h30" stroke="#c8453a" stroke-width="2.4"/>`);
  }
- /* mũ nón theo nghề (vẽ đè lên tóc) */
- const hatc=(job==='quan')?'#16130f':'#16130f';
- if(job==='quan'){const w=lv>=6?17:lv>=3?14:10;hat=`<rect x="21" y="6" width="22" height="12" rx="4" fill="${hatc}"/><rect x="${32-w-9}" y="11" width="${w+3}" height="3" rx="1.5" fill="${hatc}"/><rect x="${32+9-3}" y="11" width="${w+3}" height="3" rx="1.5" fill="${hatc}"/><path d="M22 17h20" stroke="${lv>=3?'#c9a227':'#6a6a6a'}" stroke-width="1.4"/>`}
- else if(job==='quan_ngu'){const[c1,c2]=ARMC(lv);hat=`<path d="M17 23q0-15 15-15t15 15z" fill="${c1}"/><path d="M17 23h30" stroke="${c2}" stroke-width="2"/><path d="M32 2v7" stroke="${lv>=3?'#a5342a':'#8a6a3a'}" stroke-width="${lv>=3?4:2.6}" stroke-linecap="round"/>`}
- else if(job==='vua'){hat=`<rect x="20" y="6" width="24" height="8" fill="#d3a41f"/><path d="M18 6h28M22 6v-3M28 6v-4M32 6v-5M36 6v-4M42 6v-3" stroke="#d3a41f" stroke-width="2" stroke-linecap="round"/>`}
- else if(job==='nong'||job==='ngu'||job==='hangrong'||job==='hiep'){const r=job==='hiep'?27:25;hat=`<path d="M${32-r} 21q${r} -22 ${2*r} 0z" fill="${job==='hiep'?'#b9985a':'#d4b872'}"/><path d="M${32-r} 21h${2*r}" stroke="#8a6a3a" stroke-width="1.3"/><path d="M24 21q0 8 4 11M40 21q0 8-4 11" stroke="#a5342a" stroke-width=".9" fill="none"/>`}
- else if(job==='bep'){hat=`<rect x="22" y="3" width="20" height="14" rx="6" fill="#f6f3ec" stroke="#cfc9b8" stroke-width="1"/><rect x="21" y="14" width="22" height="4" fill="#f6f3ec" stroke="#cfc9b8" stroke-width="1"/>`}
- else if(job==='thulai'){hat=`<rect x="22" y="9" width="20" height="9" rx="3" fill="#1b1b22"/><rect x="14" y="13" width="9" height="2.4" rx="1.2" fill="#1b1b22"/><rect x="41" y="13" width="9" height="2.4" rx="1.2" fill="#1b1b22"/>`}
- else if(job==='nhadich'){hat=`<path d="M21 18q0-11 11-11t11 11z" fill="#23232b"/><path d="M21 17h22" stroke="#a5342a" stroke-width="2.4"/>`}
- else if(job==='diaky'){hat=`<ellipse cx="32" cy="9" rx="10" ry="5" fill="#222a38"/><rect x="26" y="9" width="12" height="9" fill="#222a38"/><circle cx="32" cy="13" r="2.3" fill="#efe6d4"/><path d="M32 10.7a2.3 2.3 0 0 1 0 4.6" fill="#222a38"/>`}
- else if(job==='chu'){hat=`<path d="M22 18q0-12 10-12t10 12z" fill="${rich?'#6a3f8a':'#1b1b22'}"/><circle cx="32" cy="6" r="2" fill="#c9a227"/><path d="M22 17h20" stroke="#c9a227" stroke-width="1.6"/>`}
- else if(job==='su'||job==='y'||job==='nguy'){const col=job==='su'?'#1b2a52':job==='y'?'#2e4b38':'#1f5a4a';hat=`<path d="M20 20q0-10 12-10t12 10z" fill="${col}"/><path d="M20 19h24" stroke="#00000055" stroke-width="1"/>${job==='nguy'?'<path d="M26 12h12" stroke="#c9a227" stroke-width="1.4"/>':''}`}
- else if(job==='tieu'||job==='khuanvac'||job==='tho'){hat=`<path d="M19 21q13-8 26 0v-3q-13-8-26 0z" fill="${job==='tieu'?'#a5342a':job==='tho'?'#8b7a62':'#c9bda4'}"/>`}
- else if(job==='det'||job==='mo'||(job==='noi'&&hs_>=6)){hat=`<path d="M17 28q-1-17 15-17t15 17q-5-7-15-7t-15 7z" fill="${job==='mo'?'#eee8da':job==='det'?'#d98ab0':'#c9a679'}"/>`}
- else if(job==='hau'){hat=`<path d="M21 19q0-9 11-9t11 9z" fill="#4a4f55"/>`}
- if(hat)add(hat);
- /* mắt mày mũi miệng */
- const ey=kid?33:31;const lash=f&&!kid?'stroke-linecap="round"':'stroke-linecap="round"';
- const ink='#2a1d16';
- const eye=x=>{switch(eyeK){case 0:return `<path d="M${x-3.4} ${ey}h6.8" stroke="${ink}" stroke-width="1.8" ${lash}/>`;
-   case 1:return `<circle cx="${x}" cy="${ey}" r="${kid?2.2:1.7}" fill="${ink}"/>`;
-   case 2:return `<path d="M${x-3.6} ${ey}q3.6-3.4 7.2 0q-3.6 2-7.2 0z" fill="#fff" stroke="${ink}" stroke-width="1"/><circle cx="${x}" cy="${ey}" r="1.2" fill="${ink}"/>`;
-   case 3:return `<path d="M${x-3.4} ${ey-.5}q3.4 3 6.8 0" stroke="${ink}" stroke-width="1.6" fill="none" ${lash}/>`;
-   case 4:return `<circle cx="${x}" cy="${ey}" r="2.7" fill="#fff" stroke="${ink}" stroke-width=".8"/><circle cx="${x}" cy="${ey}" r="1.4" fill="${ink}"/>`;
-   default:return `<path d="M${x-3.6} ${ey+.8}l7.2 -1.8" stroke="${ink}" stroke-width="1.9" ${lash}/>`}};
- add(eye(26)+eye(38));
- if(f&&!kid&&eyeK!==1)add(`<path d="M22.6 ${ey-.6}l-1.4-1.2M41.4 ${ey-.6}l1.4-1.2" stroke="${ink}" stroke-width=".9" stroke-linecap="round"/>`);
- const by=ey-4.2;
- const br=[`<path d="M22 ${by}q4-2.4 8 0M34 ${by}q4-2.4 8 0" stroke="${hair}" stroke-width="${f?1:1.4}" fill="none" stroke-linecap="round"/>`,
-  `<path d="M22 ${by}h8M34 ${by}h8" stroke="${hair}" stroke-width="${f?1.2:2.2}" stroke-linecap="round"/>`,
-  `<path d="M22 ${by+1.2}l8 -2.2M34 ${by-1}l8 2.2" stroke="${hair}" stroke-width="${f?1.1:2}" stroke-linecap="round"/>`,
-  `<path d="M23 ${by}h5M36 ${by}h5" stroke="${hair}" stroke-width="${f?1:1.6}" stroke-linecap="round"/>`][browK];
- add(br);
- const ny=ey+3;
- add([`<path d="M32 ${ny}v5" stroke="#8a6048" stroke-width="1" stroke-linecap="round" opacity=".6"/>`,`<circle cx="32" cy="${ny+4.5}" r="1.4" fill="#b7845f" opacity=".6"/>`,`<path d="M30.6 ${ny+5}q1.4 1.8 2.8 0" stroke="#8a6048" stroke-width="1.1" fill="none" stroke-linecap="round"/>`][noseK]);
- const my=ey+10.5;const happy=(c.tam||50)>=60,sad=(c.tam||50)<35;
- if(c.dead!=null)add(`<path d="M28 ${my}h8" stroke="#7a3b30" stroke-width="1.4"/>`);
- else if(f&&!kid)add(`<path d="M28.6 ${my}q3.4 ${happy?3:1.2} 6.8 0q-3.4 ${happy?1.4:.6} -6.8 0z" fill="#c4504a" stroke="#a63a35" stroke-width=".6"/>`);
- else add([`<path d="M27.5 ${my}q4.5 ${happy?3.5:sad?-1.4:1} 9 0" stroke="#7a3b30" stroke-width="1.5" fill="none" stroke-linecap="round"/>`,`<path d="M28 ${my}h8" stroke="#7a3b30" stroke-width="1.5" stroke-linecap="round"/>`,`<path d="M28 ${my}q4 ${happy?4:2} 8 0z" fill="#8a3a33" opacity=".9"/>`,`<path d="M28 ${my+.6}q4 ${happy?2.4:-.8} 8 0" stroke="#7a3b30" stroke-width="1.3" fill="none" stroke-linecap="round"/>`][mouthK]);
- if(f&&!old&&!kid)add(`<circle cx="23" cy="${ey+6}" r="2.5" fill="#e58f86" opacity=".4"/><circle cx="41" cy="${ey+6}" r="2.5" fill="#e58f86" opacity=".4"/>`);
+ /* mũ theo nghề */
+ const hatless=!(['quan','quan_ngu','vua','nong','ngu','hangrong','hiep','bep','thulai','nhadich','diaky','chu','su','y','nguy','tieu','khuanvac','tho','det','mo','hau'].includes(job));
+ if(!kid){
+  if(job==='quan'){const w=lv>=6?9:lv>=3?7:5;add(`<rect x="21.5" y="3.5" width="21" height="13" rx="4.5" fill="#1c1a1f" ${ol}/><rect x="${21.5-w-2}" y="9.6" width="${w+3}" height="3.2" rx="1.6" fill="#1c1a1f" ${ol}/><rect x="${42.5-1}" y="9.6" width="${w+3}" height="3.2" rx="1.6" fill="#1c1a1f" ${ol}/><path d="M22 15.5 h20" stroke="${lv>=3?'#e0b83a':'#8a8a8a'}" stroke-width="1.6"/>`)}
+  else if(job==='quan_ngu'){const[a1,a2]=ARMC(lv);add(`<path d="M15.5 25 Q15 7 32 6.5 Q49 7 48.5 25z" fill="${a1}" ${ol}/><path d="M15.5 25 h33" stroke="${a2}" stroke-width="2.4"/><path d="M32 6.5 v-5" stroke="${lv>=3?'#c8453a':'#8a6a3e'}" stroke-width="${lv>=3?4.2:2.8}" stroke-linecap="round"/>`)}
+  else if(job==='vua'){add(`<rect x="19.5" y="5.5" width="25" height="9" fill="#e0b02a" ${ol}/><path d="M19.5 5.5 L23 1.5 L27.5 5.5 L32 1 L36.5 5.5 L41 1.5 L44.5 5.5" fill="#e0b02a" ${ol}/>`)}
+  else if(['nong','ngu','hangrong','hiep'].includes(job)){const r=job==='hiep'?29:26;add(`<path d="M${32-r} 22 Q${32-r+4} 8 32 4 Q${32+r-4} 8 ${32+r} 22 Q32 25.5 ${32-r} 22Z" fill="${job==='hiep'?'#c8a45e':'#e0c47e'}" ${ol}/><path d="M${32-r+5} 20.5 Q32 13 ${32+r-5} 20.5" stroke="#9a7a42" stroke-width="1" fill="none" opacity=".7"/>`)}
+  else if(job==='bep'){add(`<path d="M21 17 Q18 6 25 4.5 Q27 1.5 32 3 Q37 1.5 39 4.5 Q46 6 43 17z" fill="#fbf8f0" ${ol}/><rect x="21" y="15" width="22" height="4.5" fill="#fbf8f0" ${ol}/>`)}
+  else if(job==='thulai'){add(`<rect x="22" y="8" width="20" height="9.5" rx="3" fill="#1f1f27" ${ol}/><rect x="13" y="12.4" width="10" height="2.6" rx="1.3" fill="#1f1f27" ${ol}/><rect x="41" y="12.4" width="10" height="2.6" rx="1.3" fill="#1f1f27" ${ol}/>`)}
+  else if(job==='nhadich'){add(`<path d="M20.5 18.5 Q20 5 32 5 Q44 5 43.5 18.5z" fill="#26262e" ${ol}/><path d="M20.5 17 h23" stroke="#c8453a" stroke-width="2.6"/>`)}
+  else if(job==='diaky'){add(`<ellipse cx="32" cy="9" rx="11" ry="5" fill="#252d3e" ${ol}/><rect x="25.5" y="8.5" width="13" height="9" fill="#252d3e" ${ol}/><circle cx="32" cy="13" r="2.5" fill="#f3ebdb"/><path d="M32 10.5 a2.5 2.5 0 0 1 0 5" fill="#252d3e"/>`)}
+  else if(job==='chu'){add(`<path d="M21.5 18.5 Q21 5 32 5 Q43 5 42.5 18.5z" fill="${rich?'#7a4c9c':'#26232a'}" ${ol}/><circle cx="32" cy="5" r="2.2" fill="#e0b83a" ${ol}/><path d="M21.5 17 h21" stroke="#e0b83a" stroke-width="1.8"/>`)}
+  else if(job==='su'||job==='y'||job==='nguy'){const col=job==='su'?'#1f2f5c':job==='y'?'#2f503c':'#1f5f4e';add(`<path d="M19.5 21 Q19 7 32 7 Q45 7 44.5 21z" fill="${col}" ${ol}/><path d="M19.5 19.6 h25" stroke="#00000044" stroke-width="1.2"/>${job==='nguy'?'<path d="M25 11 h14" stroke="#e0b83a" stroke-width="1.6"/>':''}`)}
+  else if(['tieu','khuanvac','tho'].includes(job)){add(`<path d="M17.5 21.5 Q32 12 46.5 21.5 L46 17.5 Q32 8.5 18 17.5z" fill="${job==='tieu'?'#b03a2e':job==='tho'?'#9a8a72':'#d4c8ac'}" ${ol}/>`)}
+  else if(job==='det'||job==='mo'){add(`<path d="M16 31 Q13 10 32 9.5 Q51 10 48 31 Q44 21 32 21 Q20 21 16 31Z" fill="${job==='mo'?'#f3eee0':'#e48fb8'}" ${ol}/>`)}
+  else if(job==='hau'){add(`<path d="M21 19 Q20 8 32 8 Q44 8 43 19z" fill="#555b63" ${ol}/>`)}
+ }
+ /* mắt */
+ const ink='#2b1f1a';const ey=33.6;
+ const eyeShape=(x,side)=>{const hl=`<circle cx="${x+0.9}" cy="${ey-1.2}" r="1" fill="#fff"/><circle cx="${x-0.9}" cy="${ey+1.4}" r=".5" fill="#fff"/>`;
+  const big=kid||f;
+  switch(eyeK){
+   case 0:return `<ellipse cx="${x}" cy="${ey}" rx="${big?2.7:2.4}" ry="${big?3.5:3.1}" fill="${ink}"/>${hl}`;
+   case 1:return `<ellipse cx="${x}" cy="${ey}" rx="2.9" ry="2.4" fill="${ink}"/><circle cx="${x+.9}" cy="${ey-.8}" r=".9" fill="#fff"/>`;
+   case 2:return `<path d="M${x-3} ${ey+.8} Q${x} ${ey-3.2} ${x+3} ${ey+.8}" stroke="${ink}" stroke-width="1.9" fill="none" stroke-linecap="round"/>`;
+   case 3:return `<ellipse cx="${x}" cy="${ey+.4}" rx="2.6" ry="2.4" fill="${ink}"/><path d="M${x-3.2} ${ey-1.2} Q${x} ${ey-2.8} ${x+3.2} ${ey-1.2}" stroke="${ink}" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="${x+.9}" cy="${ey-.2}" r=".8" fill="#fff"/>`;
+   case 4:return `<circle cx="${x}" cy="${ey}" r="2.5" fill="${ink}"/><circle cx="${x+.8}" cy="${ey-.9}" r=".85" fill="#fff"/>`;
+   default:return `<path d="M${x-3.2} ${ey+1.2} Q${x} ${ey-3.4} ${x+3.2} ${ey-.4} Q${x+.6} ${ey+3} ${x-3.2} ${ey+1.2}Z" fill="${ink}"/><circle cx="${x+.8}" cy="${ey-.6}" r=".85" fill="#fff"/>`}};
+ add(eyeShape(26.2,-1)+eyeShape(37.8,1));
+ if(f&&!kid&&eyeK!==2)add(`<path d="M22.8 ${ey-1.8} l-1.7 -1.4 M41.2 ${ey-1.8} l1.7 -1.4" stroke="${ink}" stroke-width="1.1" stroke-linecap="round"/>`);
+ const by=ey-5.6;
+ add([`<path d="M22.6 ${by+.6} Q26.2 ${by-1.8} 29.8 ${by+.4} M34.2 ${by+.4} Q37.8 ${by-1.8} 41.4 ${by+.6}" stroke="${hair}" stroke-width="${f?1.3:1.9}" fill="none" stroke-linecap="round"/>`,
+  `<path d="M22.8 ${by} h6.8 M34.4 ${by} h6.8" stroke="${hair}" stroke-width="${f?1.4:2.3}" stroke-linecap="round"/>`,
+  `<path d="M22.8 ${by+1.4} L29.6 ${by-.8} M34.4 ${by-.8} L41.2 ${by+1.4}" stroke="${hair}" stroke-width="${f?1.3:2.1}" stroke-linecap="round"/>`,
+  `<path d="M23.4 ${by-.4} Q26.4 ${by-2.4} 29.4 ${by-.4} M34.6 ${by-.4} Q37.6 ${by-2.4} 40.6 ${by-.4}" stroke="${hair}" stroke-width="${f?1.2:1.7}" fill="none" stroke-linecap="round"/>`][browK]);
+ add(`<path d="M31 38.4 Q32 39.8 33 38.4" stroke="#b07a62" stroke-width="1.1" fill="none" stroke-linecap="round"/>`);
+ const my=42.4;const tam=(c.tam==null?50:c.tam);const happy=tam>=60,sad=tam<32;
+ if(c.dead!=null)add(`<path d="M29.4 ${my} h5.2" stroke="#8a3a33" stroke-width="1.4" stroke-linecap="round"/>`);
+ else if(f&&!kid)add(`<path d="M29.4 ${my-.2} Q32 ${my+(happy?3.2:1.6)} 34.6 ${my-.2} Q32 ${my+.7} 29.4 ${my-.2}Z" fill="#d4584f" stroke="#a63a35" stroke-width=".7" stroke-linejoin="round"/>`);
+ else if(mouthK===0)add(`<path d="M29.2 ${my-.4} Q32 ${my+(happy?3.4:sad?-1.2:1.6)} 34.8 ${my-.4}" stroke="#8a3a33" stroke-width="1.5" fill="none" stroke-linecap="round"/>`);
+ else if(mouthK===1)add(`<path d="M29.6 ${my} Q32 ${my+(happy?2.4:.4)} 34.4 ${my}" stroke="#8a3a33" stroke-width="1.5" fill="none" stroke-linecap="round"/>`);
+ else add(`<path d="M29.4 ${my-.6} Q32 ${my+(happy?4.4:2.2)} 34.6 ${my-.6}Z" fill="#9c3f38" stroke="#8a3a33" stroke-width=".8" stroke-linejoin="round"/>`);
  /* râu */
- if(!f&&!kid&&!teen&&age>=24){const b=P(h,14,7);const bc=old?hair:hair;
-  if(b===0)add(`<path d="M25.5 ${my-3}q6.5-3 13 0q-6.5 1.4-13 0z" fill="${bc}"/>`);
-  else if(b===1)add(`<path d="M25 ${my-3.4}q7-3.4 14 0l-1.6 1.4q-5.4-1.6-10.8 0z" fill="${bc}"/><path d="M26 ${my-2}q-2.4 3.4 0 6M38 ${my-2}q2.4 3.4 0 6" stroke="${bc}" stroke-width="1.5" fill="none"/>`);
-  else if(b===2)add(`<path d="M25.5 ${my-3}q6.5-3 13 0q-6.5 1.6-13 0z" fill="${bc}"/><path d="M29 ${my+1.4}q3 8 6 0q-3 2-6 0z" fill="${bc}"/>`);
-  else if(b===3&&age>=34)add(`<path d="M22 ${my-6}q-1 14 10 16q11-2 10-16q-3 8-10 8t-10-8z" fill="${bc}"/><path d="M27 ${my}q5 2.4 10 0" stroke="#7a3b30" stroke-width="1.3" fill="none"/>`);
-  else if(b===4&&age>=50)add(`<path d="M24 ${my-3}q8-4 16 0q2 14-8 22q-10-8-8-22z" fill="${old?'#e8e5de':bc}"/><path d="M27 ${my}q5 2.4 10 0" stroke="#7a3b30" stroke-width="1.3" fill="none"/>`);
-  else if(b===5)add(`<path d="M20.5 ${my-9}v7M43.5 ${my-9}v7" stroke="${bc}" stroke-width="2.6" stroke-linecap="round"/>`);}
- /* dấu hiệu riêng */
+ if(!f&&!kid&&!teen&&age>=26){const b=P(h,14,7),bc=hair;
+  if(b===0)add(`<path d="M26 ${my-2.6} Q32 ${my-5.6} 38 ${my-2.6} Q32 ${my-3.6} 26 ${my-2.6}Z" fill="${bc}" ${ol}/>`);
+  else if(b===1)add(`<path d="M25.4 ${my-2.4} Q28 ${my-5} 32 ${my-3.4} Q36 ${my-5} 38.6 ${my-2.4} Q36 ${my-1.6} 32 ${my-2.6} Q28 ${my-1.6} 25.4 ${my-2.4}Z" fill="${bc}" ${ol}/>`);
+  else if(b===2)add(`<path d="M26 ${my-2.6} Q32 ${my-5.4} 38 ${my-2.6} Q32 ${my-3.4} 26 ${my-2.6}Z" fill="${bc}" ${ol}/><path d="M29.4 ${my+2} Q32 ${my+8} 34.6 ${my+2} Q32 ${my+3.4} 29.4 ${my+2}Z" fill="${bc}" ${ol}/>`);
+  else if(b===3&&age>=34)add(`<path d="M18.4 ${my-5} Q18 ${my+9} 32 ${my+10} Q46 ${my+9} 45.6 ${my-5} Q42 ${my+3} 32 ${my+3} Q22 ${my+3} 18.4 ${my-5}Z" fill="${bc}" ${ol}/><path d="M28.6 ${my-.4} Q32 ${my+1.8} 35.4 ${my-.4}" stroke="#8a3a33" stroke-width="1.3" fill="none"/>`);
+  else if(b===4&&age>=50)add(`<path d="M20 ${my-4} Q19 ${my+10} 32 ${my+14} Q45 ${my+10} 44 ${my-4} Q40 ${my+2} 32 ${my+2} Q24 ${my+2} 20 ${my-4}Z" fill="${old?'#ece9e2':bc}" ${ol}/><path d="M28.6 ${my-.2} Q32 ${my+1.8} 35.4 ${my-.2}" stroke="#8a3a33" stroke-width="1.3" fill="none"/>`);
+ }
  const mk=P(h,15,10);
- if(mk===0)add(`<path d="M37 ${ey+3}l5 6" stroke="#b2605a" stroke-width="1.2" stroke-linecap="round"/>`);
- else if(mk===1)add(`<circle cx="${f?'37':'27'}" cy="${ey+8}" r="1" fill="#6a3f30"/>`);
- else if(mk===2&&f)add(`<circle cx="40" cy="${my-1}" r=".9" fill="#2a1d16"/>`);
- else if(mk===3&&!kid)add(`<circle cx="25" cy="${ey+5}" r=".7" fill="#a56a4a"/><circle cx="27" cy="${ey+6.4}" r=".7" fill="#a56a4a"/><circle cx="39" cy="${ey+5}" r=".7" fill="#a56a4a"/><circle cx="37" cy="${ey+6.4}" r=".7" fill="#a56a4a"/>`);
- if(old)add(`<path d="M22 ${ey+3}l3 1M42 ${ey+3}l-3 1M26 ${by-2}h10" stroke="#8a6a55" stroke-width=".7" opacity=".7"/>`);
- /* thêm mũ che trán (đè lại sau mặt) đã vẽ trước; hoàn tất */
+ if(mk===0)add(`<path d="M37 31 L41.6 37.6" stroke="#b86a60" stroke-width="1.2" stroke-linecap="round"/>`);
+ else if(mk===1)add(`<circle cx="${f?'38.4':'26.6'}" cy="38.6" r="1" fill="#6a4030"/>`);
+ else if(mk===2&&f)add(`<circle cx="39.6" cy="${my-.6}" r=".9" fill="#2b1f1a"/>`);
+ else if(mk===3&&!kid)add(`<circle cx="24.4" cy="36.8" r=".7" fill="#a56a4a"/><circle cx="26.2" cy="38.2" r=".7" fill="#a56a4a"/><circle cx="39.6" cy="36.8" r=".7" fill="#a56a4a"/><circle cx="37.8" cy="38.2" r=".7" fill="#a56a4a"/>`);
+ if(old)add(`<path d="M21.8 36.4 l2.6 .8 M42.2 36.4 l-2.6 .8 M24.6 ${by-1.6} h4.6" stroke="#8a6a55" stroke-width=".8" opacity=".6" stroke-linecap="round"/>`);
  const dead=c.dead!=null||c.left;
- return `<svg class="ava ava2" width="${size||40}" height="${size||40}" viewBox="0 0 64 64" aria-hidden="true" style="${dead?'filter:grayscale(1);opacity:.75':''}">${out}</svg>`;
+ return `<svg class="ava ava2" width="${size||40}" height="${size||40}" viewBox="0 0 64 64" aria-hidden="true" style="${dead?'filter:grayscale(1);opacity:.75':''}">${o}</svg>`;
 }
 window.AVA2={svg:F};
 })();
