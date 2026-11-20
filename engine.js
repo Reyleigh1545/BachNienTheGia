@@ -6367,7 +6367,13 @@ const WP=[
  {id:'T11',hold:0,n:'Thế gia ngàn năm',h:['Giữ được họ qua nhiều đời đã là một thành tựu.','Nhà đã qua nhiều đời, vẫn đứng vững trong nhóm đầu thiên hạ.','Gần tám đời, hai trăm năm; chỉ cần giữ thêm cho đủ.'],
   st:()=>{const g=S.people.reduce((m,p)=>Math.max(m,p.gen||1),1),y=Math.floor(S.t/12);return g>=8&&y>=200&&tierIdx()>=4?3:(g>=5&&tierIdx()>=4?2:(g>=3&&tierIdx()>=3?1:0))}}
 ];
-function wpYear(){if(DRY||S.over||!head())return;S.wp=S.wp||{};
+/* d9.5: thế lực tự phát. Ba điểm nóng của hạt giống thế giới tăng độ nóng dần; từ 60 thì loạn thiên hạ tăng theo, từ 85 thỉnh thoảng giặc nổi. */
+function tlYear(){const w=S.wr;if(!w||!w.hot||!S.dyn)return;w.heat=w.heat||{};const ky=(S.dyn.k&&S.dyn.k.uy)||60;
+  w.hot.forEach(p=>{w.heat[p]=clamp((w.heat[p]==null?R(5,20):w.heat[p])+R(-1,4)-(ky>75?1:0)+(S.dyn.loan>60?1:0),0,100)});
+  const top=w.hot.slice().sort((a,b)=>w.heat[b]-w.heat[a])[0];const mx=w.heat[top];
+  if(mx>=60)S.dyn.loan=clamp((S.dyn.loan||0)+1,0,100);
+  if(mx>=85&&chance(0.2)){S.dyn.loan=clamp((S.dyn.loan||0)+3,0,100);w.heat[top]-=10;log('Giặc cỏ nổi lên ở '+provN(top)+', thiên hạ thêm xáo động.','hi');qtLog('Giặc nổi',provN(top)+': thế lực tự phát nổi dậy, triều đình chưa dẹp nổi.')}}
+function wpYear(){if(DRY||S.over||!head())return;S.wp=S.wp||{};tlYear();
   WP.forEach(w=>{if(S.over)return;const r=S.wp[w.id]||(S.wp[w.id]={s:0,y:0});let s=0;try{s=w.st()}catch(e){s=0}
     if(s>r.s){r.s=s;log('Lời đồn: '+w.h[s-1],'hi');qtLog('Dấu hiệu',w.h[s-1])}else if(s<r.s)r.s=s;
     if(w.id==='T4'||w.noWin)return; /* T4 chốt trong crRes */

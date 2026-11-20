@@ -6,7 +6,7 @@ const have=new Set([...meta.matchAll(/"([A-Za-z0-9_]+)":\[/g)].map(m=>m[1]));
 const files=fs.readdirSync(dir).filter(f=>/^ev-v67.*\.js$/.test(f));
 const BASE={lw:['society','law'],gj:['jianghu','wandering'],lo:['society','outlaw'],dh:['life','long_term'],kn:['encounter','rare'],tg:['life','world'],cd:['government','special_office'],
  pm:['story','arc'],bi:['military','border'],th:['economy','trade_guild'],kb:['education','academy'],gh:['jianghu','martial_arts'],ga:['family','legacy'],
- pv:['dynasty','regent_prince'],cc:['dynasty','warlord'],nt:['dynasty','consort_clan'],ps:['economy','ruin'],tn:['society','annexation'],lc:['life','chaos'],dn:['economy','projects'],dp:['life','land'],pc:['dynasty','consort_clan'],qt5:['government','career']};
+ pv:['dynasty','regent_prince'],cc:['dynasty','warlord'],nt:['dynasty','consort_clan'],ps:['economy','ruin'],tn:['society','annexation'],lc:['life','chaos'],dn:['economy','projects'],dp:['life','land'],tl:['society','chaos'],gh:['society','jianghu'],pc:['dynasty','consort_clan'],qt5:['government','career']};
 const add={};
 for(const f of files){const t=fs.readFileSync(path.join(dir,f),'utf8');
   const re=/\bid:'([a-z0-9]+_[A-Za-z0-9_]+)'([^\n]{0,80}?)\bt:'([^']*)'([^\n]*)/g;let m;
