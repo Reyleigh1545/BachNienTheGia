@@ -9,7 +9,7 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;',
 function card(i){if(!i)return '';
   return `<button type="button" class="pcard ${i.g==='nữ'?'f':'m'}${i.dead?' x':''}" data-pcard="${i.id}" title="Bấm để xem hồ sơ"><span class="pa">${i.dead?'†':i.age}</span><span class="pav">${i.av}</span><b>${esc(i.name)}</b>${i.tuoc?`<em class="ptuoc">${esc(i.tuoc)}</em>`:''}<small>${esc(i.sub)}</small>${i.inc!=null?`<span class="pinc ${i.inc<0?'dn':'up'}">${esc(i.incTxt)}</span>`:''}</button>`}
 const U={
- header(me,other){return `<div class="pcards">${card(me)}${other?card(other):''}</div>`},
+ header(me,other){return `<div class="pbanner"><div class="pcards">${card(me)}${other?card(other):''}</div></div>`},
  /* kết quả: đổi các dòng chỉ số thành thanh */
  result(M,id){const G=window.BNTG;if(!G||!M)return;const c=G.P&&G.P(id);const fxs=[...M.querySelectorAll('.result .fx')];if(!fxs.length||!c)return;fxs.forEach(fx=>{
   const KEY={'Trí tuệ':'tri','Võ lực':'vo','Sức khỏe':'suc','Mị lực':'mi','EQ':'eq','Tâm trạng':'tam'};const COL={tri:'#2f7258',vo:'#946f1f',suc:'#a5342a',mi:'#7a4bb0',eq:'#2f6a86',tam:'#3e6a9a'};
@@ -20,7 +20,7 @@ const U={
    else rest.push(`<div class="fr ${sp.className}"><span>${esc(t)}</span></div>`)});
   if(!bars.length&&!rest.length)return;fx.outerHTML=`<div class="fxui">${bars.length?`<div class="fbars">${bars.join('')}</div>`:''}${rest.length?`<div class="frows">${rest.join('')}</div>`:''}</div>`});},
  /* hồ sơ nhân vật nhiều trang */
- sheet(SM,id,keep){if(!SM||!SM.children.length)return;
+ sheet(SM,id,keep,info){if(!SM||!SM.children.length)return;
   const kids=[...SM.children];const who=kids.find(k=>k.classList.contains('who'));const xc=kids.find(k=>k.hasAttribute&&k.hasAttribute('data-close'));
   const PAGES=[['tq','Tổng quan'],['tc','Tính cách và kỹ năng'],['tt','Tâm tư'],['vl','Việc và tiền'],['gd','Gia đình'],['vn','Việc nhà']];
   const grp={tq:[],tc:[],tt:[],vl:[],gd:[],vn:[]};
@@ -30,6 +30,9 @@ const U={
    else if(k.classList.contains('subs'))g='tc';
    else if(k.classList.contains('kvline')){const t=k.textContent;if(/Tiền riêng|Di chúc|với gia chủ|kiếm/.test(t))g='vl';else if(/Tiềm năng/.test(t))g='tc'}
    grp[g].push(k)});
+  if(info&&!SM.querySelector('.sfacts')){const fa=document.createElement('div');fa.className='sfacts';
+   const T=(k,v)=>`<div class="sf"><small>${k}</small><b>${esc(v)}</b></div>`;
+   fa.innerHTML=T('Nghề',info.job||'—')+T('Thu nhập',info.inc==null?'—':info.incTxt)+T('Tiền riêng',info.purse||'—')+T('Vai trong nhà',info.rel||'—');grp.tq.unshift(fa)}
   const cur=(keep&&SM._pg)||'tq';const pages=PAGES.filter(([k])=>grp[k].length);if(pages.length<2){return}
   const wrap=document.createElement('div');wrap.className='sheetpages';
   pages.forEach(([k])=>{const d=document.createElement('div');d.className='spage';d.dataset.pg=k;grp[k].forEach(n=>d.appendChild(n));wrap.appendChild(d)});
