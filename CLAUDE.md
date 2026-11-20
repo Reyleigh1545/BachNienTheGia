@@ -5,7 +5,7 @@
 - File này mâu thuẫn với lời chủ dự án trong phiên hiện tại → theo lời chủ dự án, rồi **sửa file này ngay trong cùng commit**.
 - Các báo cáo `bao-cao-*.md` và kế hoạch cũ đã gộp vào đây rồi xóa khỏi repo (còn trong lịch sử git, commit trước `claude-md`). Chỉ mở lại khi cần chi tiết kỹ thuật cũ.
 
-Phiên bản hiện tại: **v6.7.0-d9.3** (nhãn `.verlbl` trong `index.html`). File này lập ngày 19/11/2026 từ các báo cáo v6.3.5 đến v6.7.0-d8.
+Phiên bản hiện tại: **v6.7.0-d9.5** (nhãn `.verlbl` trong `index.html`). File này lập ngày 19/11/2026 từ các báo cáo v6.3.5 đến v6.7.0-d8.
 
 ---
 
@@ -16,7 +16,7 @@ Phiên bản hiện tại: **v6.7.0-d9.3** (nhãn `.verlbl` trong `index.html`).
 3. **Ý mới của chủ dự án:** chép **nguyên văn** vào mục 10 trước khi code. Không diễn giải lại. Chỗ nào hiểu không chắc thì hỏi, không đoán. Làm xong thì chuyển ý đó thành luật ở mục 3 đến 8 và xóa khỏi mục 10.
 4. **Không tự đổi luật đã chốt** (mục 3 đến 8). Thấy luật có vấn đề thì nêu ra và hỏi. Không tự "cải tiến" con số hay cơ chế ngoài phạm vi được giao.
 5. **Không làm lại thứ trong mục 9 "Đã bỏ".**
-6. **Nhánh:** mỗi bản một nhánh tên theo số bản (ví dụ `v6.7.0-d9.3`). **Không merge vào `main`** khi chủ dự án chưa bảo.
+6. **Nhánh:** mỗi bản một nhánh tên theo số bản (ví dụ `v6.7.0-d9.5`). **Không merge vào `main`** khi chủ dự án chưa bảo.
 7. **Test:** mặc định chỉ `node --check` mọi file và một lần khởi động ngắn. Test kỹ hơn khi được bảo. Luôn nói rõ đã test gì, **chưa chơi tay** phần nào.
 8. **Không viết file báo cáo mới.** Cuối mỗi phiên: cập nhật mục liên quan trong file này (luật mới, đã bỏ, đang làm dở ở mục 11), ghi tóm tắt vào commit message.
 9. Sửa `index.html` xong thì chạy `node tools/make-admin.js` để dựng lại `admin.html`.
@@ -55,7 +55,7 @@ Game trình duyệt, JavaScript thuần, không build. Mô phỏng một gia t�
 
 Công cụ kiểm trong game: `G.led.audit()` (sổ và ký ức), `G.led.check()` (popup gọi sai người), `G.led.dump(người)`.
 
-Kho hiện tại (d8): **1.693 sự kiện, 258 kỳ ngộ**. Mục tiêu dài hạn 5.000 sự kiện và 500 kỳ ngộ, nhưng **nội dung mới làm sau khi gameplay xong** (mục 0.2).
+Kho hiện tại (d9.5): **1.719 sự kiện, 258 kỳ ngộ**. Mục tiêu dài hạn 5.000 sự kiện và 500 kỳ ngộ, nhưng **nội dung mới làm sau khi gameplay xong** (mục 0.2).
 
 ---
 
@@ -65,7 +65,7 @@ Kho hiện tại (d8): **1.693 sự kiện, 258 kỳ ngộ**. Mục tiêu dài h
 
 **Chỉ số.**
 - Trần mềm theo tư chất; lớn tự nhiên không cộng chồng lên phần học được.
-- Tốc độ sau 100: 100 đến 119 hệ số 0,33; 120 đến 149 hệ số 0,2; từ 150 hệ số 0,14.
+- Tốc độ sau 100: 100 đến 119 hệ số 0,6; 120 đến 149 hệ số 0,48; từ 150 hệ số 0,41 (d9.5, tăng từ 0,33 / 0,2 / 0,14 vì chủ dự án chưa ai đạt chỉ số 200 và danh hiệu Thần). Cùng bản: trần mềm từ 100 trở lên chỉ bóp tối đa còn 0,5 (trước 0,05); chờ thử lại mốc vượt rút còn 10 đến 30 tháng. Thử ép "đại thành" một người 25 tuổi, bot tự chơi 40 năm: trí 144 đến 150, võ 119 đến 136 lúc 65 tuổi (qua mốc 140 và 150); Bước 150 lên 200 chỉ mở bằng "Thiên cơ" (hàm thiencoTick): trước chỉ 0,03% mỗi tháng (khoảng 280 năm mới gặp), nay 1,2% nhân hệ số duyên (khoảng 7 năm), và đột phá thiên cơ chạy nhanh hơn (hệ số mốc 150 từ 0,6 lên 0,95; mốc 120 và 140 thành 0,9 và 0,8). Thử bằng người 30 tuổi sẵn 150, bot chơi tới 78 tuổi (4 ván, có thêm hệ số mốc 150 0,95): cả 4 ván mở được giới hạn 200 vào khoảng 71 đến 73 tuổi, nhưng chỉ số mới lên 167 và 159 nên **chưa ván nào chạm đúng 200**; với 6 ván ở mức thiên cơ thấp hơn thì 2 ván mở được. Từ 0 tới 150 mất khoảng 40 năm, nên **một đời vẫn khó**, hợp ý "tích lũy nhiều đời"; chờ chủ dự án chơi tay báo lại. Chuỗi khảo nghiệm Thần (th_vothan_1 và 2) đã chạy đúng khi đủ điều kiện (vo 200, nghề Võ lâm minh chủ, m 130).
 - Mốc vượt 120 và 140 mỗi chỉ số có hai con đường riêng. Mốc không chặn theo tuổi; lựa chọn không hợp tuổi bị ẩn.
 - **Sức khỏe:** tối đa cố định 100, không rèn lên, không có mốc vượt. Danh hiệu sức khỏe là **bẩm sinh** (tám mức, từ Cường tráng 7% tới Tiên phong đạo cốt 0,01%): ít bệnh, già chậm 2 đến 14 năm. Tuổi bắt đầu suy là chỉ số ẩn.
 - **Mị lực** giảm từ 38 tuổi (0,6 mỗi năm; từ 50 là 1,2; từ 60 là 1,8).
@@ -80,7 +80,7 @@ Kho hiện tại (d8): **1.693 sự kiện, 258 kỳ ngộ**. Mục tiêu dài h
 
 **Tình duyên.** Tách khỏi hôn nhân, nhiều bước. Mở đầu chỉ cho người 18 đến 25 tuổi có tài, có đức; dễ rung động tùy tính cách. Cưới đúng người đã gặp.
 
-**Tang lễ.** Ba mức. Mức "xứng" theo cái lớn hơn giữa danh vọng người mất và gia thế; mỗi mức để lại dấu.
+**Tang lễ.** Ba mức. Mức "xứng" theo cái lớn hơn giữa danh vọng người mất và gia thế; mỗi mức để lại dấu. Nhà không đủ tiền cho mức xứng thì phạt danh vọng nhẹ (tối đa 12) và không để lại tiếng xấu (d9.4).
 
 **Gia quy.** Mỗi gia quy cấm thuộc một nhóm phạt cố định (không có vi phạm / phạt tiền, đòn roi / trục xuất / xử tử tại gia). Vi phạm không phải lúc nào cũng lộ; lộ thì gia chủ thi hành hay tha, tha nhiều thì uy gia pháp giảm. Xử tử tại gia có cái giá. Trục xuất trước khi án nổ thì nhà chính thoát liên lụy. Mỗi năm nhắc lập gia quy nếu còn chỗ. Gia quy tăng tốc cho trẻ (hiếu học, thư hương, văn võ, thượng võ, thể tập) **phải có giá** (tâm trạng, sức khỏe, chi tiêu). Gia quy không cộng danh vọng. Luật rượu, cờ bạc chỉ khớp hành vi, không khớp rượu thuốc, cúng, biếu.
 
@@ -120,7 +120,7 @@ Kho hiện tại (d8): **1.693 sự kiện, 258 kỳ ngộ**. Mục tiêu dài h
 | THU | 1 | 1,5 | 2,5 | 4 | 7 | 12 | 20 |
 | NHẸ (mặc định) | 1 | 1,3 | 1,8 | 2,5 | 3,5 | 5 | 7 |
 
-Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc định thang CHI. Kỳ ngộ nhân **2,5** cho khoản nhận được (tiền, danh vọng, hưng thịnh, chiến công). Chuỗi cốt truyện cũ: thưởng tiền theo thang THU, danh vọng nhân `1 + 0,3 × bậc`; phạt sức khỏe tối đa 3 mỗi lần. Hết tiền thì mỗi người 30% bỏ một thói quen tốt tốn tiền; tật xấu không bỏ.
+Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc định thang CHI. Kỳ ngộ nhân **2,5** cho khoản nhận được (tiền, danh vọng, hưng thịnh, chiến công). Chuỗi cốt truyện cũ: thưởng tiền theo thang THU, danh vọng nhân `1 + 0,3 × bậc`; phạt sức khỏe tối đa 3 mỗi lần. Hết tiền thì mỗi người 30% bỏ một thói quen tốt tốn tiền; tật xấu không bỏ. Công quỹ âm thì người nhà có tiền riêng tự góp đỡ (giữ nguyên; d9.5 từng bỏ rồi chủ dự án bảo giữ lại, vì nhầm). **Làm việc thiện** (thói quen `tuthien`) chỉ trích khoảng 10% thu nhập tháng của người đó (hệ số mức sống nhân thêm), không còn 600 đồng cố định.
 
 **Đất (d8).** **Nhà thường không có ruộng. Chi họ không có ruộng riêng: ruộng được phong và đất phong đều về nhà chính.** Tá điền ở nhà chính đi làm thuê, công khoảng 450 đồng mỗi tháng theo tay nghề và tâm trạng. Trang "Ruộng vườn" đã bỏ; thay bằng trang **Đất phong**, chỉ hiện khi nhà có đất: đất phong theo tước, đất mua (chỉ khi nhà có người làm quan hoặc có tước, giá 60% giá mẫu ruộng cũ). Đất chia ba phần: cơ sở (dự án), ruộng đã khai hoang cho tá điền, đất hoang. Khai hoang một mẫu tốn 40% giá mẫu, mười hai tháng sau thành ruộng. Phát canh thu tô theo mùa gặt: 30% (nặng, mang tiếng địa chủ), 20% (vừa), 10% (nhẹ, có tiếng thơm).
 
@@ -142,13 +142,19 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 **Cốt truyện và sự kiện.** Khung đại cốt truyện: tối đa ba cái chạy cùng lúc, ngã rẽ vĩnh viễn, tiến độ ẩn. Khi cốt truyện chạy, sự kiện thường phải **góp phần** (trọng số theo chủ đề, dấu nhỏ, một câu nối), không tách rời. Sổ chung `S.led`, ký ức người `c.mm`, ký ức gia tộc `S.fm`, nhật ký popup `S.evl` (người chơi không thấy). Chống lặp: sự kiện ngẫu nhiên tối thiểu 36 tháng trong cả nhà, 120 tháng trên cùng người; sự kiện chỉ có một lựa chọn trơn thì ghi thẳng nhật ký, không hiện hộp. Danh gia, họ khác chỉ xuất hiện ở nơi của họ; không đến làm thân với Bần hộ, Thường dân.
 
-**Ba đường lên ngôi:** Quyền thần, Võ quan, Khởi nghĩa. Đủ địa vị thì sau 12 đến 24 tháng tự kích hoạt; bỏ được bất cứ lúc nào; người đang ở xa vẫn mở được nhưng "lộ" tăng. Bốn thước đo: thế lực, danh nghĩa, tài lực, lộ. Nuôi quân tốn tiền theo số đội (100 người, 60 bạc mỗi tháng), hiện trong dòng tiền; hết tiền thì quân bỏ trốn. Bỏ ngang hay mất người cầm đầu chỉ khóa chính đường đó 10 năm. **Mưu phản thất bại là tru di**; hộp tru di chỉ còn "đưa một người cùng vợ con trốn đi lập chi ở xa" (để chỉ tam tộc) hoặc "phó mặc cho trời". Lên ngôi: người chơi đặt quốc hiệu, niên hiệu đầu tiên; màn hậu sử (không quá 320 năm); hết game.
+**Ba đường lên ngôi:** Quyền thần, Võ quan, Khởi nghĩa. Đủ địa vị thì sau 12 đến 24 tháng tự kích hoạt; bỏ được bất cứ lúc nào; người đang ở xa vẫn mở được nhưng "lộ" tăng. Bốn thước đo: thế lực, danh nghĩa, tài lực, lộ. Nuôi quân tốn tiền theo số đội (100 người, 60 bạc mỗi tháng), hiện trong dòng tiền; hết tiền thì quân bỏ trốn. Bỏ ngang hay mất người cầm đầu chỉ khóa chính đường đó 10 năm. Vỡ nợ liền mười hai tháng thì quân tan, mưu đại sự bỏ dở (d9.4). Tru di cửu tộc đã ghi kết L1 vào Sử sách. **Mưu phản thất bại là tru di**; hộp tru di chỉ còn "đưa một người cùng vợ con trốn đi lập chi ở xa" (để chỉ tam tộc) hoặc "phó mặc cho trời". Lên ngôi: người chơi đặt quốc hiệu, niên hiệu đầu tiên; màn hậu sử (không quá 320 năm); hết game.
+
+**Các đường phá đảo ngoài lên ngôi (d9.5, `WP` trong engine).** T4 đến T11 (Tĩnh nạn công thần, Biên vương, Nhiếp chính vương, Phú khả địch quốc, Văn tông, Trấn quốc võ gia, Võ lâm chí tôn, Thế gia ngàn năm) và đường Khởi nghĩa (T3, chỉ hiện dấu hiệu) đều có **3 chặng**; mỗi năm (tháng 3) engine đo lại, chặng tăng thì nhật ký ghi một "Lời đồn" nói thẳng việc cần làm, thẻ "Con đường phía trước" ở khối Triều đình và thời thế hiện manh mối (chặng 1 ẩn tên đường, chặng 2 trở đi hiện tên). Đủ chặng 3 và giữ đủ số năm thì ván kết (màn Hậu sử chung, ghi Sử sách): T5, T7 giữ 5 năm; T8, T9, T10 giữ 10 năm; T6, T11 đủ là kết; T4 chốt ngay khi thắng cuộc tranh ngôi mà nhà đã ra sức (`cr.act`≥2) và đủ chặng 2. Điều kiện từng đường: T4 quan từ Ngũ phẩm hoặc võ từ cấp 3 và đang có quan ở kinh; T5 tướng cao cấp, gia binh từ 5, thiên hạ loạn (`dyn.loan` từ 55); T6 người trong hoàng tộc (phò mã, vương phi, hoàng hậu), quan từ Thất phẩm, vua yếu và thái tử dưới 14; T7 năm cơ sở bậc cao nhất, bậc Thế gia; T8 nghĩa thục, tàng thư, ba quan văn, danh vọng 3.000; T9 tướng cao cấp và thêm một người theo võ; T10 đại hiệp lên minh chủ cùng môn khách hoặc võ quán; T11 tám đời, hai trăm năm, bậc Hào phú trở lên. Con số là ước lượng chưa đo.
+
+**Quân hộ và Đông xưởng (d9.5, `ev-v670n.js`, bản mở rộng đầu):** nối tiếp `cd_19` (giấy gọi nhập quân hộ) và `cd_12` (cầu cạnh Đông xưởng), chỉ ra cho người đã gặp hai sự kiện đó (`c.seen`). Quân hộ: đến phiên nhập ngũ (cử người, thuê thay, trốn), xin xóa tên khỏi sổ, người lính về thăm. Đông xưởng: bị dõi theo, hoạn quan nhờ việc, bị tố cáo. Chưa có hệ thống quân hộ đời đời (mỗi đời một người thật sự phải nhập ngũ) và thế lực Đông xưởng theo năm.
+
+**Thiết khoán (d9.5, `ev-v670m.js`, bản đầu):** nhà có người tước từ bậc 3 có thể được vua ban Thiết khoán (`tk_ban_khoan`, một lần, cờ `S.tk`). Khi gặp hộp "Mây đen trên đầu cả họ" (án tru di vì đại án, không phải mưu đại sự) thì có thêm lựa chọn trình Thiết khoán: thoát án tru di một lần, khoán mất hiệu lực. Chưa có sự kiện thu hồi khoán.
 
 **Tru di:** quét cả người cưới vào và người ở rể; người ở rể đứng đầu mưu đại sự thì cả họ vẫn chịu. Chi ở xa không bị liên lụy thì **giữ nguyên tiền** của chi.
 
 **Kết thúc khác** (kết phụ, chủ dự án đã đồng ý): tuyệt tự; tru di cửu tộc; các kết của cốt truyện. Nút **Sử sách** ở menu chính ghi 17 cái kết (11 thắng, 6 bại), mờ cho tới khi đạt, mở khóa 6 xuất thân mới. Mọi kết ngoài lên ngôi dùng màn Hậu sử chung. Không có hộp hỏi "khép lại ván" (đã bỏ hộp "Một trang sử").
 
-**Hạt giống thế giới mỗi ván:** 9 môn phái (3 chính, 3 tà, 3 trung lập) rút từ 24 tên, 3 điểm nóng thế lực tự phát, mệnh thế, tính khí nước láng giềng. Hiện mới dùng tên môn phái trong sự kiện.
+**Hạt giống thế giới mỗi ván:** 9 môn phái (3 chính, 3 tà, 3 trung lập) rút từ 24 tên, 3 điểm nóng thế lực tự phát, mệnh thế, tính khí nước láng giềng. **Giang hồ (d9.5, `ev-v670j.js`, bản đầu):** người nghề Hiệp khách đi qua 4 cấp lưu ở `c.flags.gh` (1 môn sinh, 2 đệ tử, 3 cao thủ, 4 minh chủ) và phái ở `c.flags.ghs`, bằng 6 sự kiện: nhập môn phái (chính, trung lập, tà hay đi một mình), tỉ võ giữa hai phái, bí kíp (có đoạn hiểm), bị truy sát, đại hội anh hùng (đại hiệp từ 28 tuổi, thắng thì thành Võ lâm minh chủ, hiệp lv3, `S.gh.lord`), việc của minh chủ. Đây là chặng cuối của đường T10. Chưa có: cấp bậc nội bộ môn phái chi tiết, đối đầu giữa các phái theo thời gian. **Thế lực tự phát (d9.5, `ev-v670k.js` và `tlYear`):** ba điểm nóng của hạt giống ván có độ nóng `S.wr.heat` tăng -2 đến 3 mỗi năm (giảm khi vua uy cao); từ 60 thì loạn thiên hạ `dyn.loan` thêm 1 mỗi năm (mở T5, T3), từ 85 thì thỉnh thoảng giặc nổi (loạn thêm 3, ghi sử). Bốn sự kiện: hội kín chiêu người, thủ lĩnh gửi thư mời, dân chạy loạn đến nhờ, lệnh dẹp loạn (quan võ từ lv3); lựa chọn làm độ nóng tăng hoặc giảm. Con số là ước lượng chưa đo: bản đầu (-1 đến 4) 40 năm lên 72 đến 89 nên đã giảm, chưa đo lại.
 
 ---
 
@@ -205,7 +211,7 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 ## 10. Ý mới của chủ dự án, chưa làm (chép nguyên văn)
 
-(không có ý nào đang chờ)
+- (20/11) "Goal set: hoàn thành toàn bộ mục 10 và 11, chạy thử game không ngẫu nhiên mà cố tình chạy có mục đích thử tất cả mọi con đường phá đảo, thử tất cả các ngành nghề, sự kiện, kỳ ngộ, cốt truyện, tăng tốc độ tăng trưởng chỉ số lên một chút nữa vì hiện tại sau rất nhiều lần chơi vẫn chưa đạt được một nhân vật có chỉ số 200 và đạt được đanh hiệu Thần"
 
 ---
 
@@ -214,14 +220,13 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 Ưu tiên theo mục 0.2 (gameplay trước). Xếp theo mức cần.
 
 **Gameplay còn hở**
-- **Sự kiện cũ nhắc ruộng:** cộng, trừ đất đi qua `G.landDelta`; lời kể "ruộng nhà" đã đổi thành "đất nhà" (d9). Các sự kiện nông (`nong_*`, `nong631_*`, `n633_nong_*`) đọc `F().own` làm điều kiện nên chỉ ra cho nhà có đất mua. Chuỗi `vil_*` cũ đã tắt nên không rà.
+- **Sự kiện cũ nhắc ruộng (d9.5):** 8 sự kiện cho đất, khai hoang, mua ruộng (`nong_ban_ruong_re`, `t_n_dia_chu_ban`, `t_n_khai_hoang`, `t_n_dien_trang_thue`, `t_q_dong_dien`, `nong631_khai_hoang`, `nong631_ruong_cong`, `d631_goa_phu_hien_dat`) chỉ ra khi nhà có quan hoặc tước (`LANDGIVE` trong `eligible`). Còn lại: cộng, trừ đất đi qua `G.landDelta`; lời kể "ruộng nhà" đã đổi thành "đất nhà" (d9). Các sự kiện nông (`nong_*`, `nong631_*`, `n633_nong_*`) đọc `F().own` làm điều kiện nên chỉ ra cho nhà có đất mua. Chuỗi `vil_*` cũ đã tắt nên không rà.
 - **Gia tộc có thể teo:** hai save thật có 4 và 5 người sau 37 và 51 năm, save Tiêu có 88 người sau 98 năm. Ba ván bot ngẫu nhiên (d9) cho 1 đến 5 người vì **bot không tự cưới** (cưới đi qua nút Mối ở trang Gia tộc hoặc sự kiện, bot không bấm): đo bằng bot đó không đại diện. Muốn đo thật phải cho bot biết bấm Mối hoặc đo trên save người chơi.
 - Phần B còn mỏng: người giữ ghế (`S.off`) chỉ thành NPC khi bị thay, bị hặc hoặc thắng ghế; thanh trừng giữa các quan mới là vua nghi kỵ và kẻ thù đàn hặc ngầm; thế gia chưa tham gia tranh ghế; Vượng chưa có hồ sơ riêng (đã nằm trong hoàng tộc nếu gặp).
-- Chưa làm: giang hồ (môn phái đầy đủ, cấp bậc, bí kíp, anh hùng đại hội), thế lực tự phát, kỳ ngộ gia tộc, cốt truyện lớn khác ngoài họ Phạm, quân hộ, thiết khoán, Đông xưởng, nghề mới cho đời sau.
-- Sự kiện "rửa oan" sau E8 và sự kiện riêng của Phạm Thái phi chưa có.
+- Chưa làm: giang hồ đầy đủ (d9.5 mới có bản đầu 6 sự kiện, xem mục 6; thiếu chiến tranh giữa các phái, cấp bậc nội bộ, nhiều bí kíp), thế lực tự phát đầy đủ (mới có bản đầu 4 sự kiện), kỳ ngộ gia tộc (d9.5 thêm 5: `kn_gia_pha_co`, `kn_ho_hang_xa`, `kn_gieng_co`, `kn_thay_tuong`, `kn_dong_ho_cu` trong `ev-v670l.js`, chạy tay 0 lỗi, còn thêm được nhiều), cốt truyện lớn khác ngoài họ Phạm, quân hộ và Đông xưởng đầy đủ (mới có bản mở rộng đầu 6 sự kiện, xem mục 6), (thiết khoán đã có bản đầu, xem mục 6), nghề mới cho đời sau.
+- Phạm Thái phi (d9.5): `pm_thai_phi`, thư của bà gửi nhà mình sau kết E1, E2, E5 (hẹn 24 đến 60 tháng sau khi họ Phạm sụp), ba lựa chọn. Ân oán họ Phạm bot chạy hết chuỗi hai ván (kết E5 và E2, 31 đến 32 sự kiện). (d9.5 đã thêm `pm_rua_oan`: sau kết E8 mười hai đến mười tám năm thì có chiếu rửa oan, ba lựa chọn; hai lựa chọn đầu mở lại khóa quan văn ở đất cũ, lựa chọn ba đòi lại hai mẫu đất. Chạy tay từng lựa chọn, chưa chơi tới kết E8 thật.)
 - 39 chuỗi cũ chưa có câu nối riêng với cốt truyện; một số chuỗi (`c14_bat_coc`, `c15_nguoi_thu_ba`, `c7_thu`, `v61_cho_vay_ban`, `nong_ban_ruong_re`, `tinh_hoi_xuan`) thiếu phần thưởng thật.
-- Khoảng 30 trên 1.693 sự kiện dùng bộ nhớ (d9 thêm 9 sự kiện đọc: `ky_niem_cuoi`, `d631_thu_nguoi_xua`, `n633_hiep_no`, `lw_42`, `dh_50`, `gj_63`, `dh_59`, `v6_xt_vo`, `qt_tro_lai`).
-- Tru di cửu tộc chưa ghi cái kết vào Sử sách. Mưu đại sự chưa dừng khi vỡ nợ. Tang lễ sơ sài bị phạt nặng cả khi nhà đang nợ.
+- Khoảng 34 trên 1.697 sự kiện dùng bộ nhớ (d9.4 thêm 4 sự kiện "người cũ": `gap_lai_ban_cu`, `c631_ban_cu_ghe`, `n633_y_thaycu`, `hn_nguoi_cu`; d9 thêm 9 sự kiện đọc: `ky_niem_cuoi`, `d631_thu_nguoi_xua`, `n633_hiep_no`, `lw_42`, `dh_50`, `gj_63`, `dh_59`, `v6_xt_vo`, `qt_tro_lai`).
 
 **Kỹ thuật**
 - `events-meta.js` phân loại chưa đúng và thiếu sự kiện từ d4. Dựng lại bằng `tools/classify.js` (file này cũng ghi `manifest-su-kien.csv` ra thư mục cha; manifest cũ đã xóa vì lệch mã).
@@ -231,4 +236,4 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 **Cân bằng (chỉ làm sau khi gameplay xong):** mọi con số các bản d1 đến d8 đều là ước lượng chưa đo: tốc độ lên quan (mong Nhất phẩm khoảng năm 38), giá đất, lương tá điền 450, số mẫu mỗi dự án, giá gia quy, xác suất cốt truyện hoàng thân, tỉ lệ thắng ba đường lên ngôi (mục tiêu tạm: người trung bình 10 đến 25%, người mạnh 40 đến 55%), snowball cơ duyên và tiền theo gia thế.
 
-**Kết thúc chưa thử:** chủ dự án mới đi thành công đường soán ngôi qua quan văn (Quyền thần). Võ quan, Khởi nghĩa và các kết phụ chưa ai chơi tới.
+**Kết thúc chưa thử:** chủ dự án mới đi thành công đường soán ngôi qua quan văn (Quyền thần). Võ quan, Khởi nghĩa, T4 đến T11 và các kết phụ chưa ai chơi tới. d9.5 đã chạy thử bằng ép số liệu: T4 (qua `crRes`), T5 đến T11 đều kết đúng; ba đường lên ngôi (Quyền thần, Võ quan, Khởi nghĩa) vào được màn Hậu sử khi gọi `G.ts.crown`; chạy `tools/chain.js` (39 chuỗi cũ, 0 chuỗi không tới được, lỗi `rd_ra_mat` thiếu `pt` đã chặn); quét 1.697 sự kiện, 5.716 lựa chọn có 74 lỗi, toàn do thiếu dữ liệu cốt truyện khi gọi tay (như mức nền cũ); giang hồ vẫn chưa có hệ thống riêng nên T10 chỉ dựa nghề Hiệp khách.

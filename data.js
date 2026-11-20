@@ -105,7 +105,7 @@ const HABITS={
   bac:{n:'Cờ bạc',vice:1,cost:0,tam:3,d:'Hay thua bạc, đầu óc để ở chiếu bạc, làm việc lơ là. Càng nặng càng khó bỏ'},
   ruou:{n:'Rượu chè',vice:1,cost:150,tam:2,hp:-0.3,d:'Hại sức khỏe, say thì hay sinh chuyện'},
   suutam:{n:'Sưu tầm đồ cổ',cost:2000,tam:4,fame:0.3,d:'Tốn kém, nở mày nở mặt'},
-  tuthien:{n:'Làm việc thiện',cost:600,tam:2,fame:0.6,d:'Danh vọng tăng dần'},
+  tuthien:{n:'Làm việc thiện',cost:600,tam:2,fame:0.6,d:'Danh vọng tăng dần, tốn khoảng 10% thu nhập tháng'},
   thuocbo:{n:'Dùng thuốc bổ',cost:500,hp:0.8,tam:1,d:'Hồi sức nhanh'},
   chim:{n:'Nuôi chim cảnh',cost:120,tam:3,d:'Thú vui tao nhã'},
   chay:{n:'Ăn chay niệm Phật',cost:0,tam:2,eq:1,d:'Tâm tĩnh'},

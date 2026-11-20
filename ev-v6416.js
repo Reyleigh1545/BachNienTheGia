@@ -44,9 +44,9 @@ return [
   {l:'Cấm tiệt',ax:{rong:-1},f:c=>{w.tinh.aff=Math.max(0,w.tinh.aff-20);G.addRel(w,c,-8);return `${N(w)} khóc, nhưng không dám cãi.`+fx(w,{tam:-10})}},
   {l:'Mặc kệ, chuyện trẻ con',f:c=>'Lời đồn rồi cũng lắng.'}]}},
 {id:'rd_ra_mat',t:'Xin cưới người thương',k:K,fixed:1,
- x:(c,d)=>{const w=P(d.who);const t=w&&w.tinh;if(!t)return '';const pt=t.pt;const cl=pt.cid?G.rel.bySur(pt.sur):null;const dt=pt.tier-G.tierIdx();
+ x:(c,d)=>{const w=P(d.who);const t=w&&w.tinh;if(!t||!t.pt)return '';const pt=t.pt;const cl=pt.cid?G.rel.bySur(pt.sur):null;const dt=pt.tier-G.tierIdx();
   return `${N(w)} quỳ trước gia chủ xin cưới ${ptN(pt)}. Nhà bên ấy ${dt>=2?'cao hơn nhà mình nhiều bậc':dt<=-2?'thấp hơn nhà mình nhiều bậc':'ngang nhà mình'}${cl?`, quan hệ hai họ: ${esc(G.rel.bandN(cl.rel).toLowerCase())}`:''}. Người ấy ${pt.tinh}.`},
- o:(c,d)=>{const w=P(d.who);const t=w&&w.tinh;if(!t||!G.inClan(w)||w.spouse)return [{l:'Cho qua',f:()=>''}];const pt=t.pt;return [
+ o:(c,d)=>{const w=P(d.who);const t=w&&w.tinh;if(!t||!t.pt||!G.inClan(w)||w.spouse)return [{l:'Cho qua',f:()=>''}];const pt=t.pt;return [
   {l:'Cho hai đứa thành thân',ax:{rong:1},f:c=>{const far=Math.abs(pt.tier-G.tierIdx())>=3;T.marry(w,pt);if(far)G.cf(-2,'Kết thân không môn đăng hộ đối');return `Hai nhà định ngày. ${N(w)} và ${ptN(pt)} nên duyên.`+fx(w,{tam:15})}},
   {l:'Bắt chờ, lập nghiệp trước rồi tính',ax:{diem:1},f:c=>{G.later(w,'rd_lua_chon',24);return `${N(w)} ngậm ngùi chờ.`+fx(w,{tam:-5})}},
   {l:'Cấm, bắt chia tay',ax:{rong:-1},f:c=>{if(G.axv(w,'dl')>=65&&G.axv(w,'ht')<45&&chance(0.5)){T.elope(w,pt);return `Đêm ấy ${N(w)} bỏ nhà đi theo ${ptN(pt)}.`}

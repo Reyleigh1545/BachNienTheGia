@@ -1,4 +1,4 @@
-/* Bách Niên Thế Gia v6.7.0-d9.3 · engine (v6.7.0-d6: cân bằng chuỗi cốt truyện, sự kiện thường nối vào cốt truyện đang chạy; v6.7.0-d5.1: sửa lỗi từ hai save và bản rà soát ngoài; v6.7.0-d5: rà soát quan trường, danh sách chờ, tạo nhân vật ngẫu nhiên, học tập, dự án có sổ thu chi, dời cơ sở, nhan sắc phai theo tuổi; v6.7.0-d4: hoàng tộc thật, người đương chức bền, thay người theo tài và công, Phò mã, Tú nữ, dự án đáng tiền hơn, sửa gia quy rượu thuốc; v6.7.0-d3: ân oán họ Phạm viết lại, hôn lễ ba mức, lính cưới vợ có định hôn, dự án có quy mô, kỳ ngộ thưởng gấp 2,5, sửa sự kiện lệch vương vị; v6.7.0-d2: rà tiền toàn bộ, sức khỏe bẩm sinh, Đại Minh luật, dự án gia nghiệp, bộ nhớ sự kiện; v6.7.0-d1: khung đại cốt truyện, hạt giống thế giới, sử sách, hậu sử chung; v6.7.0-d0: tiền theo bậc, chi họ dời hộ, khóa cướp ngôi theo đường, thất bại là tru di, sự kiện thử; v6.6.0: sửa lỗi, thuế gia nghiệp, chi theo phần quỹ, kết thúc đa dạng, đối thủ, tầng quyết định; v6.5.4.2: sửa hệ số tiền áp nhầm cho khoản thu, eligibleWhy thêm lvr và hai điều kiện metadata; v6.5.4.1: hệ số tiền chỉ nhân mạnh cho sự kiện chi tiêu theo cỡ nhà; v6.5.4: kho sự kiện có metadata, gia tộc, kinh tế, học tập, chỉ số, nhánh rẽ đường lên ngôi; v6.5.3: gia chủ nhậm chức xa thì cả nhà dọn, bảng thời thế theo kinh thành, gia đình lính, sự kiện quân ngũ theo cấp; v6.5.2: gia phả ẩn người bị trục xuất và lọc theo chi, quan võ từ quan và cần trí, Đại tướng quân 1500 công, nơi ở của người nhậm chức; v6.5.1: vua đầu Trường Thịnh, tranh ngôi cuối đời, ba đường lên ngôi khó hơn; v6.4.1.8: ba đường cướp ngôi, lên ngôi, hậu sử; v6.4.1.7: hoàng đế và thiên hạ, kế vị, thanh trừng, danh hiệu cấp Thần, thiên mệnh, chiến tranh tại nơi ở, mốc chỉ số riêng; v6.4.1.6: tình duyên, chi họ xa ở nơi nhậm chức, gia đình người đi lính; v6.4.1.5.1: chỉ số lớn chậm theo tư chất, khoa thi khó hơn và tối đa 100 điểm, chức tạm khi chờ ghế, bỏ chú thích dưới lựa chọn, nội trợ, gia phả, họ khác; v6.4.1.5: quan hệ giữa các họ, hôn nhân và gả đi, họ gốc · hộ · chi, ruộng riêng cho chi, sửa lỗi test; v6.4.1.4: quan trường, phe phái, tội trạng, thang hậu quả tới tru di, sử ký quan trường; v6.4.1.3: quyền điều khiển và tự quyết theo tính cách, thư nhà, gia quy chia nhóm phạt, uy gia pháp, sửa hàng đợi sự kiện; v6.4.1.2: cân bằng độ khó: khoa cử theo chỉ tiêu, tước tích công trạng, bậc gia tộc, danh vọng cá nhân, kinh doanh, bớt hộp thoại; v6.4.1.1: trang admin, tàng thư theo hộ, người trông cơ sở, truyền việc khi nghỉ hưu, thu nhỏ gia phả) */
+/* Bách Niên Thế Gia v6.7.0-d9.5 · engine (v6.7.0-d6: cân bằng chuỗi cốt truyện, sự kiện thường nối vào cốt truyện đang chạy; v6.7.0-d5.1: sửa lỗi từ hai save và bản rà soát ngoài; v6.7.0-d5: rà soát quan trường, danh sách chờ, tạo nhân vật ngẫu nhiên, học tập, dự án có sổ thu chi, dời cơ sở, nhan sắc phai theo tuổi; v6.7.0-d4: hoàng tộc thật, người đương chức bền, thay người theo tài và công, Phò mã, Tú nữ, dự án đáng tiền hơn, sửa gia quy rượu thuốc; v6.7.0-d3: ân oán họ Phạm viết lại, hôn lễ ba mức, lính cưới vợ có định hôn, dự án có quy mô, kỳ ngộ thưởng gấp 2,5, sửa sự kiện lệch vương vị; v6.7.0-d2: rà tiền toàn bộ, sức khỏe bẩm sinh, Đại Minh luật, dự án gia nghiệp, bộ nhớ sự kiện; v6.7.0-d1: khung đại cốt truyện, hạt giống thế giới, sử sách, hậu sử chung; v6.7.0-d0: tiền theo bậc, chi họ dời hộ, khóa cướp ngôi theo đường, thất bại là tru di, sự kiện thử; v6.6.0: sửa lỗi, thuế gia nghiệp, chi theo phần quỹ, kết thúc đa dạng, đối thủ, tầng quyết định; v6.5.4.2: sửa hệ số tiền áp nhầm cho khoản thu, eligibleWhy thêm lvr và hai điều kiện metadata; v6.5.4.1: hệ số tiền chỉ nhân mạnh cho sự kiện chi tiêu theo cỡ nhà; v6.5.4: kho sự kiện có metadata, gia tộc, kinh tế, học tập, chỉ số, nhánh rẽ đường lên ngôi; v6.5.3: gia chủ nhậm chức xa thì cả nhà dọn, bảng thời thế theo kinh thành, gia đình lính, sự kiện quân ngũ theo cấp; v6.5.2: gia phả ẩn người bị trục xuất và lọc theo chi, quan võ từ quan và cần trí, Đại tướng quân 1500 công, nơi ở của người nhậm chức; v6.5.1: vua đầu Trường Thịnh, tranh ngôi cuối đời, ba đường lên ngôi khó hơn; v6.4.1.8: ba đường cướp ngôi, lên ngôi, hậu sử; v6.4.1.7: hoàng đế và thiên hạ, kế vị, thanh trừng, danh hiệu cấp Thần, thiên mệnh, chiến tranh tại nơi ở, mốc chỉ số riêng; v6.4.1.6: tình duyên, chi họ xa ở nơi nhậm chức, gia đình người đi lính; v6.4.1.5.1: chỉ số lớn chậm theo tư chất, khoa thi khó hơn và tối đa 100 điểm, chức tạm khi chờ ghế, bỏ chú thích dưới lựa chọn, nội trợ, gia phả, họ khác; v6.4.1.5: quan hệ giữa các họ, hôn nhân và gả đi, họ gốc · hộ · chi, ruộng riêng cho chi, sửa lỗi test; v6.4.1.4: quan trường, phe phái, tội trạng, thang hậu quả tới tru di, sử ký quan trường; v6.4.1.3: quyền điều khiển và tự quyết theo tính cách, thư nhà, gia quy chia nhóm phạt, uy gia pháp, sửa hàng đợi sự kiện; v6.4.1.2: cân bằng độ khó: khoa cử theo chỉ tiêu, tước tích công trạng, bậc gia tộc, danh vọng cá nhân, kinh doanh, bớt hộp thoại; v6.4.1.1: trang admin, tàng thư theo hộ, người trông cơ sở, truyền việc khi nghỉ hưu, thu nhỏ gia phả) */
 (function(){
 'use strict';
 /* ================= tiện ích ================= */
@@ -293,6 +293,8 @@ function income(c){
 const sideIncome=c=>{if(c.job!=='quan'||!inClan(c)||c.away)return 0;const O0=c.post?window.D.OFFICES[c.post]:null;return Math.round(SALARY[c.lv]*(100-c.liem)/100*2*(O0?O0.side:1)*(rule('thanhliem')?0.5:1))};
 const titlePay=()=>alive().reduce((s,p)=>s+TUOC_PAY[p.tuoc||0],0)+(S.royal?300000:0);
 const fiefIncome=()=>toIncome();
+/* d9.5: làm việc thiện chỉ trích khoảng 10% thu nhập tháng của người đó (trước là 600 đồng cố định, đầu game vượt cả thu nhập) */
+const habC=(c,x)=>x==='tuthien'?Math.round(0.1*income(c)):HABITS[x].cost;
 function personalSpend(c){
   const a=age(c);if(c.away&&c.away.type!=='trade'&&c.away.type!=='follow')return {base:0,ranh:0,hoc:0,thoi:0};
   const h=HH(c.hh)||HH(mainHH());const L=LIFE[h.life];
@@ -301,7 +303,7 @@ function personalSpend(c){
   let ranh=0,hoc=0,thoi=0;
   if(a>=6&&a<18&&c.school!=='nha'){const lvl=a<10?1:a<14?2:3;const sc=SCHOOL[lvl][c.school];if(sc){hoc=sc.fee*(clanLv()>=4?0.5:1);if(sc.chore)base*=0.6}}
   if(a>=6){const F=FOCUS[c.focus]||FOCUS.nghi;ranh=F.cost>0?F.cost*(1+h.life*0.25):0}
-  c.habits.forEach(x=>thoi+=HABITS[x].cost*(1+h.life*0.2)*(isVice(x)?0.3+vlv(c,x)/70:1));
+  c.habits.forEach(x=>thoi+=habC(c,x)*(1+h.life*0.2)*(isVice(x)?0.3+vlv(c,x)/70:1));
   const sp=1+tsum(c,'spend');
   return {base:base*sp,ranh:ranh>0?ranh*sp:ranh,hoc,thoi:thoi*sp};
 }
@@ -853,8 +855,11 @@ function jobMatch(e,c){
   if(!e.job)return true;
   return e.job.some(j=>j===c.job||(j.startsWith('biz:')&&c.job==='chu'&&bizOf(c)&&bizOf(c).type===j.slice(4)));
 }
+/* d9.5: sự kiện cho đất, khai hoang, mua ruộng chỉ ra khi nhà có quan hoặc tước (nhà thường không giữ được ruộng) */
+const LANDGIVE=new Set(['nong_ban_ruong_re','t_n_dia_chu_ban','t_n_khai_hoang','t_n_dien_trang_thue','t_q_dong_dien','nong631_khai_hoang','nong631_ruong_cong','d631_goa_phu_hien_dat']);
 function eligible(e,c){
   if(e.arc||e.fixed)return false;
+  if(LANDGIVE.has(e.id)&&!landRight())return false;
   if(c.away&&!(e.job&&jobMatch(e,c)))return false;
   if(e.once&&c.seen[e.id])return false;
   if(e.mem&&!ledOk(e,c))return false;
@@ -1160,7 +1165,7 @@ const BRK={
 function msPopup(c,k,t){
   const N=SN[k];t=t||100;const paths=brkPaths(c,k,t);
   const opts=paths.map(p=>({l:p.l,price:p.cost?'Tốn '+money(mm(p.cost)):'',c:()=>!p.cost||canPay(c,mm(p.cost)),f:c=>brkStart(c,k,p,t)}));
-  opts.push({l:'Chưa vội, để sau',f:c=>{c.ms[k]=(c.ms[k]||[]).filter(x=>x!==100);c.msRetry[k]=S.t+R(24,48);if(c.msQ)c.msQ[k]=null;return 'Biết mình đã chạm ngưỡng, nhưng chưa phải lúc dốc sức.'+fx(c,{tam:2})}});
+  opts.push({l:'Chưa vội, để sau',f:c=>{c.ms[k]=(c.ms[k]||[]).filter(x=>x!==100);c.msRetry[k]=S.t+R(12,30);if(c.msQ)c.msQ[k]=null;return 'Biết mình đã chạm ngưỡng, nhưng chưa phải lúc dốc sức.'+fx(c,{tam:2})}});
   choicePopup(c,`${N} ${t}`,`Chạm ngưỡng ${N.toLowerCase()} ${t}`,(t===100?MS_TXT[k][100]:(GATE_TXT[k]&&GATE_TXT[k][t])||MS_TXT[k][100])+` Muốn vượt qua phải bỏ ra nhiều tháng${t>100?', ải càng cao càng chậm và càng dễ hỏng':''}. Mỗi người có những con đường hợp với mình.`,opts);
 }
 
@@ -1534,7 +1539,7 @@ function crMonth(){const d=S.dyn;if(!d||!d.cr||S.t<d.cr.next)return;const cr=d.c
 /* ai thắng: phe mạnh hơn, cộng phần nhà mình góp; thắng thì phò tá có công, thua thì bị thanh toán */
 function crRes(d){const cr=d.cr;const pa=cr.a.pow+R(-20,20),pb=cr.b.pow+R(-20,20);const w=pa>=pb?'a':'b';const win=cr[w];
   const offs=alive().filter(p=>inClan(p)&&['quan','quan_ngu'].includes(p.job));
-  if(cr.ours===w){offs.forEach(p=>{qtAdd(p,{fav:25});p.cong=(p.cong||0)+(cr.act?120:50);tuocCheck(p,'phò tá tân đế');tuocMsg=''});cf(20,'Phò tá tân đế');
+  if(cr.ours===w){offs.forEach(p=>{qtAdd(p,{fav:25});p.cong=(p.cong||0)+(cr.act?120:50);tuocCheck(p,'phò tá tân đế');tuocMsg=''});cf(20,'Phò tá tân đế');{const w4=WP.find(x=>x.id==='T4');if(cr.act>=2&&!S.over&&w4.st()>=2)setTimeout(()=>{if(S&&!S.over)wpWin(w4)},0)}
     qtLog('Phò tá tân đế',`Họ ${esc(S.surname)} đứng về phía ${win.n} từ đầu. Tân đế lên ngôi, cả họ được trọng thưởng.`);log(`${win.n} thắng trong cuộc tranh ngôi. Nhà mình phò tá có công, được trọng thưởng.`,'gd')}
   else if(cr.ours!=='n'){offs.forEach(p=>{qtAdd(p,{risk:cr.safe?25:45,fav:-30});if(cr.act>=2){qtAdd(p,{crime:4});const q=qtOf(p);if(q.st<2){q.st=2;enqueue('ev',p.id,{ev:'qt_dan_hac'})}}});cf(-25,'Theo nhầm phe tranh ngôi');
     qtLog('Theo nhầm phe tranh ngôi',`Họ ${esc(S.surname)} đứng về phía ${cr[cr.ours].n}. ${win.n} lên ngôi và bắt đầu thanh toán.`);log(`${win.n} thắng trong cuộc tranh ngôi. Nhà mình đứng nhầm phe, tân đế bắt đầu thanh toán.`,'hi')}
@@ -2042,10 +2047,11 @@ function deathPopup(c,cause){
    <p>${esc(nameOf(c))} ${esc(cause)} ở tuổi ${age(c)}.${inh} ${wasHead?'Gia tộc cần người kế nghiệp.':''}</p>
    <p class="muted">Danh vọng của người mất: ${fmt(f)}. Gia thế hiện là ${esc(TIERS[tn][0].toLowerCase())}. Người đời xét theo cả thân phận người mất lẫn địa vị gia tộc: nhà có tiếng mà làm sơ sài thì mang tiếng bạc bẽo, nhà nhỏ mà phô trương thì bị chê cười.</p>
    <div class="choices">${['Sơ sài','Trung bình','Trang trọng'].map((n,i)=>`<button class="btn" data-f="${i}" ${S.money<costs[i]&&i?'disabled':''}><strong>${n} · ${money(costs[i])}</strong><small>${i===exp?'Vừa với thân phận và gia thế':i<exp?'Thấp hơn thân phận, gia tộc mất danh vọng':'Cao hơn thân phận, bị chê phô trương'}</small></button>`).join('')}</div>`);
-  M.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const i=+b.dataset.f;S.money-=costs[i];
+  M.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const i=+b.dataset.f;const poor=S.money<costs[exp];S.money-=costs[i]; /* d9.4: nhà không đủ tiền cho mức xứng thì người ta thông cảm */
     const diff=i-exp;let d=0;if(diff<0)d=-(Math.max(5,f*0.2))*(-diff);else if(diff>0&&f<25)d=-4*diff;else if(diff===0)d=Math.max(1,f*0.05)*(i+1);
-    cf(d,d>=0?'Tang lễ xứng đáng':'Tang lễ không xứng thân phận');
-    if(diff<0&&exp>=1)memSet('tang_bac',120,{n:c.given});else if(i===2&&diff>=0&&tn>=2)memSet('tang_hau',120,{n:c.given}); /* v6.7.0-d4: mức tang lễ để lại dấu cho sự kiện sau */S.on=clamp(S.on+(diff<0?-4:2),0,100);
+    if(poor&&d<-12)d=-12;
+    cf(d,d>=0?'Tang lễ xứng đáng':poor?'Tang lễ sơ sài vì nhà túng thiếu':'Tang lễ không xứng thân phận');
+    if(diff<0&&exp>=1&&!poor)memSet('tang_bac',120,{n:c.given});else if(i===2&&diff>=0&&tn>=2)memSet('tang_hau',120,{n:c.given}); /* v6.7.0-d4: mức tang lễ để lại dấu cho sự kiện sau */S.on=clamp(S.on+(diff<0?-4:2),0,100);
     log(`Tang lễ ${['sơ sài','vừa phải','trang trọng'][i]} cho ${nameOf(c)}. Danh vọng gia tộc ${d>=0?'+':''}${Math.round(d)}.`,d<0?'hi':'gd');
     const sp=spouseOf(c);if(sp)sp.wantChild=false;
     if(!alive().length){gameOver();return}
@@ -3217,7 +3223,7 @@ function brkStart(c,k,p,g){g=g||gateCap(c,k);const mo=Math.round(R(p.mo[0],p.mo[
   log(`${nameOf(c)} bắt đầu ${p.l.toLowerCase()}, dự kiến ${mo} tháng.`,'gd');return `Dự kiến mất ${mo} tháng. Thành hay bại do cả quá trình: tâm trạng, sức khỏe và căn cơ mỗi tháng đều góp phần.`}
 function brkTick(c){const b=c.brk;if(!b||b.done)return;const p=(BRK100[b.k]||[]).find(x=>x.id===b.id);if(!p){c.brk=null;return}
   const dur=Math.max(1,b.end-b.start);const s=brkScore(c,p.sp);
-  b.prog+=(s/80)*(100/dur)*(0.6+0.6*c.tam/100)*(0.7+0.3*Math.min(1,c.suc/70))*(1+tsum(c,'brk')/40)*(0.6+Math.random()*0.8)*({100:1,120:.85,140:.72,150:.6}[b.gate||100]||1);
+  b.prog+=(s/80)*(100/dur)*(0.6+0.6*c.tam/100)*(0.7+0.3*Math.min(1,c.suc/70))*(1+tsum(c,'brk')/40)*(0.6+Math.random()*0.8)*({100:1,120:.9,140:.8,150:.95}[b.gate||100]||1);
   if(!b.mid&&S.t>=b.start+Math.floor(dur/2)){b.mid=1;enqueue('brkmid',c.id)}
   if(S.t>=b.end){b.done=1;enqueue('brkend',c.id)}}
 const BRK_MID={tri:['đọc mãi một đoạn mà không thông','chữ nghĩa như rối thành một mớ'],vo:['một chiêu luyện mãi vẫn vướng','gân cốt đau nhức, tay chân nặng trĩu'],suc:['người mệt rã, ăn không ngon','khí huyết lúc thịnh lúc suy'],mi:['soi gương thấy mình vẫn thế','người ta khen chê lẫn lộn'],eq:['lòng người khó đoán hơn tưởng','có kẻ lợi dụng lòng tốt']};
@@ -3226,7 +3232,7 @@ function brkMidPopup(c){const b=c.brk;if(!b){setTimeout(nextPopup,0);return}cons
     {l:'Giữ nhịp như cũ',f:c=>'Không nóng vội, từng bước một.'+fx(c,{tam:1})},
     {l:'Dốc toàn lực',f:c=>{b.prog+=R(10,18);return 'Thức khuya dậy sớm, người gầy rộc đi.'+fx(c,{suc:-R(6,12),tam:-5})}},
     {l:'Nghỉ ít lâu cho lại sức',f:c=>{b.end+=R(2,4);return 'Lùi lại vài tháng, đầu óc thư thái hơn.'+fx(c,{tam:8,suc:5})}},
-    {l:'Bỏ dở',f:c=>{c.brk=null;c.ms[b.k]=(c.ms[b.k]||[]).filter(x=>x!==100);c.msRetry[b.k]=S.t+R(24,48);if(c.msQ)c.msQ[b.k]=null;return 'Thấy chưa phải lúc, gác lại.'+fx(c,{tam:-4})}}]);
+    {l:'Bỏ dở',f:c=>{c.brk=null;c.ms[b.k]=(c.ms[b.k]||[]).filter(x=>x!==100);c.msRetry[b.k]=S.t+R(12,30);if(c.msQ)c.msQ[b.k]=null;return 'Thấy chưa phải lúc, gác lại.'+fx(c,{tam:-4})}}]);
 }
 function brkEndPopup(c){const b=c.brk;if(!b){setTimeout(nextPopup,0);return}const p=BRK100[b.k].find(x=>x.id===b.id);const N=SN[b.k];
   const score=b.prog+c.duyen/12+R(-8,8);c.brk=null;const g=b.gate||100;
@@ -3237,7 +3243,7 @@ function brkEndPopup(c){const b=c.brk;if(!b){setTimeout(nextPopup,0);return}cons
     extra+=g===150?` Phàm nhân chỉ đến 150, nay giới hạn ${N.toLowerCase()} mở tới 200.`:` Giới hạn ${N.toLowerCase()} mở tới ${c.gate[b.k]}.`;
     achieve(c,`vượt ngưỡng ${N.toLowerCase()} ${g}`);
     return infoPopup(c,'Đột phá',`${N} vượt ngưỡng`,`Sau ${b.end-b.start} tháng ${esc(p.l.toLowerCase())}, ${esc(c.given)} ngộ ra điều trước giờ chưa thấy.${extra}`+fx(c,{[b.k]:R(4,9),over:1,fame:8+Math.round(score-100)/2,tam:10}))}
-  c.ms[b.k]=(c.ms[b.k]||[]).filter(x=>x!==100);c.msRetry[b.k]=S.t+R(18,36);if(c.msQ)c.msQ[b.k]=null;if(g===150&&c.flags)c.flags['tc_'+b.k]=0;
+  c.ms[b.k]=(c.ms[b.k]||[]).filter(x=>x!==100);c.msRetry[b.k]=S.t+R(10,22);if(c.msQ)c.msQ[b.k]=null;if(g===150&&c.flags)c.flags['tc_'+b.k]=0;
   const hurt=['vo','suc'].includes(b.k)&&chance(0.3);
   infoPopup(c,'Đột phá',`${N}: chưa thành`,`${b.end-b.start} tháng ${esc(p.l.toLowerCase())} rốt cuộc không đủ. ${score>=85?'Chỉ còn cách một bước chân.':'Còn xa lắm.'} Một hai năm nữa có thể thử lại bằng con đường khác.`+fx(c,{tam:-8,...(hurt?{suc:-R(8,15),hpMax:-R(1,3)}:{})}))}
 
@@ -3400,8 +3406,8 @@ const obeyWord=v=>v>=80?'Rất nghe lời':v>=60?'Nghe lời':v>=40?'Nửa nghe 
 /* v6.4.1.5.1: chỉ số học thêm được tới một "trần mềm" theo tư chất (mức tự nhiên năm 18 tuổi + 10 + 15% tiềm năng);
    vượt trần mềm thì chậm hẳn, qua 100 chậm thêm, qua 120 chậm nữa. Trước đây trẻ tiềm năng 30 đến 50 đi học tới 13, 14 tuổi đã chạm 100. */
 function growDim(c,k,cap){const v=c[k];let d=Math.max(0.15,1-v/(cap+15));
-  if(k!=='suc'){const soft=(NATK.includes(k)?natOf(c,k):pot(c,k)*0.6)+10+pot(c,k)*0.15;if(v>soft)d*=Math.max(0.05,0.3-(v-soft)/50)}
-  if(v>=100)d*=0.33;if(v>=120)d*=0.6;if(v>=150)d*=0.7;return d} /* v6.7.0: sau 100 nhanh hơn một chút, sau 150 chậm bớt */
+  if(k!=='suc'){const soft=(NATK.includes(k)?natOf(c,k):pot(c,k)*0.6)+10+pot(c,k)*0.15;if(v>soft)d*=Math.max(v>=100?0.5:0.05,0.3-(v-soft)/50)}
+  if(v>=100)d*=0.6;if(v>=120)d*=0.8;if(v>=150)d*=0.85;return d} /* d9.5: sau 100 hệ số 0,45; từ 120 là 0,32; từ 150 là 0,26 (trước đó 0,33 / 0,2 / 0,14) */
 function growStat(c,k,perYear){if(!perYear)return;const cap=k==='suc'?c.cap.suc:capOf(c,k);if(c[k]>=cap)return;
   const dim=growDim(c,k,cap);const gene=0.5+pot(c,k)/100;const moodF=0.6+0.6*c.tam/100;
   addStat(c,k,perYear/12*dim*moodF*gene)}
@@ -3890,7 +3896,7 @@ function usMonth(){if(!head()||S.over)return;
     else{S.usurp=null;(S.usNoP=S.usNoP||{})[U.path]=S.t+120;log('Mưu đại sự tan vỡ vì người cầm đầu không còn.','hi');qtLog('Mưu đại sự tan vỡ','Người cầm đầu không còn, mưu đại sự tan theo.');return}}
   U.lo=clamp(U.lo+0.25+(U.the>60?0.15:0)+(U.st>=3?0.15:0)+(a.away?0.2:0),0,100);
   /* v6.6.0: mưu đại sự tốn tiền mỗi tháng: nuôi người, mua chuộc, giữ quân. Võ quan và khởi nghĩa tốn hơn quyền thần */
-  if(U.st>=1){U.troops=U.troops||0;const ct=U.troops*60000;if(ct>0){S.money-=ct;U.pay=(U.pay||0)+ct}if(S.money<0){U.lo=clamp(U.lo+0.4,0,100);U.the=clamp(U.the-0.5,0,100);if(chance(0.1))U.troops=Math.max(0,U.troops-1)}}
+  if(U.st>=1){U.troops=U.troops||0;const ct=U.troops*60000;if(ct>0){S.money-=ct;U.pay=(U.pay||0)+ct}if(S.money<0){U.lo=clamp(U.lo+0.4,0,100);U.the=clamp(U.the-0.5,0,100);if(chance(0.1))U.troops=Math.max(0,U.troops-1);U.broke=(U.broke||0)+1;if(U.broke>=12){U.broke=0;log('Vỡ nợ suốt một năm, quân bỏ đi hết. Mưu đại sự đành bỏ dở.','hi');usAbandon();return}}else U.broke=Math.max(0,(U.broke||0)-1)}
   if(U.pending&&S.t-(U.pt||0)>24)U.pending=false;
   if(U.lo<45)U.warned=0;
   if(U.lo>=60&&!U.warned){U.warned=1;usEnq('ts_lo_tin',a)}
@@ -3963,7 +3969,7 @@ function rivalTick(){if(!head()||S.over)return;const ti=tierIdx();S.rv=S.rv||{h:
 function fixMonth(){
   usMonth();
   /* v6.4.1.7: hoàng đế, danh hiệu cấp Thần, thiên mệnh, chiến tranh tại nơi ở */
-  kingMonth();chMonth();arcMonth();projMonth();if(month()===3){thanYear();tmYear();hhSweep();projYear();ledYear();hhSpouseSync();ruleYear();npYear()}if(month()===6)purgeYear();if(month()===9)rivalTick();
+  kingMonth();chMonth();arcMonth();projMonth();if(month()===3){wpYear();thanYear();tmYear();hhSweep();projYear();ledYear();hhSpouseSync();ruleYear();npYear()}if(month()===6)purgeYear();if(month()===9)rivalTick();
   alive().forEach(p=>{if(!p.tmChk&&inClan(p)&&S.t-p.born<=1&&!p.inLaw)tmBirth(p)});
   /* v6.4.1.6: chi xa hết nhiệm kỳ thì hỏi về hay ở; mỗi năm gửi quỹ về; lính về phép */
   for(const id in S.hh){const H=S.hh[id];if(!H.far||!H.off||H.asked)continue;const o=P(H.off);if(!o||o.dead!=null||!inClan(o)||!o.pst){H.asked=1;const L=branchLeader(id);enqueue('brEnd',(L&&inClan(L)?L:head()).id,{hh:id})}}
@@ -4250,7 +4256,7 @@ function ttlPopup(c,it){const [n,t]=STITLE[it.k][it.i];const f=Math.round(4+it.i
 const THIENCO={tri:'Một đêm sao Văn Khúc sáng rực, trong mộng có người đưa cho một cuốn sách không chữ.',vo:'Trên đỉnh núi tuyết, một bóng người áo trắng múa kiếm giữa trăng, mỗi đường kiếm như vẽ ra trời đất.',
   suc:'Một vị lão nhân tóc bạc mà mặt hồng như trẻ thơ chỉ vào ngọn núi phía tây: "Nơi ấy có suối thuốc ba trăm năm mới chảy một lần."',mi:'Trong giấc mơ, một nữ nhân không rõ mặt mỉm cười, cả vườn hoa nở bung trong đêm đông.',eq:'Một vị cao tăng trăm tuổi gõ cửa, chỉ nói một câu: "Ngươi đã thấu lòng người, nay có muốn thấu lòng trời?"'};
 function thiencoTick(c){if(age(c)<20||c.brk||c.away)return;for(const [k] of STATS){if(gateCap(c,k)!==150||(c.flags['tc_'+k]))continue;const v=k==='suc'?c.cap.suc:c[k];if(v<148)continue;
-  if(chance(0.0003*(0.5+c.duyen/100)*(1+famLuck()/150)*(1+tsum(c,'brk')/20))){c.flags['tc_'+k]=1;enqueue('thienco',c.id,{k});return}}}
+  if(chance(0.012*(0.5+c.duyen/100)*(1+famLuck()/150)*(1+tsum(c,'brk')/20))){c.flags['tc_'+k]=1;enqueue('thienco',c.id,{k});return}}}
 function thiencoPopup(c,it){const k=it.k;const p=BRK100[k].find(x=>x.id==='thien');
   choicePopup(c,'Thiên cơ',`Thiên cơ: ${SN[it.k].toLowerCase()}`,`${THIENCO[k]} ${esc(c.given)} biết đây là cơ duyên ngàn năm có một, qua được thì ${SN[k].toLowerCase()} có thể vượt khỏi giới hạn của người phàm. Mất một hai năm, thành bại khó lường.`,[
     {l:'Dốc hết lòng lĩnh ngộ',f:x=>brkStart(c,k,p,150)},{l:'Phàm nhân không dám mơ cao',f:x=>'Lòng tiếc nuối mãi về sau.'+fx(c,{tam:-4})}])}
@@ -4685,7 +4691,7 @@ function pageGiatoc(){
    ${(()=>{const cg=alive().filter(p=>inClan(p)&&(p.cong||0)>0);return cg.length?`<dt>Công trạng</dt><dd>${cg.map(p=>`${esc(p.given)} ${Math.round(p.cong)}${(p.tuoc||0)<5?'/'+TUOC_CONG[(p.tuoc||0)+1]:''}`).join(', ')}<br><small class="muted">Lập công được ghi công; đủ mốc mới được phong tước.</small></dd>`:''})()}
    ${nx&&TIER_GATE[ti+1]&&!S.royal?`<dt>Lên ${esc(nx[0])}</dt><dd><small>Ngoài điểm gia thế còn cần ${TIER_GATE[ti+1].txt}.</small></dd>`:''}</dl></section>
    ${perksCard()}
-   <section class="card" style="grid-column:1/-1"><details><summary style="cursor:pointer;font-weight:600">Triều đình và thời thế</summary><div class="grid2" style="margin-top:10px">${thoiTheCard()}${famCard()}${usCard()}${courtCard()}</div></details></section>
+   <section class="card" style="grid-column:1/-1"><details><summary style="cursor:pointer;font-weight:600">Triều đình và thời thế</summary><div class="grid2" style="margin-top:10px">${thoiTheCard()}${famCard()}${usCard()}${wpCard()}${courtCard()}</div></details></section>
    <section class="card"><span class="eyebrow">Quyền quyết định</span><h2>Ai do gia chủ trực tiếp quyết</h2><p class="kvline muted">Những người còn lại tự quyết theo tính, việc nhỏ ghi vào thư cuối năm, việc lớn mới báo.</p><div class="seg">${CTRL_N.map((n,i)=>`<button class="btn small" data-ctrl="${i}" aria-pressed="${ctrlLv()===i}">${n}</button>`).join('')}</div></section>
    ${S.fame>=120&&head()?`<section class="card"><span class="eyebrow">Danh vọng</span><h2>Kêu gọi</h2><p class="kvline">${(S.kgT||0)>S.t?`Vừa kêu gọi, ${S.kgT-S.t} tháng nữa mới nên làm lại.`:'Nhà có tiếng, một lời kêu gọi người trong vùng sẵn lòng góp sức.'}</p><div class="acts"><button class="btn small" data-kg ${(S.kgT||0)>S.t?'disabled':''}>Kêu gọi</button></div></section>`:''}
    <section class="card" style="grid-column:1/-1"><span class="eyebrow">${I('rules','Gia quy')} · ${S.rules.length}/${ruleSlots()}</span><h2>${wait>0?`Thêm điều mới sau ${wait} tháng`:'Gia quy'}</h2>
@@ -4941,7 +4947,7 @@ function mainMenu(){
   running=false;S=null;page='giapha';brandHead();
   const m=meta();const last=m.last&&m.slots[m.last]&&!m.slots[m.last].over?m.last:null;
   const any=Object.keys(m.slots).length||loadOld();
-  openModal(`<div class="menu"><div class="sealbig" aria-hidden="true">家</div><h2>Bách Niên Thế Gia</h2><p class="muted">Từ túp lều tranh đến danh gia vọng tộc</p><p class="muted" style="font-size:.78rem;margin-top:-.4rem">Phiên bản 6.7.0-d9.3${window.BN_ADMIN?' · admin':''}</p>
+  openModal(`<div class="menu"><div class="sealbig" aria-hidden="true">家</div><h2>Bách Niên Thế Gia</h2><p class="muted">Từ túp lều tranh đến danh gia vọng tộc</p><p class="muted" style="font-size:.78rem;margin-top:-.4rem">Phiên bản 6.7.0-d9.5${window.BN_ADMIN?' · admin':''}</p>
    <div class="choices">${last?`<button class="btn primary" data-m="cont"><strong>Tiếp tục</strong><small>${slotLine(last)}</small></button>`:''}
    <button class="btn ${last?'':'primary'}" data-m="new"><strong>Trò chơi mới</strong><small>Lập một dòng họ mới</small></button>
    <button class="btn" data-m="load" ${any?'':'disabled'}><strong>Tải bản lưu</strong><small>Ba ô lưu, mỗi ô một gia tộc</small></button>
@@ -6336,6 +6342,50 @@ function finishGame(o){const E=(window.D.ENDINGS||[]).find(x=>x.id===o.id)||{id:
    <dl class="kv"><dt>Họ chơi</dt><dd class="num">${Math.floor(S.t/12)} năm</dd><dt>Số đời</dt><dd class="num">${gens}</dd><dt>Người trong gia phả</dt><dd class="num">${S.people.length}</dd><dt>Danh vọng gia tộc</dt><dd class="num">${fmt(S.fame)}</dd><dt>Công quỹ</dt><dd class="num">${money(S.money)}</dd></dl>
    <div class="acts" style="margin-top:12px"><button class="btn" data-menu>Về màn hình chính</button></div>`,false,'menu');
   M.querySelector('[data-menu]').onclick=()=>{S=null;O.hidden=true;M.innerHTML='';mainMenu()}}
+/* ================= d9.5: các đường phá đảo ngoài lên ngôi (T4 đến T11) =================
+   Mỗi đường có 3 chặng; chặng tăng thì nhật ký ghi một lời đồn (dấu hiệu), thẻ "Con đường phía trước" ở khối Triều đình và thời thế hiện manh mối.
+   Đủ chặng 3 và giữ đủ số năm (S.wp[id].y) thì kết thúc ván, ghi Sử sách. Tiến độ chỉ hiện chữ, không hiện số. */
+const wpOffs=(job,lv)=>alive().filter(p=>inClan(p)&&p.job===job&&(p.lv||0)>=lv);
+const wpProj=(id,n)=>(S.proj||[]).some(p=>p.id===id&&p.st==='xong'&&(p.n||0)>=(n||0));
+const wpBizTop=()=>S.biz.filter(b=>BIZ[b.type]&&b.lv>=BIZ[b.type].lv.length-1).length;
+const wpRoyal=()=>alive().some(p=>inClan(p)&&p.flags&&(p.flags.phoma||p.flags.vp||p.flags.hau));
+const WP=[
+ {id:'T3',noWin:1,n:'Khởi nghĩa',h:['Thiên hạ loạn, dân đói; người có võ nghệ và tiếng nghĩa hiệp sẽ có kẻ theo.','Đã có người nổi tiếng võ nghệ cùng gia binh, môn khách; chỉ thiếu danh phận để dấy cờ.','Có Võ Thần hoặc người mang mệnh đế vương trong họ; khi nghĩa quân dấy lên, con đường này sẽ tự mở.'],
+  st:()=>{if(alive().some(p=>usStatus('nghia',p)))return 3;const v=alive().some(p=>inClan(p)&&age(p)>=22&&p.vo>=100);const f=wpProj('giabinh',3)||wpProj('monkhach',3);const loan=(S.dyn&&S.dyn.loan)||0;return v&&f&&loan>=40?2:(v&&loan>=30?1:0)}},
+ {id:'T4',hold:0,n:'Tĩnh nạn công thần',h:['Triều đình nay mai ắt có biến kế vị. Người có quan, có binh trong tay sẽ có chỗ đứng.','Khi hoàng tử tranh ngôi, đứng về phe nào và ra sức bao nhiêu sẽ định đoạt phần thưởng.','Nhà đã có người giữ ghế cao ở kinh; chỉ cần đúng phe đúng lúc là thành công thần.'],
+  st:()=>{const k=wpOffs('quan',5).length+wpOffs('quan_ngu',3).length;return k>=1&&tierIdx()>=3?(k>=2&&kinhOff()&&wpOffs('quan',6).length?3:2):(tierIdx()>=2?1:0)}},
+ {id:'T5',hold:5,n:'Biên vương',h:['Nơi biên ải xa kinh thành, ai nắm được quân ở đó thì không ai quản nổi.','Có tướng giỏi, có gia binh riêng, thiên hạ lại bắt đầu loạn: đó là lúc cát cứ.','Quân đã là của mình, triều đình thì suy; giữ vững thêm mấy năm nữa là lập được nước riêng.'],
+  st:()=>{const g=wpOffs('quan_ngu',ARMY.length-3).length&&wpProj('giabinh',5);const loan=(S.dyn&&S.dyn.loan)||0;return g&&loan>=55?3:(g?2:(wpOffs('quan_ngu',4).length?1:0))}},
+ {id:'T6',hold:0,n:'Nhiếp chính vương',h:['Nhà có người trong hoàng tộc (hoàng hậu, phò mã, vương phi) thì tiếng nói ở triều đình nặng hơn.','Có ngoại thích lại có quan lớn: chỉ chờ một vị vua yếu hay còn thơ.','Vua đau ốm, thái tử còn nhỏ; người nắm quyền sẽ là ngoại thích có quan lớn trong triều.'],
+  st:()=>{const r=wpRoyal(),o=wpOffs('quan',7).length>0;const d=S.dyn;const weak=!!(d&&d.k&&d.heir&&d.k.hp<45&&(d.heir.age||0)<14);return r&&o&&weak?3:(r&&o?2:(r?1:0))}},
+ {id:'T7',hold:5,n:'Phú khả địch quốc',h:['Buôn bán lớn dần có thể thành thương hội cả miền.','Nhiều cơ sở đã lên tới bậc cao nhất, tiền của hơn hẳn họ khác.','Của cải bậc nhất thiên hạ; giữ được vài năm nữa thì thương hội thành thế lực nuốt thị trường.'],
+  st:()=>{const n=wpBizTop();return n>=5&&tierIdx()>=5?3:(n>=3?2:(n>=1&&S.biz.length>=3?1:0))}},
+ {id:'T8',hold:10,n:'Văn tông',h:['Học phái riêng cần nơi dạy, nơi chép sách và nhiều người đỗ đạt.','Đã có nghĩa thục, tàng thư lầu và vài quan văn; tiếng tăm bắt đầu lan.','Con cháu đỗ đạt đầy triều, bảng vàng đầy cửa; thêm mười năm nữa học phái thành chính thống.'],
+  st:()=>{const a=wpProj('nghiathuc')&&wpProj('tangthu'),q=wpOffs('quan',4).length;return a&&q>=3&&S.fame>=3000?3:(a&&q>=1?2:(a||q>=2?1:0))}},
+ {id:'T9',hold:10,n:'Trấn quốc võ gia',h:['Có tướng cầm quân giữ ải thì võ nghiệp cha truyền con nối.','Đã có tướng cao cấp cùng một người nữa theo võ; biên ải đang yên.','Mười năm giữ ải yên ổn, con cháu đời đời cầm quân.'],
+  st:()=>{const hi=wpOffs('quan_ngu',ARMY.length-3).length,all=alive().filter(p=>inClan(p)&&p.job==='quan_ngu').length;return hi&&all>=2?3:(hi?2:(wpOffs('quan_ngu',3).length?1:0))}},
+ {id:'T10',hold:10,n:'Võ lâm chí tôn',h:['Giang hồ có người nể phục thì có thể làm minh chủ.','Đã là đại hiệp, danh vang các môn phái; có võ quán, môn khách.','Minh chủ một phương; giữ được ngôi mười năm thì thành chí tôn.'],
+  st:()=>{const top=wpOffs('hiep',3).length,m=wpOffs('hiep',2).length;return top&&(wpProj('monkhach',5)||S.biz.some(b=>b.type==='voquan'))?3:(top||m?2:(wpOffs('hiep',1).length?1:0))}},
+ {id:'T11',hold:0,n:'Thế gia ngàn năm',h:['Giữ được họ qua nhiều đời đã là một thành tựu.','Nhà đã qua nhiều đời, vẫn đứng vững trong nhóm đầu thiên hạ.','Gần tám đời, hai trăm năm; chỉ cần giữ thêm cho đủ.'],
+  st:()=>{const g=S.people.reduce((m,p)=>Math.max(m,p.gen||1),1),y=Math.floor(S.t/12);return g>=8&&y>=200&&tierIdx()>=4?3:(g>=5&&tierIdx()>=4?2:(g>=3&&tierIdx()>=3?1:0))}}
+];
+/* d9.5: thế lực tự phát. Ba điểm nóng của hạt giống thế giới tăng độ nóng dần; từ 60 thì loạn thiên hạ tăng theo, từ 85 thỉnh thoảng giặc nổi. */
+function tlYear(){const w=S.wr;if(!w||!w.hot||!S.dyn)return;w.heat=w.heat||{};const ky=(S.dyn.k&&S.dyn.k.uy)||60;
+  w.hot.forEach(p=>{w.heat[p]=clamp((w.heat[p]==null?R(5,20):w.heat[p])+R(-2,3)-(ky>75?1:0)+(S.dyn.loan>60?1:0),0,100)});
+  const top=w.hot.slice().sort((a,b)=>w.heat[b]-w.heat[a])[0];const mx=w.heat[top];
+  if(mx>=60)S.dyn.loan=clamp((S.dyn.loan||0)+1,0,100);
+  if(mx>=85&&chance(0.2)){S.dyn.loan=clamp((S.dyn.loan||0)+3,0,100);w.heat[top]-=10;log('Giặc cỏ nổi lên ở '+provN(top)+', thiên hạ thêm xáo động.','hi');qtLog('Giặc nổi',provN(top)+': thế lực tự phát nổi dậy, triều đình chưa dẹp nổi.')}}
+function wpYear(){if(DRY||S.over||!head())return;S.wp=S.wp||{};tlYear();
+  WP.forEach(w=>{if(S.over)return;const r=S.wp[w.id]||(S.wp[w.id]={s:0,y:0});let s=0;try{s=w.st()}catch(e){s=0}
+    if(s>r.s){r.s=s;log('Lời đồn: '+w.h[s-1],'hi');qtLog('Dấu hiệu',w.h[s-1])}else if(s<r.s)r.s=s;
+    if(w.id==='T4'||w.noWin)return; /* T4 chốt trong crRes */
+    r.y=s>=3?r.y+1:0;
+    if(s>=3&&r.y>=Math.max(1,w.hold))wpWin(w)})}
+function wpWin(w){const TX={T4:'Phò tá phiên vương dẹp loạn trong triều, họ '+S.surname+' thành đệ nhất công thần.',T5:'Giữ đất biên cương, họ '+S.surname+' lập nước riêng và giữ được.',T6:'Ngoại thích họ '+S.surname+' nắm quyền nhiếp chính, đỡ ngai vàng cho thiếu đế.',T7:'Thương hội họ '+S.surname+' nuốt trọn thị trường cả miền.',T8:'Học phái họ '+S.surname+' thành chính thống, cửa nhà đầy bảng vàng.',T9:'Họ '+S.surname+' giữ ải mười năm yên, đời đời cầm quân.',T10:'Từ giang hồ, họ '+S.surname+' lên ngôi minh chủ võ lâm.',T11:'Họ '+S.surname+' giữ được tên tuổi qua tám đời, hai trăm năm.'};
+  finishGame({id:w.id,text:TX[w.id]})}
+function wpCard(){const S0=S.wp||{};const seen=WP.filter(w=>(S0[w.id]||{}).s>=1);
+  const lines=seen.map(w=>{const s=S0[w.id].s;return `<li><b>${esc(s>=2?w.n:'Một con đường mờ')}</b><br><small>${esc(w.h[s-1])}</small></li>`}).join('');
+  return `<section class="card"><h3>Con đường phía trước</h3>${lines?`<ul class="plain">${lines}</ul>`:'<p class="muted">Chưa thấy manh mối. Ngoài đường quan văn và quan võ, còn có thể làm giàu, mở học phái, giữ biên ải, vào giang hồ hoặc đứng đúng phe khi triều đình tranh ngôi.</p>'}</section>`}
 function historyMenu(){const m=meta();const E=window.D.ENDINGS;const got=k=>(m.end&&m.end[k])||0;
   const og=Object.entries(ORIGINS).filter(([k,o])=>o.lock);
   openModal(`<span class="eyebrow">Sử sách</span><h2>Những trang đã viết</h2>
@@ -6363,7 +6413,7 @@ const G={landDelta,landLose,landOk:()=>landRight(),led:LEDAPI,inKinh,homeP,npc:{
   _v633:{HOUSE_DEF,hdef,house,houseName,houseRel,houseAlly,houseKid,vil,vilLog,vd,vAdd,kPow,vFlag,vStance,vilRoutes,vilReady,vilEnd,vilStart,vilQuan,vilFighters,vilYears,vPick,pickWho,KIEN,DUY,KRANK,achieve,cf,vBranch,vFi,VBR,hinfo,hnear,houseRefs,giftNorm,w_wed,w_mo,NEAR_MO,HOUSE_TIER},
   _v62:{willPopup,chunoPopup,debtTick,expelPopup2,doExpel,tumatPopup,oanPopup,tranhviPopup,ruleSlots,ruleWhy,addRule,dropRule,keugoiPopup,thiencoPopup,gateCheck,ttlPopup,wishPick,wishScore,obey,ctxOk,CTX,v62Month,v62Year,loveTick,outsTick,divorcePopup,vuotsinhPopup,rulepropPopup,ruleforcePopup,rulechgPopup,pieceF,jobDig,minDig}};
 /* v6.4.1.1: cổng riêng cho trang admin (admin.js). Bản thường không dùng tới */
-G._adm={openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
+G._adm={personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
   getSel:()=>sel,setSel:v=>{sel=v},running:()=>running,speed:()=>speed,setRun:(r,sp)=>{running=!!r;if(sp)speed=sp;renderTop()},
   setS:st=>{S=st;sel=P(sel)?sel:S.head;O.hidden=true;M.innerHTML='';render();nextPopup()},page:()=>page,ensurePersona};
 window.BNTG=G;
