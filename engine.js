@@ -3221,7 +3221,7 @@ function brkStart(c,k,p,g){g=g||gateCap(c,k);const mo=Math.round(R(p.mo[0],p.mo[
   log(`${nameOf(c)} bắt đầu ${p.l.toLowerCase()}, dự kiến ${mo} tháng.`,'gd');return `Dự kiến mất ${mo} tháng. Thành hay bại do cả quá trình: tâm trạng, sức khỏe và căn cơ mỗi tháng đều góp phần.`}
 function brkTick(c){const b=c.brk;if(!b||b.done)return;const p=(BRK100[b.k]||[]).find(x=>x.id===b.id);if(!p){c.brk=null;return}
   const dur=Math.max(1,b.end-b.start);const s=brkScore(c,p.sp);
-  b.prog+=(s/80)*(100/dur)*(0.6+0.6*c.tam/100)*(0.7+0.3*Math.min(1,c.suc/70))*(1+tsum(c,'brk')/40)*(0.6+Math.random()*0.8)*({100:1,120:.85,140:.72,150:.6}[b.gate||100]||1);
+  b.prog+=(s/80)*(100/dur)*(0.6+0.6*c.tam/100)*(0.7+0.3*Math.min(1,c.suc/70))*(1+tsum(c,'brk')/40)*(0.6+Math.random()*0.8)*({100:1,120:.9,140:.8,150:.75}[b.gate||100]||1);
   if(!b.mid&&S.t>=b.start+Math.floor(dur/2)){b.mid=1;enqueue('brkmid',c.id)}
   if(S.t>=b.end){b.done=1;enqueue('brkend',c.id)}}
 const BRK_MID={tri:['đọc mãi một đoạn mà không thông','chữ nghĩa như rối thành một mớ'],vo:['một chiêu luyện mãi vẫn vướng','gân cốt đau nhức, tay chân nặng trĩu'],suc:['người mệt rã, ăn không ngon','khí huyết lúc thịnh lúc suy'],mi:['soi gương thấy mình vẫn thế','người ta khen chê lẫn lộn'],eq:['lòng người khó đoán hơn tưởng','có kẻ lợi dụng lòng tốt']};
@@ -4254,7 +4254,7 @@ function ttlPopup(c,it){const [n,t]=STITLE[it.k][it.i];const f=Math.round(4+it.i
 const THIENCO={tri:'Một đêm sao Văn Khúc sáng rực, trong mộng có người đưa cho một cuốn sách không chữ.',vo:'Trên đỉnh núi tuyết, một bóng người áo trắng múa kiếm giữa trăng, mỗi đường kiếm như vẽ ra trời đất.',
   suc:'Một vị lão nhân tóc bạc mà mặt hồng như trẻ thơ chỉ vào ngọn núi phía tây: "Nơi ấy có suối thuốc ba trăm năm mới chảy một lần."',mi:'Trong giấc mơ, một nữ nhân không rõ mặt mỉm cười, cả vườn hoa nở bung trong đêm đông.',eq:'Một vị cao tăng trăm tuổi gõ cửa, chỉ nói một câu: "Ngươi đã thấu lòng người, nay có muốn thấu lòng trời?"'};
 function thiencoTick(c){if(age(c)<20||c.brk||c.away)return;for(const [k] of STATS){if(gateCap(c,k)!==150||(c.flags['tc_'+k]))continue;const v=k==='suc'?c.cap.suc:c[k];if(v<148)continue;
-  if(chance(0.0003*(0.5+c.duyen/100)*(1+famLuck()/150)*(1+tsum(c,'brk')/20))){c.flags['tc_'+k]=1;enqueue('thienco',c.id,{k});return}}}
+  if(chance(0.006*(0.5+c.duyen/100)*(1+famLuck()/150)*(1+tsum(c,'brk')/20))){c.flags['tc_'+k]=1;enqueue('thienco',c.id,{k});return}}}
 function thiencoPopup(c,it){const k=it.k;const p=BRK100[k].find(x=>x.id==='thien');
   choicePopup(c,'Thiên cơ',`Thiên cơ: ${SN[it.k].toLowerCase()}`,`${THIENCO[k]} ${esc(c.given)} biết đây là cơ duyên ngàn năm có một, qua được thì ${SN[k].toLowerCase()} có thể vượt khỏi giới hạn của người phàm. Mất một hai năm, thành bại khó lường.`,[
     {l:'Dốc hết lòng lĩnh ngộ',f:x=>brkStart(c,k,p,150)},{l:'Phàm nhân không dám mơ cao',f:x=>'Lòng tiếc nuối mãi về sau.'+fx(c,{tam:-4})}])}
