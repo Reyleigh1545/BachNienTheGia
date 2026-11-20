@@ -232,7 +232,7 @@ return [
 {id:'nong631_tranh_nuoc_ha',t:'Hạn tranh nước ruộng',job:NONG,sea:['ha'],c:()=>wet(),pcd:60,cd:24,
  x:c=>`Mấy tuần không mưa, mương nước cạn dần. Nhà trên chặn nước, nhà dưới không có nước chảy vào ruộng.`,
  o:c=>[{l:'Họp các nhà cùng chia ca lấy nước',r:[{khau:0.5,eq:0.6},DW(0.6,50)],y:c=>'Cả xóm chia nước theo phiên, lúa qua được hạn.'+fx(c,{eq:1,fame:2,tam:3}),n:c=>'Không ai chịu nhường, xô xát nhỏ, lúa vẫn héo một phần.'+fx(c,{suc:-4,money:-m(2)})},
-    {l:'Thức đêm đào thêm mương nhánh',f:c=>{busy(c,1);return 'Kịp có nước vào ruộng nhà mình, mệt rã rời.'+fx(c,{suc:-6,m:1})}},
+    {l:'Thức đêm đào thêm mương nhánh',f:c=>{busy(c,1);return 'Kịp có nước vào đất nhà mình, mệt rã rời.'+fx(c,{suc:-6,m:1})}},
     {l:'Gánh nước từng gáo tưới cho kịp',f:c=>'Cứu được ít lúa, nhưng kiệt sức.'+fx(c,{suc:-R(8,14),money:-m(0.5)})}]},
 {id:'nong631_ruong_cong',t:'Làng chia lại ruộng công',job:NONG,c:()=>F().own<8,pcd:200,cd:120,
  x:c=>`Làng chia lại ruộng công theo đinh. Nhà nào có nhiều đinh thì được chia nhiều, nhưng phải nộp thuế và phục dịch theo suất.`,

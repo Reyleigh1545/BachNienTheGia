@@ -213,7 +213,7 @@ return [
  o:[{l:'Nhận làm',f:c=>'Được tiền công, nhưng bị quản gia quát tháo suốt buổi.'+fx(c,{money:m(R(15,30)/10),suc:-3,tam:-2})},
     {l:'Không làm, giữ sĩ diện',f:c=>fx(c,{tam:1})}]},
 {id:'bi_kham_nha',t:'Kẻ lạ hỏi mua đất',td:1,tier:[0,1],age:[18,90],c:()=>G.S().farm.own>0,pcd:60,
- x:'Một tay cò đất đến dụ bán mảnh ruộng nhà với giá rẻ mạt, ngầm đe dọa nếu không bán.',
+ x:'Một tay cò đất đến dụ bán mảnh đất nhà với giá rẻ mạt, ngầm đe dọa nếu không bán.',
  o:[{l:'Kiên quyết không bán',r:[{eq:0.6,vo:0.6},50],y:c=>'Hắn bỏ đi, không dám quay lại.'+fx(c,{tam:3}),n:c=>'Đêm đó có kẻ phá bờ ruộng.'+fx(c,{money:-m(8),tam:-5})},
     {l:'Báo lên lý trưởng',r:[{tri:1,eq:0.4},45],y:c=>'Lý trưởng bênh vực dân.'+fx(c,{fame:2}),n:c=>'Lý trưởng đã ăn tiền của hắn.'+fx(c,{tam:-6})}]},
 /* ============ GIÀU SANG ============ */

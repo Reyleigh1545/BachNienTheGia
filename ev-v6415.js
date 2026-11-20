@@ -104,7 +104,7 @@ ev({id:'rg_canh_tranh',t:'Hai nhà cạnh tranh',rg:{b:['xala','bathoa'],d:['eq'
   {l:`Góp như mọi nhà (${FM(Math.round(g/3))})`,c:()=>G.money()>=g/3,f:c=>{S().money-=Math.round(g/3);return 'Góp phần mình, không hơn không kém.'}},
   {l:'Mặc kệ, không góp',ax:{tiet:1},f:c=>{i.rel0(-2);return 'Nhà kia được tiếng hơn nhà mình một bậc.'+fx(c,{cfame:-1})}}]}}),
 ev({id:'rg_tranh_ruong',t:'Tranh chấp ruộng nước',rg:{b:['thuoan','bathoa']},
- x:(c,d)=>{const i=I(d);return i?`Mùa khô, người ${nm(i)} đắp bờ chặn mương, nước không vào ruộng nhà mình.`:''},
+ x:(c,d)=>{const i=I(d);return i?`Mùa khô, người ${nm(i)} đắp bờ chặn mương, nước không vào đất nhà mình.`:''},
  o:(c,d)=>{const i=I(d);if(!i)return NO;return [{l:'Kiện lên quan huyện',r:[{tri:1,fame:0.4},55+i.diff*8],ax:{thanh:1},y:c=>{i.rel0(-6);return 'Quan xử nhà mình đúng, bờ bị phá.'+fx(c,{fame:3})},n:c=>{i.rel0(-8);return 'Quan làm ngơ, mùa này mất một phần.'+fx(c,{money:-m(4),tam:-6})}},
   {l:'Cho người ra phá bờ',r:[{vo:1,gan:0.6},55],ax:{gan:2,diem:-1},y:c=>{i.rel0(-12);i.addOan(10);return 'Nước vào ruộng. Hai nhà thành thù.'},n:c=>{i.rel0(-15);i.addOan(15);return 'Hai bên xô xát, người nhà mình bị thương.'+fx(c,{suc:-8})}},...Y(i,c)]}}),
 ev({id:'rg_pha_co_so',t:'Cơ sở bị phá hoại',rg:{b:['thuoan'],c:()=>S().biz.length>0},
