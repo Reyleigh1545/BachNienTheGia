@@ -34,5 +34,10 @@ window.EVMEM=Object.assign(window.EVMEM||{},{
  gj_63:{mem:{any:['hai','doi_thu','bi_hac']}},
  dh_59:{mem:{any:['cuu','hai']}},
  v6_xt_vo:{mem:{any:['hai','doi_thu']}},
- qt_tro_lai:{mem:{need:['chuc']}}
+ qt_tro_lai:{mem:{need:['chuc']}},
+ /* d9.4: người cũ chỉ tìm đến khi đã từng có quan hệ (gặp, giúp hoặc dạy) */
+ gap_lai_ban_cu:{mem:{any:['gap','cuu','day_hoc']}},
+ c631_ban_cu_ghe:{mem:{any:['gap','cuu','day_hoc']}},
+ n633_y_thaycu:{mem:{any:['gap','day_hoc']}},
+ hn_nguoi_cu:{mem:{any:['gap','cuu','day_hoc','cuoi']}}
 });
