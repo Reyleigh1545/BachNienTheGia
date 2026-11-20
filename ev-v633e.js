@@ -12,7 +12,7 @@ const TS=(spec,p)=>{let v=0,w=0;for(const k in spec){v+=(NOM[k]!=null?NOM[k]:50)
 const RR=(spec,p)=>[spec,TS(spec,p)];
 const busy=(c,mo)=>{c.busyUntil=Math.max(c.busyUntil||0,S().t+mo);return ''};
 const F=()=>S().farm;
-const land=n=>{F().own=Math.max(0,F().own+n);return `<span class="fx"><span class="${n>0?'up':'down'}">Ruộng nhà ${n>0?'+':''}${n} mẫu</span></span>`};
+const land=n=>G.landDelta(n);
 const kho=(g,q)=>{S().kho[g]=(S().kho[g]||0)+q;return `<span class="fx"><span class="up">Kho: ${G.GOODS[g].n} +${q} ${G.GOODS[g].u}</span></span>`};
 const reg=()=>S().region;
 const coastal=()=>reg()==='dong'||(G.D.PROV[S().loc&&S().loc.p]||{}).k==='cang';

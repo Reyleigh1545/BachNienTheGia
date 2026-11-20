@@ -11,7 +11,7 @@ const DW=(p,e)=>Math.round(e-9*Math.log(p/(1-p)));
 const reg=()=>S().region;
 const kind=()=>{const P=G.D.PROV[S().loc&&S().loc.p];return P?P.k:'lang'};
 const F=()=>S().farm;
-const land=n=>{F().own=Math.max(0,F().own+n);return `<span class="fx"><span class="${n>0?'up':'down'}">Ruộng nhà ${n>0?'+':''}${n} mẫu</span></span>`};
+const land=n=>G.landDelta(n);
 const busy=(c,mo)=>{c.busyUntil=Math.max(c.busyUntil||0,S().t+mo);return ''};
 const KV=['khuanvac'],TL=['thulai'],ND=['nhadich'],NG=['ngu'],TP=['tieuphu'],HAU=['hau'],THO=['tho'],DET=['det'],BEP=['bep'],CH=['chan'],TIEU=['tieu'],NOI=['noi'],HR=['hangrong'],TN=['tieunhi'],NONG=['nong'],MO=['mo'];
 const wet=()=>reg()!=='tay';

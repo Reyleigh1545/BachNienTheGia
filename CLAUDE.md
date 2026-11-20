@@ -5,7 +5,7 @@
 - File này mâu thuẫn với lời chủ dự án trong phiên hiện tại → theo lời chủ dự án, rồi **sửa file này ngay trong cùng commit**.
 - Các báo cáo `bao-cao-*.md` và kế hoạch cũ đã gộp vào đây rồi xóa khỏi repo (còn trong lịch sử git, commit trước `claude-md`). Chỉ mở lại khi cần chi tiết kỹ thuật cũ.
 
-Phiên bản hiện tại: **v6.7.0-d8** (nhãn `.verlbl` trong `index.html`). File này lập ngày 19/11/2026 từ các báo cáo v6.3.5 đến v6.7.0-d8.
+Phiên bản hiện tại: **v6.7.0-d9** (nhãn `.verlbl` trong `index.html`). File này lập ngày 19/11/2026 từ các báo cáo v6.3.5 đến v6.7.0-d8.
 
 ---
 
@@ -123,6 +123,8 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 **Đất (d8).** **Nhà thường không có ruộng. Chi họ không có ruộng riêng: ruộng được phong và đất phong đều về nhà chính.** Tá điền ở nhà chính đi làm thuê, công khoảng 450 đồng mỗi tháng theo tay nghề và tâm trạng. Trang "Ruộng vườn" đã bỏ; thay bằng trang **Đất phong**, chỉ hiện khi nhà có đất: đất phong theo tước, đất mua (chỉ khi nhà có người làm quan hoặc có tước, giá 60% giá mẫu ruộng cũ). Đất chia ba phần: cơ sở (dự án), ruộng đã khai hoang cho tá điền, đất hoang. Khai hoang một mẫu tốn 40% giá mẫu, mười hai tháng sau thành ruộng. Phát canh thu tô theo mùa gặt: 30% (nặng, mang tiếng địa chủ), 20% (vừa), 10% (nhẹ, có tiếng thơm).
 
+**Sự kiện cho hoặc lấy đất** (d9) đi qua `G.landDelta(n)` và `G.landLose(n)`: nhà không có quan hoặc tước thì không giữ được đất, sự kiện cho đất đổi thành bán lại lấy tiền (một nửa giá mẫu); lấy đất thì trừ đất mua trước rồi mới tới ruộng khai hoang. Sự kiện chào mua đất (`n_mua_ruong`, `lw_31`, `lw_36`, mua lại của họ khác) chỉ ra cho nhà có quan hoặc tước. `nong_dia_chu` (thuê ruộng) đã tắt. Hàm `land()` trong các gói sự kiện nông cũ gọi `G.landDelta`.
+
 **Dự án gia nghiệp** (trang Cơ ngơi). Mỗi dự án cần số mẫu đất trống theo độ lớn (nghĩa trang 3, nghĩa thục 4, tàng thư 3, chùa miếu 2, kho thóc 1 + 1 mỗi kho, thuyền buôn 1 + 0,5 mỗi thuyền, gia binh 2 + 0,1 mỗi người, môn khách 1 + 0,15, học bổng 1 + 0,1); hội quán, dinh thự ở kinh, quyên nạp không cần đất. Có số lượng, nút − và +, phí duy trì, nút Giải tán, sổ "đã chi, đã thu, lãi lỗ". Gia binh vượt sức nhà thì triều đình nghi. Việc lớn phải **đáng tiền**. Đã bỏ: từ đường lớn, nghĩa điền, cầu đê đường làng, khai hoang (dự án).
 
 **Kinh doanh.** Người trông và người mở cơ sở phải làm nghề hợp với cơ sở. Mốc quản trị 35; quản trị tăng theo chức trong nghề, làm chủ +1 mỗi năm. Đời đầu gần như không làm chủ được. Lãi bậc cao nhất, chủ giỏi khoảng 150 đến 250 bạc mỗi tháng (hệ số x0,7 từ 6.5.4). Dời nhà thì cơ sở dời theo, trả 10% giá trị (25% khi chạy nạn). Nhà đã có từ hai người cùng nghề thì nghề đó kém hấp dẫn với người tiếp theo (trừ nông, quan, chủ cơ sở, nội trợ). Thư lại đủ điều kiện được xin xuất thân làm quan phẩm thấp.
@@ -199,9 +201,9 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 Ưu tiên theo mục 0.2 (gameplay trước). Xếp theo mức cần.
 
 **Gameplay còn hở**
-- **Sự kiện cũ còn dùng ruộng:** khoảng 30 dòng trong 11 file (`ev-chung, ev-cot, ev-nghe, ev-v631a, ev-v633c, ev-v635b, ev-v6415, ev-v670, ev-v670b, ev-v670c, ev-v670e`) còn đọc hoặc cộng `S.farm.own`, `S.farm.rent`. Đất cộng bằng sự kiện nay thành đất hoang. Cần rà.
+- **Sự kiện cũ nhắc ruộng:** phần cộng, trừ đất đã đi qua `G.landDelta` (d9). Còn lại: các sự kiện nông (`nong_*`, `nong631_*`, `n633_nong_*`) đọc `F().own` làm điều kiện (nhà không có đất thì không ra, đúng ý) nhưng lời kể vẫn nói "ruộng nhà"; chuỗi `vil_*` cũ đã tắt nên không rà. Chưa rà lời kể từng sự kiện.
 - "Thua đất khi lên hương thân" chưa làm (chưa có sự kiện đòi đất).
-- **Gia tộc có thể teo:** nhiều ván bot và hai save thật (4 và 5 người sau 37 và 51 năm) có gia tộc rất nhỏ. Chưa rõ do bot hay do game (gia quy số con, giãn cách sinh, hôn nhân phải tự bấm). Cần đo.
+- **Gia tộc có thể teo:** hai save thật có 4 và 5 người sau 37 và 51 năm, save Tiêu có 88 người sau 98 năm. Ba ván bot ngẫu nhiên (d9) cho 1 đến 5 người vì **bot không tự cưới** (cưới đi qua nút Mối ở trang Gia tộc hoặc sự kiện, bot không bấm): đo bằng bot đó không đại diện. Muốn đo thật phải cho bot biết bấm Mối hoặc đo trên save người chơi.
 - Phần B quan trường còn thiếu: ứng viên NPC tranh ghế có hồ sơ, thanh trừng và đối địch giữa các quan, thế gia thành NPC. Người giữ ghế (`S.off`), hoàng tộc, nhân vật Phạm chưa vào sổ NPC chung (Kiên, Duy đã vào ở d8).
 - Chưa làm: giang hồ (môn phái đầy đủ, cấp bậc, bí kíp, anh hùng đại hội), thế lực tự phát, kỳ ngộ gia tộc, cốt truyện lớn khác ngoài họ Phạm, quân hộ, thiết khoán, Đông xưởng, nghề mới cho đời sau.
 - Sự kiện "rửa oan" sau E8 và sự kiện riêng của Phạm Thái phi chưa có.
