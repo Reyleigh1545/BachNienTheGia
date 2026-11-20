@@ -68,7 +68,7 @@ G.arc.def('pm',{name:'Ân oán họ Phạm',gap:[4,9],
   const gy=Math.floor(S().t/12);  a.K={n:'Phạm Trung Kiên',g:'Kiên',age:24+gy,rank:0,pow:R(18,24),life:R(70,88),ok:1,sched:[72,192,312,408,504],lag:0};
   a.D={n:'Nguyễn Thành Duy',age:R(28,34),link:0,ok:1};
   a.H={};a.c={pf:0,wit:0,all:0,pw:8,dt:12,ky:0,lo:0,hn:0,fail:0};
-  try{const nk=G.led.np.new({n:a.K.n,g:'nam',age:a.K.age,role:'pham',f:'pham'}),nd=G.led.np.new({n:a.D.n,g:'nam',age:a.D.age,role:'duy',f:'pham'});a.K.np=nk.id;a.D.np=nd.id}catch(e){} /* d8: nhân vật cốt truyện cũng nằm trong sổ NPC để kiểm tên và tuổi */
+  try{const nk=G.led.np.new({n:a.K.n,g:'nam',age:a.K.age,role:'pham',f:'pham'}),nd=G.led.np.new({n:a.D.n,g:'nam',age:a.D.age,role:'duy',f:'pham'});a.K.np=nk.id;a.D.np=nd.id;const nh=G.led.np.new({n:'Phạm Xuân Huấn',g:'nam',age:84,role:'pham',f:'pham'});nh.ok=0;nh.dead=S().t-12*R(4,12)}catch(e){} /* d8: nhân vật cốt truyện cũng nằm trong sổ NPC để kiểm tên và tuổi */
   /* nếu đã quá mốc ván của lịch Kiên thì Kiên đã ở đúng chức của năm đó, nhưng mở đầu vẫn chậm rãi */
   while(a.K.rank<3&&S().t>=a.K.sched[a.K.rank])a.K.rank++;
   a.ch=1;a.fl.t1=S().t},

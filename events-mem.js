@@ -24,5 +24,15 @@ window.EVMEM=Object.assign(window.EVMEM||{},{
  qn_cuu_tuong:{led:{k:'cuu',lab:/cõng/}},
  su_mon_sinh_lam_quan:{mem:{need:['day_hoc']}},
  lw_70:{mem:{need:['an']}},
- lw_75:{mem:{need:['an']}}
+ lw_75:{mem:{need:['an']}},
+ /* d9: thêm lô đọc ký ức (đã gặp, đã cưới, đã nhận con nuôi, đã cứu, đã gây oán) */
+ ky_niem_cuoi:{mem:{need:['cuoi']}},
+ d631_thu_nguoi_xua:{mem:{any:['cuu','day_hoc','gap']}},
+ n633_hiep_no:{mem:{need:['cuu']}},
+ lw_42:{mem:{need:['nhan_con']}},
+ dh_50:{mem:{need:['gap']}},
+ gj_63:{mem:{any:['hai','doi_thu','bi_hac']}},
+ dh_59:{mem:{any:['cuu','hai']}},
+ v6_xt_vo:{mem:{any:['hai','doi_thu']}},
+ qt_tro_lai:{mem:{need:['chuc']}}
 });

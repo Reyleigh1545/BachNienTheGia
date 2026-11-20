@@ -820,11 +820,13 @@ function promoWhy(c){if(c.job!=='quan')return '';if((c.flags.noPromoUntil||0)>S.
 function tigOk(c,b){const l=ledLast(c.id,'chuc');const t0=l!=null?l:(c.postT!=null?c.postT:null);return t0==null||S.t-t0>=Math.round(10+2*b)}
 function promoPen(c){const b=bacOf(c);let pen=clamp((b-3)*2.2,0,32);const q=c.qt||{};pen-=clamp((q.fav||0)/12,0,8);
   const gw=k=>{const m=mFind(c,k);return m?m.w:0};pen-=Math.min(8,gw('tien_cu')/10);pen+=Math.min(10,gw('doi_thu')/8)+Math.min(6,gw('bi_hac')/12);return Math.round(clamp(pen,-5,40))}
+/* ứng viên cạnh tranh một ghế trống: một đến ba người, chốt một lần theo ghế; chỉ thành NPC thật khi thắng */
+function seatCands(key,st){if(st.cd&&st.cd.length)return st.cd;const n=R(1,3);st.cd=[];for(let i=0;i<n;i++)st.cd.push({n:pick(SURN)+' '+mkGiven('nam'),age:R(30,58),ab:clamp(Math.round((st.ab||60)+R(-10,12)),30,140)});return st.cd}
 function holderNp(st){if(st.np&&npGet(st.np))return npGet(st.np);const np=npNew({n:st.n,g:'nam',age:st.age||50,role:'quan',f:st.f});st.np=np.id;return np}
 /* người đương chức bị thay hoặc bị hặc thành NPC thật nhớ mối oán với người đã thay họ */
 function holderGrudge(st,c,kind){const np=holderNp(st);memP(np,'oan',{o:c.id,w:kind==='hac'?85:65});ledAdd(kind==='hac'?'bi_hac':'doi_thu',[c.id],{n:np.n,np:np.id,k:st.key||null},{w:kind==='hac'?65:60});return np}
-function rivalNote(c,key){const np=npNew({g:'nam',role:'quan',age:clamp(age(c)+R(-8,8),28,60)});memP(np,'oan',{o:c.id,w:70});ledAdd('doi_thu',[c.id],{n:np.n,np:np.id,k:key},{w:70});
-  const st=offState(key);if(st&&st.vac&&!st.holder){Object.assign(st,{n:np.n,np:np.id,age:npAge(np),ab:clamp(Math.round((st.ab||60)+R(0,14)),30,140),liem:R(20,85),f:pick(FACK),tc:pick(NPC_TC),vac:false,since:S.t});delete st.why;delete st.vacT} /* ứng viên thắng thì ngồi vào ghế thật */
+function rivalNote(c,key){const st0=offState(key);const cd=(st0.cd&&st0.cd.length)?st0.cd.slice().sort((a,b)=>b.ab-a.ab)[0]:null;const np=npNew(cd?{n:cd.n,g:'nam',role:'quan',age:cd.age}:{g:'nam',role:'quan',age:clamp(age(c)+R(-8,8),28,60)});memP(np,'oan',{o:c.id,w:70});ledAdd('doi_thu',[c.id],{n:np.n,np:np.id,k:key},{w:70});
+  const st=offState(key);if(st&&st.vac&&!st.holder){Object.assign(st,{n:np.n,np:np.id,age:npAge(np),ab:cd?cd.ab:clamp(Math.round((st.ab||60)+R(0,14)),30,140),liem:R(20,85),f:pick(FACK),tc:pick(NPC_TC),vac:false,since:S.t});delete st.why;delete st.vacT;delete st.cd} /* ứng viên thắng thì ngồi vào ghế thật */
   return `${esc(np.n)} được chọn trước. `}
 function canPromote(c){
   if((c.flags.noPromoUntil||0)>S.t)return false;
@@ -1354,6 +1356,11 @@ function offState(key){
     if(vac){o.vacT=S.t-R(0,4);o.why=pick(['cáo bệnh về quê','đang chịu tang','được điều đi nơi khác'])}}
   return o;
 }
+/* d9: kẻ thù NPC đàn hặc ngược lại (mỗi năm, nếu còn sống): rủi ro quan trường của người bị nhắm tăng */
+function officeFeud(){if(DRY||!S.np)return;alive().filter(c=>c.job==='quan'&&inClan(c)).forEach(c=>{const m=mFind(c,'doi_thu')||mFind(c,'bi_hac');if(!m)return;
+    const e=ledLast(c.id,'doi_thu')!=null||ledLast(c.id,'bi_hac')!=null;const ent=LEDAPI.find(c.id,mFind(c,'bi_hac')&&!mFind(c,'doi_thu')?'bi_hac':'doi_thu');const np=ent&&ent.d&&ent.d.np?npGet(ent.d.np):null;
+    if(!np||!np.ok||!chance(0.06+(np.mm&&mFind(np,'oan')?mFind(np,'oan').w/1500:0)))return;
+    qtAdd(c,{risk:R(6,14)});ledAdd('bi_dan_hac',[c.id],{n:np.n,np:np.id},{w:55});log(`${np.n} ngầm dâng sớ đàn hặc ${nameOf(c)} vì mối oán cũ.`,'hi')})}
 function officeTick(){
   if(S.off)for(const key in S.off){const o=S.off[key];const T=seatTm(key);if(!T){delete S.off[key];continue}
     if(o.holder){const h=P(o.holder);
@@ -1368,6 +1375,7 @@ function officeTick(){
   }
   termTick();
   if(S.t%12===3)waitTick();
+  if(S.t%12===7)officeFeud();
   if(S.t%12===0)dynYear();
 }
 const postOf=c=>c.post?OFFICES[c.post]:null;
@@ -1749,7 +1757,8 @@ function officePopup(c){
   cand.forEach(({tid,T,key})=>{const st=offState(key);
     const nm=seatName(key);const ph=phTxt(T);
     const spec=mil?{vo:1,tri:0.4,eq:0.4}:{tri:1,eq:0.6,fame:0.4};
-    if(st.vac)opts.push({l:`Xin xét ${nm} (${ph}), đang trống`,r:[spec,clamp(st.ab-5-promoPen(c),12,90)],y:c=>{if(!assignPost(c,key))return 'Ghế đã có người khác.';return `Được bổ nhiệm ${nm}!`+fx(c,{fame:8+T.r*4,tam:8})},n:c=>tryWait(c,key,rivalNote(c,key))+fx(c,{tam:-4})});
+    if(st.vac){const cd=seatCands(key,st);const best=cd.reduce((m,x)=>Math.max(m,x.ab),0);const mine=Math.round(myAb(c)+(c.cong||0)/10);const tgt=clamp(Math.round(55+(mine-best)*1.2-promoPen(c)),10,90);
+      opts.push({l:`Xin xét ${nm} (${ph}), đang trống, ${cd.length} người cùng xin`,r:[spec,tgt],y:c=>{if(!assignPost(c,key))return 'Ghế đã có người khác.';delete st.cd;return `Được bổ nhiệm ${nm}!`+fx(c,{fame:8+T.r*4,tam:8})},n:c=>tryWait(c,key,rivalNote(c,key))+fx(c,{tam:-4})})}
     else{const cm=seatCmp(c,st);
       const p0=cm.out?clamp(0.12+cm.dt/80+cm.dc/300+(st.liem<35?0.1:0)+((qtOf(c).fav||0)/400),0.08,0.7):clamp(0.04+cm.dt/200,0.02,0.2);const p=clamp(p0*(1-promoPen(c)/100),0.01,0.7);
       opts.push({l:`Xin xét thay ${st.n}, ${st.age} tuổi (tài ${cm.tai}, công ${cm.cong}) ở ${nm}, ${ph}`,f:c=>{
@@ -2440,7 +2449,14 @@ function npNew(o){o=o||{};S.np=S.np||{n:0,l:{}};const g=o.g||'nam';let nm=o.n,i=
   const id='n'+(++S.np.n);const n={id,n:nm,g,born:S.t-12*(o.age||40),role:o.role||'quan',f:o.f||null,ok:1,t:S.t,mm:[]};S.np.l[id]=n;return n}
 const npGet=id=>(S.np&&S.np.l&&S.np.l[id])||null;
 const npAge=n=>Math.floor((S.t-n.born)/12);
-function npYear(){if(!S||!S.np)return;const L=S.np.l;for(const k in L){const n=L[k];if(!n.ok||n.role==='pham'||n.role==='duy')continue; /* nhân vật cốt truyện: arc tự quyết sống chết */const a=npAge(n);if(chance(Math.max(0,a-62)*0.012+0.002)){n.ok=0;n.dead=S.t;ledAdd('np_chet',[],{n:n.n,id:n.id,a},{m:false})}
+/* hoàng tộc, thế gia là NPC có hồ sơ khi nhà đã gặp: tạo theo yêu cầu, sống chết theo nguồn */
+function npFam(p){if(!p)return null;S.np=S.np||{n:0,l:{}};const ref='fam:'+p.id;let n=Object.values(S.np.l).find(x=>x.ref===ref);if(!n){n=npNew({n:(p.sur?p.sur+' ':'')+p.n,g:p.role==='cong'||p.role==='phi'||p.role==='hau'?'nữ':'nam',age:p.age||30,role:'hoangtoc'});n.ref=ref}return n}
+function npHouse(hid){const h=S.w&&S.w.houses&&S.w.houses[hid];if(!h||!h.head)return null;S.np=S.np||{n:0,l:{}};const ref='house:'+hid+':'+h.head.given;let n=Object.values(S.np.l).find(x=>x.ref===ref);if(!n){n=npNew({n:(h.name||'')+' '+h.head.given,g:'nam',age:h.head.age||50,role:'thegia'});n.ref=ref}return n}
+function npSync(){const L=(S.np&&S.np.l)||{};const fam=S.dyn&&S.dyn.fam;for(const k in L){const n=L[k];if(!n.ref||!n.ok)continue;
+    if(n.ref.startsWith('fam:')){const id=n.ref.slice(4);let q=null;if(fam){[fam.hau,fam.thai].concat(fam.phi,fam.tu,fam.cong,fam.vuong,fam.qc).forEach(x=>{if(x&&x.id===id)q=x})}if(!q||q.dead!=null){n.ok=0;n.dead=S.t}}
+    else if(n.ref.startsWith('house:')){const [,hid,gv]=n.ref.split(':');const h=S.w&&S.w.houses&&S.w.houses[hid];if(!h||!h.head||h.head.given!==gv){n.ok=0;n.dead=S.t}}}}
+function npYear(){if(!S)return;{const fam=S.dyn&&S.dyn.fam;if(fam)[fam.hau,fam.thai].concat(fam.phi,fam.tu,fam.cong,fam.vuong,fam.qc).forEach(p=>{if(p&&p.dead==null&&p.met)npFam(p)});const H=S.w&&S.w.houses;if(H)for(const id in H){if(H[id]&&H[id].rel)npHouse(id)}}
+  if(!S.np)return;npSync();const L=S.np.l;for(const k in L){const n=L[k];if(!n.ok||n.ref||n.role==='pham'||n.role==='duy')continue; /* nhân vật cốt truyện: arc tự quyết sống chết */const a=npAge(n);if(chance(Math.max(0,a-62)*0.012+0.002)){n.ok=0;n.dead=S.t;ledAdd('np_chet',[],{n:n.n,id:n.id,a},{m:false})}
     if(n.mm)n.mm=n.mm.filter(m=>{if(m.keep)return true;m.w-=(mkCfg(m.k).d||4);return m.w>0})}
   const dead=Object.keys(L).filter(k=>!L[k].ok);if(dead.length>200)dead.sort((x,y)=>L[x].dead-L[y].dead).slice(0,dead.length-200).forEach(k=>delete L[k])}
 /* v6.7.0-d7.5: không cấm tên nào; chỉ ưu tiên tên chưa có người trong nhà hoặc hoàng tộc dùng (hết lượt thử thì vẫn dùng tên trùng) */
@@ -6147,7 +6163,7 @@ function ledAudit(){const out=[];if(!S)return out;const ids=new Set(S.people.map
 function ledDump(c){const nm=id=>{const p=P(id);return p?p.given:'#'+id};
   return {mem:(c.mm||[]).map(m=>m.k+(m.o!=null?'→'+nm(m.o):'')+' w'+m.w+(m.keep?'*':'')+' t'+Math.floor(m.t/12)),
     life:(S.led||[]).filter(x=>x.a.includes(c.id)).slice(-30).map(x=>Math.floor(x.t/12)+':'+x.k+(x.d?JSON.stringify(x.d):''))}}
-const LEDAPI={check:ledCheck,hist:(id)=>(S.evl||[]).filter(e=>e[1]===id||e[9]===id),evl:()=>S.evl||[],np:{new:npNew,get:npGet,age:npAge,mem:memP},add:ledAdd,has:(p,k,o)=>!!mFind(p,k,o),w:(p,k,o)=>{const m=mFind(p,k,o);return m?m.w:0},get:mFind,mem:memP,fam:{has:famHas,add:famMemAdd},last:ledLast,find:(id,k)=>{const L=S.led||[];for(let i=L.length-1;i>=0;i--)if(L[i].k===k&&L[i].a.includes(id))return L[i];return null},drop:(p,k)=>{if(p&&p.mm)p.mm=p.mm.filter(m=>m.k!==k)},ok:ledOk,audit:ledAudit,dump:ledDump,year:ledYear,sum:()=>S.ledSum||{},size:()=>(S.led||[]).length};
+const LEDAPI={check:ledCheck,hist:(id)=>(S.evl||[]).filter(e=>e[1]===id||e[9]===id),evl:()=>S.evl||[],np:{fam:npFam,house:npHouse,new:npNew,get:npGet,age:npAge,mem:memP},add:ledAdd,has:(p,k,o)=>!!mFind(p,k,o),w:(p,k,o)=>{const m=mFind(p,k,o);return m?m.w:0},get:mFind,mem:memP,fam:{has:famHas,add:famMemAdd},last:ledLast,find:(id,k)=>{const L=S.led||[];for(let i=L.length-1;i>=0;i--)if(L[i].k===k&&L[i].a.includes(id))return L[i];return null},drop:(p,k)=>{if(p&&p.mm)p.mm=p.mm.filter(m=>m.k!==k)},ok:ledOk,audit:ledAudit,dump:ledDump,year:ledYear,sum:()=>S.ledSum||{},size:()=>(S.led||[]).length};
 const memSet=(k,months,v)=>{S.mem=S.mem||{};S.mem[k]={until:S.t+(months||120),v:v==null?1:v}};
 const memHas=k=>{const o=S&&S.mem&&S.mem[k];return !!o&&o.until>S.t};
 const memGet=k=>{const o=S&&S.mem&&S.mem[k];return o&&o.until>S.t?o.v:0};
