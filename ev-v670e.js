@@ -272,7 +272,7 @@ function applyEnd(id){const a=arc();if(!a||a.end)return '';const hd=G.head();con
   else if(id==='E6'){nq.forEach(p=>G.qt.dismiss(p,'bị cả họ cách chức trong vụ phản tố'));s.noExamClan=s.t+1200;s.money=Math.round(s.money*0.6)}
   else if(id==='E7'){G.qt.sentence(hd,5,'mưu nghịch')}
   else if(id==='E8'){nq.forEach(p=>G.qt.dismiss(p,'bỏ xứ'));s.money=Math.round(s.money*0.4);s.farm.own=Math.round(s.farm.own*0.5)}
-  G.arc.end('pm',id);if(id==='E8')arc().q.until=s.t+360;
+  G.arc.end('pm',id);if(id==='E8'){arc().q.until=s.t+360;G.later(hd,'pm_rua_oan',R(144,216))}
   /* khép được ân oán (E1 đến E5): mỗi người làm quan trong nhà được thêm một bậc */
   if(['E1','E2','E3','E4','E5'].includes(id)){let n=0;G.alive().filter(p=>G.inClan(p)&&p.job==='quan'&&p.lv<8).forEach(p=>{fx(p,{lv:1});n++});if(n)note+=` Triều đình thưởng công: ${n} người làm quan trong nhà được thăng thêm một bậc.`}
   G.arc.log('pm','Ân oán khép lại: '+id);
@@ -327,5 +327,10 @@ const SS=[
   c=>[F('Nhận lời hòa giải',{t:'Hai bên bắt tay.',u:{},then:c=>{G.later(c,'pm_s6',R(2,4));c.flags.pmS='hoa';return ''}}),F('Từ chối, giữ lập trường',{t:'Hai bên chia tay lạnh nhạt.',u:{},then:c=>{G.later(c,'pm_s6',R(2,4));c.flags.pmS='thu';return ''}}),F('Xin thời gian suy nghĩ',{t:'Nhà mình cần thêm.',u:{},then:c=>{G.later(c,'pm_s6',R(2,4));c.flags.pmS='tam';return ''}})],{arc:undefined,fixed:1,vonce:true}),
  E('pm_s6','Khép lại hay tiếp nối',c=>c.flags.pmS==='hoa'?`Một năm sau, hai nhà cùng dự lễ cúng chung ở chùa. Cái gai lâu năm nhẹ hẳn.`:c.flags.pmS==='thu'?`Một năm sau, họ Phạm gửi một lá thư lạnh: "Từ nay, hai nhà là người lạ." Nhà mình giữ lá thư.`:`Nhà mình suy nghĩ lâu, rồi gửi lời đồng ý, muộn nhưng thật. Hai bên bắt đầu qua lại.`,
   c=>[F('Ghi chuyện vào gia phả',{t:'Gia phả thêm một trang mới.',u:{}})],{arc:undefined,fixed:1,vonce:true})];
-return [].concat(CALS,P,FG,VG,TG,MG,LG,HG,[Z0],ZS,GQ,NN,SS);
+/* d9.5: rửa oan sau kết E8 (bỏ xứ). Hẹn mười hai đến mười tám năm sau, khi người cũ đã mất hoặc thất thế. */
+const RUA=E('pm_rua_oan','Tờ chiếu rửa oan',c=>`Mười mấy năm sau ngày bỏ xứ, trong kinh có người dâng sớ xin xét lại vụ án cũ của họ ${esc(G.S().surname)}. Tờ chiếu từ cung đưa xuống: oan khuất đã rõ, họ Phạm năm xưa nay không còn giữ được thế. Triều đình cho phép con cháu nhà mình về quê cũ, hương khói được nối lại.`,
+  c=>[F('Về quê cũ, nhận lại tên tuổi',{t:'Cả nhà bái tạ tổ tiên, dựng lại gian thờ cũ. Người trong làng ra đón.',u:{},f:{fame:25,tam:12,money:-m(3)},then:c=>{const a=arc();if(a&&a.q)a.q.until=G.S().t;G.cf(15,'Được rửa oan');return ' Con đường làm quan ở đất cũ mở lại.'}}),
+    F('Ở yên chỗ mới, chỉ thắp hương từ xa',{t:'Nhà mình đã bén rễ nơi khác, không về nữa. Tên họ được trả lại trên giấy tờ là đủ.',u:{},f:{fame:10,tam:6},then:c=>{const a=arc();if(a&&a.q)a.q.until=G.S().t;return ''}}),
+    F('Đòi triều đình trả lại ruộng nhà năm xưa',{t:'Hồ sơ tịch biên được lục lại. Một phần đất được trả, phần còn lại đã về tay người khác.',u:{},f:{fame:5,money:m(4)},then:c=>{G.landDelta(2);return ''}})],{arc:undefined,fixed:1,vonce:true});
+return [].concat(CALS,P,FG,VG,TG,MG,LG,HG,[Z0],ZS,GQ,NN,SS,[RUA]);
 });
