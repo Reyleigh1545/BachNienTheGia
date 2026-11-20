@@ -2936,7 +2936,8 @@ function econMonth(){
         if(vc>0){const lk=payVice(p,vc);if(lk)add(L.out,'tat',lk)}})}
     else h.money-=hhExpense(id).total}
   for(const k in CLANOFF){const p=offHolder(k);if(!p)continue;const pay=mmn(CLANOFF[k].pay);S.money-=pay;p.purse+=pay;add(L.out,'chuc',pay)}
-  /* d9.5: bỏ việc người nhà tự góp tiền riêng đỡ công quỹ khi âm (chủ dự án: âm tiền thì cứ âm, không tự về 0) */
+  if(S.money<0){let got=0;const who=[];alive().filter(p=>inClan(p)&&inMain(p)&&!isHead(p)&&p.purse>mmn(0.5)).forEach(p=>{if(S.money>=0)return;const w=(axv(p,'ht')+axv(p,'rong'))/2+relOf(p,head()||p)/5;if(w<45)return;const v=Math.round(Math.min(p.purse*0.3,-S.money));p.purse-=v;S.money+=v;got+=v;who.push(p.given)});
+    if(got){add(L.in,'cuu',got);if((S.cuuT||0)<=S.t){S.cuuT=S.t+6;log(`Công quỹ túng thiếu, ${who.slice(0,3).join(', ')}${who.length>3?' và mấy người nữa':''} góp tiền riêng đỡ đần.`,'gd')}}}
   L.net=S.money-m0;S.flow=L;S.lastNet=L.net-farmV;S.lastFarm=farmV;
 }
 /* tật xấu chỉ tiêu được bằng tiền riêng; hết tiền thì lén lấy của nhà một ít, còn lại là nợ nần, bứt rứt */

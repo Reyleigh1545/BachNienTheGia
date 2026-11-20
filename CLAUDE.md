@@ -120,7 +120,7 @@ Kho hiện tại (d9.5): **1.712 sự kiện, 258 kỳ ngộ**. Mục tiêu dài
 | THU | 1 | 1,5 | 2,5 | 4 | 7 | 12 | 20 |
 | NHẸ (mặc định) | 1 | 1,3 | 1,8 | 2,5 | 3,5 | 5 | 7 |
 
-Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc định thang CHI. Kỳ ngộ nhân **2,5** cho khoản nhận được (tiền, danh vọng, hưng thịnh, chiến công). Chuỗi cốt truyện cũ: thưởng tiền theo thang THU, danh vọng nhân `1 + 0,3 × bậc`; phạt sức khỏe tối đa 3 mỗi lần. Hết tiền thì mỗi người 30% bỏ một thói quen tốt tốn tiền; tật xấu không bỏ. **Công quỹ âm thì cứ âm** (d9.5: đã bỏ việc người nhà tự góp tiền riêng đỡ về 0). **Làm việc thiện** (thói quen `tuthien`) chỉ trích khoảng 10% thu nhập tháng của người đó (hệ số mức sống nhân thêm), không còn 600 đồng cố định.
+Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc định thang CHI. Kỳ ngộ nhân **2,5** cho khoản nhận được (tiền, danh vọng, hưng thịnh, chiến công). Chuỗi cốt truyện cũ: thưởng tiền theo thang THU, danh vọng nhân `1 + 0,3 × bậc`; phạt sức khỏe tối đa 3 mỗi lần. Hết tiền thì mỗi người 30% bỏ một thói quen tốt tốn tiền; tật xấu không bỏ. Công quỹ âm thì người nhà có tiền riêng tự góp đỡ (giữ nguyên; d9.5 từng bỏ rồi chủ dự án bảo giữ lại, vì nhầm). **Làm việc thiện** (thói quen `tuthien`) chỉ trích khoảng 10% thu nhập tháng của người đó (hệ số mức sống nhân thêm), không còn 600 đồng cố định.
 
 **Đất (d8).** **Nhà thường không có ruộng. Chi họ không có ruộng riêng: ruộng được phong và đất phong đều về nhà chính.** Tá điền ở nhà chính đi làm thuê, công khoảng 450 đồng mỗi tháng theo tay nghề và tâm trạng. Trang "Ruộng vườn" đã bỏ; thay bằng trang **Đất phong**, chỉ hiện khi nhà có đất: đất phong theo tước, đất mua (chỉ khi nhà có người làm quan hoặc có tước, giá 60% giá mẫu ruộng cũ). Đất chia ba phần: cơ sở (dự án), ruộng đã khai hoang cho tá điền, đất hoang. Khai hoang một mẫu tốn 40% giá mẫu, mười hai tháng sau thành ruộng. Phát canh thu tô theo mùa gặt: 30% (nặng, mang tiếng địa chủ), 20% (vừa), 10% (nhẹ, có tiếng thơm).
 
@@ -201,7 +201,6 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 - Ruộng cho nhà thường, trang Ruộng vườn, dự án Khai hoang, từ đường lớn, nghĩa điền, cầu đê đường làng.
 - Danh sách tên bị cấm (Kiên, Duy…) và tự đổi tên người nhà.
 - Chuỗi ân oán `vil_*` cũ (đã thay bằng `ARC.pm`).
-- Người nhà tự góp tiền riêng đỡ công quỹ khi âm (bỏ ở d9.5, chủ dự án: "đang bị âm tiền lại tự dưng được cộng cho về 0").
 - Tương thích save cũ (tạm thời).
 
 ---
