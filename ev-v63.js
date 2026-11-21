@@ -280,7 +280,7 @@ return [
   {l:'Tung tin đồn xấu, phá hoại làm ăn của họ',s:'Có thể thành thù oán',r:[{tri:1},DW(0.5,42)],y:c=>{cl.wealth=Math.max(2,cl.wealth-10);cl.rel=Math.max(-100,cl.rel-20);cl.feud=1;return 'Khách của họ dần bỏ đi. Hai họ trở thành kẻ thù.'+fx(c,{money:m(10),fame:-2})},n:c=>{cl.rel=Math.max(-100,cl.rel-30);cl.feud=1;return 'Bị vạch mặt giữa chợ, cả vùng xì xào.'+fx(c,{fame:-8,cfame:-1,tam:-8})}},
   {l:'Làm ngơ, ai làm nấy ăn',f:c=>'Mất vài mối khách.'+fx(c,{money:-m(3)})}]}},
 {id:'w63_ho_tranh_chap',fixed:1,t:'Tranh chấp với láng giềng',k:'Họ khác',
- x:(c,d)=>{const cl=V().w_clan(d.p,d.cl);return cl?`${esc(G.cnameU(cl))} tranh chấp ${pick(['ranh giới thửa ruộng','con mương dẫn nước','lối đi chung','cây đa đầu ngõ'])} với nhà mình. Hai bên đều không chịu nhường.`:'Có tranh chấp.'},
+ x:(c,d)=>{const cl=V().w_clan(d.p,d.cl);return cl?`${esc(G.cnameU(cl))} tranh chấp ${pick(G.landOk()?['ranh giới thửa ruộng','con mương dẫn nước','lối đi chung','cây đa đầu ngõ']:['lối đi chung','cây đa đầu ngõ','giếng nước chung','chỗ đặt gánh hàng ở chợ'])} với nhà mình. Hai bên đều không chịu nhường.`:'Có tranh chấp.'},
  o:(c,d)=>{const cl=V().w_clan(d.p,d.cl);if(!cl)return [{l:'Bỏ qua',f:()=>''}];return [
   {l:'Nhường một phần để giữ hòa khí',s:`Mất khoảng ${fm(m(5))}`,f:c=>{cl.rel=Math.min(100,cl.rel+12);return 'Hai bên giảng hòa, dân làng khen nhà mình rộng lượng.'+fx(c,{money:-m(5),fame:2})}},
   {l:'Kiện lên lý trưởng phân xử',s:`Tốn khoảng ${fm(m(6))}`,c:()=>G.money()>=m(6),r:[{eq:0.6,tri:0.4},DW(cl.fame>S().fame?0.52:0.6,40)],y:c=>{cl.rel=Math.max(-100,cl.rel-10);return 'Lý trưởng phân xử có lợi cho nhà mình.'+fx(c,{money:m(2),fame:2})},n:c=>{cl.rel=Math.max(-100,cl.rel-6);return 'Lý trưởng xử thiên vị họ kia.'+fx(c,{money:-m(12),fame:-2,tam:-6})}},
@@ -290,7 +290,7 @@ return [
  o:(c,d)=>{const cl=V().w_clan(d.p,d.cl);if(!cl)return [{l:'Bỏ qua',f:()=>''}];return [
   {l:'Mang gạo tiền sang giúp tận tình',s:`Tốn khoảng ${fm(m(8))}`,c:()=>G.money()>=m(8),f:c=>{cl.rel=Math.min(100,cl.rel+22);cl.wealth=Math.min(100,cl.wealth+8);cl.last=S().t;G.later(c,'w63_ho_tra_on',R(12,36),{cl:cl.id,p:d.p});return `${esc(G.cnameU(cl))} cảm kích, cả xóm khen nhà mình tử tế.`+fx(c,{money:-m(8),fame:R(2,4),cfame:0.5,tam:3})}},
   {l:'Chỉ hỏi thăm, góp ít gạo',s:`Tốn khoảng ${fm(m(2))}`,c:()=>G.money()>=m(2),f:c=>{cl.rel=Math.min(100,cl.rel+8);return 'Chút lòng thơm thảo cũng đủ ấm lòng.'+fx(c,{money:-m(2),fame:1})}},
-  {l:'Nhân cơ hội mua rẻ đồ đạc, ruộng đất của họ',s:'Được lợi, mất tiếng',f:c=>{cl.rel=Math.max(-100,cl.rel-24);cl.wealth=Math.max(2,cl.wealth-10);return 'Mua được món hời, nhưng ai cũng biết nhà mình thừa nước đục thả câu.'+fx(c,{money:m(12),fame:-4,cfame:-1})}},
+  {l:'Nhân cơ hội mua rẻ đồ đạc của họ',s:'Được lợi, mất tiếng',f:c=>{cl.rel=Math.max(-100,cl.rel-24);cl.wealth=Math.max(2,cl.wealth-10);return 'Mua được món hời, nhưng ai cũng biết nhà mình thừa nước đục thả câu.'+fx(c,{money:m(12),fame:-4,cfame:-1})}},
   {l:'Làm ngơ',f:c=>{cl.rel=Math.max(-100,cl.rel-6);return fx(c,{fame:-1})}}]}},
 {id:'w63_ho_tra_on',fixed:1,t:'Báo đáp ân nghĩa',k:'Họ khác',
  x:(c,d)=>{const cl=V().w_clan(d.p,d.cl);return cl?`${esc(G.cnameU(cl))}, nay đã làm ăn khấm khá lại, mang lễ sang tạ ơn nhà mình đã giúp lúc hoạn nạn.`:'Một người hàng xóm sang tạ ơn.'},

@@ -856,7 +856,7 @@ function jobMatch(e,c){
   return e.job.some(j=>j===c.job||(j.startsWith('biz:')&&c.job==='chu'&&bizOf(c)&&bizOf(c).type===j.slice(4)));
 }
 /* d9.5: sự kiện cho đất, khai hoang, mua ruộng chỉ ra khi nhà có quan hoặc tước (nhà thường không giữ được ruộng) */
-const LANDGIVE=new Set(['nong_ban_ruong_re','t_n_dia_chu_ban','t_n_khai_hoang','t_n_dien_trang_thue','t_q_dong_dien','nong631_khai_hoang','nong631_ruong_cong','d631_goa_phu_hien_dat']);
+const LANDGIVE=new Set(['rg_tranh_ruong','nong_ban_ruong_re','t_n_dia_chu_ban','t_n_khai_hoang','t_n_dien_trang_thue','t_q_dong_dien','nong631_khai_hoang','nong631_ruong_cong','d631_goa_phu_hien_dat']);
 function eligible(e,c){
   if(e.arc||e.fixed)return false;
   if(LANDGIVE.has(e.id)&&!landRight())return false;
@@ -4378,11 +4378,10 @@ function homeSVG(t){
 const PAGES=[
   ['giapha','Gia phả',()=>true],
   ['cosngoi','Cơ ngơi',()=>true],
-  ['ruong','Đất phong',()=>landTotal()>0||farmArea()>0],
+  ['ruong','Đất phong',()=>landTotal()>0||farmArea()>0||tierNow()>=2||(S.proj||[]).length>0], /* d9.5: dự án cơ sở gia tộc nằm ở đây (chủ dự án 21/11) */
   ['kinhdoanh','Kinh doanh',()=>S.biz.length>0||alive().some(p=>Object.keys(BIZ).some(t=>canOwn(p,t)))],
   ['kho','Kho & buôn',()=>Object.values(S.kho).some(v=>v>=1)||S.trips.length>0||alive().some(p=>['tieunhi','hangrong'].includes(p.job)||p.job==='chu')],
   ['bando','Thế giới',()=>true],
-  ['hokhac','Họ khác',()=>true],
   ['quan','Quan trường',()=>alive().some(p=>p.job==='quan'||p.degree>=1||p.exam)],
   ['giatoc','Gia tộc',()=>true],
   ['nhatky','Nhật ký',()=>true]];
@@ -4742,7 +4741,7 @@ function pageCosngoi(){
   const bkHH=[...new Set(bookSweep().map(b=>b.hh))].sort((a,b)=>(b===mainHH())-(a===mainHH()));
   const books=bkHH.map(id=>`<h3>Tàng thư · ${id===mainHH()?'nhà chính':esc(S.hh[id].name)}</h3><ul class="plain">${booksOf(id).map(b=>`<li>"${esc(b.n)}" · nghề ${esc(JOBS[b.job].n.toLowerCase())} · người trong ${id===mainHH()?'nhà chính':'chi'} theo nghề khởi đầu thông thạo ${Math.round(b.lv*0.4)}</li>`).join('')}</ul>`).join('');
   const extra=vac||books?`<section class="card"><span class="eyebrow">Của để lại</span>${vac?`<h3>Nhà để trống</h3><ul class="plain">${vac}</ul>`:''}${books}</section>`:'';
-  return `<div class="grid2">${fund}${mainCard}${offs}${projCard()}${br}${extra}</div>`;
+  return `<div class="grid2">${fund}${mainCard}${offs}${br}${extra}</div>`;
 }
 
 /* ================= ruộng vườn ================= */
@@ -4766,7 +4765,7 @@ function pageRuong(){
    <section class="card"><span class="eyebrow">Gieo trồng</span><h2>Đã chỉ định ${fmt(al)}/${fmt(fld)} mẫu ruộng</h2>
    <p class="kvline muted">Phần chưa chỉ định thì tá điền tự quyết, thường trồng lúa. Chỉ định theo ý mình thì tá điền trồng theo.</p>
    <div class="crops">${crops.map(([k,C])=>{const pr=mk(C.g);return `<div class="crop"><div><b>${C.n}</b> <span class="chip ${pr>1.1?'gold':pr<0.9?'red':''}">giá ×${pr.toFixed(2)}</span><small>Thu tháng ${C.harv.join(', ')} · ~${money(C.y*pr*(REG().crop[k]||1))}/mẫu/năm · rủi ro ${Math.round(C.risk*100)}%</small></div>
-     <div class="stepper"><button class="btn small" data-crop="${k}" data-d="-1" ${(F.alloc[k]||0)<1?'disabled':''} aria-label="Bớt">−</button><b class="num">${F.alloc[k]||0}</b><button class="btn small" data-crop="${k}" data-d="1" ${al>=fld?'disabled':''} aria-label="Thêm">+</button></div></div>`}).join('')}</div></section></div>`;
+     <div class="stepper"><button class="btn small" data-crop="${k}" data-d="-1" ${(F.alloc[k]||0)<1?'disabled':''} aria-label="Bớt">−</button><b class="num">${F.alloc[k]||0}</b><button class="btn small" data-crop="${k}" data-d="1" ${al>=fld?'disabled':''} aria-label="Thêm">+</button></div></div>`}).join('')}</div></section>${projCard()}</div>`;
 }
 
 /* ================= kinh doanh ================= */
@@ -4844,7 +4843,7 @@ function render(){
   const app=document.getElementById('app');
   const tree=document.querySelector('.treescroll');const sx=tree?tree.scrollLeft:0;
   const wy=window.scrollY;
-  const body={giapha:pageGiapha,cosngoi:pageCosngoi,ruong:pageRuong,kinhdoanh:pageKinhdoanh,kho:pageKho,bando:pageBando,hokhac:pageHokhac,quan:pageQuan,giatoc:pageGiatoc,nhatky:pageNhatky}[page]();
+  const body=({giapha:pageGiapha,cosngoi:pageCosngoi,ruong:pageRuong,kinhdoanh:pageKinhdoanh,kho:pageKho,bando:pageBando,quan:pageQuan,giatoc:pageGiatoc,nhatky:pageNhatky}[page]||pageGiapha)();
   app.innerHTML=`<header class="top" id="top">${topHTML()}</header>${navHTML()}<main>${body}</main>`;
   const nt=document.querySelector('.treescroll');
   if(nt){nt.scrollLeft=sx;const n=nt.querySelector(`[data-sel="${sel}"]`);
@@ -5358,7 +5357,6 @@ function w_provPanel(p){
    <div class="acts" style="margin-top:10px">
      <button class="btn small" data-w63="move:${p}" ${blk?'disabled':''}>${p===h?'Đổi nơi ở trong tỉnh':'Dời nhà tới đây'}</button>
      ${p!==h&&RT?`<button class="btn small ghost" data-w63="trade:${p}">Đi buôn tới đây</button>`:''}
-     ${p===h?`<button class="btn small ghost" data-page="hokhac">Xem các họ khác</button>`:''}
    </div>${blk&&p!==h?`<p class="note" style="margin-top:6px">${esc(blk)}</p>`:''}`}
 function w_situation(){
   const W=S.w;
@@ -5379,17 +5377,7 @@ function pageBando(){
    <section class="card">${w_provPanel(p)}</section>
    <section class="card" style="grid-column:1/-1">${w_situation()}</section></div>`}
 /* ---------- họ khác ---------- */
-function pageHokhac(){
-  if(!S.w)w_ensure(S);
-  const L=w_clans().slice().sort((a,b)=>b.fame-a.fame);const P0=PROV[S.loc.p];const ours=w_ourKind();
-  const relTxt=r=>r>=60?'thân thiết':r>=25?'mến':r>-15?'xa lạ':r>-45?'bất hòa':'thù oán';
-  return `<div class="grid1">${houseCard()}<section class="card"><span class="eyebrow">${esc(locName())}</span><h2>Các họ quanh vùng</h2>
-   <p class="kvline">${L.length} dòng họ cùng sống ở ${esc(P0.n)}. Họ nhà mình làm ${CJOB63[ours]}, những họ cùng nghề sẽ là đối thủ làm ăn.</p>
-   <div class="clans">${L.map(c=>{const rival=c.job===ours;return `<div class="clanrow">
-     <div><b>${c.house?esc(c.sur)+' Gia':'Họ '+esc(c.sur)}</b> <span class="chip ${c.house||c.fame>=150?'gold':''}">${c.house?HOUSE_TIER[c.house.tier]:c.fame>=150?'Danh gia':c.fame>=70?'Có tiếng':'Thường dân'}</span> ${rival?'<span class="chip red">cùng nghề</span>':''} ${c.feud?'<span class="chip red">thù oán</span>':''} ${c.mar?`<span class="chip">thông gia ×${c.mar}</span>`:''}
-       <small class="muted">Gia chủ ${esc(c.house?cHeadFull(c):c.head.given)} (${c.head.age} tuổi, ${c.head.tr}) · ${CJOB63[c.job]} · ${w_wealthTxt(c.wealth)} · danh vọng ${Math.round(c.fame)}</small>
-       <small>Quan hệ với nhà mình: <b class="${c.rel>=25?'up':c.rel<=-15?'down':''}">${relTxt(c.rel)}</b> (${Math.round(c.rel)})</small></div>
-     <div class="acts"><button class="btn small" data-w63="gift:${c.id}">Biếu quà</button>${c.feud||c.rel<=-25?`<button class="btn small ghost" data-w63="peace:${c.id}">Hòa giải</button>`:''}${c.kids.some(k=>k.age>=16&&k.age<=32)?`<button class="btn small ghost" data-w63="wed:${c.id}">Hỏi thông gia</button>`:''}</div></div>`}).join('')}</div></section></div>`}
+/* d9.5: trang Họ khác đã bỏ (chủ dự án 21/11): quan hệ với họ khác chỉ đổi qua sự kiện, hôn nhân, giao thương. */
 /* ---------- hành động ---------- */
 /* ---------- v6.3.4: biếu quà tính theo thân phận người nhận ---------- */
 /* lễ vừa phải là mức hợp với danh vọng và của cải của họ nhận, không phụ thuộc túi tiền nhà mình;
