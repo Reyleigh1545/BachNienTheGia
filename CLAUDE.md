@@ -224,7 +224,7 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 - Bộ phần thưởng kết phụ T4 đến T11 (bảng `WPREW` trong `engine.js`, mô tả ở mục 6): số do Claude đặt nhẹ, chưa duyệt.
 - 39 món gia bảo (`data-giabao.js`) và công thức ô gia bảo (1 + một ô mỗi 6 kết + một ô mỗi 3 điểm, tối đa 3): chưa duyệt.
 - 14 sự kiện `cv_*` (`ev-cotran.js`): tần suất tự ra trong ván thường, câu chữ, tiền, chỉ số chưa chơi tay; bot đã chạy đủ ba chuỗi cả nhánh thắng lẫn thua, không lỗi. Muốn bỏ thì xóa file và thẻ `<script>`.
-- 34 sự kiện bộ nhớ thêm ở d9.5 (`events-mem.js`): có thể làm một số sự kiện hiếm ra hơn dự tính vì bị chặn theo ký ức; chưa đo.
+- 34 sự kiện bộ nhớ thêm ở d9.5 (`events-mem.js`): có thể làm một số sự kiện hiếm ra hơn dự tính vì bị chặn theo ký ức; đã đo sơ bộ: ba ván bot 40 năm (nhà chỉ 1 đến 2 người, không cưới) cho 0, 1 và 4 trong số 45 sự kiện bị chặn bằng ký ức ra ít nhất một lần (`gap_lai_ban_cu`, `lw_10`, `gj_63`, `lw_70`, `c631_lam_chung_giay_to`), nên chưa thấy bị chặn đến mức không bao giờ ra; ván có gia đình đông (nhiều quan hệ) sẽ ra nhiều hơn, cần chơi tay mới chắc.
 
 (không có ý mới nào đang chờ code. Ý 21/11 đã làm xong ở d9.5 và chuyển thành luật ở mục 2, 5, 6, 9, 11: sửa sự kiện họ khác nhắc ruộng, bỏ trang Họ khác, chuyển dự án sang Đất phong, hộp Dừng hay đi tiếp, gia bảo, bộ nhớ sự kiện, cốt truyện từ tiểu thuyết trong `ev-cotran.js`.)
 
