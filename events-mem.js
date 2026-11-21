@@ -59,5 +59,21 @@ window.EVMEM=Object.assign(window.EVMEM||{},{
  n633_hr_gui:{led:{k:'cuu',lab:/Giúp|Nhận|Đưa/}},
  c631_day_chu_ban_dem:{led:{k:'day_hoc',lab:/Mở|Dạy|Nhận/}},
  d631_nguoi_bao_tro_hoc:{led:{k:'an',lab:/Nhận|Cảm tạ/}},
- w63_ho_gia_nan:{led:{k:'cuu',lab:/Giúp|Cho|Gửi|Mang/}}
+ w63_ho_gia_nan:{led:{k:'cuu',lab:/Giúp|Cho|Gửi|Mang/}},
+ /* d9.5: lô bộ nhớ thứ hai (đọc: người quen, họ hàng, đồng liêu chỉ tìm đến khi đã có quan hệ; ghi: gây oán, giúp, dự tiệc, tha) */
+ tk_a:{mem:{any:['gap','an']}},
+ n633_nd_quen:{mem:{any:['gap']},led:{k:'tha',lab:/Tha|Bỏ qua/}},
+ v64_ho_hang_len_nho:{mem:{any:['gap','cuu']},led:{k:'cuu',lab:/Giúp|Nhận|Cho/}},
+ lw_10:{mem:{any:['gap','cuu']}},
+ dh_36:{mem:{any:['gap']}},
+ c631_lam_chung_giay_to:{mem:{any:['gap','cuu']},led:{k:'cuu',lab:/Làm chứng|Đứng ra/}},
+ qt1_dong_lieu_nan:{mem:{any:['gap','cuu']},led:{k:'cuu',lab:/Giúp|Cứu|Che/}},
+ v64_vo_cam_y:{mem:{any:['gap']}},
+ qh_tro_gioi_b:{mem:{need:['day_hoc']}},
+ rg_chen_ep:{led:{k:'oan',lab:/Cự lại/}},
+ w63_ho_tranh_chap:{led:{k:'oan',lab:/dọa nạt/}},
+ rg_tranh_ruong:{led:{k:'oan',lab:/phá bờ/}},
+ q_tiec_dong_lieu:{led:{k:'gap',lab:/Dự|Đến|Mời/}},
+ v63_k_cao_nhan:{led:{k:'day_hoc',lab:/Xin|Học|Nhận/}},
+ rd_tai_ngo:{mem:{any:['gap','cuoi']}}
 });

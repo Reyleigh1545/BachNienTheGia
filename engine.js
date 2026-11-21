@@ -856,7 +856,7 @@ function jobMatch(e,c){
   return e.job.some(j=>j===c.job||(j.startsWith('biz:')&&c.job==='chu'&&bizOf(c)&&bizOf(c).type===j.slice(4)));
 }
 /* d9.5: sự kiện cho đất, khai hoang, mua ruộng chỉ ra khi nhà có quan hoặc tước (nhà thường không giữ được ruộng) */
-const LANDGIVE=new Set(['rg_tranh_ruong','nong_ban_ruong_re','t_n_dia_chu_ban','t_n_khai_hoang','t_n_dien_trang_thue','t_q_dong_dien','nong631_khai_hoang','nong631_ruong_cong','d631_goa_phu_hien_dat']);
+const LANDGIVE=new Set(['qd_hao_cuong','v61_ta_dien_tron','v61_ta_dien_on','v61_ta_dien_xin_giam','c631_ta_dien_xin_giam','lo_24','tg_40','kn_17','dh_66','lw_26','lw_32','lw_37','lw_21','rv_thon_tinh','pm_k6','rg_tranh_ruong','nong_ban_ruong_re','t_n_dia_chu_ban','t_n_khai_hoang','t_n_dien_trang_thue','t_q_dong_dien','nong631_khai_hoang','nong631_ruong_cong','d631_goa_phu_hien_dat']);
 function eligible(e,c){
   if(e.arc||e.fixed)return false;
   if(LANDGIVE.has(e.id)&&!landRight())return false;
@@ -4684,7 +4684,8 @@ function pageBandoOld(){
 function fameWhy(){const row=(o,lb)=>{const e=Object.entries(o||{}).filter(([k,v])=>Math.abs(v)>=0.5).sort((x,y)=>x[1]-y[1]);if(!e.length)return '';const t=e.reduce((s,[k,v])=>s+v,0);return `<small class="muted">${lb}: ${t>=0?'+':''}${Math.round(t)}</small><br>`+e.map(([k,v])=>`<small>${esc(k)}: <b class="num ${v<0?'down':'up'}">${v>=0?'+':''}${Math.round(v)}</b></small>`).join('<br>')+'<br>'};return row(S.fw,'Năm nay')+row(S.fwPrev,'Năm ngoái')||'<small class="muted">Chưa có biến động</small>'}
 function pageGiatoc(){
   const ti=tierIdx();const nx=TIERS[ti+1];const titled=alive().filter(p=>p.tuoc);const wait=(S.ruleT||-99)+12-S.t;
-  return `<div class="grid2"><section class="card"><span class="eyebrow">${I('tier','Gia thế')}</span><h2>${tierName()}</h2>
+  const gbCard=(S.gb&&S.gb.length)?`<section class="card"><span class="eyebrow">Gia bảo của họ ${esc(S.surname)}</span><ul class="plain">${S.gb.map(id=>{const it=gbItems()[id];return it?`<li><b>${esc(it.n)}</b> <small class="muted">${esc(it.d)}</small></li>`:''}).join('')}</ul></section>`:'';
+   return `<div class="grid2">${gbCard}<section class="card"><span class="eyebrow">${I('tier','Gia thế')}</span><h2>${tierName()}</h2>
    <dl class="kv"><dt>Điểm gia thế</dt><dd class="num">${fmt(tierScore())}${nx?` / ${fmt(nx[1])}`:''}</dd><dt>${I('fame','Danh vọng')}</dt><dd class="num">${fmt(S.fame)}</dd><dt>Tăng giảm</dt><dd>${fameWhy()}</dd><dt>Tài sản</dt><dd class="num">${money(wealth())}</dd>
    <dt>${I('hung','Hưng thịnh')}</dt><dd class="num">${Math.round(S.hung)}</dd><dt>${I('on','Ổn định')}</dt><dd class="num">${Math.round(S.on)}</dd><dt>${I('duyen','Cơ duyên gia tộc')}</dt><dd class="num">${Math.round(famLuck())}</dd>
    <dt>Tước vị</dt><dd>${titled.length?titled.map(p=>`${esc(nameOf(p))}: ${TUOC[p.tuoc]}`).join(', '):'Chưa có'}</dd>
@@ -6319,7 +6320,8 @@ function metaFlag(k){if(DRY)return;const m=meta();m.flags=m.flags||{};m.flags[k]
 const unlockedKey=k=>{if(!k)return true;const m=meta();return !!((m.flags&&m.flags[k])||(m.end&&m.end[k]))};
 /* d9.5: gia bảo (data-giabao.js). Mỗi kết ghi một lần mỗi ván; ván tiếp tục sau kết thắng phụ thì kết sau vẫn ghi. */
 const gbItems=()=>(window.D.GIABAO&&window.D.GIABAO.items)||{};
-function gbGrant(m,endId){const I=gbItems();const pool=Object.keys(I).filter(k=>I[k].end===endId);if(!pool.length)return null;m.gb=m.gb||{};const fresh=pool.filter(k=>!m.gb[k]);const k=pick(fresh.length?fresh:pool);m.gb[k]=(m.gb[k]||0)+1;return Object.assign({id:k,fresh:fresh.length>0},I[k])}
+function gbGrant(m,endId){const I=gbItems();const pool=Object.keys(I).filter(k=>I[k].end===endId);if(!pool.length)return null;m.gb=m.gb||{};const fresh=pool.filter(k=>!m.gb[k]);if(!fresh.length)m.gbPts=(m.gbPts||0)+1; /* đủ món của kết này: cộng điểm gia bảo thay cho món mới */
+  const k=pick(fresh.length?fresh:pool);m.gb[k]=(m.gb[k]||0)+1;return Object.assign({id:k,fresh:fresh.length>0},I[k])}
 function gbOwned(){const m=meta();const I=gbItems();return Object.keys(m.gb||{}).filter(k=>I[k]).map(k=>Object.assign({id:k},I[k]))}
 function gbSlots(){const G0=window.D.GIABAO;const m=meta();return G0&&G0.slots?G0.slots(Object.keys(m.end||{}).length):1}
 function gbApply(ids){if(!ids||!ids.length)return;const I=gbItems();const h=head();S.gb=[];ids.forEach(id=>{const it=I[id];if(!it)return;const f=it.fx||{};if(f.m)S.money+=f.m;if(f.fame)S.fame+=f.fame;if(f.hung)S.hung=Math.min(100,S.hung+f.hung);if(f.on)S.on=Math.min(100,S.on+f.on);if(f.tk)S.tk=1;if(h){if(f.duyen)h.duyen=Math.min(100,(h.duyen||0)+f.duyen);for(const k in (f.st||{}))h[k]=Math.min(100,(h[k]||0)+f.st[k])}S.gb.push(id);log(`Gia bảo của họ ${S.surname}: ${it.n}. ${it.d}`,'gd')})}
@@ -6404,7 +6406,7 @@ function historyMenu(){const m=meta();const E=window.D.ENDINGS;const got=k=>(m.e
   openModal(`<span class="eyebrow">Sử sách</span><h2>Những trang đã viết</h2>
    <h3 style="margin:8px 0 4px;font-size:14px">Kết cục · ${E.filter(x=>got(x.id)).length}/${E.length}</h3>
    <div class="choices">${E.map(x=>`<div class="btn" style="cursor:default;${got(x.id)?'':'opacity:.5'}"><strong>${got(x.id)?esc(x.n):'???'}${got(x.id)>1?` ×${got(x.id)}`:''}</strong><small>${got(x.id)?esc(x.t):(x.kind==='win'?'Một kết cục tốt chưa đạt':'Một kết cục buồn chưa gặp')}</small></div>`).join('')}</div>
-   <h3 style="margin:10px 0 4px;font-size:14px">Gia bảo · ${gbOwned().length}/${Object.keys(gbItems()).length}</h3>
+   <h3 style="margin:10px 0 4px;font-size:14px">Gia bảo · ${gbOwned().length}/${Object.keys(gbItems()).length}${(meta().gbPts||0)?' · điểm gia bảo '+meta().gbPts:''}</h3>
    <ul class="plain">${gbOwned().map(g=>`<li><b>${esc(g.n)}</b> <small class="muted">(${esc(((window.D.ENDINGS||[]).find(x=>x.id===g.end)||{}).n||g.end)}) ${esc(g.d)}</small></li>`).join('')||'<li class="muted">Chưa có món nào. Mỗi cái kết đạt được cho một món gia bảo ngẫu nhiên.</li>'}</ul>
    <h3 style="margin:10px 0 4px;font-size:14px">Xuất thân mở khóa</h3>
    <ul class="plain">${og.map(([k,o])=>`<li><b>${unlockedKey(o.lock)?esc(o.n):'???'}</b> <small class="muted">${unlockedKey(o.lock)?esc(o.d):'Chưa mở'}</small></li>`).join('')}</ul>
