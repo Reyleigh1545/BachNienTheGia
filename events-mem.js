@@ -75,5 +75,14 @@ window.EVMEM=Object.assign(window.EVMEM||{},{
  rg_tranh_ruong:{led:{k:'oan',lab:/phá bờ/}},
  q_tiec_dong_lieu:{led:{k:'gap',lab:/Dự|Đến|Mời/}},
  v63_k_cao_nhan:{led:{k:'day_hoc',lab:/Xin|Học|Nhận/}},
- rd_tai_ngo:{mem:{any:['gap','cuoi']}}
+ rd_tai_ngo:{mem:{any:['gap','cuoi']}},
+ /* d9.5: lô ba (ghi khi nhận học trò, cứu bạn, giúp người; đọc khi họ hàng hoặc nhà quyền quý chỉ tìm đến người đã quen) */
+ t_g_hoc_bong:{led:{k:'day_hoc',lab:/Nhận|Dạy/}},
+ t_g_hoc_nghe:{led:{k:'day_hoc',lab:/Nhận|Dạy/}},
+ t_q_cuu_dong_doi:{led:{k:'cuu',lab:/Cõng|Cứu/}},
+ t_c_quy_nhan:{led:{k:'an',lab:/Nhận|Cảm tạ/}},
+ t_c_doi_cong:{led:{k:'gap',lab:/Đổi|Nhận/}},
+ y_nguoi_ngheo:{led:{k:'cuu',lab:/Chữa|Cho|Giúp/}},
+ qa_tu_nguc:{led:{k:'cuu',lab:/Giúp|Cứu|Đưa/}},
+ v62_xg_ve_tham:{mem:{any:['gap','cuoi']}}
 });
