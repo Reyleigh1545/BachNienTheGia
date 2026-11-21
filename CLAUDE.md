@@ -220,7 +220,13 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 ## 10. Ý mới của chủ dự án, chưa làm (chép nguyên văn)
 
-(không có ý nào đang chờ. Ý 21/11 đã làm xong ở d9.5 và chuyển thành luật ở mục 2, 5, 6, 9, 11: sửa sự kiện họ khác nhắc ruộng, bỏ trang Họ khác, chuyển dự án sang Đất phong, hộp Dừng hay đi tiếp, gia bảo, bộ nhớ sự kiện, cốt truyện từ tiểu thuyết trong `ev-cotran.js`.)
+**Chờ chủ dự án duyệt hoặc chơi tay (đã làm xong về mã, chưa có xác nhận):**
+- Bộ phần thưởng kết phụ T4 đến T11 (bảng `WPREW` trong `engine.js`, mô tả ở mục 6): số do Claude đặt nhẹ, chưa duyệt.
+- 39 món gia bảo (`data-giabao.js`) và công thức ô gia bảo (1 + một ô mỗi 6 kết + một ô mỗi 3 điểm, tối đa 3): chưa duyệt.
+- 14 sự kiện `cv_*` (`ev-cotran.js`): tần suất tự ra trong ván thường, câu chữ, tiền, chỉ số chưa chơi tay; bot đã chạy đủ ba chuỗi cả nhánh thắng lẫn thua, không lỗi. Muốn bỏ thì xóa file và thẻ `<script>`.
+- 34 sự kiện bộ nhớ thêm ở d9.5 (`events-mem.js`): có thể làm một số sự kiện hiếm ra hơn dự tính vì bị chặn theo ký ức; chưa đo.
+
+(không có ý mới nào đang chờ code. Ý 21/11 đã làm xong ở d9.5 và chuyển thành luật ở mục 2, 5, 6, 9, 11: sửa sự kiện họ khác nhắc ruộng, bỏ trang Họ khác, chuyển dự án sang Đất phong, hộp Dừng hay đi tiếp, gia bảo, bộ nhớ sự kiện, cốt truyện từ tiểu thuyết trong `ev-cotran.js`.)
 
 ---
 
