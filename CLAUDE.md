@@ -237,7 +237,7 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 - **Q11:** đã sửa 12 sự kiện chọn người thật (7 ở đợt đầu, thêm `h_ng_duyet`, `h_du_phatthuoc`, `stf_death`, `lw_33`, `dh_76`); `rg_dam_tang` và `hg_n_thu` đã chuyển sang chọn người (code có `go`/`pickKin`, chỉ hiện khi có dữ liệu họ khác nên test rời không thấy). Đã thêm `lh_quan_cau_than` (gả sang nhà quan, tính vào `S.tgq`) và `kinh_dua_nguoi` (cử người lên kinh, cờ `flags.kinh`), cả hai chọn người thật và cộng vào `clanSupport` (file `ev-v670o.js`). **Còn:** các chuỗi cốt truyện dài hơn cho hai việc này; `t_danh_tuong`, `bat_linh`, `qn631_gac_ai`, `vil_l_tho`, `xg_cau_hon`, `tt_tuyen_tu`, `vil_p_hon`, `c631_tien_cu_huong_truong` xét lại thấy người đi chính là người đang gặp việc nên không cần chọn.
 - **Q14:** đã làm mốc góp 30, 50, 80 và quỹ chi; di chúc nay chuyển thuế thừa kế và phần hiến về quỹ đúng hộ của người mất (`fundAdd`, trước đây chi họ nộp nhầm vào quỹ nhà chính); chưa rà hết các nơi dùng tiền riêng và quỹ (di chúc, tang lễ, dự án, thuế, mưu đại sự, bảng thu chi, giao diện công quỹ).
 - **Q15:** đã hiện ảnh người liên quan và bấm xem; chưa chụp lại ảnh mẫu bản hiện tại để chủ dự án chỉnh.
-- **R2:** NPC giữ ghế đã thật hơn; chưa tăng tần suất họ xuất hiện trong sự kiện.
+- **R2:** NPC giữ ghế đã thật hơn; thêm 5 sự kiện `tq_*` mới trong `ev-v670p.js` (thượng quan nhờ việc, đồng liêu mượn tiền, nhận công, mừng thọ, bị hặc) đổi cảm tình người thật. Mới kiểm cú pháp và nạp, chưa chạy với người có ghế.
 - **Câu hỏi chưa quyết:** danh sách việc lớn; phần thưởng kết phụ T4 đến T11; 39 món gia bảo; 43 sự kiện `cv_*`; 73 id bộ nhớ.
 
 ---
