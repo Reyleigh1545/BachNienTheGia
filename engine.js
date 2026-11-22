@@ -1051,6 +1051,32 @@ function pickKin(c,cfg){const L=cfg.list||kinList(c,cfg.filter);
   openModal(`<span class="eyebrow">${cfg.eyebrow||'Việc nhà'} · ${dateStr(S.t)}</span><h2>${esc(cfg.title)}</h2><p>${cfg.text||'Chọn một người trong nhà. Người ấy sẽ thật sự đảm nhận việc này và chịu hậu quả của nó.'}</p><div class="choices">${L.map(row).join('')}<button class="btn ghost" data-pk="">Thôi, không làm</button></div>`);
   M.querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>{const id=b.dataset.pk;if(!id){closeModal();return}const w=P(id);if(!w)return;let r='';try{r=cfg.cb(w)||''}catch(e){console.error(e);r='Mọi chuyện trôi qua.'}
     if(S.over)return;log(`${nameOf(c)} · ${cfg.title}: ${nameOf(w)}. ${String(r).replace(/<[^>]+>/g,' ').slice(0,160)}`,'gd');infoPopup(c,cfg.eyebrow||'Việc nhà',cfg.title,r,null)})}
+/* ================= d9.6 Q7: VIỆC LỚN (chủ dự án 22/11) =================
+   Thay cho hộp mơ hồ "Dấn thân vào việc lớn" ở mốc thông thạo 100. Người đạt mốc (thông thạo 100 hoặc một chỉ số từ 100) thấy trên trang mình nút "Việc lớn" với danh sách việc CÓ THỂ làm,
+   mỗi việc ghi rõ: điều kiện, giá, thời gian, khả năng thành (chữ), hậu quả khi thành và khi bại. Chọn một việc thì trả giá ngay, người ấy làm trong N tháng rồi có kết quả. */
+const BIGS=[
+ {id:'sach',n:'Soạn một bộ sách để đời',d:'Viết ra điều mình đúc kết cả đời nghề.',need:c=>(c.m||0)>=100||c.tri>=100,jobs:null,cost:15,mo:[24,36],odds:c=>0.5+c.tri/400,win:'danh vọng +40, trí +3',lose:'tốn công vô ích, tâm trạng giảm',ok:c=>fx(c,{fame:40,tri:3,tam:6}),ko:c=>fx(c,{tam:-6})},
+ {id:'lop',n:'Mở lớp truyền nghề rộng rãi',d:'Dạy hết những gì mình biết cho người trẻ trong họ và trong vùng.',need:c=>(c.m||0)>=100&&c.eq>=50,jobs:null,cost:25,mo:[18,30],odds:c=>0.55+c.eq/300,win:'người trẻ trong họ học nghề nhanh hơn, danh vọng +25, hưng thịnh +2',lose:'ít người theo học, danh vọng -2',ok:c=>{alive().filter(p=>inClan(p)&&age(p)<18).forEach(p=>{p.pre=p.pre||{};p.pre[c.job]=(p.pre[c.job]||0)+8});return fx(c,{fame:25,hung:2,tam:5})},ko:c=>fx(c,{fame:-2,tam:-3})},
+ {id:'kiettac',n:'Làm một kiệt tác',d:'Dốc hết tay nghề vào một tác phẩm để người sau nhắc tên.',need:c=>(c.m||0)>=100,jobs:['tho','det','nghe','mo','diaky','chan'],cost:30,mo:[18,30],odds:c=>0.5+c.mi/400+c.tri/600,win:'danh vọng +50, bán được giá lớn',lose:'tác phẩm hỏng, tâm trạng giảm',ok:c=>fx(c,{fame:50,money:mm(200),tam:8}),ko:c=>fx(c,{tam:-7})},
+ {id:'daibuon',n:'Chuyến buôn đường dài',d:'Gom vốn đi một chuyến buôn xa, lãi lớn nếu thông suốt.',need:c=>(c.m||0)>=100||c.eq>=100,jobs:['chu','tieunhi','hangrong','tieu'],cost:120,mo:[6,12],odds:c=>0.5+c.eq/300,win:'lãi gấp năm lần vốn, danh vọng +8',lose:'mất vốn, sức khỏe giảm',ok:c=>fx(c,{money:mm(600),fame:8,tam:5}),ko:c=>fx(c,{suc:-4,tam:-6})},
+ {id:'phongchua',n:'Mở phòng chữa bệnh cho dân nghèo',d:'Chữa không lấy tiền cho người nghèo trong vùng.',need:c=>(c.m||0)>=100,jobs:['y'],cost:30,mo:[12,24],odds:c=>0.55+c.tri/400,win:'danh vọng +45, hưng thịnh +3, ổn định +2',lose:'thuốc thiếu, tiếng không vang, tâm trạng giảm',ok:c=>fx(c,{fame:45,hung:3,on:2,tam:6}),ko:c=>fx(c,{tam:-4})},
+ {id:'bequan',n:'Bế quan luyện tuyệt học',d:'Rút khỏi mọi việc để luyện một môn tuyệt học.',need:c=>c.vo>=100||c.tri>=100,jobs:null,cost:5,mo:[12,24],odds:c=>0.5+c.suc/400,win:'chỉ số mạnh nhất +4',lose:'tẩu hỏa nhập ma: sức khỏe -12, tâm trạng -8',ok:c=>{const k=['tri','vo','mi','eq'].sort((a,b)=>c[b]-c[a])[0];return fx(c,{[k]:4,tam:6})},ko:c=>fx(c,{suc:-12,tam:-8})},
+ {id:'depgiac',n:'Xin dẹp một toán giặc',d:'Xin lệnh đem quân dẹp một toán giặc cỏ.',need:c=>c.job==='quan_ngu'&&c.lv>=3,jobs:['quan_ngu'],cost:50,mo:[6,12],odds:c=>0.45+c.vo/400,win:'chiến công +60 tới +120, danh vọng +25',lose:'thua trận: chiến công -5, sức khỏe -10, danh vọng -6',ok:c=>fx(c,{merit:R(60,120),fame:25,tam:6}),ko:c=>fx(c,{merit:-5,suc:-10,fame:-6,tam:-6})},
+ {id:'ketgiao',n:'Kết giao với một nhà có thế',d:'Bỏ công bỏ lễ kết thân với một nhà lớn trong vùng.',need:c=>c.eq>=80||(c.m||0)>=100,jobs:null,cost:60,mo:[12,12],odds:c=>0.55+c.eq/300,win:'danh vọng +20, ổn định +3, hưng thịnh +3',lose:'mất lễ, danh vọng -3',ok:c=>fx(c,{fame:20,on:3,hung:3,tam:4}),ko:c=>fx(c,{fame:-3,tam:-3})},
+ {id:'hocphai',n:'Lập một học phái riêng',d:'Hợp nhiều người cùng chí hướng thành một học phái mang tên mình.',need:c=>c.tri>=100,jobs:['su','y','nghe','quan'],cost:60,mo:[36,60],odds:c=>0.4+c.tri/300,win:'danh vọng +80, trí +3',lose:'học phái tan, danh vọng -5',ok:c=>fx(c,{fame:80,tri:3,tam:8}),ko:c=>fx(c,{fame:-5,tam:-6})},
+ {id:'xuan',n:'Xét một vụ án lớn',d:'Nhận một vụ án lớn còn tồn đọng ở địa hạt, xét cho thấu lý.',need:c=>c.job==='quan'&&c.lv>=3,jobs:['quan'],cost:10,mo:[6,12],odds:c=>0.5+c.tri/300,win:'danh vọng +40, liêm chính +2',lose:'án không rõ, bị đàn hặc nhẹ: danh vọng -4',ok:c=>fx(c,{fame:40,liem:2,tam:5}),ko:c=>fx(c,{fame:-4,tam:-4})}
+];
+const bigWord=p=>p>=0.75?'khá chắc':p>=0.6?'nhiều hy vọng':p>=0.45?'năm ăn năm thua':'khó';
+function bigAvail(c){if(!c||c.dead!=null||age(c)<20||c.away||c.brk||c.viec)return [];return BIGS.filter(b=>(!b.jobs||b.jobs.includes(c.job))&&b.need(c))}
+function bigMenu(c){const L=bigAvail(c);
+  if(!L.length)return infoPopup(c,'Việc lớn','Chưa có việc lớn nào',`${esc(c.given)} chưa đủ điều kiện cho việc lớn nào (cần thông thạo 100 hoặc một chỉ số từ 100, và hợp nghề).`);
+  openModal(`<span class="eyebrow">Việc lớn</span><h2>${esc(c.given)} muốn làm gì</h2><p>Mỗi việc lớn tốn tiền ngay, mất vài tháng đến vài năm, rồi thành hoặc bại. Hậu quả ghi rõ bên dưới.</p><div class="choices">${L.map((b,i)=>{const p=Math.max(0.1,Math.min(0.9,b.odds(c)));return `<button class="btn" data-bg="${i}" ${S.money<mm(b.cost)?'disabled':''}><strong>${esc(b.n)} · ${money(mm(b.cost))}, ${b.mo[0]===b.mo[1]?b.mo[0]:b.mo[0]+' đến '+b.mo[1]} tháng</strong><small>${esc(b.d)} Khả năng thành: ${bigWord(p)}. Thành: ${esc(b.win)}. Bại: ${esc(b.lose)}.</small></button>`}).join('')}<button class="btn ghost" data-bx>Thôi</button></div>`);
+  M.querySelector('[data-bx]').onclick=closeModal;
+  M.querySelectorAll('[data-bg]').forEach(x=>x.onclick=()=>{const b=L[+x.dataset.bg];const v=mm(b.cost);if(S.money<v)return;S.money-=v;const mo=R(b.mo[0],b.mo[1]);c.viec={id:b.id,start:S.t,end:S.t+mo};log(`${nameOf(c)} bắt đầu việc lớn: ${b.n.toLowerCase()}, dự kiến ${mo} tháng. Tốn ${money(v)}.`,'gd');closeModal()})}
+function bigDone(c){const v=c.viec;c.viec=null;const b=BIGS.find(x=>x.id===(v&&v.id));if(!b||c.dead!=null){setTimeout(nextPopup,0);return}
+  const p=Math.max(0.1,Math.min(0.9,b.odds(c)));const AD=window.BN_ADMIN;const x=AD&&AD.rollX?AD.rollX(p,{}):Math.random();const win=x<p;
+  let r='';try{r=win?b.ok(c):b.ko(c)}catch(e){r=''}
+  infoPopup(c,'Việc lớn',(win?'Thành: ':'Bại: ')+b.n,win?`Sau bao tháng công phu, việc lớn của ${esc(c.given)} đã thành.${r}`:`Việc lớn của ${esc(c.given)} không thành.${r}`)}
 function infoPopup(c,eyebrow,title,text,after){
   if(DRY)return;
   openModal(`${c?headerFor(c):''}<span class="eyebrow">${eyebrow}</span><h2>${esc(title)}</h2><p>${text}</p><div class="choices"><button class="btn primary" data-ok>Tiếp tục</button></div>`);
@@ -1111,6 +1137,7 @@ function showPopup(it,c){
     case 'ms':if(!c.brk&&gateCap(c,it.k)===it.t)return msPopup(c,it.k,it.t);skip();return;
     case 'ttl':return ttlPopup(c,it);
     case 'wpend':return wpPopup(it);
+    case 'big':if(c.viec||true)return bigDone(c);skip();return;
     case 'thienco':if(!c.brk)return thiencoPopup(c,it);skip();return;
     case 'ly':return lyPopup(c,it);
     case 'tumat':return tumatPopup(c,it);
@@ -4336,6 +4363,7 @@ function v62Month(){
   ensure62();
   alive().forEach(c=>{if(!inClan(c))return;const a=age(c);
     if(c.away&&c.away.until&&S.t>=c.away.until&&['odo','sep'].includes(c.away.type)){const t=c.away.type;c.away=null;if(t==='odo'){log(`${nameOf(c)} hết hạn ở đợ, trở về nhà.`,'gd');addStat(c,'tam',10)}else log(`${nameOf(c)} trở về sau thời gian ly thân.`)}
+    if(c.viec&&!c.viec.q&&S.t>=c.viec.end){c.viec.q=1;enqueue('big',c.id,{})}
     jobGrow(c);kidLearn(c,a);oanTick(c);thiencoTick(c);ctTick(c)});
   loveTick();outsTick();debtTick();ruleMonth();
   if(S.on<30&&chance(0.03)){const ps=alive().filter(p=>age(p)>=14&&!p.away&&!isHead(p));if(ps.length)enqueue('ev',pick(ps).id,{ev:pick(['v62_on_trom_nha','v62_on_bo_nha','v62_on_cai_va'])})}
@@ -4601,6 +4629,8 @@ function sheetHTML(c){
   else h+=`<div class="kvline muted">${c.job==='huu'?'An hưởng tuổi già':c.flags.jobRetry>S.t?'Trượt phỏng vấn, đợi năm sau':'Chưa có nghề'}</div>`;
   h+=`<div class="acts">`;
   const can=(k,l,dis)=>h+=`<button class="btn small" data-do="${k}" ${dis?'disabled':''}>${l}</button>`;
+  if(bigAvail(c).length)can('big','Việc lớn');
+  if(c.viec){const bb=BIGS.find(x=>x.id===c.viec.id);h+=`<span class="kvline muted">Đang làm việc lớn: ${bb?esc(bb.n.toLowerCase()):''}, xong khoảng ${dateStr(c.viec.end)}</span>`}
   if(c.job==='quan_ngu'&&a>=16)can('resign','Xin giải ngũ');
   if(!c.away){
     if(a>=16&&!['quan','vua','nguy','quan_ngu','hiep'].includes(c.job))can('job',c.job==='none'||c.job==='huu'?'Chọn nghề':'Đổi nghề',c.flags.jobRetry>S.t);
@@ -4676,6 +4706,7 @@ function bindSheet(c){
     if(k==='office'){const w=c.job==='quan'?promoWhy(c):'';if(w)return infoPopup(c,'Hoạn lộ','Chưa đến lúc',`${esc(c.given)} ${esc(w)}.`);return officePopup(c)}
     if(k==='resign')return c.job==='quan_ngu'?dischargePopup(c):resignPopup(c);
     if(k==='school')return schoolPopup(c,a<10?1:a<14?2:3);
+    if(k==='big')return bigMenu(c);
     if(k==='jh')return jhPopup(c);
     if(k==='mai')return matchmaker(c);
     if(k==='expel')return expelPopup2(c);
