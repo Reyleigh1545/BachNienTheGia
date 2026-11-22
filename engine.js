@@ -558,7 +558,7 @@ function checkMilestones(c,a){
   if(a<8)return;
   gateCheck(c,a);
   if(a>=16&&!['none','vua','huu','quan_ngu','chu','noi'].includes(c.job)){const l=c.mms[c.job]=c.mms[c.job]||[];
-    for(let t=20;t<=120;t+=20)if(c.m>=t&&!l.includes(t)){l.push(t);enqueue('mm',c.id,{t})}}
+    for(let t=20;t<=120;t+=20)if(c.m>=t&&!l.includes(t)){l.push(t)}} /* d9.6: bỏ hộp thông thạo (chủ dự án 22/11); mốc 100 sẽ chuyển sang hệ thống Việc lớn */
   if(['y'].includes(c.job)&&c.m>=80&&c.tri>=80&&!c.flags.ngu&&c.fame+S.fame*0.2>=120&&nguOpen(c)){c.flags.ngu=1;enqueue('ev',c.id,{ev:'y_chieumo'})}
 }
 function die(c,cause){
@@ -4399,7 +4399,7 @@ const PAGES=[
   ['kinhdoanh','Kinh doanh',()=>S.biz.length>0||alive().some(p=>Object.keys(BIZ).some(t=>canOwn(p,t)))],
   ['kho','Kho & buôn',()=>Object.values(S.kho).some(v=>v>=1)||S.trips.length>0||alive().some(p=>['tieunhi','hangrong'].includes(p.job)||p.job==='chu')],
   ['bando','Thế giới',()=>true],
-  ['quan','Quan trường',()=>alive().some(p=>p.job==='quan'||p.degree>=1||p.exam)],
+  ['quan','Quan trường',()=>alive().some(p=>inClan(p)&&p.job==='quan')], /* d9.6: chỉ hiện khi nhà có người đang làm quan, hết người thì ẩn (chủ dự án 22/11), không hiện chỉ vì ứng thí */
   ['giatoc','Gia tộc',()=>true],
   ['nhatky','Nhật ký',()=>true]];
 function unlockPages(){
@@ -4478,7 +4478,7 @@ function topHTML(){
    <div class="speed" role="group" aria-label="Tốc độ thời gian">${[[0,'❚❚'],[1,'×1'],[2,'×2'],[5,'×5'],[10,'×10']].map(([v,l])=>`<button data-speed="${v}" aria-pressed="${(running?speed:0)===v}" aria-label="${v?'Tốc độ '+l:'Dừng'}">${l}</button>`).join('')}</div>`;
 }
 function navHTML(){
-  return `<nav class="tabs" aria-label="Trang">${PAGES.filter(([id])=>S.pages.includes(id)).map(([id,n])=>`<button data-page="${id}" aria-pressed="${page===id}">${n}${S.newPages.includes(id)?'<i class="dot" aria-label="mới"></i>':id==='kinhdoanh'&&bizVacant()?'<i class="dot warn" aria-label="thiếu người"></i>':''}</button>`).join('')}</nav>`;
+  return `<nav class="tabs" aria-label="Trang">${PAGES.filter(([id,,ok])=>S.pages.includes(id)&&(id!=='quan'||ok())).map(([id,n])=>`<button data-page="${id}" aria-pressed="${page===id}">${n}${S.newPages.includes(id)?'<i class="dot" aria-label="mới"></i>':id==='kinhdoanh'&&bizVacant()?'<i class="dot warn" aria-label="thiếu người"></i>':''}</button>`).join('')}</nav>`;
 }
 
 /* ================= gia phả ================= */
@@ -4860,6 +4860,7 @@ function render(){
   const app=document.getElementById('app');
   const tree=document.querySelector('.treescroll');const sx=tree?tree.scrollLeft:0;
   const wy=window.scrollY;
+  if(page==='quan'&&!alive().some(p=>inClan(p)&&p.job==='quan'))page='giapha';
   const body=({giapha:pageGiapha,cosngoi:pageCosngoi,ruong:pageRuong,kinhdoanh:pageKinhdoanh,kho:pageKho,bando:pageBando,quan:pageQuan,giatoc:pageGiatoc,nhatky:pageNhatky}[page]||pageGiapha)();
   app.innerHTML=`<header class="top" id="top">${topHTML()}</header>${navHTML()}<main>${body}</main>`;
   const nt=document.querySelector('.treescroll');
