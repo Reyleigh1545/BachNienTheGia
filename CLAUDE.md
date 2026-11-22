@@ -262,7 +262,7 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 - `tools/run.js` gắn cứng đường dẫn Chrome trên Windows.
 - Để sau: tách `engine.js` thành module, Escape và tiêu điểm trong hộp thoại, đưa `<title>` vào `<head>`.
 
-**Đo thử cân bằng ba đường lên ngôi (22/11, không dùng được):** bot ép mở đường rồi tự chơi 20 năm cho kết quả y hệt nhau ở mọi lần thử (thế lực, danh nghĩa, lộ đứng yên ở mức khởi đầu). Nguyên nhân chưa rõ; nghi bot không bấm các bước đầu tư của mưu đại sự và nhân vật thử không có quan hay quân. Muốn đo được cần bot biết bấm các bước đó, hoặc chủ dự án chơi tay.
+**Đo thử cân bằng ba đường lên ngôi (22/11, không dùng được):** bot ép mở đường rồi tự chơi 20 năm cho kết quả y hệt nhau ở mọi lần thử (thế lực, danh nghĩa, lộ đứng yên ở mức khởi đầu). Nguyên nhân đã tìm ra: bot không lấy hộp thoại khỏi hàng đợi (`nextPopup`) nên các bước `ts_*` không hiện. Sửa xong thì bot bấm nút đầu tiên của mọi hộp và 11 trên 12 ván kết thúc mưu đại sự trong 2 đến 3 năm (`usurp_end`, nút đầu thường là nút bỏ hoặc gây thất bại), một ván kết thúc ván chơi (`over`, chưa rõ thắng hay bại). Vậy số liệu này vẫn không đo được tỉ lệ thắng: cần bot chọn lựa chọn tiến tới thay vì nút đầu, hoặc chủ dự án chơi tay.
 
 **Cân bằng (chỉ làm sau khi gameplay xong):** mọi con số các bản d1 đến d8 đều là ước lượng chưa đo: tốc độ lên quan (mong Nhất phẩm khoảng năm 38), giá đất, lương tá điền 450, số mẫu mỗi dự án, giá gia quy, xác suất cốt truyện hoàng thân, tỉ lệ thắng ba đường lên ngôi (mục tiêu tạm: người trung bình 10 đến 25%, người mạnh 40 đến 55%), snowball cơ duyên và tiền theo gia thế.
 
