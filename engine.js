@@ -4108,8 +4108,9 @@ function courtCard(){const offs=alive().filter(p=>inClan(p)&&p.job==='quan');con
 const CTRL_N=['Như cũ: người nhà chính và trưởng chi','Gia chủ, cha mẹ, vợ con và trưởng chi','Chỉ gia chủ, cha mẹ, vợ con'];
 const ctrlLv=()=>(S&&S.opt&&S.opt.ctrl)||0;
 function closeKin(c){const h=head();if(!h)return false;return c.parents.includes(h.id)||h.parents.includes(c.id)||c.spouse===h.id}
+/* d9.6: người đi giang hồ (away jh) do người chơi điều khiển như người đi lính, hộp giang hồ hiện ra thật (chủ dự án 22/11) */
 function isCtrl(c){if(!c||isHead(c))return true;const lv=ctrlLv();
-  if(c.hh===mainHH()){if(lv>=1&&!closeKin(c))return false;return !c.away||c.away.type==='army'||(c.away.type==='follow'&&c.away.of!=null&&c.away.of!==c.id&&(()=>{const s=P(c.away.of);return !!s&&s.away&&s.away.type==='army'&&(isHead(s)||s.hh===mainHH())})())} /* d7.3: vợ con theo chồng, cha đi lính ở nhà chính vẫn do người chơi điều khiển */
+  if(c.hh===mainHH()){if(lv>=1&&!closeKin(c))return false;return !c.away||c.away.type==='army'||c.away.type==='jh'||(c.away.type==='follow'&&c.away.of!=null&&c.away.of!==c.id&&(()=>{const s=P(c.away.of);return !!s&&s.away&&s.away.type==='army'&&(isHead(s)||s.hh===mainHH())})())} /* d7.3: vợ con theo chồng, cha đi lính ở nhà chính vẫn do người chơi điều khiển */
   if(lv>=2)return false;const L=branchLeader(c.hh);return !!L&&L.id===c.id}
 /* v6.6.0: chia chi tự động cho nhà quá đông: cặp vợ chồng lớn nhất ra ở riêng cùng con cháu của họ */
 function autoSplit(){const h=head();if(!h)return 'Không có ai để chia.';const main=mainHH();
