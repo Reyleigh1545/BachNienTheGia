@@ -221,8 +221,8 @@ ST({id:'c14_bat_coc',t:'Con bị bắt cóc',tier:[3,6],c:c=>age(c)>=6&&age(c)<=
 A({id:'c14_b',t:'Miếu hoang',
  x:(c,d)=>d.w==='chuoc'?'Đã giao bạc. Bọn bắt cóc thả con ra, nhưng đứa trẻ hoảng loạn.':d.w==='quan'?'Quan binh vây miếu. Bọn chúng dí dao vào cổ đứa trẻ.':'Người giang hồ lẻn vào miếu trong đêm.',
  o:[{l:'Đón con về',c:(c,d)=>d.w==='chuoc',f:c=>'Con an toàn, nhưng ám ảnh lâu.'+fx(c,{tam:-15})},
-    {l:'Thương lượng',c:(c,d)=>d.w!=='chuoc',r:[{eq:1},55],y:c=>'Con được thả, bọn cướp bị bắt.'+fx(c,{tam:-5}),n:c=>'Con bị thương khi giải cứu.'+fx(c,{suc:-20,hpMax:-2,tam:-15})},
-    {l:'Tấn công',c:(c,d)=>d.w!=='chuoc',r:[{vo:0.5,tri:0.5},60],y:c=>'Cứu được con!'+fx(c,{tam:-3}),n:c=>'Con bị thương nặng.'+fx(c,{suc:-30,hpMax:-R(3,6),tam:-20})}]}),
+    {l:'Thương lượng',c:(c,d)=>d.w!=='chuoc',r:[{eq:1},55],y:c=>'Con được thả, bọn cướp bị bắt. Cả vùng biết nhà mình cương quyết, không ai dám gây chuyện nữa.'+fx(c,{tam:-5,fame:R(3,6)}),n:c=>'Con bị thương khi giải cứu.'+fx(c,{suc:-20,hpMax:-2,tam:-15})},
+    {l:'Tấn công',c:(c,d)=>d.w!=='chuoc',r:[{vo:0.5,tri:0.5},60],y:c=>'Cứu được con! Người trong vùng kể lại chuyện ấy lâu dài.'+fx(c,{tam:-3,fame:R(4,8),vo:1}),n:c=>'Con bị thương nặng.'+fx(c,{suc:-30,hpMax:-R(3,6),tam:-20})}]}),
 /* ========== 15. CHUYỆN VỢ CHỒNG: NGƯỜI THỨ BA ========== */
 ST({id:'c15_nguoi_thu_ba',t:'Người thứ ba',c:c=>married(c)&&age(c)>=25&&age(c)<=55,
  x:c=>`Có người kể ${esc(spouseOf(c).given)} hay đi lại với một người lạ ở bến sông.`,
@@ -231,8 +231,8 @@ ST({id:'c15_nguoi_thu_ba',t:'Người thứ ba',c:c=>married(c)&&age(c)>=25&&age
     {l:'Tin tưởng, không hỏi',f:c=>fx(c,{eq:1})+nx(c,'c15_b',3,6,{t:'anh'})}]}),
 A({id:'c15_b',t:'Sự thật',
  x:(c,d)=>d.t==='anh'?'Người anh thất lạc đang nợ nần, cần giúp đỡ.':'Hai vợ chồng giận nhau đã lâu, nhà cửa lạnh lẽo.',
- o:[{l:'Giúp người anh',c:(c,d)=>d.t==='anh',f:c=>{G.addStat(spouseOf(c)||c,'tam',15);return 'Tình vợ chồng thêm khăng khít.'+fx(c,{money:-m(30),tam:8})}},
-    {l:'Làm lành',c:(c,d)=>d.t==='gian',r:[{eq:1,mi:0.4},55],y:c=>{G.addStat(spouseOf(c)||c,'tam',10);return fx(c,{tam:10})},n:c=>fx(c,{tam:-10})},
+ o:[{l:'Giúp người anh',c:(c,d)=>d.t==='anh',f:c=>{G.addStat(spouseOf(c)||c,'tam',15);return 'Tình vợ chồng thêm khăng khít. Người anh nhớ ơn, tiếng nhà biết trọng tình thân cũng lan ra.'+fx(c,{money:-m(30),tam:8,cfame:3,on:2})}},
+    {l:'Làm lành',c:(c,d)=>d.t==='gian',r:[{eq:1,mi:0.4},55],y:c=>{G.addStat(spouseOf(c)||c,'tam',10);return 'Hai bên ngồi nói hết với nhau. Từ đó nhà êm ấm hơn.'+fx(c,{tam:10,eq:1,on:2})},n:c=>fx(c,{tam:-10})},
     {l:'Mặc kệ',f:c=>fx(c,{tam:-5})}]}),
 /* ========== 16. HẠN HÁN LỚN VÀ LỄ CẦU MƯA ========== */
 ST({id:'c16_cau_mua',t:'Đại hạn',sea:['ha'],fame:60,c:c=>age(c)>=30,

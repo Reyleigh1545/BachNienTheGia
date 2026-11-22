@@ -48,7 +48,7 @@ H('nguyen',{id:'h_ng_duyet',t:'Lễ duyệt binh mùa thu',hw:0.8,hc:()=>G.seaso
  x:()=>`Mùa thu, ${hn('nguyen')} mở lễ duyệt binh ở chân ải, mời các nhà có tiếng trong vùng đến xem. Cờ quạt rợp một khoảng trời, ai cũng muốn được ngồi ở hàng ghế khách.`,
  o:()=>{const gift=m(R(5,9));return [
   {l:`Mang lễ đến dự (${fm(gift)})`,c:()=>G.money()>=gift,f:c=>`Gia chủ được xếp ngồi hàng khách quý. Nhìn trận hình rền như sấm, ai cũng thấy mình nhỏ lại, rồi lại lớn lên một chút vì được đứng gần.`+hr('nguyen',10)+fx(c,{money:-gift,fame:R(3,6),cfame:2,tam:4})},
-  {l:'Cử con em trong nhà đi thay',f:c=>`Người đi về kể lại cả buổi, bọn trẻ trong nhà nghe say mê.`+hr('nguyen',4)+fx(c,{fame:1,tam:2})},
+  {l:'Cử con em trong nhà đi thay',c:c=>G.kinList(c,p=>G.age(p)>=12&&G.age(p)<=40).length>0,go:(c,d)=>G.pickKin(c,{eyebrow:'Thời thế',title:'Cử ai đi dự lễ duyệt binh',text:'Người được cử sẽ thật sự đi dự lễ thay gia chủ. Chọn người nào?',filter:p=>G.age(p)>=12&&G.age(p)<=40,cb:w=>`${G.nameOf(w)} đi dự, về kể lại cả buổi, bọn trẻ trong nhà nghe say mê.`+hr('nguyen',4+(w.eq>=60?2:0))+fx(c,{fame:1,tam:2})+fx(w,{eq:1,tam:3})})},
   {l:'Nói bận, không đi',f:c=>`Quà cáo lỗi gửi đến muộn, người ta không để bụng nhưng cũng không nhớ tên.`+hr('nguyen',-2)}]}}),
 H('nguyen',{id:'h_ng_cauthan',t:'Cô Lam Anh kén rể bằng tỉ võ',hw:0.7,hcd:120,hwho:male(18,34),
  hc:(c,h)=>!!daughter(h,17,27)&&G.tierIdx()>=1,
@@ -134,7 +134,7 @@ H('duong',{id:'h_du_phatthuoc',t:'Phát thuốc cứu dân',hw:1.1,hcd:72,hc:()=
  x:()=>`${hn('duong')} cho xe thuốc đi khắp các làng, phát miễn phí, ai ốm cũng được xem. Ông gửi thư mời các nhà có tiếng trong vùng góp tay, vì thuốc thì ông lo được, người thì không.`,
  o:()=>{const cost=m(R(6,12));return [
   {l:`Góp tiền mua thêm thuốc (${fm(cost)})`,c:()=>G.money()>=cost,f:c=>`Xe thuốc đi qua làng nào cũng có tên nhà mình. Dân làng nhớ ơn lâu.`+hr('duong',12)+dt(6)+fx(c,{money:-cost,fame:R(4,8),cfame:2,tam:6})},
-  {l:'Cho người trong nhà theo xe đi phát thuốc',f:c=>`Mấy ngày đi qua các làng, ${N(c)} thấy rõ cái khổ của người nghèo. Về nhà nói ít hẳn, ăn cơm lâu hơn.`+hr('duong',8)+dt(8)+fx(c,{fame:3,eq:1,tam:3})},
+  {l:'Cho người trong nhà theo xe đi phát thuốc',c:c=>G.kinList(c,p=>G.age(p)>=14&&G.age(p)<=60).length>0,go:(c,d)=>G.pickKin(c,{eyebrow:'Thời thế',title:'Cử ai theo xe phát thuốc',text:'Người đi theo xe sẽ thật sự đi qua các làng, có thể nhiễm bệnh. Chọn người nào?',filter:p=>G.age(p)>=14&&G.age(p)<=60,cb:w=>{const sick=chance(0.1);return `Mấy ngày đi qua các làng, ${G.nameOf(w)} thấy rõ cái khổ của người nghèo. ${sick?'Trên đường nhiễm bệnh, phải nằm dưỡng một thời gian.':'Về nhà nói ít hẳn, ăn cơm lâu hơn.'}`+hr('duong',8)+dt(8)+fx(c,{fame:3,tam:1})+fx(w,{eq:1,tam:3,suc:sick?-10:0})}})},
   {l:'Tiếc là nhà mình không giúp được',f:c=>`Thư trả lời lịch sự. Ông Dương chỉ bảo: "Ai cũng có lúc khó."`+hr('duong',-2)}]}}),
 H('duong',{id:'h_du_toathuoc',t:'Một toa thuốc quý',hw:0.9,hcd:96,hwho:p=>p.job==='y'&&age(p)>=20&&!p.away,hc:(c,h)=>h.rel>=10,
  x:c=>`${hn('duong')} nghe tiếng ${N(c)} chữa bệnh giỏi trong vùng, gửi thư đề nghị đổi một toa thuốc ông mới tìm ra lấy toa của ${N(c)}. Ông viết: "Thuốc không giữ của riêng thì thuốc mới sống."`,

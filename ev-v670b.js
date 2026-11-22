@@ -168,7 +168,7 @@ DH({id:'dh_72',t:'Cơ sở thua lỗ',age:[28,80],c:c=>S().biz.length>0,ms:1,w:0
   {l:'Chờ qua mùa',f:c=>'Mùa sau khá hơn một chút.'+fx(c,{money:-m(10)})}]}),
 DH({id:'dh_76',t:'Cơ hội gượng dậy',age:[28,75],c:c=>G.money()<G.mm(30)*6,th:1,w:0.6,pcd:120,
  x:c=>`Một mối làm ăn nhỏ ghé qua nhà ${N(c)} đúng lúc túng thiếu: có người cần thuê gấp một đội thợ, trả công hậu. Nhà đang có người rảnh.`,
- o:c=>[{l:'Nhận làm, cử người giỏi đi',r:[{muu:0.5,eq:0.4},60],y:c=>'Công việc xong sớm. Người thuê trả đủ và hẹn lần sau.'+fx(c,{money:m(60),tam:4,fame:1}),n:c=>'Công việc chậm trễ, bị trừ công.'+fx(c,{money:m(20),tam:-1})},
+ o:c=>[{l:'Nhận làm, cử người giỏi đi',c:c=>G.kinList(c,p=>G.age(p)>=16&&G.age(p)<=55).length>0,go:(c,d)=>G.pickKin(c,{eyebrow:'Cơ hội',title:'Cử ai đi làm',text:'Người được cử sẽ thật sự đi làm, thành bại tùy tài của chính người ấy. Chọn người nào?',filter:p=>G.age(p)>=16&&G.age(p)<=55,cb:w=>{const p=Math.max(0.3,Math.min(0.85,0.35+(w.eq+w.tri+(w.m||0))/500));if(chance(p))return 'Công việc xong sớm. Người thuê trả đủ và hẹn lần sau.'+fx(c,{money:m(60),tam:4,fame:1})+fx(w,{tam:3});return 'Công việc chậm trễ, bị trừ công.'+fx(c,{money:m(20),tam:-1})+fx(w,{tam:-2})}})},
   {l:'Chỉ nhận một phần nhỏ',f:c=>'Làm vừa sức, thu vừa phải.'+fx(c,{money:m(30),tam:2})}]}),
 /* ===================== KỲ NGỘ ===================== */
 KN({id:'kn_02',t:'Người họ xa từ nước ngoài',u:'clan',cyc:[40,80],head:1,age:[35,80],tier:[2,6],th:1,
