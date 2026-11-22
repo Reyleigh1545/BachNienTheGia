@@ -727,7 +727,6 @@ function bizCalc(b){
   slots.forEach(r=>{const st=b.staff.find(s=>s.role===r&&!used.has(s.id));if(st){used.add(st.id);score+=Math.min(1.2,staffEff(st,r))}});
   const fill=slots.length?score/slots.length:1;
   const o=P(b.owner);const on=o&&inClan(o)&&!o.away;let ownerF=on?(0.5+o.m/150+(o[B.st]||50)/300+(o.tri-50)/400+tsum(o,'trade')+(skv(o,'ql')-30)/150)*viceWork(o)*ageEff(age(o)):0.4;
-  if(o&&o.bizFrom&&!(BIZREL[b.type]||[]).includes(o.bizFrom)&&!(b.type==='voquan'&&o.vo>=60)&&o.tri<80&&!has(o,'kytaibuon'))ownerF*=0.75;
   /* v6.4.1.2: chủ giỏi (thông thạo nghề gốc và quản trị cao) thì trần doanh thu lên tới 1,6 lần; làm lớn thì nguyên liệu rẻ hơn */
   const oq=on?clamp(((o.m-50)/70+(skv(o,'ql')-35)/45)/2,0,1):0;const capF=1.3+0.3*oq;const nL=B.lv.length;
   if((b.own||'clan')==='clan')ownerF*=1+offV('quansu')/250;
@@ -765,7 +764,7 @@ function autoFill(b){if(!b.autoHire||b.lv<2)return;const o=P(b.owner);if(!o||!in
   bizStaffInfo(b).empty.forEach(r=>{const st=mkStaff(r);st.role=r;st.wage=wageFor(st,b,r);st.since=S.t;b.staff.push(st);log(`${nameOf(o)} tự tuyển ${st.n} làm ${ROLES[r].n.toLowerCase()} ở ${BIZ[b.type].lv[b.lv][0].toLowerCase()}.`)})}
 /* v6.4.1.2: mở cơ sở và trông cơ sở chỉ lấy người đang làm nghề hợp với cơ sở: thông thạo nghề ấy từ 50 (võ quán: hoặc võ lực từ 90), quản trị từ 35, từ 18 tuổi */
 const BIZREL={quantra:['tieunhi','hangrong','bep'],tiem:['tieunhi','hangrong'],xuong:['tho','det'],yquan:['y','mo'],truong:['su'],voquan:['tieu','hiep'],tieucuc:['tieu'],ganhhat:['nghe'],thuyen:['ngu'],trai:['chan']};
-const QL_NEED=35,BM_NEED=50;
+const QL_NEED=35,BM_NEED=50,MGR_QL=50; /* d9.6: mở cơ sở cần đúng nghề, thông thạo 50 và quản trị 35; QUẢN LÝ cơ sở chỉ cần quản trị từ 50, bất kể nghề (chủ dự án 22/11) */
 const relJob=(p,type)=>{const L=BIZREL[type]||[];return L.includes(p.job)?p.job:(p.job==='chu'&&L.includes(p.bizFrom))?p.bizFrom:null};
 const relNames=type=>(BIZREL[type]||[]).map(x=>JOBS[x].n.toLowerCase()).join(', ');
 function bizSkillWhy(p,type){const out=[];const j=relJob(p,type);
@@ -796,7 +795,7 @@ function mgrWhy(p,b){const out=[];
   if(p.away)out.push('đang đi xa');
   if(p.job==='huu')out.push('đã nghỉ hưu');else if(['quan','quan_ngu','nguy','vua'].includes(p.job))out.push('đang giữ chức');
   if(p.biz&&p.biz!==b.id)out.push('đang trông cơ sở khác');
-  out.push(...bizSkillWhy(p,b.type));
+  if(qlOf(p)<MGR_QL)out.push(`quản trị ${Math.floor(qlOf(p))}/${MGR_QL}`);
   return out}
 /* v6.4.1.2: quản trị lên theo chức vụ trong nghề: bậc thấp rất ít, bậc cao nhanh hơn (0,1 đến 0,8 mỗi năm); làm chủ cơ sở thì 1 mỗi năm */
 const QL_NOJOB=['none','huu','vua','quan','quan_ngu','nguy','hiep','noi','thulai'];
@@ -5830,8 +5829,8 @@ function bizDetail(bid){
    <button class="btn ghost" data-sellb style="margin-top:6px;width:100%"><strong>Bán cơ sở · khoảng ${money(bizValue(b))}</strong><small>Giá theo vốn đã bỏ, lãi gần đây${S.war?', đang chiến sự nên bị ép giá':''}</small></button>
    <div class="field" style="margin-top:8px"><label>Chính sách lương</label><select class="sel" data-wpol>${Object.entries(WPOL).map(([k,v])=>`<option value="${k}"${(b.wpol||'auto')===k?' selected':''}>${v}</option>`).join('')}</select><small class="muted">Tự tăng: người làm thạo việc thì tự trả theo mặt bằng, không hỏi. Giữ lương: tiết kiệm nhưng người làm dễ bỏ đi.</small></div>
    ${b.lv>=2?`<label class="field" style="margin-top:6px;display:flex;gap:6px;align-items:center"><input type="checkbox" data-autohire${b.autoHire?' checked':''}> Tự tuyển bù: có người nghỉ thì người trông tự thuê người thay</label>`:''}
-   ${!o||!inClan(o)?(()=>{const cs=alive().filter(p=>inClan(p)&&p.hh===bizHH(b)&&age(p)>=16&&!p.biz&&relJob(p,b.type));
-     return `<div class="field" style="margin-top:8px"><label>Giao cho người trông</label>${cs.length?`<select class="sel" data-owner><option value="">Chọn người</option>${cs.map(p=>{const w=mgrWhy(p,b);const j=relJob(p,b.type);return `<option value="${p.id}"${w.length?' disabled':''}>${esc(nameOf(p))} · ${esc(jobName(p))} · thông thạo ${Math.floor(jobM(p,j))} · quản trị ${Math.floor(qlOf(p))}${w.length?' · thiếu: '+w.join(', '):''}</option>`}).join('')}</select>`:`<p class="note">Trong ${bizHH(b)===mainHH()?'nhà chính':'chi này'} không ai làm nghề ${esc(relNames(b.type))}.</p>`}<small class="muted">Cần người đang làm nghề ${esc(relNames(b.type))}, thông thạo từ ${BM_NEED}${b.type==='voquan'?' (hoặc võ lực từ 90)':''}, quản trị từ ${QL_NEED}.</small></div>`})():''}
+   ${!o||!inClan(o)?(()=>{const cs=alive().filter(p=>inClan(p)&&p.hh===bizHH(b)&&age(p)>=16&&!p.biz&&!['quan','quan_ngu','nguy','vua','huu'].includes(p.job));
+     return `<div class="field" style="margin-top:8px"><label>Giao cho người trông</label>${cs.length?`<select class="sel" data-owner><option value="">Chọn người</option>${cs.map(p=>{const w=mgrWhy(p,b);return `<option value="${p.id}"${w.length?' disabled':''}>${esc(nameOf(p))} · ${esc(jobName(p))} · quản trị ${Math.floor(qlOf(p))}${w.length?' · thiếu: '+w.join(', '):''}</option>`}).join('')}</select>`:`<p class="note">Trong ${bizHH(b)===mainHH()?'nhà chính':'chi này'} chưa có ai đủ sức trông coi (quản trị từ ${MGR_QL}).</p>`}<small class="muted">Người trông coi chỉ cần quản trị từ ${MGR_QL}, không cần cùng nghề; chỉ khi mở cơ sở mới cần đúng nghề ${esc(relNames(b.type))} và thông thạo từ ${BM_NEED}.</small></div>`})():''}
    <div class="choices" style="margin-top:8px"><button class="btn ghost" data-x>Đóng</button></div>`);
   const again=()=>{render();save();setTimeout(()=>{if(!modalOpen()&&S.biz.includes(b))bizDetail(bid)},10)};
   M.querySelector('[data-x]').onclick=closeModal;
