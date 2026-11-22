@@ -46,3 +46,5 @@ Object.assign(window.EVMETA,{"tq_yen_thuong_quan":["government","official_peers"
 Object.assign(window.EVMETA,{"lh_quan_hau":["family","in_laws","random","common","head","any"],"kinh_ve_tin":["government","capital","random","common","head","any"]});
 /* thêm tự động bởi tools/addmeta.js */
 Object.assign(window.EVMETA,{"gh_len_de_tu":["society","jianghu","random","common","any","any"],"gh_phai_chien":["society","jianghu","random","common","any","any"],"gh_su_phu_bien":["society","jianghu","random","common","any","any"]});
+/* thêm tự động bởi tools/addmeta.js */
+Object.assign(window.EVMETA,{"gh_chien_ket":["society","jianghu","random","common","any","any"],"gh_bk_kiem":["society","jianghu","random","common","any","any"],"gh_bk_noicong":["society","jianghu","random","common","any","any"],"gh_bk_khinhcong":["society","jianghu","random","common","any","any"]});
