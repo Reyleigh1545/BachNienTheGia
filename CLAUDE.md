@@ -262,6 +262,8 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 - `tools/run.js` gắn cứng đường dẫn Chrome trên Windows.
 - Để sau: tách `engine.js` thành module, Escape và tiêu điểm trong hộp thoại, đưa `<title>` vào `<head>`.
 
+**Đo thử cân bằng ba đường lên ngôi (22/11, không dùng được):** bot ép mở đường rồi tự chơi 20 năm cho kết quả y hệt nhau ở mọi lần thử (thế lực, danh nghĩa, lộ đứng yên ở mức khởi đầu). Nguyên nhân chưa rõ; nghi bot không bấm các bước đầu tư của mưu đại sự và nhân vật thử không có quan hay quân. Muốn đo được cần bot biết bấm các bước đó, hoặc chủ dự án chơi tay.
+
 **Cân bằng (chỉ làm sau khi gameplay xong):** mọi con số các bản d1 đến d8 đều là ước lượng chưa đo: tốc độ lên quan (mong Nhất phẩm khoảng năm 38), giá đất, lương tá điền 450, số mẫu mỗi dự án, giá gia quy, xác suất cốt truyện hoàng thân, tỉ lệ thắng ba đường lên ngôi (mục tiêu tạm: người trung bình 10 đến 25%, người mạnh 40 đến 55%), snowball cơ duyên và tiền theo gia thế.
 
 **Kết thúc chưa thử:** chủ dự án mới đi thành công đường soán ngôi qua quan văn (Quyền thần). Võ quan, Khởi nghĩa, T4 đến T11 và các kết phụ chưa ai chơi tới. d9.5 đã chạy thử bằng ép số liệu: T4 (qua `crRes`), T5 đến T11 đều kết đúng; ba đường lên ngôi (Quyền thần, Võ quan, Khởi nghĩa) vào được màn Hậu sử khi gọi `G.ts.crown`; chạy `tools/chain.js` (39 chuỗi cũ, 0 chuỗi không tới được, lỗi `rd_ra_mat` thiếu `pt` đã chặn); quét 1.697 sự kiện, 5.716 lựa chọn có 74 lỗi, toàn do thiếu dữ liệu cốt truyện khi gọi tay (như mức nền cũ); giang hồ vẫn chưa có hệ thống riêng nên T10 chỉ dựa nghề Hiệp khách.
