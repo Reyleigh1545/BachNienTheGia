@@ -14,7 +14,7 @@ return [
  o:(c,d)=>{const cost=Math.round(raw(d)*3/10)*10,small=Math.round(raw(d)/10)*10;const opts=[
   {l:`Lo hậu sự chu đáo (${fm(cost)})`,c:()=>G.money()>=cost,f:c=>{loyAll(d,9);return `Cả ${esc(String(d.bn).toLowerCase())} đi đưa tiễn. Người làm còn lại thấy chủ nhà tử tế, yên lòng.`+fx(c,{money:-cost,fame:2,tam:3})}},
   {l:`Gửi tiền phúng điếu (${fm(small)})`,c:()=>G.money()>=small,f:c=>{loyAll(d,3);return 'Gia đình người mất cảm tạ, nhận tiền rồi lặng lẽ lo việc.'+fx(c,{money:-small,tam:1})}},
-  {l:'Cử người đến thắp nhang thay mình',f:c=>{loyAll(d,-4);return 'Việc xong nhanh gọn, nhưng người làm bàn tán nhà chủ lạnh lùng.'+fx(c,{tam:-1})}}];
+  {l:'Cử người đến thắp nhang thay mình',c:c=>G.kinList(c,p=>G.age(p)>=12).length>0,go:(c,d)=>G.pickKin(c,{eyebrow:'Kinh doanh',title:'Cử ai đi thắp nhang',text:'Người được cử sẽ thật sự đến viếng thay gia chủ. Chọn người nào?',filter:p=>G.age(p)>=12,cb:w=>{loyAll(d,w.eq>=60?-2:-4);return `${G.nameOf(w)} đến thắp nhang thay chủ. ${w.eq>=60?'Việc xong tử tế, người làm thấy lễ nghĩa tuy không phải chính chủ.':'Việc xong nhanh gọn, nhưng người làm bàn tán nhà chủ lạnh lùng.'}`+fx(c,{tam:-1})}})}];
   if(d.age<=55&&bz(d)&&G.ROLES[d.role]){const R0=G.ROLES[d.role];opts.splice(1,0,{l:'Nhận con người ấy vào làm thay',s:'Một thanh niên mới vào nghề, cần thời gian học',f:c=>{const b=bz(d);if(!b)return '';const st=G.stfRecruitKin(b,d.role,R(17,22));loyAll(d,6);return `${esc(st.n)} đến thế chỗ cha, còn lóng ngóng nhưng chăm chỉ. Cả cơ sở nể cách nhà chủ cư xử.`+fx(c,{fame:1,tam:2})}})}
   return opts}},
 {id:'stf_retire',fixed:1,t:'Người làm xin nghỉ hưu',k:'Kinh doanh',

@@ -93,7 +93,7 @@ HGK('at',{id:'hg_a_monkhach',t:'Được nhận làm môn khách',hw:0.6,hcd:240
 HG('near',{id:'hg_n_thu',t:'Thư từ xa',hw:1.1,hcd:36,
  x:(c,d)=>{const i=I(d);return i?`Một lá thư của ${esc(i.name)} từ ${esc(i.seat)} gửi tới, đường xa ${d.hr&&d.hr.mo?d.hr.mo:'vài'} tháng. Họ nghe danh nhà mình, mong có dịp qua lại, mời một người trong nhà đến thăm khi thuận đường.`:'Có thư từ xa.'},
  o:(c,d)=>{const i=I(d);if(!i)return nope;const trip=cost(i,0.12,22),gift=cost(i,0.05,10);return [
-  {l:'Cử người đến tận nơi thăm hỏi',s:`Tốn khoảng ${fm(trip)} đường sá và lễ`,c:()=>G.money()>=trip,f:c=>{i.addRel(R(7,12));return `Chuyến đi vất vả, nhưng được đón tiếp trọng thị. Mối quen biết mới mở ra một cánh cửa.`+fx(c,{money:-trip,fame:R(2,5),cfame:1,tam:3,eq:1})}},
+  {l:'Cử người đến tận nơi thăm hỏi',s:`Tốn khoảng ${fm(trip)} đường sá và lễ`,c:c=>G.money()>=trip&&G.kinList(c,p=>G.age(p)>=16&&G.age(p)<=60).length>0,go:(c,d)=>G.pickKin(c,{eyebrow:'Quen biết xa',title:'Cử ai đi thăm',text:'Người được cử sẽ thật sự đi đường xa vài tháng. Tài ăn nói của người ấy quyết định mối quen biết. Chọn người nào?',filter:p=>G.age(p)>=16&&G.age(p)<=60,cb:w=>{i.addRel(R(7,12)+(w.eq>=60?3:0));G.setAway(w,{type:'odo',until:S().t+R(2,4)});return `${G.nameOf(w)} lên đường. Chuyến đi vất vả, nhưng được đón tiếp trọng thị. Mối quen biết mới mở ra một cánh cửa.`+fx(c,{money:-trip,fame:R(2,5),cfame:1,tam:3})+fx(w,{eq:1})}})},
   {l:'Viết thư hồi âm, kèm chút lễ mọn',s:`Tốn khoảng ${fm(gift)}`,c:()=>G.money()>=gift,f:c=>{i.addRel(R(3,6));return 'Thư đi lại thưa thớt nhưng giữ được tình nghĩa.'+fx(c,{money:-gift,fame:1})}},
   {l:'Để đó, không trả lời',f:c=>{i.addRel(-R(1,3));return ''}}]}}),
 
