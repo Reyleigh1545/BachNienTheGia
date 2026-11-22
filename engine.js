@@ -3376,7 +3376,16 @@ const FAME_SELF=[
  [800,'Bậc quốc sĩ','Thu nhập tăng 15%. Người quyền quý tìm đến mời mọc.']];
 const clanLv=()=>S?FAME_CLAN.filter((p,i)=>S.fame>=p[0]&&(i<4||clanTuoc()>=4)).length:0; /* v6.5.4: Vọng tộc phải có tước từ Hầu tước */
 const selfLv=c=>FAME_SELF.filter(p=>(c.fame||0)>=p[0]).length;
-const famePromo=c=>selfLv(c)>=3?8:selfLv(c)>=2?4:0;
+/* ================= d9.6 Q10: CẢ GIA TỘC ĐỒNG LÒNG (chủ dự án 22/11) =================
+   Sức mạnh của một con đường không chỉ từ người theo đường đó mà từ cả họ hỗ trợ nhau: quan võ hỗ trợ quan võ (binh, tin tức, cấp dưới), quan văn hỗ trợ quan võ và người ngoài (chiếu chỉ,
+   lương thảo, che giấu, tiến cử), người trong cung hỗ trợ người ngoài cung (tin, bảo lãnh, che chở khi lộ), người ở kinh thành hỗ trợ người ở ngoài (đường dây, thăng tiến).
+   clanSupport(c) tính từ mọi người nhà (trừ chính c) còn sống, đang làm quan; trả về điểm từng loại và số người. Dùng cho thăng tiến, mưu đại sự (thế lực, danh nghĩa, lộ), và hiện rõ trong thẻ mưu đại sự. */
+function clanSupport(c){const L=alive().filter(p=>inClan(p)&&(!c||p.id!==c.id));
+  const mil=L.filter(p=>p.job==='quan_ngu'&&(p.lv||0)>=1&&!p.inLaw);const civ=L.filter(p=>p.job==='quan'&&(p.lv||0)>=2&&!p.inLaw);
+  const kinhCiv=civ.filter(p=>inKinh(p));const court=L.filter(p=>p.flags&&(p.flags.phoma||p.flags.vp||p.flags.hau));
+  const sum=(a,f)=>a.reduce((s,p)=>s+f(p),0);
+  return {mil:sum(mil,p=>(p.lv+1)*Math.max(0.5,p.vo/100)),civ:sum(civ,p=>(p.lv+1)*Math.max(0.5,p.tri/100)),kinh:kinhCiv.length,court:court.length*3+(S.royal?4:0),nMil:mil.length,nCiv:civ.length,nKinh:kinhCiv.length,nCourt:court.length}}
+const famePromo=c=>{const b=selfLv(c)>=3?8:selfLv(c)>=2?4:0;const sp=clanSupport(c);/* người nhà làm quan cao, nhất là ở kinh, đỡ cho người đang xin thăng tiến */return b+Math.min(10,Math.round(sp.civ/4+sp.kinh*2+(c&&c.job==='quan_ngu'?sp.mil/5:0)+sp.court/3))};
 const fameExam=c=>selfLv(c)>=3?4:selfLv(c)>=2?2:0;
 const fameInc=c=>[0,0.03,0.06,0.10,0.15][selfLv(c)];
 const tollOff=()=>clanLv()>=2?0.8:1;
@@ -3938,8 +3947,10 @@ const US_COST=30000;
 /* số binh ước lượng theo nơi (chỉ hiện khi nhà có võ quan từ Thiên hộ): kinh thành, biên ải, tỉnh nhà; loạn càng cao thì triều đình càng mỏng */
 function usGarrison(){const loan=(S.dyn&&S.dyn.loan)||10;const f=1+(100-loan)/300;const home=homeP();const hp=home&&PROV[home]?PROV[home].n.replace(/ quan$/,''):'tỉnh nhà';
   return [['Kinh thành',Math.round(40*f)],['Biên ải',Math.round(28*f)],['Tỉnh '+hp,Math.round(10*f)]]}
-function usArmyInfo(U){if(!alive().some(p=>inClan(p)&&p.job==='quan_ngu'&&p.lv>=4))return '';const n=U.troops||0;const cost=n*US_COST;const more=Math.max(0,Math.floor(S.money/(US_COST*12))-n);
-  return `<p class="kvline"><b>Quân của mình:</b> ${n} đội (khoảng ${n*100} người), nuôi mỗi tháng ${money(cost)}. Tiền hiện có đủ nuôi thêm khoảng ${more} đội trong một năm.</p><p class="kvline"><b>Quân triều đình trấn giữ (ước lượng, đội):</b> ${usGarrison().map(([a,b])=>a+' '+b).join(' · ')}.</p>`}
+function usSupportInfo(U){const a=P(U.who);const sp=clanSupport(a);const W=v=>v>=30?'rất mạnh':v>=15?'khá':v>=5?'có':'ít';
+  return `<p class="kvline"><b>Cả họ đồng lòng:</b> võ quan ${sp.nMil} người (binh, tin quân, cấp dưới: ${W(sp.mil)}) · quan văn ${sp.nCiv} người (chiếu chỉ, lương thảo, tiến cử: ${W(sp.civ)}) · người ở kinh thành ${sp.nKinh} (đường dây: ${W(sp.kinh*4)}) · người trong cung ${sp.nCourt} (che chở, tin: ${W(sp.court)}).</p>`}
+function usArmyInfo(U){if(!alive().some(p=>inClan(p)&&p.job==='quan_ngu'&&p.lv>=4))return usSupportInfo(U);const n=U.troops||0;const cost=n*US_COST;const more=Math.max(0,Math.floor(S.money/(US_COST*12))-n);
+  return usSupportInfo(U)+`<p class="kvline"><b>Quân của mình:</b> ${n} đội (khoảng ${n*100} người), nuôi mỗi tháng ${money(cost)}. Tiền hiện có đủ nuôi thêm khoảng ${more} đội trong một năm.</p><p class="kvline"><b>Quân triều đình trấn giữ (ước lượng, đội):</b> ${usGarrison().map(([a,b])=>a+' '+b).join(' · ')}.</p>`}
 function usNext(){const U=usU();if(!U)return;U.st++;U.troops=(U.troops||0)+({quyen:1,vo:2,nghia:3}[U.path]||1); /* v6.7.0: mỗi bước chiêu thêm quân (đội 100 người), nuôi 60 bạc mỗi đội mỗi tháng */U.pending=false;U.next=S.t+R(3,7)}
 function usWin(kind){const U=usU();if(!U)return 0;
   let p=(kind==='thien'?U.danh*0.5+U.the*0.25+U.tai*0.1+(100-U.lo)*0.15:U.the*0.45+U.danh*0.15+U.tai*0.15+(100-U.lo)*0.25)/100;
@@ -3974,7 +3985,10 @@ function usMonth(){if(!head()||S.over)return;
   if(!a||a.dead!=null||!inClan(a)){const n=usActors(U.path).find(p=>p.id!==U.who);
     if(n){U.who=n.id;a=n;log(`${nameOf(n)} nối tiếp mưu đại sự.`,'hi')}
     else{S.usurp=null;(S.usNoP=S.usNoP||{})[U.path]=S.t+120;log('Mưu đại sự tan vỡ vì người cầm đầu không còn.','hi');qtLog('Mưu đại sự tan vỡ','Người cầm đầu không còn, mưu đại sự tan theo.');return}}
-  U.lo=clamp(U.lo+0.05+(U.the>60?0.03:0)+(U.st>=3?0.03:0)+(a.away?0.05:0),0,100); /* d9.6: lộ theo thời gian tăng chậm (trước 0,25 mỗi tháng); lộ nhanh chỉ do lựa chọn gây lộ */
+  U.lo=clamp(U.lo+0.05+(U.the>60?0.03:0)+(U.st>=3?0.03:0)+(a.away?0.05:0),0,100);
+  /* d9.6 Q10: cả họ cùng đỡ, mỗi tháng thêm thế lực, danh nghĩa, tài lực và che bớt lộ theo từng loại hỗ trợ */
+  {const sp=clanSupport(a);const w={vo:[0.02,0.006,0.004],quyen:[0.012,0.02,0.006],nghia:[0.012,0.01,0.006]}[U.path]||[0.01,0.01,0.005];
+   U.the=clamp(U.the+sp.mil*w[0]+sp.civ*w[0]*0.5,0,100);U.danh=clamp(U.danh+sp.civ*w[1]+sp.court*0.004,0,100);U.tai=clamp(U.tai+(sp.nCiv+sp.nMil)*w[2],0,100);U.lo=clamp(U.lo-sp.court*0.012-sp.kinh*0.004,0,100)} /* d9.6: lộ theo thời gian tăng chậm (trước 0,25 mỗi tháng); lộ nhanh chỉ do lựa chọn gây lộ */
   /* v6.6.0: mưu đại sự tốn tiền mỗi tháng: nuôi người, mua chuộc, giữ quân. Võ quan và khởi nghĩa tốn hơn quyền thần */
   if(U.st>=1){U.troops=U.troops||0;const ct=U.troops*US_COST;if(ct>0){S.money-=ct;U.pay=(U.pay||0)+ct}if(S.money<0){U.lo=clamp(U.lo+0.4,0,100);U.the=clamp(U.the-0.5,0,100);if(chance(0.1))U.troops=Math.max(0,U.troops-1);U.broke=(U.broke||0)+1;if(U.broke>=12){U.broke=0;log('Vỡ nợ suốt một năm, quân bỏ đi hết. Mưu đại sự đành bỏ dở.','hi');usAbandon();return}}else U.broke=Math.max(0,(U.broke||0)-1)}
   if(U.pending&&S.t-(U.pt||0)>24)U.pending=false;
@@ -6544,7 +6558,7 @@ const G={pickKin,kinList,landDelta,landLose,landOk:()=>landRight(),led:LEDAPI,in
   _v633:{HOUSE_DEF,hdef,house,houseName,houseRel,houseAlly,houseKid,vil,vilLog,vd,vAdd,kPow,vFlag,vStance,vilRoutes,vilReady,vilEnd,vilStart,vilQuan,vilFighters,vilYears,vPick,pickWho,KIEN,DUY,KRANK,achieve,cf,vBranch,vFi,VBR,hinfo,hnear,houseRefs,giftNorm,w_wed,w_mo,NEAR_MO,HOUSE_TIER},
   _v62:{willPopup,chunoPopup,debtTick,expelPopup2,doExpel,tumatPopup,oanPopup,tranhviPopup,ruleSlots,ruleWhy,addRule,dropRule,keugoiPopup,thiencoPopup,gateCheck,ttlPopup,wishPick,wishScore,obey,ctxOk,CTX,v62Month,v62Year,loveTick,outsTick,divorcePopup,vuotsinhPopup,rulepropPopup,ruleforcePopup,rulechgPopup,pieceF,jobDig,minDig}};
 /* v6.4.1.1: cổng riêng cho trang admin (admin.js). Bản thường không dùng tới */
-G._adm={metaImport,phamSeats,letterLv,letterAdd,letterDue,letterLines,startScreen,historyMenu,personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
+G._adm={clanSupport,metaImport,phamSeats,letterLv,letterAdd,letterDue,letterLines,startScreen,historyMenu,personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
   getSel:()=>sel,setSel:v=>{sel=v},running:()=>running,speed:()=>speed,setRun:(r,sp)=>{running=!!r;if(sp)speed=sp;renderTop()},
   setS:st=>{S=st;sel=P(sel)?sel:S.head;O.hidden=true;M.innerHTML='';render();nextPopup()},page:()=>page,ensurePersona};
 window.BNTG=G;
