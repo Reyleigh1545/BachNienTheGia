@@ -3383,8 +3383,8 @@ const selfLv=c=>FAME_SELF.filter(p=>(c.fame||0)>=p[0]).length;
 function clanSupport(c){const L=alive().filter(p=>inClan(p)&&(!c||p.id!==c.id));
   const mil=L.filter(p=>p.job==='quan_ngu'&&(p.lv||0)>=1&&!p.inLaw);const civ=L.filter(p=>p.job==='quan'&&(p.lv||0)>=2&&!p.inLaw);
   const kinhCiv=civ.filter(p=>inKinh(p));const court=L.filter(p=>p.flags&&(p.flags.phoma||p.flags.vp||p.flags.hau));
-  const sum=(a,f)=>a.reduce((s,p)=>s+f(p),0);
-  return {mil:sum(mil,p=>(p.lv+1)*Math.max(0.5,p.vo/100)),civ:sum(civ,p=>(p.lv+1)*Math.max(0.5,p.tri/100)),kinh:kinhCiv.length,court:court.length*3+(S.royal?4:0),nMil:mil.length,nCiv:civ.length,nKinh:kinhCiv.length,nCourt:court.length}}
+  const sum=(a,f)=>a.reduce((s,p)=>s+f(p),0);const nk=L.filter(p=>p.flags&&p.flags.kinh).length;
+  return {mil:sum(mil,p=>(p.lv+1)*Math.max(0.5,p.vo/100)),civ:sum(civ,p=>(p.lv+1)*Math.max(0.5,p.tri/100))+(S.tgq||0)*4,kinh:kinhCiv.length+nk,court:court.length*3+(S.royal?4:0),nMil:mil.length,nCiv:civ.length+(S.tgq||0),nKinh:kinhCiv.length+nk,nCourt:court.length}}
 const famePromo=c=>{const b=selfLv(c)>=3?8:selfLv(c)>=2?4:0;const sp=clanSupport(c);/* người nhà làm quan cao, nhất là ở kinh, đỡ cho người đang xin thăng tiến */return b+Math.min(10,Math.round(sp.civ/4+sp.kinh*2+(c&&c.job==='quan_ngu'?sp.mil/5:0)+sp.court/3))};
 const fameExam=c=>selfLv(c)>=3?4:selfLv(c)>=2?2:0;
 const fameInc=c=>[0,0.03,0.06,0.10,0.15][selfLv(c)];
