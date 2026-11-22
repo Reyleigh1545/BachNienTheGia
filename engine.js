@@ -1368,6 +1368,8 @@ function offState(key){
   let o=S.off[key];
   if(!o){const T=seatTm(key)||{r:0};const vac=chance(0.07);
     o=S.off[key]=Object.assign(mkHolder(T),{vac:vac,since:S.t-R(3,60)});
+    /* d9.6: người giữ ghế cao hoặc ở tỉnh nhà là NPC thật ngay từ đầu (trước chỉ thành NPC khi bị thay, bị hặc hoặc thắng ghế nên hầu như không xuất hiện) */
+    if(!vac){const w=seatWh(key);if((T.r||0)>=5||(w&&w.p===homeP())){try{holderNp(o)}catch(e){}}}
     if(vac){o.vacT=S.t-R(0,4);o.why=pick(['cáo bệnh về quê','đang chịu tang','được điều đi nơi khác'])}}
   return o;
 }
@@ -1376,7 +1378,28 @@ function officeFeud(){if(DRY||!S.np)return;alive().filter(c=>c.job==='quan'&&inC
     const e=ledLast(c.id,'doi_thu')!=null||ledLast(c.id,'bi_hac')!=null;const ent=LEDAPI.find(c.id,mFind(c,'bi_hac')&&!mFind(c,'doi_thu')?'bi_hac':'doi_thu');const np=ent&&ent.d&&ent.d.np?npGet(ent.d.np):null;
     if(!np||!np.ok||!chance(0.06+(np.mm&&mFind(np,'oan')?mFind(np,'oan').w/1500:0)))return;
     qtAdd(c,{risk:R(6,14)});ledAdd('bi_dan_hac',[c.id],{n:np.n,np:np.id},{w:55});log(`${np.n} ngầm dâng sớ đàn hặc ${nameOf(c)} vì mối oán cũ.`,'hi')})}
+/* d9.6: họ Phạm có người thật ngồi ghế quan ngay cả khi người chơi chưa mở cốt truyện (chủ dự án 22/11). Phạm Trung Kiên đi theo lịch thăng chức của ARC.pm (sched 72,192,312,408,504 tháng): Tri huyện, Tri phủ, Bố chính sứ, Thượng thư, Đại học sĩ nội các, Thái sư; hai người thân giữ ghế thấp hơn. Mỗi người là NPC thật (S.np). */
+const PHAM_RK=['trihuyen','triphu','bochinh','thuongthu','daihocsi','thaisu'];
+function phamKey(tid,kinh,avoid){const ks=DX.seatKeys(tid).filter(k=>{if(avoid&&avoid.includes(k))return false;const w=seatWh(k);if(!w)return false;const isK=!!PROV[w.p]&&PROV[w.p].k==='kinh';if(kinh)return isK;return w.p===homeP()&&!isK});const free=ks.filter(k=>{const o=S.off&&S.off[k];return !(o&&(o.holder||o.pham))&&!alive().some(p=>inClan(p)&&seatOfC(p)===k)});return (free.length?free:ks)[0]||null}
+function phamPut(key,name,age,role,tag){if(!key)return null;const st=offState(key);S.phS=S.phS||{};let np=S.phS[tag]?npGet(S.phS[tag]):null;
+  Object.assign(st,{n:name,age,f:'quyen',vac:false,holder:null,pham:tag,liem:R(10,45),ab:clamp(st.ab||60,60,130)});delete st.why;
+  if(!np){np=npNew({n:name,g:'nam',age,role:'quan',f:'quyen'});S.phS[tag]=np.id}
+  st.np=np.id;np.age=age;return np}
+function phamFree(tag){const key=S.phS&&S.phS['k_'+tag];if(!key||!S.off||!S.off[key]||S.off[key].pham!==tag)return;const o=S.off[key];const T=seatTm(key);mkHolder(T,o);o.pham=null;o.np=null;o.vac=false;o.since=S.t}
+function phamSeats(){if(DRY||!S||!S.dyn)return;S.phS=S.phS||{};const arc=S.arcs&&S.arcs.pm;const K=arc&&arc.K;
+  const sched=(K&&K.sched)||[72,192,312,408,504];const lag=(K&&K.lag)||0;const rank=K&&K.rank!=null?K.rank:sched.filter(s=>S.t>=s+lag).length;
+  const yr=Math.floor(S.t/12);const age=(K&&K.age)||24+yr;const life=(K&&K.life)||(S.phS.life=S.phS.life||R(70,88));
+  const dead=age>life||(K&&K.ok===0&&!(arc&&!arc.end));
+  /* Kiên */
+  const tid=PHAM_RK[Math.min(5,rank)];const kinh=rank>=3;
+  if(dead){['kien','than1','than2'].forEach(tg=>{const np=S.phS[tg]?npGet(S.phS[tg]):null;if(np&&np.ok!==false&&tg==='kien'&&!S.phS.kienDead){S.phS.kienDead=S.t;np.ok=false}phamFree(tg)});return}
+  const keyNow=S.phS.k_kien;const cur=keyNow&&S.off&&S.off[keyNow]&&S.off[keyNow].pham==='kien'&&seatT(keyNow)===tid;
+  if(!cur){if(keyNow)phamFree('kien');const key=phamKey(tid,kinh);if(key){phamPut(key,'Phạm Trung Kiên',age,'quan','kien');S.phS.k_kien=key}}
+  else{const np=npGet(S.phS.kien);if(np)np.age=age;S.off[keyNow].age=age}
+  /* hai người thân giữ ghế thấp hơn */
+  [['than1','Phạm Trung Hòa',Math.max(0,rank-1)],['than2','Phạm Văn Cẩn',Math.max(0,rank-2)]].forEach(([tg,nm,rk],i)=>{if(rank<1&&i===1)return;const tt=PHAM_RK[Math.min(5,rk)];const k0=S.phS['k_'+tg];const ok=k0&&S.off&&S.off[k0]&&S.off[k0].pham===tg&&seatT(k0)===tt;if(!ok){if(k0)phamFree(tg);const key=phamKey(tt,rk>=3,[S.phS.k_kien]);if(key){phamPut(key,nm,age-(i?14:6),'quan',tg);S.phS['k_'+tg]=key}}})}
 function officeTick(){
+  if(S.t%12===1)phamSeats();
   if(S.off)for(const key in S.off){const o=S.off[key];const T=seatTm(key);if(!T){delete S.off[key];continue}
     if(o.holder){const h=P(o.holder);
       if(!h||!inClan(h)||seatOfC(h)!==key||!['quan','quan_ngu','nguy'].includes(h.job)){o.holder=null;o.vac=true;o.vacT=S.t;o.why='người cũ không còn giữ chức'}
@@ -6450,7 +6473,7 @@ const G={landDelta,landLose,landOk:()=>landRight(),led:LEDAPI,inKinh,homeP,npc:{
   _v633:{HOUSE_DEF,hdef,house,houseName,houseRel,houseAlly,houseKid,vil,vilLog,vd,vAdd,kPow,vFlag,vStance,vilRoutes,vilReady,vilEnd,vilStart,vilQuan,vilFighters,vilYears,vPick,pickWho,KIEN,DUY,KRANK,achieve,cf,vBranch,vFi,VBR,hinfo,hnear,houseRefs,giftNorm,w_wed,w_mo,NEAR_MO,HOUSE_TIER},
   _v62:{willPopup,chunoPopup,debtTick,expelPopup2,doExpel,tumatPopup,oanPopup,tranhviPopup,ruleSlots,ruleWhy,addRule,dropRule,keugoiPopup,thiencoPopup,gateCheck,ttlPopup,wishPick,wishScore,obey,ctxOk,CTX,v62Month,v62Year,loveTick,outsTick,divorcePopup,vuotsinhPopup,rulepropPopup,ruleforcePopup,rulechgPopup,pieceF,jobDig,minDig}};
 /* v6.4.1.1: cổng riêng cho trang admin (admin.js). Bản thường không dùng tới */
-G._adm={letterLv,letterAdd,letterDue,letterLines,startScreen,historyMenu,personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
+G._adm={phamSeats,letterLv,letterAdd,letterDue,letterLines,startScreen,historyMenu,personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
   getSel:()=>sel,setSel:v=>{sel=v},running:()=>running,speed:()=>speed,setRun:(r,sp)=>{running=!!r;if(sp)speed=sp;renderTop()},
   setS:st=>{S=st;sel=P(sel)?sel:S.head;O.hidden=true;M.innerHTML='';render();nextPopup()},page:()=>page,ensurePersona};
 window.BNTG=G;
