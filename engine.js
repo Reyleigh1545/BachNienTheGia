@@ -236,7 +236,7 @@ function fx(c,d){
     else if(k==='hung'){const o=S.hung;S.hung=clamp(S.hung+v,0,100);out.push(['Hưng thịnh',Math.round(S.hung-o)])}
     else if(k==='on'){const o=S.on;S.on=clamp(S.on+v,0,100);out.push(['Ổn định',Math.round(S.on-o)])}
     else if(k==='m'){const o=c.m;c.m=clamp(c.m+v,0,120);out.push(['Thông thạo',Math.round((c.m-o)*10)/10])}
-    else if(k==='merit'){c.merit=Math.max(0,c.merit+v*(1+tsum(c,'merit')+(v>0&&rule('thuongvo')?0.2:0)));out.push(['Chiến công',v])}
+    else if(k==='merit'){c.merit=Math.max(0,c.merit+v*(1+tsum(c,'merit')+(v>0&&rule('thuongvo')?0.2:0)));meritFold(c);out.push(['Chiến công',v])}
     else if(k==='lv'&&c.job==='quan'){const o=c.lv;const nr=clamp(c.lv+v,0,8);if(nr!==o){const r=appoint(c,nr,true);out.push([`Chức: ${seatName(r.key)}`,v>0?'+':'-']);if(nr>o&&!DRY)achieve(c,`thăng làm ${seatName(r.key)}`)}}
     else if(k==='lv'){const L=JOBS[c.job].lv.length;const o=c.lv;c.lv=clamp(c.lv+v,0,L-1);if(c.lv!==o){out.push(['Bậc',c.lv-o]);if(!DRY&&inClan(c))ledAdd('thang',[c.id],{job:c.job,lv:c.lv},{w:50,uniq:1})}if(c.lv>o&&!DRY)achieve(c,`lên làm ${JOBS[c.job].lv[c.lv].n.toLowerCase()}`)}
     else if(k==='cheer'){cheer(c,v,8);out.push(['Tâm trạng khá lên một thời gian',v>0?'+':'-'])}
@@ -495,12 +495,12 @@ function monthlyPerson(c,a){
     c.m=Math.min(120,c.m+Math.max(0.2,yr*viceWork(c))/12)}
   // quân ngũ: rủi ro tử trận
   if(c.job==='quan_ngu'&&!c.away&&inClan(c)&&a>=16){c.away={type:'army'};log(`${nameOf(c)} được gọi về doanh trại.`)}
-  if(c.job==='quan_ngu'&&ARMY[c.lv]&&(c.merit||0)<ARMY[c.lv][2])c.merit=ARMY[c.lv][2]; /* v6.5.2: cấp nào thì chiến công không thấp hơn mốc của cấp đó */
+  /* d9.6: bỏ ép chiến công theo cấp (chủ dự án 22/11): mọi lính bắt đầu từ 0, chiến công chỉ do lập công mà có */
   if(c.job==='quan_ngu'&&c.away){const risk=(S.war?0.0028:0.0006)*(thanHas('vothan')?0.7:1)*(1.6-(c.vo+c.suc)/200)*(1-c.duyen/250)*(1-Math.min(0.25,c.lv*0.04));if(chance(risk)){const tt=Math.round(ARMY[c.lv][1]*10);S.money+=tt;cf(1+c.lv,'Con em tử trận vì nước');log(`Triều đình gửi ${money(tt)} tiền tuất về nhà ${nameOf(c)}.`);die(c,S.war?'tử trận nơi sa trường':'tử nạn trong quân');return}
     {const alert=!S.war&&S.w&&S.w.ph&&Object.values(S.w.ph).some(v=>v>=2);
      const vm=clamp((c.vo-20)/45,0.5,1.8),rk=1+c.lv*0.12;
      const hit=S.war?chance(0.18)?R(3,9):0:alert?chance(0.14)?R(2,5):0:chance(0.12)?R(1,4):0;
-     if(hit)c.merit+=hit*vm*rk*(0.75+Math.min(c.tri,100)/400)*(1+tsum(c,'merit')+(rule('thuongvo')?0.2:0))}}
+     if(hit){c.merit+=hit*vm*rk*(0.75+Math.min(c.tri,100)/400)*(1+tsum(c,'merit')+(rule('thuongvo')?0.2:0));meritFold(c)}}}
   // giang hồ
   if(c.job==='hiep'&&c.away){c.purse-=Math.round(LIFE[1][1]*1.5);if(chance(0.0015*(1.5-c.vo/150))){die(c,'bỏ mạng nơi giang hồ');return}
     if(c.purse<0&&chance(0.2))enqueue('ev',c.id,{ev:'jh_het_tien'})}
@@ -1323,7 +1323,10 @@ function vexamPopup(c){
     achieve(c,top?'đỗ đầu bảng võ cử':'đỗ võ cử');enqueue('ev',c.id,{ev:'v641_vo_do'},true);
     return `Được ${sc} điểm, ${top?'đỗ đầu bảng võ cử':'đỗ võ cử'}!`+fx(c,{fame:top?60:30,tam:10,cfame:top?30:12})}}));
   choicePopup(c,'Võ cử',`${nameOf(c)} vào trường thi võ`,'Kỳ thi gồm cưỡi ngựa bắn cung, đấu côn quyền và hạch binh thư. Cần từ 60 điểm để đỗ, từ 92 điểm là đỗ đầu bảng. Chọn môn sở trường để dốc sức.',opts)}
-function voEnlist(c,lv){c.vexam=null;c.exam=null;enlist(c,false);c.lv=lv;c.merit=Math.max(c.merit||0,ARMY[lv][2]);enqueue('office',c.id,{})}
+/* d9.6: chiến công vượt mốc cao nhất của quân ngũ (Đại tướng quân, 1.500) đổi thành điểm thánh ân: 5 chiến công = 1 điểm công trạng (c.cong, dùng phong tước) */
+const MERIT_TOP=()=>ARMY[ARMY.length-1][2];
+function meritFold(c){if(!c||(c.merit||0)<=MERIT_TOP())return;const ex=c.merit-MERIT_TOP();c.merit=MERIT_TOP();const pts=ex/5;c.cong=(c.cong||0)+pts;c.flags=c.flags||{};c.flags.thanAn=(c.flags.thanAn||0)+pts;if(!DRY){try{tuocCheck(c,'thánh ân từ chiến công');tuocMsg=''}catch(e){}}}
+function voEnlist(c,lv){c.vexam=null;c.exam=null;enlist(c,false);c.lv=lv;enqueue('office',c.id,{})} /* d9.6: nhậm cấp nào cũng không tự có chiến công của cấp đó */
 /* ================= quan trường v6.4: ghế theo nơi, chống trùng, hồi tị, đi nhậm chức, nhiệm kỳ ================= */
 const {OFFICES}=window.D;
 const DX=window.D;
@@ -3895,7 +3898,7 @@ function usMonth(){if(!head()||S.over)return;
   if(!a||a.dead!=null||!inClan(a)){const n=usActors(U.path).find(p=>p.id!==U.who);
     if(n){U.who=n.id;a=n;log(`${nameOf(n)} nối tiếp mưu đại sự.`,'hi')}
     else{S.usurp=null;(S.usNoP=S.usNoP||{})[U.path]=S.t+120;log('Mưu đại sự tan vỡ vì người cầm đầu không còn.','hi');qtLog('Mưu đại sự tan vỡ','Người cầm đầu không còn, mưu đại sự tan theo.');return}}
-  U.lo=clamp(U.lo+0.25+(U.the>60?0.15:0)+(U.st>=3?0.15:0)+(a.away?0.2:0),0,100);
+  U.lo=clamp(U.lo+0.05+(U.the>60?0.03:0)+(U.st>=3?0.03:0)+(a.away?0.05:0),0,100); /* d9.6: lộ theo thời gian tăng chậm (trước 0,25 mỗi tháng); lộ nhanh chỉ do lựa chọn gây lộ */
   /* v6.6.0: mưu đại sự tốn tiền mỗi tháng: nuôi người, mua chuộc, giữ quân. Võ quan và khởi nghĩa tốn hơn quyền thần */
   if(U.st>=1){U.troops=U.troops||0;const ct=U.troops*60000;if(ct>0){S.money-=ct;U.pay=(U.pay||0)+ct}if(S.money<0){U.lo=clamp(U.lo+0.4,0,100);U.the=clamp(U.the-0.5,0,100);if(chance(0.1))U.troops=Math.max(0,U.troops-1);U.broke=(U.broke||0)+1;if(U.broke>=12){U.broke=0;log('Vỡ nợ suốt một năm, quân bỏ đi hết. Mưu đại sự đành bỏ dở.','hi');usAbandon();return}}else U.broke=Math.max(0,(U.broke||0)-1)}
   if(U.pending&&S.t-(U.pt||0)>24)U.pending=false;
@@ -6288,7 +6291,7 @@ function projYear(){if(!S.proj||!S.proj.length||!head())return;const on=projOn;
   if(on('khothoc')&&(S.disaster||S.epi||S.war)){cf(3+projN('khothoc'),'Mở kho phát chẩn');S.money-=mm(10)*projN('khothoc');log('Kho thóc của họ mở phát chẩn cho dân.','gd')}
   if(on('thuyenbuon')){const g=Math.round(mm(95)*(projN('thuyenbuon')/2)*(0.4+Math.random()*1.2));projLed('thuyenbuon','in',g); /* hòa vốn khoảng 7 năm */S.money+=g;log(`Đội thuyền buôn về, lãi ${money(g)}.`,'gd')}
   if(on('monkhach')){const n=projN('monkhach');alive().filter(p=>inClan(p)&&p.job==='quan'&&p.qt).forEach(p=>qtAdd(p,{risk:-Math.min(6,n*0.6)})); /* môn khách báo trước nguy cơ: quan trong họ ít bị tra hơn */
-    if(EVMAP.mk_mach_nuoc){const ne=1+Math.floor(n/8);for(let i=0;i<ne;i++)if(chance(Math.min(0.9,0.3+n*0.08)))enqueue('ev',S.head,{ev:'mk_mach_nuoc'})}}
+    if(EVMAP.mk_mach_nuoc&&chance(Math.min(0.7,0.2+n*0.02)))enqueue('ev',S.head,{ev:'mk_mach_nuoc'})} /* d9.6: mỗi năm tối đa một lần; càng đông môn khách thì khoản đầu tư và lãi càng lớn (xem mk_mach_nuoc), không ra nhiều lần hơn */
   if(on('monkhach')&&chance(Math.min(0.8,0.2+projN('monkhach')*0.04))&&EVMAP.dn_mon_khach_tin)enqueue('ev',S.head,{ev:'dn_mon_khach_tin'});
   if(on('chuamieu')){alive().forEach(p=>{addStat(p,'tam',2);if(p.suc<p.cap.suc)addStat(p,'suc',1)})}
   if(on('dinhkinh'))alive().filter(p=>inClan(p)&&p.job==='quan'&&p.lv>=3).forEach(p=>qtAdd(p,{fav:2}));
