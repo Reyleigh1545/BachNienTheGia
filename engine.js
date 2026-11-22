@@ -3560,7 +3560,7 @@ function willPopup(c){const kids=kidsOf(c).filter(k=>inClan(k)&&k.dead==null);co
 /* chia tiền riêng khi người đó mất */
 function settleEstate(c){let v=Math.round(c.purse||0);c.purse=0;if(!v)return '';
   if(v<0){fundAdd(inMain(c)?'clan':c.hh,v);return ` Món nợ riêng ${money(-v)} gia đình phải gánh.`}
-  const tax=Math.round(v*(inMain(c)?0.3:0.1));S.money+=tax;v-=tax;
+  const tax=Math.round(v*(inMain(c)?0.3:0.1));fundAdd(inMain(c)?'clan':c.hh,tax);v-=tax;
   const W=c.will||{to:'auto'};const sp=spouseOf(c);const spOk=sp&&inClan(sp)&&sp.dead==null;
   const shares=[];kidsOf(c).forEach(k=>{if(k.dead==null&&inClan(k))shares.push([k,1]);else if(k.dead!=null){const g=kidsOf(k).filter(x=>x.dead==null&&inClan(x));g.forEach(x=>shares.push([x,1/g.length]))}});
   const kids=shares.map(x=>x[0]);
@@ -3571,7 +3571,7 @@ function settleEstate(c){let v=Math.round(c.purse||0);c.purse=0;if(!v)return '';
   if(to==='split'){clanX=Math.round(v*(W.clan||0.3));const rest=v-clanX;if(!give([...(spOk?[sp]:[]),...kids],rest))clanX+=rest;txt=`chia cho gia tộc và người nhà`}
   else if(to==='fav'){const f=P(W.fav);if(f&&inClan(f)){const big=Math.round(v*2/3);f.purse+=big;const others=kids.filter(k=>k.id!==f.id);if(!give(others,v-big))f.purse+=v-big;others.forEach(k=>{k.oan=Math.min(100,(k.oan||0)+25);addRel(k,f,-15)});txt=`phần lớn về tay ${f.given}`}else{give(kids,v);txt='chia đều cho các con'}}
   else if(to==='kids'){give(kids,v);txt='chia đều cho các con'}else if(to==='spouse'){give([sp],v);txt=`để lại cho ${sp.given}`}else{clanX=v;txt='hiến cho gia tộc'}
-  if(clanX){S.money+=clanX;if(to==='clan')cf(2,'Người mất hiến tiền riêng cho gia tộc')}
+  if(clanX){fundAdd(inMain(c)?'clan':c.hh,clanX);if(to==='clan')cf(2,'Người mất hiến tiền riêng cho gia tộc')}
   return ` Tiền riêng ${money(v+tax)}: gia tộc giữ ${money(tax)}, ${txt}.`}
 
 /* ---------- tranh vị: gia chủ mất ---------- */
