@@ -402,7 +402,7 @@ function advance(){
   qtMonth(mo);relTick();fixMonth();
   /* v6.4.1.3: gia quy, thư nhà, nhắc lập gia quy */
   if(mo===1){vioTick();if(head()&&!S.noRuleRemind&&S.rules.length<ruleSlots()&&!((S.ruleT||-99)+12>S.t))enqueue('ruleRemind',S.head)}
-  if(mo===12&&head()&&((S.letters&&Object.values(S.letters).some(L=>L.length))||(S.rumor&&S.rumor.length)||alive().some(p=>inClan(p)&&!isCtrl(p)&&p.job==='quan'&&p.liem<35)))enqueue('letter',S.head);
+  if(mo===12&&head()&&letterDue())enqueue('letter',S.head);
   alive().forEach(c=>{const h=c.flags&&c.flags.hauBo;if(h&&!h.q&&S.t>=h.t&&inClan(c)&&!c.away){h.q=1;enqueue('haubo',c.id)}});
   // kỳ thi: v6.4.1.2 ba năm một khoa. Thi Hương tháng Tám năm thứ nhất, thi Hội tháng Hai và thi Đình tháng Ba năm sau
   const ey=Math.floor(S.t/12)%3;
@@ -2028,7 +2028,7 @@ function doBirth(m,risk,harmF,who){
   const live=kids.filter(k=>!lost.includes(k));ledBirth(m,f,live,lost);
   log(`${nameOf(m)} hạ sinh ${live.map(k=>nameOf(k)).join(' và ')||'nhưng con không qua khỏi'}.${comp?' Ca sinh khó.':''}`,lost.length?'hi':'gd');
   m.preg=null;m.flags.ppUntil=S.t+R(24,36)+(comp?R(4,8):0); /* v6.5.4: cách nhau lâu hơn (trước 10 đến 16 tháng) */if(live.length)overBirth(m);
-  if(AUTO_B){AUTO_B=false;if(m.suc<=0)die(m,'mất sau khi sinh');letterAdd(m,`${esc(m.given)} hạ sinh ${live.map(k=>esc(k.given)).join(' và ')||'nhưng con không qua khỏi'}${comp?', ca sinh khó':''}.`);setTimeout(nextPopup,0);return}
+  if(AUTO_B){AUTO_B=false;if(m.suc<=0)die(m,'mất sau khi sinh');letterAdd(m,`${esc(m.given)} hạ sinh ${live.map(k=>esc(k.given)).join(' và ')||'nhưng con không qua khỏi'}${comp?', ca sinh khó':''}.`,2);setTimeout(nextPopup,0);return}
   openModal(`${headerFor(m)}<span class="eyebrow">${comp?'Sinh khó':'Mẹ tròn con vuông'} · ${dateStr(S.t)}</span><h2>Chào đời</h2>
    <p>${txt} Sức khỏe người mẹ giảm ${harm}, sức khỏe tối đa giảm ${lossHp}.</p>
    ${live.map((k,i)=>`<div class="field"><label for="kn${i}">Tên ${k.g==='nam'?'bé trai':'bé gái'} (họ ${esc(k.surname)})${traitsOf(k).length?` · bẩm sinh: ${traitsOf(k).map(t=>TRAITS[t].n).join(', ')}`:''}</label><input id="kn${i}" maxlength="20" value="${esc(k.given)}"></div>`).join('')}
@@ -4123,9 +4123,22 @@ function autoEv(c,ev,d,ttl,txt,opts){
   if(big){stt('big');infoPopup(c,'Tin nhà · '+(c.hh===mainHH()?'người nhà ở xa':esc(HH(c.hh)?HH(c.hh).name:'chi họ')),ttl,`${txt}<p class="muted"><i>${esc(c.given)} không ở dưới mắt gia chủ, tự quyết theo tính mình: chọn "${esc(o.l)}".</i></p><div class="result">${r}</div>`)}
   else setTimeout(nextPopup,0);
   return true}
-function letterAdd(c,line){S.letters=S.letters||{};const k=c.hh===mainHH()?'_xa':c.hh;const L=S.letters[k]=S.letters[k]||[];L.push(line);if(L.length>8)L.shift()}
-function letterPopup(h){const Ls=S.letters||{};S.letters={};
-  const sec=Object.entries(Ls).filter(([,L])=>L.length).map(([k,L])=>`<h3 style="margin:10px 0 4px;font-size:14px">${k==='_xa'?'Người nhà ở xa':esc(HH(k)?HH(k).name:'Chi họ')}</h3><ul class="plain">${L.map(x=>`<li><small>${x}</small></li>`).join('')}</ul>`).join('');
+/* d9.6: thư tay theo mức tin (chủ dự án 22/11). Mức 0 vặt: chỉ ghi nhật ký, không vào thư. Mức 1 thường: gom hộp mỗi 15 năm. Mức 2 quan trọng và 3 lớn: gom hộp mỗi 5 năm.
+   Mức tính từ kết quả: có đổi bậc, sinh, tử, án thì 3; danh vọng hoặc chiến công từ 8, hoặc tiền cỡ bạc thì 2; có cộng trừ chỉ số, danh vọng, tiền thì 1; còn lại 0. */
+function letterLv(r){const s=String(r||'').replace(/<[^>]+>/g,' ');
+  if(/Bậc\s*[+\-−]|qua đời|hạ sinh|thành thân|lên chức|bị giáng|tru di|trục xuất|bị bắt|nhận án|chịu án/i.test(s))return 3;
+  for(const x of s.matchAll(/(Danh vọng|Chiến công)\s*([+\-−])\s*(\d+)/g))if(+x[3]>=8)return 2;
+  if(/(Tiền|Quỹ hộ|Tiền riêng)\s*[+\-−]\s*\d+\s*bạc/.test(s))return 2;
+  if(/(Danh vọng|Chiến công|Tiền|Quỹ hộ|Tiền riêng|Trí tuệ|Võ lực|Sức khỏe|Mị lực|EQ)\s*[+\-−]\s*\d/.test(s))return 1;
+  return 0}
+function letterAdd(c,line,lv){if(lv==null)lv=letterLv(line);if(lv<=0)return;S.letters=S.letters||{};const k=c.hh===mainHH()?'_xa':c.hh;const L=S.letters[k]=S.letters[k]||[];L.push({t:line,lv});if(L.length>12)L.shift()}
+function letterLines(minLv){const o={};for(const [k,L] of Object.entries(S.letters||{})){const l=L.filter(x=>(x.lv||1)>=minLv);if(l.length)o[k]=l}return o}
+function letterDue(){const y=Math.floor(S.t/12);const d5=y-(S.lt5||0)>=5,d15=y-(S.lt15||0)>=15;
+  if(d15&&Object.keys(letterLines(1)).length)return true;
+  if(d5&&(Object.keys(letterLines(2)).length||(S.rumor&&S.rumor.length)||alive().some(p=>inClan(p)&&!isCtrl(p)&&p.job==='quan'&&p.liem<35)))return true;
+  return false}
+function letterPopup(h){const y=Math.floor(S.t/12);const d15=y-(S.lt15||0)>=15&&Object.keys(letterLines(1)).length>0;const Ls=letterLines(d15?1:2);S.lt5=y;if(d15)S.lt15=y; /* đã đọc thì xóa các dòng đã hiện */ {const keep={};for(const [k,L] of Object.entries(S.letters||{})){const l=L.filter(x=>(x.lv||1)<(d15?1:2));if(l.length)keep[k]=l}S.letters=keep}
+  const sec=Object.entries(Ls).filter(([,L])=>L.length).map(([k,L])=>`<h3 style="margin:10px 0 4px;font-size:14px">${k==='_xa'?'Người nhà ở xa':esc(HH(k)?HH(k).name:'Chi họ')}</h3><ul class="plain">${L.map(x=>`<li><small>${x.t}</small></li>`).join('')}</ul>`).join('');
   /* tin đồn: vi phạm gia quy chưa bị phát giác, mỗi tin có một nửa khả năng lọt tới tai gia chủ */
   const rum=(S.rumor||[]).filter(x=>{const p=P(x.id);return p&&inClan(p)&&RULES[x.k]&&chance(0.5)});
   const sus=[...new Map(rum.map(x=>[x.id,x])).values()].slice(0,3);
@@ -6436,7 +6449,7 @@ const G={landDelta,landLose,landOk:()=>landRight(),led:LEDAPI,inKinh,homeP,npc:{
   _v633:{HOUSE_DEF,hdef,house,houseName,houseRel,houseAlly,houseKid,vil,vilLog,vd,vAdd,kPow,vFlag,vStance,vilRoutes,vilReady,vilEnd,vilStart,vilQuan,vilFighters,vilYears,vPick,pickWho,KIEN,DUY,KRANK,achieve,cf,vBranch,vFi,VBR,hinfo,hnear,houseRefs,giftNorm,w_wed,w_mo,NEAR_MO,HOUSE_TIER},
   _v62:{willPopup,chunoPopup,debtTick,expelPopup2,doExpel,tumatPopup,oanPopup,tranhviPopup,ruleSlots,ruleWhy,addRule,dropRule,keugoiPopup,thiencoPopup,gateCheck,ttlPopup,wishPick,wishScore,obey,ctxOk,CTX,v62Month,v62Year,loveTick,outsTick,divorcePopup,vuotsinhPopup,rulepropPopup,ruleforcePopup,rulechgPopup,pieceF,jobDig,minDig}};
 /* v6.4.1.1: cổng riêng cho trang admin (admin.js). Bản thường không dùng tới */
-G._adm={startScreen,historyMenu,personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
+G._adm={letterLv,letterAdd,letterDue,letterLines,startScreen,historyMenu,personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
   getSel:()=>sel,setSel:v=>{sel=v},running:()=>running,speed:()=>speed,setRun:(r,sp)=>{running=!!r;if(sp)speed=sp;renderTop()},
   setS:st=>{S=st;sel=P(sel)?sel:S.head;O.hidden=true;M.innerHTML='';render();nextPopup()},page:()=>page,ensurePersona};
 window.BNTG=G;
