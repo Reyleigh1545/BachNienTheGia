@@ -2137,7 +2137,7 @@ function moveOutPopup(c){
   const maxH=Math.min(HH(mainHH()).home,HOMES.length-2);
   const shares=[0,mm(15),mm(50)];let share=0;
   const go=(home,payBy,vac)=>{const members=fam();const own=members.reduce((s,p)=>s+Math.max(0,p.purse),0);
-    let id;if(vac){id=vac;const h=S.hh[id];h.name=branchName(c);h.founder=c.id;h.since=S.t;h.rent=0;h.keep=0;h.life=HH(c.hh).life;h.money=0}else id=newBranch(c,home,0);
+    let id;if(vac){id=vac;const h=S.hh[id];h.name=branchName(c);h.founder=c.id;h.since=S.t;h.rent=0;h.keep=0;h.life=chiLife(c,0);h.money=0}else id=newBranch(c,home,0);
     const h=S.hh[id];
     if(payBy==='clan'&&!vac)S.money-=HOMES[home].cost;
     members.forEach(p=>{h.money+=Math.max(0,p.purse);p.purse=0;p.hh=id});
@@ -3009,7 +3009,9 @@ const clanFormed=()=>alive().some(p=>(p.gen||1)>=2&&married(p)&&inClan(p));
 /* ---------- chi phái ---------- */
 function branchName(c){const w=String(c.given||'').split(' ').filter(Boolean);const key=(S.poem!=null&&w.length>1)?w[w.length-1]:(w[0]||'Mới');
   const used=new Set(Object.values(S.hh).map(h=>h.name));let n='Chi '+key;if(used.has(n)&&w.length>1)n='Chi '+w.slice(0,2).join(' ');const sx=['Đông','Tây','Nam','Bắc','Thượng','Hạ','Tiền','Hậu'];let i=0;while(used.has(n)&&i<sx.length)n='Chi '+key+' '+sx[i++];return n} /* v6.7.0: trùng tên thì thêm tên đệm hoặc hướng, không thêm số */
-function newBranch(c,home,money){const id='h'+S.t+R(100,999);S.hh[id]={home,life:HH(c.hh)?HH(c.hh).life:1,name:branchName(c),money:money||0,founder:c.id,since:S.t};return id}
+/* d9.6: mức sống chi mới theo danh vọng và của cải THẬT của người lập chi, không lấy theo gia tộc (chủ dự án 22/11), tránh chi tiêu quá cao so với chi */
+function chiLife(c,money){const mainL=HH(c.hh)?HH(c.hh).life:1;const sc=Math.max(0,c.fame||0)+(money||0)/1000+(c.purse||0)/1000;let tt=0;TIERS.forEach(([,v],k)=>{if(sc>=v)tt=k});return Math.max(0,Math.min(mainL,Math.floor(tt/2)))}
+function newBranch(c,home,money){const id='h'+S.t+R(100,999);S.hh[id]={home,life:chiLife(c,money),name:branchName(c),money:money||0,founder:c.id,since:S.t};return id}
 function branchLeader(id){const h=S.hh[id];const f=h&&P(h.founder);if(f&&f.dead==null&&f.hh===id&&inClan(f))return f;return alive().filter(p=>p.hh===id&&inClan(p)&&age(p)>=16).sort((a,b)=>a.born-b.born)[0]||null}
 const branches=()=>Object.keys(S.hh).filter(id=>id!==mainHH()&&alive().some(p=>p.hh===id&&inClan(p)));
 const vacantHomes=()=>Object.keys(S.hh).filter(id=>{const h=S.hh[id];return !h.sold&&h.home>0&&!alive().some(p=>p.hh===id)});
