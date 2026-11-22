@@ -344,6 +344,13 @@ ul.plain{margin:4px 0 0;padding-left:18px;font-size:12.5px;display:grid;gap:3px}
 .verlbl{position:fixed;right:8px;bottom:5px;font-size:10px;line-height:1;letter-spacing:.04em;opacity:.38;color:var(--ink);pointer-events:none;user-select:none;z-index:5}
 .gbbtn{position:fixed;left:0;top:46%;z-index:30;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 8px;border:1px solid #c9a86a;border-left:0;border-radius:0 12px 12px 0;background:#fbf3df;color:#5a3d12;font:600 12px/1.1 inherit;cursor:pointer;box-shadow:2px 3px 10px rgba(60,40,10,.18)}
 .gbbtn .gbi{font-size:20px;line-height:1;color:#b07a20}.gbbtn small{font-size:11px;color:#8a6a2a}.gbbtn:hover{background:#fff3c8}
+.kinstrip{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.kincard{display:flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink);cursor:pointer;text-align:left;font:inherit}
+.kincard:hover,.pkrow .pview:hover{border-color:var(--seal)}
+.kincard svg,.pview svg{width:46px;height:46px;border-radius:50%;flex:none;display:block}
+.kincard span{display:grid;gap:1px}.kincard small{color:var(--muted);font-size:12px}
+.pview{display:inline-block;border-radius:50%;cursor:pointer;flex:none;margin-right:10px;box-shadow:0 0 0 2px var(--line)}
+.pkrow{display:flex!important;align-items:center;text-align:left}
 </style>
 
 <div class="wrap" id="app"></div>
