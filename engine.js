@@ -673,14 +673,16 @@ function farmLabor(){
   return cap;
 }
 /* v6.7.0-d8: nhà không tự cày. Đất phong (tước vị) và đất mua (chỉ khi có quan hoặc tước) chia thành: dự án, ruộng đã khai hoang cho tá điền, và đất hoang. farmArea là số mẫu ruộng đã khai hoang. */
-const farmArea=()=>S.farm.fld||0;
+/* d9.6: 40% đất phong theo tước là ruộng đã khai (cho tá điền); đất được cho qua sự kiện cũng có phần ruộng (xem landDelta) */
+const fiefFld=()=>Math.round((S.farm.fief||0)*0.4);
+const farmArea=()=>(S.farm.fld||0)+fiefFld();
 const landTotal=()=>(S.farm.fief||0)+(S.farm.own||0);
 const clrN=()=>(S.farm.clr||[]).reduce((s,x)=>s+x.n,0);
 const projAc=(P,n)=>{const a=window.D.PROJ_AC&&window.D.PROJ_AC[P.id];if(a==null)return 0;return Array.isArray(a)?Math.ceil(a[0]+a[1]*(n!=null?n:(P.sc?P.sc.n0:0))):a};
 const projUsedAc=()=>(S.proj||[]).reduce((s,p)=>{const P=projDef(p.id);return s+((P&&(p.st==='xay'||p.st==='xong'))?projAc(P,p.n):0)},0);
-const wildAcres=()=>Math.max(0,landTotal()-(S.farm.fld||0)-clrN()-projUsedAc());
+const wildAcres=()=>Math.max(0,landTotal()-farmArea()-clrN()-projUsedAc());
 /* d9: đất cộng, trừ từ sự kiện. Nhà không có quan, tước thì không giữ được đất: bán lại lấy tiền. */
-function landDelta(n){const F=S.farm;if(n>0){if(!landRight()){const v=Math.round(n*landCost()*0.5);S.money+=v;return `<span class="fx"><span class="up">Không giữ được đất, bán lại ${money(v)}</span></span>`}F.own=(F.own||0)+n;return `<span class="fx"><span class="up">Đất +${n} mẫu</span></span>`}
+function landDelta(n){const F=S.farm;if(n>0){if(!landRight()){const v=Math.round(n*landCost()*0.5);S.money+=v;return `<span class="fx"><span class="up">Không giữ được đất, bán lại ${money(v)}</span></span>`}F.own=(F.own||0)+n;const rf=Math.round(n*0.35);F.fld=(F.fld||0)+rf;return `<span class="fx"><span class="up">Đất +${n} mẫu${rf?` (${rf} mẫu là ruộng đã khai)`:''}</span></span>`}
   const k=landLose(-n);return k?`<span class="fx"><span class="down">Đất -${k} mẫu</span></span>`:''}
 function landLose(n){const F=S.farm;let k=Math.min(n,F.own||0);F.own=(F.own||0)-k;const r=n-k;if(r>0&&(F.fld||0)>0){const j=Math.min(r,F.fld);F.fld-=j;k+=j;trimAlloc()}return k}
 const landRight=()=>alive().some(p=>inClan(p)&&(p.job==='quan'||p.tuoc>0));
@@ -2932,7 +2934,7 @@ function hhFactor(id){
   return k}
 function hhExpenseAt(id,life){const h=S.hh[id];const o=h.life;h.life=life;const e=hhExpense(id).total;h.life=o;return e}
 function toIncome(){return 0} /* d8: tô thu theo mùa gặt trong farmMonth; toEst chỉ để hiển thị trung bình */
-function toEst(){const F=S.farm;const n=F.fld||0;if(!n)return 0;return Math.round(n*CROPS.lua.y*0.9*TOLV[F.to==null?1:F.to][1]*mk('lua')/12*(S.disaster?(S.disaster.crop||0.6):1))}
+function toEst(){const F=S.farm;const n=farmArea();if(!n)return 0;return Math.round(n*CROPS.lua.y*0.9*TOLV[F.to==null?1:F.to][1]*mk('lua')/12*(S.disaster?(S.disaster.crop||0.6):1))}
 
 /* ---------- dòng tiền hằng tháng ---------- */
 function econMonth(){
