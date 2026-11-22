@@ -845,7 +845,9 @@ function farmerLv(){const o=S.farm.own;return o>=40?3:o>=15?2:o>=3?1:0}
 let EVENTS=[],EVMAP={};
 function buildEvents(){EVENTS=[];window.EVMEM=window.EVMEM||{};(window.EVF||[]).forEach(f=>{try{EVENTS.push(...f(G))}catch(e){console.error(e)}});EVMAP=Object.fromEntries(EVENTS.map(e=>[e.id,e]));classifyEvents();tagEvents();patchEvents();initBrk62();guard6415();guard6416();guard653();attachMeta();attachMem();wrapEvMoney()}
 /* v6.5.4: gắn metadata kho sự kiện (window.EVMETA, sinh bởi tools/classify.js) để lọc và thống kê ở trang admin. Không ảnh hưởng cách game chọn sự kiện. */
-function attachMeta(){const M=window.EVMETA||{};EVENTS.forEach(e=>{const m=M[e.id];e.meta=m?{d:m[0],s:m[1],tr:m[2],ra:m[3],who:m[4],sit:m[5]}:{d:'unclassified',s:'unclassified',tr:e.arc?'arc':e.fixed?'fixed':e.ky?'encounter':'random',ra:'na',who:'any',sit:'any'}})}
+/* d9.6 Q5: mức sự kiện và kỳ ngộ (chủ dự án 22/11): 0 vặt, 1 thường, 2 quan trọng, 3 lớn. Khóa e.lv ghi đè; mặc định suy từ loại (cốt truyện 3, kỳ ngộ và việc cố định 2) và độ hiếm (rare trở lên 3, uncommon 2). */
+function evLvOf(e){if(e.lv!=null)return e.lv;const M=e.meta||{};if(e.arc||M.tr==='arc')return 3;if(['rare','very_rare','unique'].includes(M.ra))return 3;if(M.ra==='uncommon'||e.ky||M.tr==='encounter'||e.fixed||M.tr==='fixed')return 2;return 1}
+function attachMeta(){const M=window.EVMETA||{};EVENTS.forEach(e=>{const m=M[e.id];e.meta=m?{d:m[0],s:m[1],tr:m[2],ra:m[3],who:m[4],sit:m[5]}:{d:'unclassified',s:'unclassified',tr:e.arc?'arc':e.fixed?'fixed':e.ky?'encounter':'random',ra:'na',who:'any',sit:'any'};e.lv=evLvOf(e)})}
 function attachMem(){const M=window.EVMEM||{};EVENTS.forEach(e=>{const m=M[e.id];if(!m)return;if(m.mem&&!e.mem)e.mem=m.mem;if(m.led&&!e.led)e.led=m.led})}
 /* v6.5.3: gắn cấp (lvr) cho các sự kiện quân ngũ có từ trước, để cấp cao không gặp chuyện của lính mới */
 function guard653(){const T={qn_tan_binh:[0,1],qn_luyen_quan:[0,4],qn_tuan_tra:[0,3],qn_thieu_luong:[0,4],qn_tran_lon:[3,7],qn_tuong_quan:[5,7],d631_chi_huy_nhan_tai:[0,3],d631_lao_tuong_truyen_phap:[0,4],d631_cuu_tuong_bi_thuong:[0,4],n633_qn_linh:[0,2],n633_qn_ngua:[0,5],n633_qn_luong:[0,4],n633_qn_lui:[3,7],qt4_giao_binh_quyen:[5,7]};
@@ -967,7 +969,7 @@ function headerFor(c,other){
 let AUTO_C=null;
 function autoChoice(c,ttl,opts,d){const ok=(opts||[]).filter(o=>{try{return !o.go&&(!o.c||o.c(c,d))}catch(e){return false}});if(!ok.length)return false;
   const probs=ok.map(o=>o.r?prob(c,o.r[0],o.r[1]):null);const i=autoPick(c,ok,probs);popOpt(c,ok[i]);const r=runOpt(c,ok[i],probs[i],d);if(S.over)return true;
-  log(`${nameOf(c)} · ${ttl} (tự quyết): ${r}`);letterAdd(c,`<b>${esc(ttl)}</b>: ${esc(c.given)} chọn "${esc(ok[i].l)}". ${r}`);stt('auto');setTimeout(nextPopup,0);return true}
+  log(`${nameOf(c)} · ${ttl} (tự quyết): ${r}`);letterAdd(c,`<b>${esc(ttl)}</b>: ${esc(c.given)} chọn "${esc(ok[i].l)}". ${r}`,letterLvEv(ttl,r));stt('auto');setTimeout(nextPopup,0);return true}
 /* v6.4.1.5: trẻ con, người già không chọn được những việc phải đi xa */
 const FAR_RE=/chu du|lên kinh|bốn phương|vạn dặm|giang hồ|du ngoạn|biên ải|ra trận|tòng quân|đi xa|viễn du|ngao du|vân du/i;
 const farBad=c=>{const a=age(c);return a<14||a>=70};
@@ -4207,6 +4209,8 @@ function letterLv(r){const s=String(r||'').replace(/<[^>]+>/g,' ');
   if(/(Tiền|Quỹ hộ|Tiền riêng)\s*[+\-−]\s*\d+\s*bạc/.test(s))return 2;
   if(/(Danh vọng|Chiến công|Tiền|Quỹ hộ|Tiền riêng|Trí tuệ|Võ lực|Sức khỏe|Mị lực|EQ)\s*[+\-−]\s*\d/.test(s))return 1;
   return 0}
+/* mức tin = mức sự kiện (theo tên), hạ một bậc nếu kết quả không có gì đáng kể, nâng lên nếu kết quả lớn */
+function letterLvEv(ttl,r){const e=EVENTS.find(x=>x.t===ttl);const lr=letterLv(r);if(!e)return lr||1;const b=e.lv!=null?e.lv:1;return lr===0?Math.max(0,b-1):Math.max(b,lr)}
 function letterAdd(c,line,lv){if(lv==null)lv=letterLv(line);if(lv<=0)return;S.letters=S.letters||{};const k=c.hh===mainHH()?'_xa':c.hh;const L=S.letters[k]=S.letters[k]||[];L.push({t:line,lv});if(L.length>12)L.shift()}
 function letterLines(minLv){const o={};for(const [k,L] of Object.entries(S.letters||{})){const l=L.filter(x=>(x.lv||1)>=minLv);if(l.length)o[k]=l}return o}
 function letterDue(){const y=Math.floor(S.t/12);const d5=y-(S.lt5||0)>=5,d15=y-(S.lt15||0)>=15;
