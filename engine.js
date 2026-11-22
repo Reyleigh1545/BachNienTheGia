@@ -2144,7 +2144,7 @@ function weddingPopup(c,p,free){
   if(!isCtrl(c)){const i=Math.min(exp,S.money>=costs[exp]?exp:0);S.money-=Math.min(costs[i],Math.max(0,S.money));fin(i);setTimeout(nextPopup,0);return}
   openModal(`${headerFor(c)}<span class="eyebrow">Hôn lễ</span><h2>${esc(nameOf(c))} và ${esc(nameOf(p))} thành thân</h2>
    <p>Nhà mình thuộc hàng ${esc(TIERS[tn][0].toLowerCase())}; ${p.famT!=null?'nhà bên kia '+famLine(p):'hai bên'}. Cỗ bàn, rước dâu lớn nhỏ thế nào còn do gia chủ định. Làm sơ sài thì mang tiếng nhà có mà keo, làm quá thì chê phô trương.</p>
-   <div class="choices">${names.map((n,i)=>`<button class="btn" data-w="${i}" ${fmny()<costs[i]&&i?'disabled':''}><strong>${n} · ${money(costs[i])}</strong><small>${i===exp?'Vừa với gia thế':i<exp?'Thấp hơn gia thế, mất thể diện':'Cao hơn gia thế, bị chê phô trương'}</small></button>`).join('')}</div>`);
+   <div class="choices">${names.map((n,i)=>`<button class="btn" data-w="${i}" ${S.money<costs[i]&&i?'disabled':''}><strong>${n} · ${money(costs[i])}</strong><small>${i===exp?'Vừa với gia thế':i<exp?'Thấp hơn gia thế, mất thể diện':'Cao hơn gia thế, bị chê phô trương'}</small></button>`).join('')}</div>`);
   M.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const i=+b.dataset.w;S.money-=costs[i];fin(i);closeModal()})}
 function heirPopup(){
   const old=S.people.find(x=>x.id===S.lastHead);const wh=old&&old.will&&old.will.heir;
