@@ -3959,6 +3959,7 @@ function usWin(kind){const U=usU();if(!U)return 0;
   const d=S.dyn&&S.dyn.k?S.dyn:null;
   if(d){const t=kType(d.k);p+=({hon:0.05,bao:0.06,au:0.08,thu:0,minh:-0.1}[t]||0)+(d.loan>=50?0.04:0)+(d.dt<35?0.04:0)+(d.cr?0.05:0)-(d.k.uy>=75?0.05:0)-(d.dt>=70?0.04:0)}
   const a=P(U.who);if(a){const T=tmOf(a);if(T&&T.tm==='devuong')p+=0.03}
+  p+=({quyen:0.1,vo:-0.06}[U.path]||0); /* d9.6 cân bằng theo đo bot (15 ván mỗi đường, nhân vật mạnh): Võ quan 67%, Khởi nghĩa 40%, Quyền thần 20%; mục tiêu người mạnh 40 đến 55% */
   return clamp(p-0.16,0.04,0.8)}
 function usAbandon(){const U=usU();if(!U)return '';const a=P(U.who);const lo=U.lo;const leak=chance(lo/160);
   S.usurp=null;(S.usNoP=S.usNoP||{})[U.path]=S.t+120;
