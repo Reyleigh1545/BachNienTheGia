@@ -162,6 +162,8 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 **Cốt truyện từ tiểu thuyết (d9.5, `ev-cotran.js`, bản thử, bỏ được bằng cách xóa file; đợt hai thêm 14 kỳ ngộ theo tám nguyên tắc ở mục 8, tổng 43 sự kiện `cv_*` (đợt bốn thêm 7: `cv_chon_to`, `cv_cong_luan`, `cv_so_menh`, `cv_thoa_hiep`, `cv_nha_lon_suy`, `cv_hy_sinh`, `cv_hoi_han`; đợt ba thêm 8: `cv_tu_do`, `cv_gia_vien`, `cv_tra_an`, `cv_boc_lot`, `cv_tranh_thu`, `cv_ket_minh_tin`, `cv_the_doc`, `cv_lien_minh_thao`); đợt hai: `cv_khai_khieu` lễ khảo tư chất, `cv_ban_menh` chọn con đường đầu tiên, `cv_thu_trieu` thú dữ xuống núi, `cv_gia_heo` giấu tài, `cv_thien_tai` người cùng tuổi tài hơn, `cv_dau_gia`, `cv_di_san`, `cv_truyen_thuyet`, `cv_phuc_bao`, `cv_tam_ma`, `cv_khac_biet`, `cv_thach_dau`, `cv_cong_hien`, `cv_linh_tuyen`; chạy tay không lỗi, chưa đo tần suất). Đợt một: 14 sự kiện id `cv_*` chạy trên `G.later`, tiến độ ẩn, có ngã rẽ. (1) **Ký ức người xưa** (trọng sinh): `cv_giac_mong` (14 đến 32 tuổi, một lần) mở `cv_tien_doan`, `cv_nghi_ky`, `cv_ke_thua` (chép sách cho con cháu hoặc giữ riêng). (2) **Ba nhà tranh trại** (`S.cc3` đổi tên ngầm theo lựa chọn): `cv_ba_nha` (kỳ ngộ gia tộc, nhà từ bậc Tiểu hộ, chọn ngả về nhà mạnh, nhà yếu hay trung lập), `cv_tranh_mo`, `cv_chia_phe`, `cv_hau_qua`. (3) **Kỳ vật chín bậc** (`c.flags.ccv`): `cv_ky_vat` nhặt được món đồ lạ, `cv_nuoi` nuôi lên bậc (phàm tới chí tôn, dừng chuỗi ở bậc 4 để gọi `cv_dom_ngo`: bán, hiến quan, hay giữ), có thể thất bại. Kỳ ngộ lẻ: `cv_bi_canh` (bí cảnh thượng cổ, chu kỳ 30 đến 55 năm), `cv_thi_tuyen` (thi tuyển người kế nghiệp, từ 45 tuổi, cần hai con trưởng thành), `cv_chinh_ma` (chọn chính đạo, ma đạo hay đứng giữa, võ từ 70). Chạy tay từng sự kiện không lỗi; chuỗi Ký ức người xưa chạy hết 4 sự kiện qua hàng đợi thật (`cv_giac_mong`, `cv_tien_doan`, `cv_nghi_ky`, `cv_ke_thua`), chuỗi Kỳ vật chạy tới `cv_nuoi` hai lần; chuỗi Ba nhà tranh trại mới kiểm từng sự kiện, chưa chạy hết; chưa đo xác suất ra, số tiền và chỉ số là ước lượng. Không chép nguyên văn truyện, chỉ lấy khung ý.
 
+**Cả gia tộc đồng lòng (d9.6, `clanSupport`):** sức mạnh của một con đường không chỉ từ người theo đường đó mà từ cả họ. Từ mọi người nhà còn sống đang làm quan, tính bốn nguồn hỗ trợ: **võ quan** (binh, tin quân, cấp dưới), **quan văn** (chiếu chỉ, lương thảo, tiến cử), **người ở kinh thành** (đường dây), **người trong cung** (phò mã, vương phi, hoàng hậu; che chở, che bớt lộ). Mỗi tháng trong mưu đại sự các nguồn này cộng thêm thế lực, danh nghĩa, tài lực và giảm lộ theo trọng số từng đường (võ quan nặng nhất ở đường Võ quan, quan văn nặng nhất ở Quyền thần); xin thăng tiến được giảm độ khó tối đa 10 điểm nhờ người nhà làm quan cao (nhất là ở kinh). Thẻ mưu đại sự hiện rõ từng nguồn (số người và mức: ít, có, khá, rất mạnh). Con số là ước lượng chưa đo; chưa có chi phí giữ quan hệ (tiền, hôn nhân).
+
 **Tru di:** quét cả người cưới vào và người ở rể; người ở rể đứng đầu mưu đại sự thì cả họ vẫn chịu. Chi ở xa không bị liên lụy thì **giữ nguyên tiền** của chi.
 
 **Kết thúc khác** (kết phụ, chủ dự án đã đồng ý): tuyệt tự; tru di cửu tộc; các kết của cốt truyện. Nút **Sử sách** ở menu chính ghi 17 cái kết (11 thắng, 6 bại), mờ cho tới khi đạt, mở khóa 6 xuất thân mới. Mọi kết ngoài lên ngôi dùng màn Hậu sử chung. Không có hộp hỏi "khép lại ván" (đã bỏ hộp "Một trang sử").
@@ -183,6 +185,8 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 - Đã bỏ khỏi đề xuất (chủ dự án): thanh tab dưới cùng; trang cây chuyện đã trải qua.
 
 - **Hộp sự kiện hiện mọi người liên quan (d9.6, bản chính, ảnh đại diện hiện tại, màu hiện tại):** dải `.kinstrip` ảnh và tên người chính, người thứ hai, người được chọn; **bấm vào ảnh để xem hồ sơ và đặc điểm** (`kinStrip`, `[data-pcard]`). Hộp **chọn người nhà thật** (`pickKin`) cũng có ảnh và nút xem. Kiểu giao diện admin (khung cố định, nút đánh số…) chưa đưa vào bản chính; ảnh mẫu `Mockup giao dien/d9.6/` là **nhầm hướng, bỏ**.
+- **Sử sách (d9.6):** có nút **Xuất Sử sách** (tải file) và **Nhập Sử sách hoặc file save** (`metaImport`, gộp gia bảo và kết cục đã đạt từ file xuất hoặc từ file save của ván). Sử sách và gia bảo lưu trong `localStorage` theo từng địa chỉ trang, bản admin dùng khóa riêng (`.adm`).
+- **Mức sự kiện (d9.6, `e.lv`):** 0 vặt, 1 thường, 2 quan trọng, 3 lớn; suy từ loại và độ hiếm trong `events-meta.js` (cốt truyện 3, độ hiếm rare trở lên 3, kỳ ngộ và việc cố định 2, còn lại 1), khóa `lv` ghi đè. Thư tay lấy mức từ sự kiện.
 - **Thư tay (d9.6):** mỗi tin có mức (`letterLv`): 3 lớn, 2 quan trọng gom hộp **mỗi 5 năm**, 1 thường gom **mỗi 15 năm**, 0 vặt chỉ ghi nhật ký.
 - Dòng phiên bản mờ ở góc phải dưới (`.verlbl`); bản admin thêm `· admin`. Đổi số khi ra bản mới.
 - Cơ ngơi và Gia tộc không được tràn thông tin: các thẻ triều đình, thời thế, hoàng tộc, cướp ngôi gom vào khối gập.
@@ -228,15 +232,13 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 ## 10. Ý mới của chủ dự án, chưa làm (chép nguyên văn)
 
-**Còn lại của đợt d9.6 (22/11), chưa làm hoặc làm một phần:**
-- **Q10. Hệ thống gia tộc đồng lòng (chưa làm):** đóng góp vào con đường phá đảo, tranh chức, mưu đại sự tính từ cả họ chứ không chỉ người theo đường đó; quan võ hỗ trợ quan võ, quan văn hỗ trợ quan võ, người trong cung hỗ trợ người ngoài cung, người ở kinh hỗ trợ người ở ngoài; hiện rõ từng nguồn hỗ trợ. Cần một phiên thiết kế riêng.
-- **Q11 (làm một phần):** đã làm hộp chọn người thật (`pickKin`) và sửa 8 sự kiện (`qn653_vua_ban`, `cd_19`, `cv_bi_canh`, `cv_thu_trieu`, `cv_thach_dau`, `cv_hy_sinh`, `cv_gia_vien`). **Còn lại:** `t_danh_tuong`, `bat_linh`, `h_ng_duyet`, `h_du_phatthuoc`, `stf_death`, `rg_dam_tang`, `lw_33`, `dh_76`, `qn631_gac_ai`, `vil_l_tho`, `hg_n_thu`, `xg_cau_hon`, `tt_tuyen_tu`, `vil_p_hon`, `c631_tien_cu_huong_truong`, `cv_cong_hien`; và việc liên hôn với quan, đưa người vào kinh bằng cốt truyện: người đi phải thật sự rời nhà và gánh hậu quả thật.
-- **Q5 (làm một phần):** thư tay đã chia mức nhưng mức tính bằng cách đọc kết quả (`letterLv`); chủ dự án muốn **sắp xếp lại toàn bộ sự kiện và kỳ ngộ theo mức** (vặt, thường, quan trọng, lớn); chưa làm.
-- **Q7:** danh sách 10 việc lớn do Claude soạn, chờ chủ dự án duyệt và bổ sung.
-- **Q14 (làm một phần):** đã làm mốc góp 30, 50, 80 và quỹ chi; chưa rà hết các nơi dùng tiền riêng và quỹ (di chúc, tang lễ, dự án, thuế, mưu đại sự, bảng thu chi, giao diện công quỹ).
-- **Q15 (làm một phần):** đã hiện ảnh người liên quan và bấm xem; chưa chụp lại ảnh mẫu bản hiện tại cộng hàng người liên quan để chủ dự án chỉnh.
-- **R2:** NPC giữ ghế đã thật hơn; chưa tăng tần suất họ xuất hiện trong sự kiện (đồng liêu, cấp trên, kẻ thù, ân nhân thật).
-- **Câu hỏi chưa quyết:** danh sách việc lớn đầu tiên cần duyệt; phần thưởng kết phụ T4 đến T11; 39 món gia bảo; 43 sự kiện `cv_*`; 73 id bộ nhớ.
+**Còn lại của đợt d9.6 (22/11):**
+- **Q10:** đã làm bản đầu (xem mục 6). Còn: chi phí giữ quan hệ, đo cân bằng.
+- **Q11:** đã sửa 12 sự kiện chọn người thật (7 ở đợt đầu, thêm `h_ng_duyet`, `h_du_phatthuoc`, `stf_death`, `lw_33`, `dh_76`); `rg_dam_tang` và `hg_n_thu` dùng dữ liệu họ khác nên chọn người chạy khi có dữ liệu thật. **Còn:** liên hôn với quan và đưa người vào kinh bằng cốt truyện; `t_danh_tuong`, `bat_linh`, `qn631_gac_ai`, `vil_l_tho`, `xg_cau_hon`, `tt_tuyen_tu`, `vil_p_hon`, `c631_tien_cu_huong_truong` xét lại thấy người đi chính là người đang gặp việc nên không cần chọn.
+- **Q14:** đã làm mốc góp 30, 50, 80 và quỹ chi; chưa rà hết các nơi dùng tiền riêng và quỹ (di chúc, tang lễ, dự án, thuế, mưu đại sự, bảng thu chi, giao diện công quỹ).
+- **Q15:** đã hiện ảnh người liên quan và bấm xem; chưa chụp lại ảnh mẫu bản hiện tại để chủ dự án chỉnh.
+- **R2:** NPC giữ ghế đã thật hơn; chưa tăng tần suất họ xuất hiện trong sự kiện.
+- **Câu hỏi chưa quyết:** danh sách việc lớn; phần thưởng kết phụ T4 đến T11; 39 món gia bảo; 43 sự kiện `cv_*`; 73 id bộ nhớ.
 
 ---
 

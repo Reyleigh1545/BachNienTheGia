@@ -45,8 +45,11 @@ A.onResult=()=>{if(!mode())return;later(()=>{const b=Mo().querySelector('[data-o
 
 /* ---------- tự chơi ---------- */
 let target=0,loop=null,stuck={html:'',n:0};
+let botLast=-1; /* d9.6: bot tự cưới cho người trưởng thành chưa vợ chồng mỗi năm (mặc định bật) để đo quy mô gia tộc đúng hơn; tắt bằng BN_ADMIN.marry=false */
+function botMarry(g,S){if(A.marry===false||S.t%12!==5||botLast===S.t)return;botLast=S.t;try{g.alive().filter(p=>g.inClan(p)&&!p.inLaw&&!p.away&&g.age(p)>=20&&g.age(p)<=40&&!g.spouseOf(p)&&g.inMain(p)).forEach(p=>{if(Math.random()<0.5)g.mkSpouse(p,false)})}catch(e){}}
 function playTick(){
   const g=G();if(!g)return;const S=g.S();
+  botMarry(g,S);
   if(!S||S.over){stopPlay(S&&S.over?'Ván đã kết thúc.':'');return}
   if(AD().modalOpen()){
     if(pend)return;
