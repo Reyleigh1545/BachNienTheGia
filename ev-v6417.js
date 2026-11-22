@@ -44,11 +44,13 @@ L.push(
  o:c=>[{l:'Tiếp đãi tử tế',ax:{rong:1},f:c=>{if(chance(kt()==='minh'?0.6:0.3)){G.cf(10,'Được vua vi hành ghé thăm');G.alive().filter(p=>G.inClan(p)&&p.job==='quan').forEach(p=>Q.add(p,{fav:6}));return 'Mấy tháng sau mới biết vị khách là đương kim hoàng đế. Cả vùng truyền tai nhau.'}return 'Khách cảm tạ rồi đi.'+fx(c,{tam:2})}},
   {l:'Nói thật nỗi khổ của dân',r:[{eq:0.8,gan:0.5},50],ax:{gan:1,thanh:1},y:c=>{V.d().dt=Math.min(100,V.d().dt+2);return 'Khách lặng nghe, gật đầu. Ít lâu sau quan huyện bị cách chức.'+fx(c,{fame:6})},n:c=>'Khách nghe rồi đi, không nói gì.'},
   {l:'Lánh mặt, cho người nhà tiếp',f:c=>'Khách đi rồi cũng chẳng ai nhớ.'}]},
-{id:'tt_cau_hien',t:'Chiếu cầu hiền',k:'Thời thế',fixed:1,
- x:c=>`Vua ${emp()} xuống chiếu cầu hiền: ai có tài mà chưa ra làm quan thì được tiến cử.`,
- o:c=>{const p=G.alive().find(p=>G.inClan(p)&&G.inMain(p)&&!p.away&&G.age(p)>=20&&G.age(p)<=55&&p.tri>=75&&!['quan','quan_ngu','nguy','vua'].includes(p.job));return p?[
-  {l:`Tiến cử ${p.given}`,ax:{tv:1},f:c=>{const r=G.appoint(p,0);return `${N(p)} được bổ làm ${esc(G.seatName(r.key))}.`+fx(p,{fame:8,tam:8})}},
-  {l:'Không tiến cử ai',f:c=>'Giữ con cháu ở nhà.'}]:[{l:'Nhà mình chưa ai đủ tài',f:c=>'Đành để cơ hội trôi qua.'}]}},
+/* d9.6: bỏ chiếu cầu hiền chung chung (ai cũng có thể dự thi). Chỉ còn cầu MỘT người cụ thể rất tài mà không ra làm quan, vào một ghế đang trống cần người tài. */
+{id:'tt_cau_hien',t:'Triều đình cầu người tài',k:'Thời thế',fixed:1,
+ c:c=>{const vac=Object.values(S().off||{}).some(o=>o&&o.vac);if(!vac)return false;return !!G.alive().find(p=>G.inClan(p)&&G.inMain(p)&&!p.away&&G.age(p)>=22&&G.age(p)<=58&&p.tri>=88&&!['quan','quan_ngu','nguy','vua'].includes(p.job))},
+ x:c=>{const p=G.alive().find(p=>G.inClan(p)&&G.inMain(p)&&!p.away&&G.age(p)>=22&&G.age(p)<=58&&p.tri>=88&&!['quan','quan_ngu','nguy','vua'].includes(p.job));return p?`Trong triều đang có một chức khuyết mà mãi chưa tìm được người xứng. Tiếng ${N(p)} học rộng tài cao truyền tới tai vua ${emp()}, dù người ấy chưa từng ra làm quan. Triều đình cho người đến hỏi thăm riêng.`:'Triều đình cần người tài.'},
+ o:c=>{const p=G.alive().find(p=>G.inClan(p)&&G.inMain(p)&&!p.away&&G.age(p)>=22&&G.age(p)<=58&&p.tri>=88&&!['quan','quan_ngu','nguy','vua'].includes(p.job));return p?[
+  {l:`Để ${p.given} nhận lời ra làm quan`,ax:{tv:1},f:c=>{const r=G.appoint(p,0);return `${N(p)} được bổ làm ${esc(G.seatName(r.key))}, đúng chức đang cần người.`+fx(p,{fame:8,tam:8})}},
+  {l:`Để ${p.given} từ chối, giữ nếp ở nhà`,f:c=>`${N(p)} cảm tạ rồi cáo từ. Người ta khen người ấy không màng danh lợi.`+fx(p,{fame:3,tam:2})}]:[{l:'Chưa ai đủ tài',f:c=>'Đành để cơ hội trôi qua.'}]}},
 {id:'tt_dan_bien',t:'Dân biến',k:'Thời thế',fixed:1,
  x:c=>`Đói kém, quan tham. Dân mấy huyện quanh vùng nổi lên, kéo nhau đi phá kho lương.`,
  o:c=>{const v=m(12);return [

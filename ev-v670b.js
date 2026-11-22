@@ -398,7 +398,7 @@ CD({id:'cd_12',t:'Cầu cạnh Đông xưởng',job:['quan'],c:c=>c.lv>=4,age:[3
   {l:'Nói để suy nghĩ',f:c=>'Hoạn quan gật. Mấy hôm sau thêm lời nhắc khẽ.'+fx(c,{risk:3})}]}),
 CD({id:'cd_19',t:'Giấy gọi nhập quân hộ',head:1,age:[25,60],tier:[0,3],ms:1,w:0.4,
  x:c=>`Lý trưởng đưa tới nhà ${N(c)} tờ giấy: nhà bị xếp vào quân hộ, mỗi đời phải có một người nhập ngũ. Dân làng bảo giấy này khó cãi, nhưng cũng có cách.`,
- o:c=>[{l:'Cử một người con nhập ngũ',f:c=>'Một người trong nhà khăn gói lên đường. Cả nhà ngậm ngùi.'+fx(c,{tam:-3,on:-1})},
+ o:c=>[{l:'Cử một người con nhập ngũ',c:c=>G.kinList(c,p=>G.age(p)>=16&&!G.isHead(p)).length>0,go:(c,d)=>G.pickKin(c,{eyebrow:'Quân hộ',title:'Cử ai nhập ngũ',text:'Sổ quân hộ đòi một người trong nhà nhập ngũ. Người ấy sẽ thật sự rời nhà ra doanh trại, bắt đầu từ lính. Chọn người nào?',filter:p=>G.age(p)>=16&&!G.isHead(p),cb:w=>{G.enlist(w,false);return `${N(w)} khăn gói lên đường ra doanh trại. Cả nhà ngậm ngùi.`+fx(c,{tam:-3,on:-1})+fx(w,{tam:-4})}})},
   pay('Nộp bạc xin chuộc',40,{f:c=>'Lý trưởng ghi nhận. Nhà khỏi phải đi, lần này.'+fx(c,{money:-m(40)})}),
   {l:'Kháng cáo lên quan huyện',r:[{khau:0.7,tri:0.5},40],y:c=>'Quan huyện xem lại sổ, thấy nhầm, xóa tên nhà khỏi quân hộ.'+fx(c,{fame:3}),n:c=>'Quan bác đơn. Mất công mất tiền.'+fx(c,{money:-m(15),tam:-2})}]}),
 CD({id:'cd_34',t:'Lễ nhận sắc tước',c:c=>(c.tuoc||0)>=1,age:[30,90],ms:1,w:0.4,pcd:600,
