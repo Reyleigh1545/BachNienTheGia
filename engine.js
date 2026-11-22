@@ -3888,6 +3888,13 @@ function usStart(path,who,force){const a=typeof who==='string'?P(who):who;if(!a)
   S.usurp=Object.assign({path,who:a.id,st:0,next:S.t+R(2,5),pending:false,pt:0,v:2,br:null},US_START[path]);S.usWait=null;
   qtLog('Bước vào mưu đại sự',`${nameOf(a)} bắt đầu con đường ${US_N[path].toLowerCase()}.`);log(`${nameOf(a)} bắt đầu mưu đại sự.`,'hi');return S.usurp}
 function usAdd(e){const U=usU();if(!U||!e)return;['the','danh','tai','lo'].forEach(k=>{if(e[k])U[k]=clamp(U[k]+e[k],0,100)});if(e.money)S.money+=e.money}
+/* d9.6: nuôi quân mỗi đội (100 người) 30 bạc mỗi tháng (trước 60 bạc), hiện rõ trong thẻ mưu đại sự (chủ dự án 22/11: phí hơi cao, không hiện) */
+const US_COST=30000;
+/* số binh ước lượng theo nơi (chỉ hiện khi nhà có võ quan từ Thiên hộ): kinh thành, biên ải, tỉnh nhà; loạn càng cao thì triều đình càng mỏng */
+function usGarrison(){const loan=(S.dyn&&S.dyn.loan)||10;const f=1+(100-loan)/300;const home=homeP();const hp=home&&PROV[home]?PROV[home].n.replace(/ quan$/,''):'tỉnh nhà';
+  return [['Kinh thành',Math.round(40*f)],['Biên ải',Math.round(28*f)],['Tỉnh '+hp,Math.round(10*f)]]}
+function usArmyInfo(U){if(!alive().some(p=>inClan(p)&&p.job==='quan_ngu'&&p.lv>=4))return '';const n=U.troops||0;const cost=n*US_COST;const more=Math.max(0,Math.floor(S.money/(US_COST*12))-n);
+  return `<p class="kvline"><b>Quân của mình:</b> ${n} đội (khoảng ${n*100} người), nuôi mỗi tháng ${money(cost)}. Tiền hiện có đủ nuôi thêm khoảng ${more} đội trong một năm.</p><p class="kvline"><b>Quân triều đình trấn giữ (ước lượng, đội):</b> ${usGarrison().map(([a,b])=>a+' '+b).join(' · ')}.</p>`}
 function usNext(){const U=usU();if(!U)return;U.st++;U.troops=(U.troops||0)+({quyen:1,vo:2,nghia:3}[U.path]||1); /* v6.7.0: mỗi bước chiêu thêm quân (đội 100 người), nuôi 60 bạc mỗi đội mỗi tháng */U.pending=false;U.next=S.t+R(3,7)}
 function usWin(kind){const U=usU();if(!U)return 0;
   let p=(kind==='thien'?U.danh*0.5+U.the*0.25+U.tai*0.1+(100-U.lo)*0.15:U.the*0.45+U.danh*0.15+U.tai*0.15+(100-U.lo)*0.25)/100;
@@ -3924,7 +3931,7 @@ function usMonth(){if(!head()||S.over)return;
     else{S.usurp=null;(S.usNoP=S.usNoP||{})[U.path]=S.t+120;log('Mưu đại sự tan vỡ vì người cầm đầu không còn.','hi');qtLog('Mưu đại sự tan vỡ','Người cầm đầu không còn, mưu đại sự tan theo.');return}}
   U.lo=clamp(U.lo+0.05+(U.the>60?0.03:0)+(U.st>=3?0.03:0)+(a.away?0.05:0),0,100); /* d9.6: lộ theo thời gian tăng chậm (trước 0,25 mỗi tháng); lộ nhanh chỉ do lựa chọn gây lộ */
   /* v6.6.0: mưu đại sự tốn tiền mỗi tháng: nuôi người, mua chuộc, giữ quân. Võ quan và khởi nghĩa tốn hơn quyền thần */
-  if(U.st>=1){U.troops=U.troops||0;const ct=U.troops*60000;if(ct>0){S.money-=ct;U.pay=(U.pay||0)+ct}if(S.money<0){U.lo=clamp(U.lo+0.4,0,100);U.the=clamp(U.the-0.5,0,100);if(chance(0.1))U.troops=Math.max(0,U.troops-1);U.broke=(U.broke||0)+1;if(U.broke>=12){U.broke=0;log('Vỡ nợ suốt một năm, quân bỏ đi hết. Mưu đại sự đành bỏ dở.','hi');usAbandon();return}}else U.broke=Math.max(0,(U.broke||0)-1)}
+  if(U.st>=1){U.troops=U.troops||0;const ct=U.troops*US_COST;if(ct>0){S.money-=ct;U.pay=(U.pay||0)+ct}if(S.money<0){U.lo=clamp(U.lo+0.4,0,100);U.the=clamp(U.the-0.5,0,100);if(chance(0.1))U.troops=Math.max(0,U.troops-1);U.broke=(U.broke||0)+1;if(U.broke>=12){U.broke=0;log('Vỡ nợ suốt một năm, quân bỏ đi hết. Mưu đại sự đành bỏ dở.','hi');usAbandon();return}}else U.broke=Math.max(0,(U.broke||0)-1)}
   if(U.pending&&S.t-(U.pt||0)>24)U.pending=false;
   if(U.lo<45)U.warned=0;
   if(U.lo>=60&&!U.warned){U.warned=1;usEnq('ts_lo_tin',a)}
@@ -3935,6 +3942,7 @@ function usCard(){const U=usU();if(!U)return '';const a=P(U.who);const AD=window
   const wd=(v,L)=>L[v>=75?3:v>=50?2:v>=25?1:0];const bar=(n,v,txt)=>`<dt>${n}</dt><dd><span class="num">${AD?Math.round(v)+' · ':''}${txt}</span></dd>`;
   return `<section class="card"><span class="eyebrow">Mưu đại sự</span><h2>${US_N[U.path]}</h2>
    <p class="kvline">Người cầm đầu: <b>${a?esc(nameOf(a)):'—'}</b> · bước ${Math.min(U.st+1,len)}/${len}${U.exposed?' · <b class="down">đã có nguy cơ bại lộ</b>':''}</p>
+   ${usArmyInfo(U)}
    <dl class="kv">${bar('Thế lực',U.the,wd(U.the,['chưa có gì','còn mỏng','khá vững','rất mạnh']))}${bar('Danh nghĩa',U.danh,wd(U.danh,['chưa có','mơ hồ','khá thuyết phục','chính đáng']))}${bar('Tài lực',U.tai,wd(U.tai,['trống rỗng','eo hẹp','tạm đủ','dồi dào']))}${bar('Lộ',U.lo,wd(U.lo,['kín như bưng','thoáng có người nghi','nhiều người đã đoán ra','sắp bại lộ']))}</dl>
    <div class="acts"><button class="btn small ghost" data-tsbo>Từ bỏ</button></div></section>`}
 /* đăng cơ: đặt quốc hiệu, niên hiệu */
