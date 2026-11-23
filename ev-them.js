@@ -169,9 +169,6 @@ V({id:'t_g_hoc_bong',t:'Thầy đồ nhận học trò nghèo',age:[7,16],tier:n
  x:c=>`Thầy đồ trong làng thấy ${N(c)} sáng dạ, ngỏ ý cho học không lấy tiền.`,
  o:[{l:'Cảm tạ, cho đi học',f:c=>'Đứa trẻ được cắp sách đến trường.'+fx(c,{tri:R(4,7),tam:8,duyen:2})}]}),
 /* ================= chung, ai cũng gặp được ================= */
-V({id:'t_c_quy_nhan',t:'Quý nhân phù trợ',age:[16,70],w:0.5,
- x:c=>`Trong một lần trú mưa, ${N(c)} trò chuyện với một ông già. Hóa ra ông là người có thế lực trong phủ.`,
- o:[{l:'Trò chuyện thật lòng',r:[{eq:0.7,tri:0.3},40],y:c=>'Ông quý, sau đó giúp đỡ không ít.'+fx(c,{money:m(R(30,60)),bonus:0.15,duyen:5,fame:8}),n:c=>'Câu chuyện vui, rồi ai về nhà nấy.'+fx(c,{tam:4})}]}),
 V({id:'t_c_thao_duoc',t:'Cây thuốc quý',age:[12,70],
  x:'Lên núi kiếm củi, thấy một khóm sâm mọc dưới gốc cây cổ thụ.',
  o:[{l:'Đào mang bán',f:c=>'Hiệu thuốc trả giá cao.'+fx(c,{money:m(R(30,70))})},

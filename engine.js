@@ -6315,6 +6315,8 @@ function lawPopup(c,it){const L=LAWM(it.law);if(!L||c.dead!=null||!inClan(c)){se
   if(!L.tc)opts.push({l:`Lo lót quan xử án (${money(cl)})`,c:()=>S.money>=cl,r:[{muu:0.6,eq:0.5},45],
     y:c=>{S.money-=cl;return 'Quan nhận lễ, án nhẹ đi hai mức. '+lawApply(c,L,l0-2,gr)+fx(c,{liem:-4})},n:c=>{S.money-=cl;return 'Việc đưa hối lộ bị lộ, án nặng thêm. '+lawApply(c,L,l0+1,gr)+fx(c,{liem:-6,fame:-5})}});
   if(helper)opts.push({l:'Nhờ người có phẩm tước trong họ lên tiếng',r:[{eq:0.7,khau:0.4},L.tc?30:55],y:c=>'Người có quyền thế nói giúp, án giảm một mức. '+lawApply(c,L,l0-1,gr),n:c=>'Lời nói giúp không được nghe, còn mang tiếng nhờ vả. '+lawApply(c,L,l0,gr)+fx(c,{fame:-3})});
+  {const holder=alive().find(p=>inClan(p)&&p.flags&&p.flags.baoLanh>S.t);const q=holder&&G.tie&&G.tie.act('quy_nhan').filter(n=>(n.rel||0)>=10)[0];
+    if(holder&&q)opts.push({l:`Cầm thiếp bảo lãnh của ${esc(q.n)} đến xin`,r:[{eq:0.7,khau:0.4},L.tc?35:80],y:c=>{holder.flags.baoLanh=0;G.tie.rel(q,-6,'dùng thiếp bảo lãnh');return `Thiếp của ${esc(q.n)} đến tay quan xử án, ông ta đổi sắc mặt rồi giảm án hai mức. `+lawApply(c,L,l0-2,gr)+fx(c,{qh:[q.n,-6]})},n:c=>{holder.flags.baoLanh=0;return `Quan xử án trả lại thiếp, nói không thể vì quen biết mà bẻ luật. Lời bảo lãnh mất tác dụng. `+lawApply(c,L,l0,gr)+fx(c,{fame:-2})}})} /* d9.12: đọc cờ baoLanh do tie_quy_nhan_giup đặt */
   opts.push({l:`Kháng án lên cấp trên (${money(c15)})`,c:()=>S.money>=c15,r:[{tri:0.6,khau:0.5},clamp(40-(ev-50)*0.4,10,70)],y:c=>{S.money-=c15;return 'Cấp trên xét lại, giảm một mức. '+lawApply(c,L,l0-1,gr)},n:c=>{S.money-=c15;return 'Cấp trên giữ nguyên án. '+lawApply(c,L,l0,gr)+fx(c,{fame:-2})}});
   if(it.test)return {text,opts};
   choicePopup(c,'Công đường',`Xét xử: ${L.n}`,text,opts)}
