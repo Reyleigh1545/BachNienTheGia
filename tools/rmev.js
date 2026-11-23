@@ -10,7 +10,7 @@ for(const f of files){const p=path.join(D,f);let L=fs.readFileSync(p,'utf8').spl
   for(const id of ids){const re=new RegExp("\\bid\\s*:\\s*['\"]"+id+"['\"]");
     const i=L.findIndex(l=>re.test(l));if(i<0)continue;
     if(!START.test(L[i])){console.log('BỎ QUA '+id+' ('+f+':'+(i+1)+'): dòng không mở khối đúng dạng: '+L[i].slice(0,60));continue}
-    let j=i+1;while(j<L.length&&!START.test(L[j])&&!/^\s*\/\*\s*=+/.test(L[j]))j++;
+    let j=i+1;while(j<L.length&&!START.test(L[j])&&!/^\s*\/\*\s*=+/.test(L[j])&&!/^\s*\]/.test(L[j]))j++; /* d9.12: dừng ở dòng "];" cuối mảng, tránh xóa nhầm phần đóng file khi xóa sự kiện cuối */
     L.splice(i,j-i);ch=true;done[id]=(done[id]||0)+1}
   if(ch)fs.writeFileSync(p,L.join('\n'))}
 ids.forEach(id=>console.log((done[id]?'đã xóa ':'KHÔNG THẤY ')+id+(done[id]>1?' ('+done[id]+' chỗ)':'')));

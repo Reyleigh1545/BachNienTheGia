@@ -78,8 +78,6 @@ const TUNE={
  kn_32:{vo:{mul:2.5}},                           /* thành phải tăng cực nhiều võ lực */
  kn_43:{tri:{mul:3},m:{mul:3},fame:{mul:3},cfame:{mul:3}}, /* gấp 3 lần kết quả */
  kn_61:{tri:{mul:2}},                            /* thành thì trí +6 */
- qn653_ky_bao_kiem:{vo:{mul:3},fame:{mul:3},merit:{mul:3}},
- qn653_ky_binh_thu:{tri:{mul:2},eq:{mul:2},merit:{mul:3}},
  nb_b:{vo:{mul:1.4}},                            /* võ nên tăng 14 */
  nong_duoc_lieu:{tri:{mul:3}},
  t_g_hoc_bong:{tri:{mul:1.6}},
@@ -89,7 +87,6 @@ const TUNE={
 };
 /* ADD: id -> [{opt,on:['y','n','f'],fx:{...}}]. Số trong fx là GỐC; kỳ ngộ nhân thêm 1,5 cho trí/võ/mị/EQ, 3 cho tiền/danh vọng. */
 const ADD={
- qn653_ky_binh_thu:[{opt:0,on:['y'],fx:{vo:10}},{opt:0,on:['n'],fx:{vo:3}}],  /* thành: võ +15 hiển thị */
  t_q_binh_thu:[{opt:0,on:['y','yy'],fx:{vo:7}}],                                /* thiếu võ lực */
  nb_c:[{opt:0,on:['y','n'],fx:{tri:4,eq:3}},{opt:1,on:['f'],fx:{eq:2}}],        /* cả hai lựa chọn nên cộng chỉ số */
  nong_duoc_lieu:[{opt:0,on:['y'],fx:{bonus:0.08}}],                             /* dược liệu thành thu nhập thật */
