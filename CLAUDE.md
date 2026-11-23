@@ -23,6 +23,7 @@ Phiên bản hiện tại: **v6.7.10-d9.7** (nhãn `.verlbl` trong `index.html`;
 10. Viết sự kiện mới xong thì chạy `node tools/addmeta.js` để thêm metadata.
 11. **Không giữ tương thích save cũ** (từ v6.7.0-d0) cho tới khi chủ dự án bảo bật lại.
 12. Lựa chọn trong sự kiện **không kèm dòng chú thích**; chỉ ghi giá khi lựa chọn là trả tiền ngay. Không hiện phần trăm tỉ lệ thành ở bản thường. Hiện **đủ mọi dòng cộng trừ** kết quả, kể cả ±1.
+13. **Chủ dự án báo lỗi hoặc đưa ý (từ 23/11):** Claude **kiểm tra, chép nguyên văn vào mục 10 kèm kết quả kiểm, rồi dừng**. Chỉ sửa hoặc làm khi chủ dự án bảo "làm". (Điều này đè quy tắc 0.2 về "sửa ngay lỗi kẹt hộp thoại" cho tới khi chủ dự án bảo khác.)
 
 ---
 
@@ -239,7 +240,10 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 ## 10. Ý mới của chủ dự án, chưa làm (chép nguyên văn)
 
-(không có ý nào đang chờ. Các ý d9.6 đã làm xong hoặc đã chuyển thành luật ở mục 3 đến 8; phần chưa xong nằm ở mục 11.)
+**Báo lỗi (chủ dự án, 23/11, kèm ảnh `Test result/Screenshot 2026-11-23 095946.png`), chép nguyên văn:**
+> "tao tìm được 1 lỗi đã up vào trong test result, bấm vào xem thì bị tụt ra phía sau nên chẳng xem được gì, cũng không tắt được"
+
+*Kiểm tra (23/11, chưa sửa):* ảnh chụp hộp sự kiện "Lạc giữa hội chợ" (Tân Bảo Hậu, 3 tuổi) có dải thẻ người liên quan ở đầu hộp; phía sau hộp là hồ sơ nhân vật đã mở nhưng nằm dưới. **Nguyên nhân đã xác nhận trong code:** bấm thẻ người (`[data-pcard]`, `kinStrip` và `pview`, listener ở `engine.js` quanh dòng 1086) gọi `openSheet`, mà lớp hồ sơ `.overlay.sheet` có `z-index:45` (`index.html` dòng 238) thấp hơn lớp hộp thoại `.overlay` có `z-index:50` (dòng 161), nên hồ sơ mở **phía sau** hộp sự kiện đang hiện; hộp sự kiện che hết nên không xem được, và nút đóng hồ sơ nằm dưới hộp nên không bấm được. Đây là lỗi do d9.6 (thẻ bấm xem hồ sơ trong hộp sự kiện ở bản chính; có thể cả `pickKin`). Hướng sửa khi chủ dự án bảo làm: cho hồ sơ mở từ thẻ nổi lên trên hộp (z-index cao hơn 50, hoặc đóng hộp tạm), đóng hồ sơ phải quay về hộp sự kiện còn nguyên lựa chọn. Cần kiểm thêm: mở từ `pickKin`, ở `admin.html` (giao diện `ui2` có thể xử lý khác), và phím Escape.
 
 ---
 
