@@ -7,7 +7,7 @@ const sects=()=>(S().wr&&S().wr.sects)||[];
 const sectOf=c=>{const id=c.flags&&c.flags.ghs;return sects().find(s=>s.id===id)||null};
 const GJ=o=>Object.assign({tags:{},k:'Giang hồ',job:['hiep'],age:[16,70],pcd:60,cd:36,w:1,ms:1},o);
 return [
-GJ({id:'gh_len_de_tu',t:'Thử thách lên đệ tử',c:c=>rk(c)===1&&!!sectOf(c),once:1,
+GJ({id:'gh_len_de_tu',t:'Thử thách lên đệ tử',c:c=>rk(c)===1&&c.lv>=1&&!!sectOf(c),once:1,
  x:c=>{const s=sectOf(c);return `Chưởng môn ${esc(s.n)} cho gọi các môn sinh lâu năm. Ai vượt qua ba ải trong núi thì được nhận làm đệ tử, học tâm pháp chính tông. ${N(c)} nằm trong danh sách.`},
  o:c=>[{l:'Dự đủ ba ải',r:[{vo:1,suc:0.5,tri:0.4},55],y:c=>{c.flags.gh=2;return 'Qua được cả ba ải, được chưởng môn đích thân trao áo đệ tử.'+fx(c,{vo:R(2,4),fame:R(4,8),tam:6})},n:c=>'Gãy ở ải thứ hai, phải dưỡng thương lâu ngày. Phải đợi khóa sau.'+fx(c,{suc:-R(8,15),tam:-4})},
   {l:'Xin hoãn, luyện thêm vài năm',f:c=>'Chưởng môn gật đầu, ghi tên vào khóa sau.'+fx(c,{vo:1})}]}),

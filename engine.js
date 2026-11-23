@@ -4374,7 +4374,7 @@ function ttlPopup(c,it){const [n,t]=STITLE[it.k][it.i];const f=Math.round(4+it.i
   infoPopup(c,`${SN[it.k]} ${n}`,`"${t}"`,`${esc(c.given)} đã đạt ${SN[it.k].toLowerCase()} ${n}. Tiếng tăm lan ra, người ta bắt đầu gọi là <b>${esc(t)}</b>.${it.i+1<STITLE[it.k].length?` Danh hiệu kế tiếp ở mốc ${STITLE[it.k][it.i+1][0]}.`:''}`+fx(c,{tam:5}))}
 const THIENCO={tri:'Một đêm sao Văn Khúc sáng rực, trong mộng có người đưa cho một cuốn sách không chữ.',vo:'Trên đỉnh núi tuyết, một bóng người áo trắng múa kiếm giữa trăng, mỗi đường kiếm như vẽ ra trời đất.',
   suc:'Một vị lão nhân tóc bạc mà mặt hồng như trẻ thơ chỉ vào ngọn núi phía tây: "Nơi ấy có suối thuốc ba trăm năm mới chảy một lần."',mi:'Trong giấc mơ, một nữ nhân không rõ mặt mỉm cười, cả vườn hoa nở bung trong đêm đông.',eq:'Một vị cao tăng trăm tuổi gõ cửa, chỉ nói một câu: "Ngươi đã thấu lòng người, nay có muốn thấu lòng trời?"'};
-function thiencoTick(c){if(age(c)<20||c.brk||c.away)return;for(const [k] of STATS){if(gateCap(c,k)!==150||(c.flags['tc_'+k]))continue;const v=k==='suc'?c.cap.suc:c[k];if(v<148)continue;
+function thiencoTick(c){if(age(c)<20||c.brk)return; /* d9.8: bỏ c.away (chủ dự án 23/11: lính, quan xa không mở được mốc 200, về nhà mới mở) */for(const [k] of STATS){if(gateCap(c,k)!==150||(c.flags['tc_'+k]))continue;const v=k==='suc'?c.cap.suc:c[k];if(v<148)continue;
   if(chance(0.012*(0.5+c.duyen/100)*(1+famLuck()/150)*(1+tsum(c,'brk')/20))){c.flags['tc_'+k]=1;enqueue('thienco',c.id,{k});return}}}
 function thiencoPopup(c,it){const k=it.k;const p=BRK100[k].find(x=>x.id==='thien');
   choicePopup(c,'Thiên cơ',`Thiên cơ: ${SN[it.k].toLowerCase()}`,`${THIENCO[k]} ${esc(c.given)} biết đây là cơ duyên ngàn năm có một, qua được thì ${SN[k].toLowerCase()} có thể vượt khỏi giới hạn của người phàm. Mất một hai năm, thành bại khó lường.`,[
@@ -4653,8 +4653,9 @@ function sheetHTML(c){
   h+=`<div class="dsec"><h3>${I('think','Tâm tư')}</h3><ul class="think">${th.map(t=>`<li>${t}</li>`).join('')}</ul></div>`;
   h+=`<div class="dsec"><h3>${a>=16&&c.job!=='none'?I('job:'+c.job,esc(jobName(c))):'Nghề nghiệp'}</h3>`;
   if(a>=16&&!['none','vua','huu'].includes(c.job)){
-    h+=`${['quan_ngu','noi'].includes(c.job)?'':bar(c.job==='chu'&&JOBS[c.bizFrom]?'Thông thạo '+JOBS[c.bizFrom].n.toLowerCase():'Thông thạo',c.m,120,'mm','mm')}
+    h+=`${['quan_ngu','noi','hiep'].includes(c.job)?'':bar(c.job==='chu'&&JOBS[c.bizFrom]?'Thông thạo '+JOBS[c.bizFrom].n.toLowerCase():'Thông thạo',c.m,120,'mm','mm')}
     <div class="kvline">${c.job==='nong'?'Thu theo mùa vụ':c.job==='chu'?(bizOf(c)&&bizOf(c).last?`Lãi tháng trước ${money(bizOf(c).last.profit)}`:'Lãi cơ sở'):c.job==='hiep'?`Túi riêng ${money(c.purse)}`:`${money(income(c))}/tháng`}${c.job==='quan'?` · lộc ngoài ${money(sideIncome(c))}`:''}${c.job==='quan'&&postOf(c)?` · ${esc(postOf(c).n)}`:''}${c.job==='quan'&&c.qt?` · ${c.qt.f?'phe '+facN(c.qt.f):'không theo phe'}${c.qt.st?` · <b class="down">${QST_N[c.qt.st]}</b>`:''}`:''}${selfEmp(c)?' · tự làm, không có chủ':''}${pieceJob(c)?' · thu theo năng suất':''}</div>`;
+    if(c.job==='hiep'){const L=JOBS.hiep.lv[c.lv+1];h+=`<div class="kvline">Tiếng tăm (danh vọng) <b class="num">${fmt(c.fame)}</b> · ${SN.vo} <b class="num">${Math.round(c.vo)}</b></div>${L?`<div class="kvline muted">Muốn lên ${esc(L.n.toLowerCase())}: ${Object.entries(L.req).map(([k,v])=>k==='fame'?`danh vọng ${fmt(v)}`:`${SN[k].toLowerCase()} ${v}`).join(', ')}</div>`:'<div class="kvline muted">Đã đứng đầu võ lâm</div>'}`}
     const r=nextReq(c);if(r)h+=`<div class="kvline muted">Lên ${esc(J.lv[c.lv+1].n.toLowerCase())}: ${Object.entries(r).filter(([k])=>k!=='land').map(([k,v])=>k==='m'?`thông thạo ${v}`:k==='fame'?`danh vọng ${v}`:k==='degree'?'đỗ cử nhân':k==='flag'?(v==='thuyen'?'thuyền lớn':'cơ duyên riêng'):`${SN[k]} ${v}`).join(', ')||'thêm ruộng'}</div>`;
   }else if(a<16)h+=`<div class="kvline muted">${a>=6&&c.school!=='nha'?esc((SCHOOL[a<10?1:a<14?2:3][c.school]||{n:'Đi học'}).n):'Còn nhỏ'}${c.appr&&JOBS[c.appr]&&a>=6?' · học nghề '+JOBS[c.appr].n.toLowerCase():''}${Object.keys(c.pre).length?' · đã học việc '+Object.entries(c.pre).map(([j,v])=>`${JOBS[j].n.toLowerCase()} ${Math.round(v)}`).join(', '):''}</div>`;
   else h+=`<div class="kvline muted">${c.job==='huu'?'An hưởng tuổi già':c.flags.jobRetry>S.t?'Trượt phỏng vấn, đợi năm sau':'Chưa có nghề'}</div>`;
@@ -4733,7 +4734,6 @@ function sheetPages(c,keep){const M2=SM();if(!M2||M2.querySelector('.pgtabs')||!
     if(e.classList.contains('dsec')){const t=h3(e);
       if(/Tính cách/.test(t))pages.tc.push(e);else if(/Tâm tư/.test(t))pages.tt.push(e);else if(/Hôn nhân|Quan hệ/.test(t))pages.gd.push(e);else if(/Việc nhà/.test(t))pages.vn.push(e);else pages.vt.push(e);return}
     if(e.classList.contains('kvline')){const t=e.textContent;
-      if(/^Tiềm năng/.test(t)){e.remove();return}
       if(/Tiền riêng|quỹ hộ|Di chúc|với gia chủ/.test(t))pages.vt.push(e);else pages.tq.push(e);return}
     pages.tq.push(e)});
   /* chip tính cách và thói quen từ phần đầu chuyển sang trang Tính cách */
