@@ -337,6 +337,7 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
   8. **Đặt tên cho con nuôi.** Hiện con nuôi giữ tên cũ của bé. Muốn cho người chơi gõ tên mới thì phải sửa hộp thoại có ô nhập chữ. *A (đang dùng):* giữ tên sẵn có. *B:* làm ô nhập tên (tốn một lượt sửa giao diện).
   9. **Cốt truyện dài chỉ ra một lần mỗi ván** (hào cường lấn đất `hc_*`, thương đoàn `tdt_*`, dựng nhà học `hd_*`, kế tự `kt_*`): vì chỉ một lần nên bot 60 năm hầu như không gặp. *A (đang dùng):* giữ hiếm, một lần. *B:* cho lặp lại, cách nhau khoảng 30 năm.
   10. **Võ cử (`v641_vo_do`).** Sau khi đỗ có ba đường: vào quân (Bách hộ hoặc Thiên hộ), ở nhà làm võ sư dân binh (có bổng nhẹ), hoặc mở võ đường (tốn tiền, có thu nhập hằng năm). *A (đang dùng):* giữ ba đường. *B:* bỏ đường võ đường (chỉ còn hai).
+  11. **Kỳ ngộ cũ quá ít lựa chọn.** Đã đếm bằng bot: trong 275 kỳ ngộ ngẫu nhiên, **138 cái chỉ có 1 hoặc 2 lựa chọn** (thường là một nút "được" và một nút "chào rồi đi", đúng kiểu mày chê ở `v6_ky_lao_nhan`: "chỉ có được, không có mất"). Danh sách id lấy bằng `scratchpad/t_kyopt.js` (ví dụ `tu_thien_qua_ngot`, `tre_ky_vat`, `tui_bac`, `vv_*`, `t_n_*`, `t_q_*`). *A:* tao viết lại dần khoảng 20 kỳ ngộ mỗi đợt, ưu tiên cái hay gặp nhất, mỗi cái thành ít nhất 3 lựa chọn có giá phải trả (mất tiền, thể diện, sức khỏe, hoặc rủi ro) và có người thật. *B:* chỉ viết lại những cái mày chỉ tên khi chơi. *C (đang dùng):* để nguyên. Tao khuyên A.
 
 ---
 
