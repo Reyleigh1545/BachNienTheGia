@@ -257,6 +257,11 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 ## 10. Ý mới của chủ dự án, chưa làm (chép nguyên văn)
 
+**Mất chỉ số tính cách (chủ dự án, 23/11), chép nguyên văn:**
+> "giờ tao mới để ý, mất hết các chỉ số tính cách rồi"
+
+*Kiểm tra (23/11, chưa sửa):* **đúng là mất, do tao gây ra ở d9.8.** Hồ sơ người có khối `<div class="subs ax">` (engine.js dòng 4509) liệt kê **toàn bộ `AXES`: các chỉ số tính cách** (`axv`, mỗi chỉ số 0 đến 100, tô màu cao/thấp, bấm xem giải thích `data-info`). Khi dựng hồ sơ chia trang (`sheetPages`, d9.8) tao gỡ khối này bằng `if(e.classList.contains('ax')){e.remove();return}` vì hiểu nhầm câu "bỏ lưới tám chỉ số tự lập" trong mục 7 (câu đó chỉ nói lưới phụ `dl` / tự lập, không phải cả bảng tính cách). Hậu quả: ở **giao diện bản chính (index.html)** hồ sơ chỉ còn nhãn chữ ở phần "Đặc điểm" và đoạn tả tính cách, **không còn các con số tính cách**; kỹ năng (`.subs.sk`) vẫn còn. Admin giao diện mới (`ui2.js`) chưa kiểm. **Hướng sửa dự kiến, chờ "làm":** bỏ dòng `e.remove()` và xếp khối `.subs.ax` vào trang "Tính cách và kỹ năng" (trước khối kỹ năng); kiểm lại `ui2.js` xem có hiện đủ chỉ số tính cách không; sửa câu ở mục 7 cho rõ.
+
 (không có ý nào đang chờ. Các ý 23/11 đã làm ở d9.8 và d9.9 và chuyển thành luật: giao diện hộp sự kiện và hồ sơ ở mục 7, giang hồ ở mục 6, Thiên cơ ở mục 3, việc lớn ở mục 3, gia bảo ở mục 6, hệ số kỳ ngộ ở mục 5, cưới nhân phép của lính ở mục 3.)
 
 ---
