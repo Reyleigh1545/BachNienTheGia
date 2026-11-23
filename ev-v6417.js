@@ -39,11 +39,6 @@ L.push(
 {id:'tt_an_dien',t:'Khoa thi ân điển',k:'Thời thế',fixed:1,
  x:c=>`Mừng vua mới lên ngôi, triều đình mở một khoa thi ân điển ngoài lệ ba năm.`,
  o:c=>[{l:'Báo cho con cháu chuẩn bị',f:c=>{S().anK={y:Math.floor(S().t/12)};return 'Tháng Tám năm nay có thi Hương, sang năm có thi Hội.'}}]},
-{id:'tt_vi_hanh',t:'Khách lạ trong làng',k:'Thời thế',fixed:1,
- x:c=>`Một vị khách phong thái khác thường ghé nhà xin nước, hỏi chuyện làm ăn, chuyện quan lại trong vùng. Người hầu theo ông đi đứng như lính.`,
- o:c=>[{l:'Tiếp đãi tử tế',ax:{rong:1},f:c=>{if(chance(kt()==='minh'?0.6:0.3)){G.cf(10,'Được vua vi hành ghé thăm');G.alive().filter(p=>G.inClan(p)&&p.job==='quan').forEach(p=>Q.add(p,{fav:6}));return 'Mấy tháng sau mới biết vị khách là đương kim hoàng đế. Cả vùng truyền tai nhau.'}return 'Khách cảm tạ rồi đi.'+fx(c,{tam:2})}},
-  {l:'Nói thật nỗi khổ của dân',r:[{eq:0.8,gan:0.5},50],ax:{gan:1,thanh:1},y:c=>{V.d().dt=Math.min(100,V.d().dt+2);return 'Khách lặng nghe, gật đầu. Ít lâu sau quan huyện bị cách chức.'+fx(c,{fame:6})},n:c=>'Khách nghe rồi đi, không nói gì.'},
-  {l:'Lánh mặt, cho người nhà tiếp',f:c=>'Khách đi rồi cũng chẳng ai nhớ.'}]},
 /* d9.6: bỏ chiếu cầu hiền chung chung (ai cũng có thể dự thi). Chỉ còn cầu MỘT người cụ thể rất tài mà không ra làm quan, vào một ghế đang trống cần người tài. */
 {id:'tt_cau_hien',t:'Triều đình cầu người tài',k:'Thời thế',fixed:1,
  c:c=>{const vac=Object.values(S().off||{}).some(o=>o&&o.vac);if(!vac)return false;return !!G.alive().find(p=>G.inClan(p)&&G.inMain(p)&&!p.away&&p.g==='nam'&&G.age(p)>=22&&G.age(p)<=58&&p.tri>=88&&!['quan','quan_ngu','nguy','vua'].includes(p.job))},

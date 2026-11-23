@@ -84,7 +84,9 @@ function taxCollect(){const t=taxS(),s=S();if(!X.S||!s.money&&s.money!==0)return
 function taxYear(){taxPolicy();const s=S();/* quan huyện lạm thu: người làm quan thật ở sổ (vai quan_huyen) có tham thì đặt thuế phụ */
   if(!s.biz&&!G.tierIdx())return;if(chance(0.07+(s.war?0.05:0))&&X.EVMAP.thu_lam_thu&&G.tierIdx()>=1){const h=alive().find(p=>p.id===s.head);if(h)enqueue('ev',h.id,{ev:'thu_lam_thu',data:{}})}}
 G.tax={base:taxBase,ex:taxEx,state:taxS,pol:taxSetPol,POLN};
-X.yearly.push(tieYear,romYear,taxYear);Object.assign(X.fn,{taxCollect});
+/* thu nhập của chức võ sư dân binh và chủ võ đường (v641_vo_do) */
+function statusYear(){alive().filter(p=>inClan(p)&&p.dead==null&&p.flags).forEach(p=>{if(p.flags.vosinh){p.purse=(p.purse||0)+mm(1.5)*3}if(p.flags.vodduong){p.purse=(p.purse||0)+mm(4);if(chance(0.1))G.addStat(p,'vo',1)}})}
+X.yearly.push(tieYear,romYear,taxYear,statusYear);Object.assign(X.fn,{taxCollect});
 Object.assign(G,{tie:{ensure,get,rel,on,oan,act,bonus,later:laterNpc,note,VAI},rg:{set:rgSet,get:rgGet,of:rgOf}});
 Object.assign(X.fn,{tieYear,rgFamilyYear});
 });
