@@ -858,7 +858,7 @@ let EVENTS=[],EVMAP={};
 function buildEvents(){EVENTS=[];window.EVMEM=window.EVMEM||{};(window.EVF||[]).forEach(f=>{try{EVENTS.push(...f(G))}catch(e){console.error(e)}});EVMAP=Object.fromEntries(EVENTS.map(e=>[e.id,e]));classifyEvents();tagEvents();patchEvents();initBrk62();guard6415();guard6416();guard653();attachMeta();attachMem();wrapEvMoney()}
 /* v6.5.4: gắn metadata kho sự kiện (window.EVMETA, sinh bởi tools/classify.js) để lọc và thống kê ở trang admin. Không ảnh hưởng cách game chọn sự kiện. */
 /* d9.6 Q5: mức sự kiện và kỳ ngộ (chủ dự án 22/11): 0 vặt, 1 thường, 2 quan trọng, 3 lớn. Khóa e.lv ghi đè; mặc định suy từ loại (cốt truyện 3, kỳ ngộ và việc cố định 2) và độ hiếm (rare trở lên 3, uncommon 2). */
-function evLvOf(e){if(e.lv!=null)return e.lv;const M=e.meta||{};if(e.arc||M.tr==='arc')return 3;if(['rare','very_rare','unique'].includes(M.ra))return 3;if(M.ra==='uncommon'||e.ky||M.tr==='encounter'||e.fixed||M.tr==='fixed')return 2;return 1}
+function evLvOf(e){if(e.lv!=null)return e.lv;if(window.EVLV&&window.EVLV[e.id]!=null)return window.EVLV[e.id]; /* d9.10: events-lv.js (tools/lvgen.js) */const M=e.meta||{};if(e.arc||M.tr==='arc')return 3;if(['rare','very_rare','unique'].includes(M.ra))return 3;if(M.ra==='uncommon'||e.ky||M.tr==='encounter'||e.fixed||M.tr==='fixed')return 2;return 1}
 function attachMeta(){const M=window.EVMETA||{};EVENTS.forEach(e=>{const m=M[e.id];e.meta=m?{d:m[0],s:m[1],tr:m[2],ra:m[3],who:m[4],sit:m[5]}:{d:'unclassified',s:'unclassified',tr:e.arc?'arc':e.fixed?'fixed':e.ky?'encounter':'random',ra:'na',who:'any',sit:'any'};e.lv=evLvOf(e)})}
 function attachMem(){const M=window.EVMEM||{};EVENTS.forEach(e=>{const m=M[e.id];if(!m)return;if(m.mem&&!e.mem)e.mem=m.mem;if(m.led&&!e.led)e.led=m.led})}
 /* v6.5.3: gắn cấp (lvr) cho các sự kiện quân ngũ có từ trước, để cấp cao không gặp chuyện của lính mới */
@@ -937,7 +937,7 @@ function pickEvent(c,ky,baby){
       if(T.dom&&T.dom.includes(dm))w*=T.boost||1.4;if(T.quiet&&(e.ky||dm==='encounter'||dm==='jianghu'||dm==='dynasty'))w*=T.quiet}
     return w};
   const wt=e=>{const last=S.evLast[e.id];const rec=last==null?1:clamp((S.t-last)/(e.rep||(e.ky?240:96)),0.12,1);
-    return arcW(e)*(e.w||1)*(e.td&&noble(c)?0.03:1)*(e.good?(c.duyen>60?1.6:1.2):1)*(c.seen[e.id]?1:2)*rec/(1+(S.evn[e.id]||0)*0.3)};
+    return arcW(e)*(e.w||1)*({0:1.4,1:1,2:0.85,3:0.7}[e.lv]||1)*(e.td&&noble(c)?0.03:1)*(e.good?(c.duyen>60?1.6:1.2):1)*(c.seen[e.id]?1:2)*rec/(1+(S.evn[e.id]||0)*0.3)};
   const tot=pool.reduce((a,e)=>a+wt(e),0);let r=Math.random()*tot;let ev=pool[0];
   for(const e of pool){r-=wt(e);if(r<=0){ev=e;break}}
   /* v6.4.1.3: chưa ghi nhận ở đây. Chỉ ghi lịch sử và thời gian hồi khi hộp thật sự mở (commitEv trong showPopup) */
@@ -1050,7 +1050,7 @@ function choicePopup(c,eyebrow,title,text,opts,arc,data,evId){
 }
 /* v6.1: kết quả luôn có một câu dẫn trước phần cộng trừ */
 /* v6.7.0-d6: cốt truyện đang chạy có thể nhận một dấu nhỏ từ sự kiện thường vừa xảy ra (ARC.<id>.touch), tối đa mỗi sáu tháng một lần */
-function arcTouch(c,evId){if(!evId||!S.arcs||DRY)return '';const e=EVMAP[evId];if(!e||e.arc||e.fixed)return '';let out='';
+function arcTouch(c,evId){if(!evId||!S.arcs||DRY)return '';const e=EVMAP[evId];if(!e||e.arc||(e.fixed&&!/^(cd+_|[a-z0-9_]+_[bc]$)/.test(evId)))return '';let out=''; /* d9.10: câu nối cốt truyện cũng đến các bước của chuỗi cũ (c7_b, c14_b...) */
   for(const id in S.arcs){const a=S.arcs[id],d=ARC[id];if(!a||!a.on||a.end||!d||!d.touch)continue;if(S.t-(a.touchT||-99)<6)continue;
     let t='';try{t=d.touch(a,e,c)||''}catch(er){}if(t){a.touchT=S.t;out+=`<p class="muted"><i>${t}</i></p>`}}
   return out}

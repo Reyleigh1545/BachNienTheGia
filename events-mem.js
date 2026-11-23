@@ -84,5 +84,8 @@ window.EVMEM=Object.assign(window.EVMEM||{},{
  t_c_doi_cong:{led:{k:'gap',lab:/Đổi|Nhận/}},
  y_nguoi_ngheo:{led:{k:'cuu',lab:/Chữa|Cho|Giúp/}},
  qa_tu_nguc:{led:{k:'cuu',lab:/Giúp|Cứu|Đưa/}},
- v62_xg_ve_tham:{mem:{any:['gap','cuoi']}}
+ v62_xg_ve_tham:{mem:{any:['gap','cuoi']}},
+ /* d9.10: ghi việc giúp hàng xóm (đọc bởi xom_nho_on, xom_gop_gio trong ev-v6710d.js) */
+ c631_dam_ma_lang:{led:{k:'xom_giup',lab:/khiêng|phúng điếu/}},
+ t_c_doi_cong:{led:{k:'xom_giup',lab:/Đồng ý|Nhận làm/}}
 });
