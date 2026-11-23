@@ -19,14 +19,14 @@ return [
 {id:'lh_quan_hau',t:'Nhà thông gia quan nhắn lại',k:'Hôn sự',fixed:1,head:1,
  x:(c,d)=>{const w=d.w?G.P(d.w):null;return w?(d.ok?`Nhà thông gia làm quan nhắn: ${esc(w.given)} ở bên ấy sống yên ổn, ông thông gia có việc nhờ một người trong nhà ${N(c)} giúp, đổi lại sẽ đỡ lời cho ai đang cần đường quan.`:`Nhà thông gia ít khi nhắn. Hôm nay có tin: ${esc(w.given)} bị đối xử lạnh nhạt, nhưng ông thông gia lại ngỏ lời nhờ nhà mình một việc.`):'Nhà thông gia quan có nhắn tin nhưng người đi đã không còn liên lạc.'},
  o:(c,d)=>{const w=d.w?G.P(d.w):null;if(!w)return [{l:'Tiếc',f:()=>''}];const v=m(12);return [
-  {l:`Giúp việc ông ấy nhờ (${G.fmtMoney(v)})`,c:()=>G.money()>=v,f:c=>{S().money-=v;if(d.ok)S().tgq=(S().tgq||0)+1;return (d.ok?'Ông thông gia nhớ ơn, về sau nhắc nhà mình trong các buổi họp quan. Mối thông gia thêm bền.':'Ông thông gia dịu giọng, '+esc(w.given)+' được đối đãi khá hơn.')+fx(c,{fame:3,tam:2})+fx(w,{tam:d.ok?3:5})}},
+  {l:`Giúp việc ông ấy nhờ (${G.fmtMoney(v)})`,c:()=>G.money()>=v,f:c=>{S().money-=v;if(d.ok)S().tgq=(S().tgq||0)+1;G.later(c,'lh_buoc3',R(36,60),{w:d.w,ok:d.ok});return (d.ok?'Ông thông gia nhớ ơn, về sau nhắc nhà mình trong các buổi họp quan. Mối thông gia thêm bền.':'Ông thông gia dịu giọng, '+esc(w.given)+' được đối đãi khá hơn.')+fx(c,{fame:3,tam:2})+fx(w,{tam:d.ok?3:5})}},
   {l:'Từ chối, giữ khoảng cách',f:c=>{if(S().tgq>0)S().tgq--;return 'Mối thông gia nguội dần. '+esc(w.given)+' ở bên ấy cũng chịu thiệt.'+fx(c,{tam:-2})+fx(w,{tam:-4})}}]}},
 {id:'kinh_ve_tin',t:'Tin người ở kinh',k:'Kinh thành',fixed:1,head:1,
  x:(c,d)=>{const w=d.w?G.P(d.w):null;return w&&w.dead==null?(d.ok?`${esc(w.given)} gửi thư từ kinh: đã có chỗ đứng, quen thêm mấy người có chức phận, hỏi nhà có muốn gửi thêm người lên cùng.`:`${esc(w.given)} gửi thư từ kinh: sống khổ, xin về hoặc xin thêm tiền để cố thêm.`):'Tin từ kinh không còn ai gửi nữa.'},
  o:(c,d)=>{const w=d.w?G.P(d.w):null;if(!w||w.dead!=null)return [{l:'Tiếc',f:()=>''}];const v=m(15);return d.ok?[
-  {l:`Gửi thêm tiền để mở rộng đường dây (${G.fmtMoney(v)})`,c:()=>G.money()>=v,f:c=>{S().money-=v;G.addStat(w,'eq',1);return `${esc(w.given)} dùng tiền để đi lại nhiều hơn, tin tức từ kinh về đều đặn.`+fx(c,{fame:3})+fx(w,{tam:3})}},
+  {l:`Gửi thêm tiền để mở rộng đường dây (${G.fmtMoney(v)})`,c:()=>G.money()>=v,f:c=>{S().money-=v;G.addStat(w,'eq',1);G.later(c,'kinh_buoc3',R(30,54),{w:d.w,ok:1});return `${esc(w.given)} dùng tiền để đi lại nhiều hơn, tin tức từ kinh về đều đặn.`+fx(c,{fame:3})+fx(w,{tam:3})}},
   {l:'Dặn giữ gìn, tự lo',f:c=>fx(w,{tam:1})}]:[
-  {l:`Gửi tiền cho cố thêm (${G.fmtMoney(v)})`,c:()=>G.money()>=v,f:c=>{S().money-=v;w.flags=w.flags||{};const b=chance(0.5);if(b)w.flags.kinh=1;return b?`Có tiền, ${esc(w.given)} xoay xở được một chỗ làm nhỏ ở kinh.`+fx(w,{tam:4}):`Tiền hết mà việc vẫn chưa khá.`+fx(w,{tam:-3})}},
+  {l:`Gửi tiền cho cố thêm (${G.fmtMoney(v)})`,c:()=>G.money()>=v,f:c=>{S().money-=v;w.flags=w.flags||{};const b=chance(0.5);if(b)w.flags.kinh=1;G.later(c,'kinh_buoc3',R(30,54),{w:d.w,ok:b?1:0});return b?`Có tiền, ${esc(w.given)} xoay xở được một chỗ làm nhỏ ở kinh.`+fx(w,{tam:4}):`Tiền hết mà việc vẫn chưa khá.`+fx(w,{tam:-3})}},
   {l:'Gọi về quê',f:c=>{G.setAway(w,null);return `${esc(w.given)} về nhà, gầy hơn nhưng bình an.`+fx(w,{tam:2})}}]}}
 ];
 });
