@@ -4864,7 +4864,7 @@ function pageQuan(){
 /* ================= vẽ lại ================= */
 /* d9.10 (mục 12, trang Gia tộc và Cơ ngơi gọn lại): từ thẻ thứ ba trong lưới, mỗi thẻ thành khối gập (details), nhớ trạng thái mở trong S.fold. */
 function foldCards(app){S.fold=S.fold||{};const L=[...app.querySelectorAll('.grid2>section.card')];L.forEach((sec,i)=>{if(i<2||sec.querySelector('details'))return;
-    const eb=sec.querySelector('.eyebrow');const h2=sec.querySelector('h2');const key=page+':'+((eb&&eb.textContent)||i).trim().slice(0,30);
+    const eb=sec.querySelector('.eyebrow');const h2=sec.querySelector('h2');const key=page+':'+String((eb&&eb.textContent)||i).trim().slice(0,30);
     const d=document.createElement('details');d.className=sec.className+' fold';d.open=!!S.fold[key];
     const sm=document.createElement('summary');sm.innerHTML='<b>'+((eb&&eb.textContent)||'Mục')+'</b>'+(h2?' · <span class="muted">'+h2.textContent+'</span>':'');
     d.appendChild(sm);[...sec.childNodes].forEach(n=>{if(n!==sm)d.appendChild(n)});if(eb&&eb.parentNode===d)eb.remove();
@@ -4880,7 +4880,7 @@ function render(){
   if(page==='quan'&&!alive().some(p=>inClan(p)&&p.job==='quan'))page='giapha';
   const body=({giapha:pageGiapha,cosngoi:pageCosngoi,ruong:pageRuong,kinhdoanh:pageKinhdoanh,kho:pageKho,bando:pageBando,quan:pageQuan,giatoc:pageGiatoc,nhatky:pageNhatky}[page]||pageGiapha)();
   app.innerHTML=`<header class="top" id="top">${topHTML()}</header>${navHTML()}<main>${body}</main>`;
-  if(!U2()&&(page==='giatoc'||page==='cosngoi'))foldCards(app); /* d9.10: các thẻ từ thẻ thứ ba trở đi gập lại, bấm tiêu đề để mở */
+  if(!U2()&&(page==='giatoc'||page==='cosngoi')){try{foldCards(app)}catch(e){console.error('foldCards',e)}} /* d9.10 (lỗi thật: ném lỗi ở đây làm render dừng, trang không bấm được gì nữa; nay bọc try): các thẻ từ thẻ thứ ba trở đi gập lại, bấm tiêu đề để mở */
   const nt=document.querySelector('.treescroll');
   if(nt){nt.scrollLeft=sx;const n=nt.querySelector(`[data-sel="${sel}"]`);
     if(n){const x=n.getBoundingClientRect().left-nt.getBoundingClientRect().left;if(centerNext||x<0||x+n.offsetWidth>nt.clientWidth)nt.scrollLeft+=x-nt.clientWidth/2+n.offsetWidth/2}centerNext=false}
