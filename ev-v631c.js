@@ -56,11 +56,6 @@ return [
     {l:'Xin mẹ mua cái trống bỏi',f:c=>'Mẹ chiều con, mua cho. Cả tuần cái trống kêu inh ỏi trong nhà.'+fx(c,{tam:6,money:-m(0.2)})}]},
 
 /* ============ THANH NIÊN VÀ NGƯỜI LỚN ============ */
-{id:'c631_hoi_lang_xuan',t:'Hội làng mùa xuân',sea:['xuan'],age:[15,60],c:()=>rural()||kind()==='phu',pcd:60,cd:11,
- x:c=>`Hội làng đầu xuân rộn ràng cờ quạt, chiêng trống. ${N(c)} được cử đi dự cùng mọi người trong xóm.`,
- o:c=>[{l:'Tham gia thi đấu, thi hát',r:[{vo:0.3,mi:0.4,eq:0.3},DW(0.5,50)],y:c=>'Được giải, cả xóm khen. Mối quen cũng rộng ra.'+fx(c,{fame:R(2,5),eq:1,tam:6}),n:c=>'Không được giải gì, nhưng vui cái bụng.'+fx(c,{tam:2})},
-    {l:'Góp công dựng rạp, nấu cỗ',f:c=>'Tay chân bận rộn, nhưng được dân làng quý.'+fx(c,{suc:-2,fame:R(1,3),eq:1,tam:3})},
-    {l:'Đi chơi, ăn uống thư thả',f:c=>fx(c,{tam:6,money:-m(0.5)})}]},
 {id:'c631_cuoi_hang_xom',t:'Đám cưới nhà hàng xóm',sea:['thu','dong'],age:[18,70],tier:[0,3],pcd:48,cd:9,
  x:c=>`Nhà hàng xóm có đám cưới, thiếp mời đến từ sớm. Họ hàng thân thích ở xa cũng tới đông đủ.`,
  o:c=>[{l:'Mừng bằng gạo và con gà',s:`Tốn khoảng ${fm(m(0.6))}`,c:()=>G.money()>=m(0.6),f:c=>'Bữa cỗ vui vẻ, tình làng nghĩa xóm thêm thắm thiết.'+fx(c,{money:-m(0.6),fame:1,eq:1,tam:4})},

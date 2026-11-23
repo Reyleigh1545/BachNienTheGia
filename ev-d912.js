@@ -50,6 +50,7 @@ const GATE={
  v64_vo_tap_tran:{lvr:[0,4]},                             /* dưới Phó tướng */
  v64_vo_thoi_binh:{lvr:[3,4]},                            /* đồn chỉ có từ Bách hộ */
  v64_vo_tuan_bien:{lvr:[0,4],w:0.9},                      /* từ Phó tướng trở lên rất ít tự mình tuần biên */
+ lw_06:{c:(c,G)=>!!G.S().maiLoT&&G.S().t-G.S().maiLoT<=60}, /* chỉ khi nhà thật sự từng nộp tiền mãi lộ cho toán chặn đường */
  t_g_hoc_bong:{tier:[0,1],c:(c,G)=>G.tierIdx()<=1},       /* chỉ nhà nghèo */
  thanh_lau_lo:{g:'nam'},
  v6_ky_tre_thien_bam:{c:(c)=>P.thienbam(c)}               /* chỉ trẻ thật sự thiên bẩm */

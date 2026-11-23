@@ -105,11 +105,6 @@ A({id:'nong_tra_no',t:'Đến hạn trả nợ ruộng',
     {l:'Chịu thiệt',f:c=>fx(c,{tam:-4})}]},
 
 /* ================= TIỀU PHU, THỢ SĂN ================= */
-{id:'tp_ho_du',t:'Hổ dữ',job:TP,w:1.2,
- x:'Trong rừng sâu, một con hổ vằn chắn ngang lối, gầm lên.',
- o:[{l:'Liều đánh',r:[{vo:1,suc:0.5},65],y:c=>'Hạ được hổ! Da hổ bán được giá.'+fx(c,{money:m(R(5,10)),fame:R(8,15),vo:1}),n:c=>'Bị hổ vồ.'+fx(c,{suc:-R(25,40),hpMax:-R(2,5),lethal:1})},
-    {l:'Leo lên cây trốn',r:[{suc:0.6,tri:0.4},45],y:c=>'Hổ bỏ đi.',n:c=>'Trượt chân ngã.'+fx(c,{suc:-15})},
-    {l:'Đốt lửa dọa',r:[{tri:1},50],y:c=>'Hổ sợ lửa lui đi.',n:c=>fx(c,{suc:-12})}]},
 {id:'tp_nhan_sam',t:'Nhân sâm núi',job:TP,w:0.6,
  x:'Dưới gốc cây cổ thụ có mấy lá xòe năm cánh, hình như là nhân sâm già.',
  o:[{l:'Đào thật khéo',r:[{m:0.8,tri:0.4},55],y:c=>'Củ sâm trăm năm!'+fx(c,{money:m(R(15,30)),m:2}),n:c=>'Làm gãy rễ, chỉ bán được ít.'+fx(c,{money:m(2)})},
@@ -251,11 +246,6 @@ A({id:'nong_tra_no',t:'Đến hạn trả nợ ruộng',
  x:'Nha lại đến kiểm tra giấy phép, bới móc đủ thứ.',
  o:[{l:'Biếu tiền trà nước',f:c=>fx(c,{money:-m(2)})},
     {l:'Giấy tờ đầy đủ, không sợ',r:[{tri:0.6,eq:0.6},55],y:c=>'Nha lại đành đi.',n:c=>'Bị phạt vì một lỗi nhỏ.'+fx(c,{money:-m(5)})}]},
-{id:'cs_khai_truong',t:'Khách đông bất ngờ',job:CHU,
- x:'Một vị quan lớn ghé qua, khen ngợi. Từ hôm sau khách kéo đến đông.',
- o:[{l:'Tận dụng, mở rộng tiếng tăm',f:c=>{const b=G.bizOf(c);if(b)b.bonus=(b.bonus||0)+0.05;return fx(c,{fame:5})}},
-    {l:'Giữ chất lượng như cũ',f:c=>fx(c,{fame:3})}]},
-
 /* ================= BUÔN BÁN ================= */
 {id:'buon_hang_hiem',t:'Hàng hiếm về bến',job:['tieunhi','hangrong','chu'],
  x:c=>{const g=pick(['huong','to','gom']);c.flags.hh=g;return `Một thuyền buôn cập bến với lô ${G.GOODS[g].n.toLowerCase()} giá rẻ hơn chợ ba phần.`},
