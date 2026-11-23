@@ -3209,7 +3209,7 @@ function startLv(c,id){const J=JOBS[id];let best=0;const e=expOf(c,id);
 const EMPLOYEE=c=>{const J=JOBS[c.job];return J&&J.inc>0&&!['chu','quan','quan_ngu','hiep','nong','noi','huu','none','vua','nguy'].includes(c.job)&&!selfEmp(c)};
 function bossTick(){alive().forEach(c=>{if(!inClan(c)||c.away||age(c)<16||!EMPLOYEE(c))return;const J=JOBS[c.job];
   const p=0.004*(c.m/60)*(c[J.st]/60)*cond(c);if((c.flags.braiseT||0)<=S.t&&chance(p)){c.flags.braiseT=S.t+18;enqueue('braise',c.id)}})}
-function bossRaisePopup(c){const J=JOBS[c.job];if(!J||!J.lv||!J.lv[c.lv]||!EMPLOYEE(c)||c.dead!=null||c.away){setTimeout(nextPopup,0);return}const boss=EMPLOYER[c.job]||'cấp trên';const promo=c.job!=='nguy'&&canPromote(c);
+function bossRaisePopup(c){const J=JOBS[c.job];if(!J||!J.lv||!J.lv[c.lv]||!EMPLOYEE(c)||c.dead!=null||c.away){setTimeout(nextPopup,0);return}const boss=EMPLOYER[c.job]||'cấp trên';const promo=c.job!=='nguy'&&canPromote(c)&&!!J.lv[c.lv+1];
   const opts=[{l:'Cảm tạ, càng ra sức làm',f:c=>`${esc(boss.charAt(0).toUpperCase()+boss.slice(1))} gật gù hài lòng.`+fx(c,{bonus:0.1,m:1,tam:5})},
     {l:'Xin nhường phần thưởng cho người dưới',f:c=>'Người dưới quý, cấp trên càng tin.'+fx(c,{bonus:0.04,fame:4,eq:1,ax:{rong:3}})},
     {l:'Nhân dịp xin thêm',r:[{khau:0.6,eq:0.4},62],y:c=>'Được tăng hẳn một mức lớn.'+fx(c,{bonus:0.18,tam:6}),n:c=>'Cấp trên phật ý: "Được đằng chân lân đằng đầu."'+fx(c,{bonus:0.05,tam:-4})}];
