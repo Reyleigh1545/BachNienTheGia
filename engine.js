@@ -879,8 +879,16 @@ function jobMatch(e,c){
 }
 /* d9.5: sự kiện cho đất, khai hoang, mua ruộng chỉ ra khi nhà có quan hoặc tước (nhà thường không giữ được ruộng) */
 const LANDGIVE=new Set(['qd_hao_cuong','v61_ta_dien_tron','v61_ta_dien_on','v61_ta_dien_xin_giam','c631_ta_dien_xin_giam','lo_24','tg_40','kn_17','dh_66','lw_26','lw_32','lw_37','lw_21','rv_thon_tinh','pm_k6','rg_tranh_ruong','nong_ban_ruong_re','t_n_dia_chu_ban','t_n_khai_hoang','t_n_dien_trang_thue','t_q_dong_dien','nong631_khai_hoang','nong631_ruong_cong','d631_goa_phu_hien_dat']);
+/* d9.12 KHÓA NGỮ CẢNH (kế hoạch mục 3.8; chủ dự án: sự kiện không hợp thời điểm, kể cả lúc mưu đại sự lật đổ vua): việc vui, giải trí, khoe của, kỳ ngộ lẻ không bốc khi nhà đang mưu đại sự, có tang, bị điều tra, loạn lạc hay dịch bệnh */
+const FUNRE=/hội|tiệc|yến|Tết|hát|gánh|thi vật|đua|đấu|vui|lầu|ngắm|du |xuân|cưới|mừng|thọ|nhạc|cờ|trà|rượu|chợ phiên|thả|hoa|cảnh|chim|so bì|khoe|đồ cổ|bán đồ/i;
+function ctxBlocked(e,c){if(!S||e.arc||e.fixed)return false;const fun=FUNRE.test(typeof e.t==='string'?e.t:'')||(e.ky&&!e.job&&e.u!=='clan'&&!e.head);
+  if(S.usurp&&(fun||e.ky))return true;
+  if(fun){if(S.war&&S.war.near<=1)return true;if(S.epi)return true;if((S.cases||[]).some(x=>S.t-x.t<18))return true;
+    if(c&&S.people.some(p=>p.dead!=null&&S.t-p.dead<12&&(c.parents.includes(p.id)||c.spouse===p.id||(p.parents||[]).includes(c.id))))return true}
+  return false}
 function eligible(e,c){
   if(e.arc||e.fixed)return false;
+  if(ctxBlocked(e,c))return false;
   if(LANDGIVE.has(e.id)&&!landRight())return false;
   if(c.away&&!(e.job&&jobMatch(e,c)))return false;
   if(e.once&&c.seen[e.id])return false;
