@@ -51,6 +51,8 @@ function illYear(){const s=S();const season=X.EC.season?X.EC.season():null;let p
     if(!chance(base))return;
     let pool=Object.keys(DIS).filter(k=>{const D=DIS[k];if(D.old&&a<55)return false;if(k==='dai'||k==='gay_xuong'||k==='thuong_noi'||k==='hoa_lieu'||k==='viem_phoi')return false;return true});
     if(a>=60)pool=pool.concat(['dau_lung','tim','dau_lung']);
+    /* d9.12: bệnh theo vùng đất nhà ở (w63_dis_lu và các thiên tai vùng đã có địa lý; bệnh vặt cũng cần): rừng núi phía nam và tây nhiều sốt rét; phía bắc lạnh nhiều thương hàn, ho phổi; vùng sông nước nhiều tả, kiết lỵ */
+    try{const PV=(window.D&&window.D.PROV)||{};const pv=PV[s.loc&&s.loc.p];const rg=pv&&pv.r;const add=(k,n)=>{if(DIS[k])for(let i=0;i<n;i++)pool.push(k)};if(rg==='nam'||rg==='tay'){add('sot_ret',3)}else if(rg==='bac'){add('thuong_han',2);add('ho_phoi',2)}else if(rg==='dong'||rg==='trung'){add('sot_ret',1);add('thuong_han',1)}}catch(e){}
     const id=pick(pool);const i=start(p,id);if(!i)return;
     if(i.sev>=2&&popups<1&&X.EC.isCtrl&&X.EC.isCtrl(p)&&X.EVMAP.ill_chua){popups++;enqueue('ev',p.id,{ev:'ill_chua',data:{ill:id}})}
     else if(i.sev>=2)treat(p,i,chance(0.5)?'lang':'tu')})}
