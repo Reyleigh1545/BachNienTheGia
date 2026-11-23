@@ -244,6 +244,13 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 > "tao tìm được 1 lỗi đã up vào trong test result, bấm vào xem thì bị tụt ra phía sau nên chẳng xem được gì, cũng không tắt được"
 
 *Kiểm tra (23/11, chưa sửa):* ảnh chụp hộp sự kiện "Lạc giữa hội chợ" (Tân Bảo Hậu, 3 tuổi) có dải thẻ người liên quan ở đầu hộp; phía sau hộp là hồ sơ nhân vật đã mở nhưng nằm dưới. **Nguyên nhân đã xác nhận trong code:** bấm thẻ người (`[data-pcard]`, `kinStrip` và `pview`, listener ở `engine.js` quanh dòng 1086) gọi `openSheet`, mà lớp hồ sơ `.overlay.sheet` có `z-index:45` (`index.html` dòng 238) thấp hơn lớp hộp thoại `.overlay` có `z-index:50` (dòng 161), nên hồ sơ mở **phía sau** hộp sự kiện đang hiện; hộp sự kiện che hết nên không xem được, và nút đóng hồ sơ nằm dưới hộp nên không bấm được. Đây là lỗi do d9.6 (thẻ bấm xem hồ sơ trong hộp sự kiện ở bản chính; có thể cả `pickKin`). Hướng sửa khi chủ dự án bảo làm: cho hồ sơ mở từ thẻ nổi lên trên hộp (z-index cao hơn 50, hoặc đóng hộp tạm), đóng hồ sơ phải quay về hộp sự kiện còn nguyên lựa chọn. Cần kiểm thêm: mở từ `pickKin`, ở `admin.html` (giao diện `ui2` có thể xử lý khác), và phím Escape.
+**Hai ý nữa (chủ dự án, 23/11, kèm ảnh `Test result/Screenshot 2026-11-23 100248.png`), chép nguyên văn:**
+> "thêm 1 kỳ ngộ có mức thưởng tiền quá thấp rồi, và việc góp công quỹ thì điều chỉnh mức trừ tâm trạng chút, phải ít đi"
+
+*Kiểm tra (23/11, chưa sửa):*
+- **Kỳ ngộ thưởng tiền thấp:** ảnh là kỳ ngộ "Con trâu biết đường" (`n633_nong_trau`, `ev-v633e.js` dòng 34, người nghề nông, bậc 0 đến 2). Lựa chọn "Đem rương lên báo quan, chờ người nhận" chỉ cho `money:m(1)` (kết quả hiện **Tiền riêng +195 đồng**, cùng danh vọng +8, liêm chính +5, tâm trạng +4), trong khi lựa chọn "Mở rương xem" (giữ bạc) cho `m(R(3,7))`, gấp 3 đến 7 lần. Lựa chọn đàng hoàng cho tiền thấp hơn hẳn nên không đáng chọn. Hiểu câu "thêm 1 kỳ ngộ" là **thêm một ví dụ nữa** về kỳ ngộ thưởng tiền quá thấp, nên có thể còn nhiều kỳ ngộ khác thấp tương tự; chưa quét toàn bộ. Cần hỏi: chỉ sửa kỳ ngộ này hay quét mọi kỳ ngộ (306) tìm khoản thưởng tiền quá thấp so với giá trị việc.
+- **Góp công quỹ trừ tâm trạng:** bảng `GOP` trong `data.js` dòng 383 gán mức trừ vào tâm trạng **mục tiêu** của người đi làm ở nhà chính (không phải gia chủ): mốc 30% trừ 2, mốc 50% trừ 5, mốc 80% trừ 10 (`engine.js` dòng 529, đọc `g[2]`; thẻ công quỹ hiện "vui −2/−5/−10"). Muốn "ít đi" thì hạ ba con số này; chưa rõ mức mong muốn (ví dụ -1, -3, -6). **Cần hỏi** con số cụ thể trước khi sửa.
+
 
 ---
 
