@@ -13,7 +13,7 @@ function ghYear(){const S=X.S;const W=S.wr;if(!W||!W.sects||W.sects.length<2)ret
     if(w.yrs>=w.len){const win=pa>=pb?a:b,lose=win===a?b:a;win.pow=clampP(win.pow+6);lose.pow=clampP(lose.pow-6);W.gwar=null;W.gwarEnd=S.t;
       log(`Cuộc chiến giữa ${win.n} và ${lose.n} kết thúc: ${win.n} thắng thế.`,'gd');
       alive().filter(p=>inClan(p)&&p.flags&&p.flags.ghs&&(p.flags.ghs===win.id||p.flags.ghs===lose.id)&&(p.flags.gh||0)>=1).forEach(p=>later(p,'gh_chien_ket',R(1,8),{s:p.flags.ghs,win:p.flags.ghs===win.id?1:0}))}}
-  else if(S.t-(W.gwarEnd||-999)>=60&&chance(0.05)){const L=shuf(W.sects.slice());const a=L[0],b=L.find(s=>s!==a);if(a&&b){W.gwar={a:a.id,b:b.id,t:S.t,len:R(2,4),yrs:0,da:0,db:0};log(`Giang hồ dậy sóng: ${a.n} và ${b.n} khai chiến.`,'hi');
+  else if(S.t-(W.gwarEnd||-999)>=60&&chance(0.05+((W.tl||[]).some(f=>f.st==='noi')?0.04:0))){const L=shuf(W.sects.slice());const a=L[0],b=L.find(s=>s!==a);if(a&&b){W.gwar={a:a.id,b:b.id,t:S.t,len:R(2,4),yrs:0,da:0,db:0};log(`Giang hồ dậy sóng: ${a.n} và ${b.n} khai chiến.`,'hi');
     alive().filter(p=>inClan(p)&&p.flags&&(p.flags.ghs===a.id||p.flags.ghs===b.id)&&(p.flags.gh||0)>=1).forEach(p=>later(p,'gh_phai_chien',R(1,10)))}}
   /* đại hội định kỳ mỗi 10 năm cho người đã có tiếng */
   if(S.t>=120&&S.t%120<12&&(W.hoiT||0)<S.t-60){W.hoiT=S.t;alive().filter(p=>inClan(p)&&p.job==='hiep'&&p.lv>=1).forEach(p=>later(p,'gh_hoi_dinh_ky',R(2,10)))}}
@@ -38,9 +38,15 @@ function relYear(){const S=X.S;const nk=alive().filter(p=>inClan(p)&&p.flags&&p.
 const TLT=[{id:'hoikin',n:'Hội Bạch Liên'},{id:'giaco',n:'Giặc cỏ Hắc Phong'},{id:'bang',n:'Bang Thủy Tặc'}];
 function tlForces(){const S=X.S;const w=S.wr;if(!w||!w.hot)return [];w.tl=w.tl||[];w.hot.forEach((p,i)=>{if(!w.tl.find(f=>f.p===p)){const t=TLT[i%3];w.tl.push({p,id:t.id,n:t.n+' ở '+provN(p),pow:R(10,25),rel:0,st:'ngam',yr:0})}});return w.tl}
 function tlForceYear(){const S=X.S;const w=S.wr;if(!w||!w.hot||!S.dyn)return;tlForces().forEach(f=>{const h=(w.heat&&w.heat[f.p])||0;f.yr++;
-    if(f.st==='ngam'){f.pow=Math.max(0,Math.min(100,f.pow+(h-45)/20+R(-2,3)));if(f.pow>=75&&chance(0.25)){f.st='noi';f.noiT=S.t;S.dyn.loan=Math.min(100,(S.dyn.loan||0)+4);log(f.n+' nổi dậy, thiên hạ thêm xáo động.','hi');qtLog('Thế lực tự phát nổi dậy',f.n+' đã khởi sự.')}}
-    else if(f.st==='noi'){f.pow=Math.max(0,Math.min(100,f.pow+R(-6,4)-((S.dyn.dt||50)>=60?2:0)));if(f.pow<=30||S.t-f.noiT>=72){f.st='tan';f.tanT=S.t;S.dyn.loan=Math.max(0,(S.dyn.loan||0)-3);log(f.n+' bị triều đình dẹp, thiên hạ bớt xáo động.','gd')}}
+    if(f.st==='ngam'){f.pow=Math.max(0,Math.min(100,f.pow+(h-45)/20+R(-2,3)));if(f.pow>=75&&chance(0.25)){f.st='noi';f.noiT=S.t;S.dyn.loan=Math.min(100,(S.dyn.loan||0)+4);if(S.qh&&S.qh.on&&!S.qh.who){S.qh.next=Math.min(S.qh.next,S.t+R(6,18));log('Triều đình động viên quân hộ để dẹp loạn.','hi')}if(S.wr.sects&&S.wr.sects.length){const ta=S.wr.sects.filter(s=>s.al==='ta');if(ta.length)pick(ta).pow=Math.min(100,(pick(ta).pow||50)+3)}log(f.n+' nổi dậy, thiên hạ thêm xáo động.','hi');qtLog('Thế lực tự phát nổi dậy',f.n+' đã khởi sự.')}}
+    else if(f.st==='noi'){f.pow=Math.max(0,Math.min(100,f.pow+R(-6,4)-((S.dyn.dt||50)>=60?2:0)));if(f.pow<=30||S.t-f.noiT>=72){f.st='tan';f.tanT=S.t;S.dyn.loan=Math.max(0,(S.dyn.loan||0)-3);if(S.qh&&S.qh.on)S.qh.next=Math.max(S.qh.next,S.t+R(24,48));log(f.n+' bị triều đình dẹp, thiên hạ bớt xáo động.','gd')}}
     else if(f.st==='tan'&&S.t-f.tanT>=120){f.st='ngam';f.pow=R(8,18);f.rel=Math.round(f.rel/2)}})}
+/* gia bảo cộng cho mọi người thuộc gia tộc (chuyển từ engine.js, d9.10) */
+const gbItems=()=>(window.D.GIABAO&&window.D.GIABAO.items)||{};
+function gbBonus(p){const S=X.S;if(!S||!S.gb||!S.gb.length||p.gbA||!inClan(p))return;const I=gbItems();S.gb.forEach(id=>{const it=I[id];if(!it)return;const f=it.fx||{};if(f.duyen)p.duyen=Math.min(100,(p.duyen||0)+f.duyen);for(const k in (f.st||{}))p[k]=Math.min(100,(p[k]||0)+f.st[k])});p.gbA=1}
+function gbApply(ids){const S=X.S;if(!ids||!ids.length)return;const I=gbItems();S.gb=[];ids.forEach(id=>{const it=I[id];if(!it)return;const f=it.fx||{};if(f.m)S.money+=f.m;if(f.fame)S.fame+=f.fame;if(f.hung)S.hung=Math.min(100,S.hung+f.hung);if(f.on)S.on=Math.min(100,S.on+f.on);if(f.tk)S.tk=1;S.gb.push(id);log(`Gia bảo của họ ${S.surname}: ${it.n}. ${it.d}`,'gd')});alive().forEach(gbBonus)}
+Object.assign(X.fn,{gbBonus,gbApply});
+
 X.yearly.push(ghYear,qhYear,dxYear,tkYear,relYear,tlForceYear);
 Object.assign(X.fn,{ghYear,qhYear,dxYear,tkYear,relYear,tlForceYear,tlForces});
 });
