@@ -33,6 +33,7 @@ window.D.GIABAO={
   gb_giap:{n:'Giáp trụ truyền đời',end:'T9',d:'Bộ giáp cũ vẫn dùng được. Võ lực +8, sức khỏe +4.',fx:{st:{vo:8,suc:4}}},
   gb_ho_phu2:{n:'Hổ phù trấn quốc',end:'T9',d:'Hổ phù từng giữ ải mười năm. Võ lực +6, sức khỏe +4.',fx:{st:{vo:6,suc:4}}},
   gb_quan_ky:{n:'Quân kỳ cũ',end:'T9',d:'Lá cờ của một đội quân trung thành. EQ +6, tâm trạng +5.',fx:{st:{eq:6,tam:5}}},
+  gb_tran_phai:{n:'Kiếm phổ trấn phái',end:'GJ',d:'Kiếm phổ của một chưởng môn chính đạo, tặng người cứu vợ ông. Võ lực +8, sức khỏe +2.',fx:{st:{vo:8,suc:2}}},
   gb_bi_kip:{n:'Nửa quyển bí kíp',end:'T10',d:'Nửa quyển bí kíp võ lâm. Võ lực +10.',fx:{st:{vo:10}}},
   gb_lenh_bai:{n:'Lệnh bài minh chủ',end:'T10',d:'Lệnh bài từng đứng đầu võ lâm. Võ lực +6, EQ +4.',fx:{st:{vo:6,eq:4}}},
   gb_ruou:{n:'Bình rượu nghĩa hữu',end:'T10',d:'Rượu kết nghĩa của các môn phái. EQ +6, mị lực +3.',fx:{st:{eq:6,mi:3}}},
