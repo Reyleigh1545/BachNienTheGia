@@ -4608,7 +4608,7 @@ function sheetPages(c,keep){const M2=SM();if(!M2||M2.querySelector('.pgtabs')||!
   const stat=kids.find(e=>e.classList&&e.classList.contains('bars'));
   kids.forEach(e=>{if(e===who||e.classList.contains('xclose'))return;
     if(e===stat){pages.tq.push(e);return}
-    if(e.classList.contains('subs')){if(e.classList.contains('ax')){e.remove();return}pages.tc.push(e);return}
+    if(e.classList.contains('subs')){pages.tc.push(e);return}
     if(e.tagName==='P'){pages.tc.push(e);return}
     if(e.classList.contains('dsec')){const t=h3(e);
       if(/Tính cách/.test(t))pages.tc.push(e);else if(/Tâm tư/.test(t))pages.tt.push(e);else if(/Hôn nhân|Quan hệ/.test(t))pages.gd.push(e);else if(/Việc nhà/.test(t))pages.vn.push(e);else pages.vt.push(e);return}
