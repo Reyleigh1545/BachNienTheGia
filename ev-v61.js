@@ -70,11 +70,6 @@ return [
  o:[{l:'Bán tháo cho xong',f:c=>'Lỗ vốn nhưng không mất trắng.'+fx(c,{purse:-m(0.4)})},
     {l:'Gánh sang chợ huyện xa',r:[{suc:0.5,khau:0.5},50],y:c=>'Chợ huyện đắt hàng, gỡ được vốn còn có lãi.'+fx(c,{purse:m(0.8),suc:-3}),n:c=>'Đến nơi hàng đã hỏng.'+fx(c,{purse:-m(0.6),suc:-4,tam:-4})},
     {l:'Đem về cho người nhà dùng',ax:{rong:2},f:c=>'Cả nhà được bữa no.'+fx(c,{tam:2})}]},
-{id:'v61_buon_moi',t:'Mối hàng mới',age:[16,70],c:c=>side(c,'buonnho'),w:0.7,cd:48,k:'Việc phụ',
- x:c=>`Một lái buôn đường xa để ý ${N(c)} nói năng nhanh nhảu, rủ làm đại lý bán hàng cho y.`,
- o:[{l:'Nhận làm, bỏ vốn riêng ra lấy hàng',c:c=>c.purse>=m(2),r:[{khau:0.5,eq:0.3,tri:0.2},55],y:c=>'Hàng bán chạy, lãi gấp mấy lần buôn nhỏ.'+fx(c,{purse:m(4),sk:{khau:2}}),n:c=>'Lái buôn ôm tiền biến mất.'+fx(c,{purse:-m(2),tam:-10})},
-    {l:'Chỉ bán hộ, không bỏ vốn',f:c=>'Lãi ít mà chắc.'+fx(c,{purse:m(0.6)})},
-    {l:'Từ chối',f:c=>'Nghi ngờ người lạ là phải.'+fx(c,{ax:{diem:1}})}]},
 /* ============ đan lát, dệt vải ============ */
 {id:'v61_dan_khach',t:'Tấm vải được khen',age:[12,80],c:c=>side(c,'dan'),w:1,cd:36,k:'Việc phụ',
  x:c=>`Tấm vải ${N(c)} dệt mịn và đều, bà chủ hàng vải trên phố trầm trồ, hỏi có muốn nhận dệt hàng đặt không.`,
