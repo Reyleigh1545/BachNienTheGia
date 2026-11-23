@@ -10,7 +10,7 @@ const files=fs.readdirSync(D).filter(f=>/^ev-.*\.js$/.test(f));
 const blocks=[];
 for(const f of files){const s=fs.readFileSync(path.join(D,f),'utf8');const re=/\bid\s*:\s*['"]([A-Za-z0-9_]+)['"]/g;let m;const pos=[];while((m=re.exec(s)))pos.push([m[1],m.index]);
   pos.forEach((p,i)=>{const end=i+1<pos.length?pos[i+1][1]:s.length;blocks.push({id:p[0],f,line:s.slice(0,p[1]).split('\n').length,t:s.slice(p[1],end)})})}
-const RETIRED=new Set();try{const r=fs.readFileSync(path.join(D,'events-retired.js'),'utf8');(r.match(/'([A-Za-z0-9_]+)'/g)||[]).forEach(x=>RETIRED.add(x.slice(1,-1)))}catch(e){}
+const RETIRED=new Set();try{const r=fs.readFileSync(path.join(D,'ev-d912.js'),'utf8');const i0=r.indexOf('window.EVRETIRED=[');const i1=r.indexOf('];',i0);const seg=i0>=0&&i1>i0?r.slice(i0,i1):'';(seg.match(/'([A-Za-z0-9_]+)'/g)||[]).forEach(x=>RETIRED.add(x.slice(1,-1)))}catch(e){}
 const live=blocks.filter(b=>!RETIRED.has(b.id));
 const out=[];let bad=0;
 const rep=(name,arr,fatal)=>{out.push(name+': '+arr.length+(LIST&&arr.length?' :: '+arr.map(b=>b.id+'('+b.f+':'+b.line+')').join(' '):(arr.length?' :: '+arr.slice(0,25).map(b=>b.id).join(' ')+(arr.length>25?' …':''):'')));if(fatal&&arr.length)bad++};

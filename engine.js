@@ -650,7 +650,7 @@ function pregnancy(){
     const both=wantsKid(c)&&wantsKid(sp);c.wantChild=sp.wantChild=both;
     const fert=(c.fert||1)*(sp.fert||1)*(c.suc/100+0.3)*(a>36?0.5:1)*(a>42?0.4:1)*lqF;
     if(both?chance(0.09*fert):chance(0.012*fert)){c.preg={due:S.t+9,father:sp.id,twins:chance(0.035)&&(kidCap()-kidsOf(c).filter(k=>k.dead==null&&!k.adopted).length)>=2,care:0};if(!both)log(`${nameOf(c)} có tin mừng ngoài dự tính.`);enqueue('preg',c.id)}
-    else if(both&&(c.fert||1)<0.6&&!c.flags.hiemT&&kidsOf(c).length===0&&a>=24){c.flags.hiemT=S.t;enqueue('ev',c.id,{ev:'v61_hiem_muon'})}
+    else if(both&&(c.fert||1)<0.6&&!c.flags.hiemT&&kidsOf(c).length===0&&a>=24&&marriedMonths(c)>=36){c.flags.hiemT=S.t;enqueue('ev',c.id,{ev:'v61_hiem_muon'})}
   }
 }
 
@@ -857,7 +857,7 @@ function canPromote(c){
 function farmerLv(){const o=S.farm.own;return o>=40?3:o>=15?2:o>=3?1:0}
 /* ================= chọn kỳ ngộ ================= */
 let EVENTS=[],EVMAP={};
-function buildEvents(){EVENTS=[];window.EVMEM=window.EVMEM||{};(window.EVF||[]).forEach(f=>{try{EVENTS.push(...f(G))}catch(e){console.error(e)}});EVMAP=Object.fromEntries(EVENTS.map(e=>[e.id,e]));classifyEvents();tagEvents();patchEvents();initBrk62();guard6415();guard6416();guard653();attachMeta();attachMem();wrapEvMoney()}
+function buildEvents(){EVENTS=[];window.EVMEM=window.EVMEM||{};(window.EVF||[]).forEach(f=>{try{EVENTS.push(...f(G))}catch(e){console.error(e)}});(window.EVPATCH||[]).forEach(f=>{try{EVENTS=f(EVENTS,G)||EVENTS}catch(e){console.error('EVPATCH',e)}});EVMAP=Object.fromEntries(EVENTS.map(e=>[e.id,e]));classifyEvents();tagEvents();patchEvents();initBrk62();guard6415();guard6416();guard653();attachMeta();attachMem();wrapEvMoney()}
 /* v6.5.4: gắn metadata kho sự kiện (window.EVMETA, sinh bởi tools/classify.js) để lọc và thống kê ở trang admin. Không ảnh hưởng cách game chọn sự kiện. */
 /* d9.6 Q5: mức sự kiện và kỳ ngộ (chủ dự án 22/11): 0 vặt, 1 thường, 2 quan trọng, 3 lớn. Khóa e.lv ghi đè; mặc định suy từ loại (cốt truyện 3, kỳ ngộ và việc cố định 2) và độ hiếm (rare trở lên 3, uncommon 2). */
 function evLvOf(e){if(e.lv!=null)return e.lv;if(window.EVLV&&window.EVLV[e.id]!=null)return window.EVLV[e.id]; /* d9.10: events-lv.js (tools/lvgen.js) */const M=e.meta||{};if(e.arc||M.tr==='arc')return 3;if(['rare','very_rare','unique'].includes(M.ra))return 3;if(M.ra==='uncommon'||e.ky||M.tr==='encounter'||e.fixed||M.tr==='fixed')return 2;return 1}
@@ -1600,7 +1600,7 @@ function crStart(d,hard){const F=famEnsure(d);const pr=F.tu.filter(p=>p.dead==nu
   if(hard)d.loan=clamp((d.loan||0)+R(4,9),0,100);dynSnap(d);
   log(hard?'Hoàng đế tuổi đã cao, long thể suy yếu mà chưa lập thái tử. Triều đình ngầm chia hai phe, không khí căng như dây đàn.':'Hoàng đế lâm bệnh mà chưa lập thái tử. Các hoàng tử, thân vương bắt đầu lôi kéo đại thần.','hi');
   qtLog('Khủng hoảng kế vị',`Hoàng đế ${d.emp} lâm bệnh, chưa lập thái tử. ${d.cr.a.n} và ${d.cr.b.n} tranh ngôi. ${CR_KIN[kin]}`)}
-const crActor=()=>alive().filter(p=>inClan(p)&&p.job==='quan'&&p.lv>=3).sort((a,b)=>b.lv-a.lv)[0]||((tierIdx()>=4||alive().some(p=>inClan(p)&&p.job==='quan_ngu'&&p.lv>=5))?head():null);
+const crActor=()=>alive().filter(p=>inClan(p)&&p.job==='quan'&&p.lv>=3).sort((a,b)=>b.lv-a.lv)[0]||alive().filter(p=>inClan(p)&&p.job==='quan_ngu'&&p.lv>=5).sort((a,b)=>b.lv-a.lv)[0]||alive().filter(p=>inClan(p)&&(p.tuoc||0)>=2).sort((a,b)=>b.tuoc-a.tuoc)[0]||null; /* d9.12: không còn gọi người đã nghỉ hưu vì nhà giàu */
 function crMonth(){const d=S.dyn;if(!d||!d.cr||S.t<d.cr.next)return;const cr=d.cr;
   if(cr.st>=CR_STEPS.length){if(d.fixed&&S.t<d.fixed)return;kingDie(d,'băng hà giữa lúc tranh ngôi');return}
   const who=crActor();const ev=CR_STEPS[cr.st];cr.st++;cr.next=S.t+R(4,8);cr.seen=cr.seen||{};if(cr.seen[ev])return;cr.seen[ev]=S.t;
@@ -1970,7 +1970,7 @@ function quitOffice(c){leaveSeat(c);c.job='none';c.lv=0;c.m=0;c.bonus=0;log(`${n
 /* ================= tòng quân, giang hồ ================= */
 function dropTrips(c){S.trips.forEach(t=>{if(t.cid===c.id){t.cid=null;t.hired=true;t.skill=R(35,65)}})}
 function enlist(c,forced){dropTrips(c);setJob(c,'quan_ngu');c.merit=0;c.enlistT=S.t;c.away={type:'army'};
-  {const sp=spouseOf(c);if(sp&&inClan(sp)&&!sp.away&&head())enqueue('ev',S.head,{ev:'lq_dua_vo',data:{who:c.id}})}log(`${nameOf(c)} ${forced?'bị bắt đi lính':'tòng quân'}, rời nhà ra doanh trại.`,'gd')}
+  {const sp=spouseOf(c);if(sp&&inClan(sp)&&!sp.away&&!(sp.away&&sp.away.type==='follow')&&head())enqueue('ev',S.head,{ev:'lq_dua_vo',data:{who:c.id}})}log(`${nameOf(c)} ${forced?'bị bắt đi lính':'tòng quân'}, rời nhà ra doanh trại.`,'gd')}
 function jhPopup(c){
   const amts=[0,mm(5),mm(20),mm(60)];
   openModal(`${hdrEv(c)}<span class="eyebrow">Giang hồ</span><h2>Mang theo bao nhiêu lộ phí?</h2>
@@ -1979,6 +1979,7 @@ function jhPopup(c){
   M.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const v=amts[+b.dataset.a];S.money-=v;dropTrips(c);setJob(c,'hiep');c.purse=v;c.away={type:'jh'};log(`${nameOf(c)} khoác kiếm hành tẩu giang hồ, mang theo ${money(v)}.`,'gd');closeModal()});
   M.querySelector('[data-x]').onclick=closeModal;
 }
+function marriedMonths(c){const x=(S.led||[]).slice().reverse().find(e=>e.k==='cuoi'&&e.a&&e.a.includes(c.id));return x?S.t-x.t:999} /* d9.12: số tháng đã cưới theo sổ; không có sổ (hôn nhân lúc mở ván) coi là lâu */
 function awayText(c){const a=c.away;if(!a)return '';return a.type==='luuday'?'đang bị lưu đày nơi biên viễn':a.type==='army'?'đang ở doanh trại':a.type==='jh'?'đang bôn ba giang hồ':a.type==='odo'?'đang đi đường xa':a.type==='sep'?'đang ly thân':a.type==='mourn'?'đang chịu tang':a.type==='trade'?'đang đi buôn':a.type==='follow'?(a.p?`đang theo ${(P(a.of)&&P(a.of).given)||'người thân'} nhậm chức ở ${provN(a.p)}`:`đang theo ${(P(a.of)&&P(a.of).given)||'người thân'} ở trại gia binh`):'đang đi xa'}
 
 /* ================= học hành ================= */
@@ -4184,7 +4185,7 @@ function nuoiYear(){ /* v6.5.4: con nhỏ lớn lên dưới gia pháp nghiêm t
   const u=S.uy??50;const d=(u>=60?1:u<35?-1:0)+(rule('nghiem')?1:0)+(rule('hieudao')?1:0)-(rule('tuquyet')?1:0);
   alive().forEach(p=>{if(age(p)<16&&!isHead(p)&&d)p.flags.nuoi=clamp((p.flags.nuoi||0)+d,-12,12)})}
 function nhaChat(){const h=mainHH();const cap=HOMES[HH(h).home].cap;
-  if(head()&&hhCount(h)>=cap&&HH(h).home<HOMES.length-1&&S.t-(S.nhaChatT??-99)>=36){S.nhaChatT=S.t;enqueue('ev',S.head,{ev:'gt_nha_chat',data:{}})}}
+  if(head()&&hhCount(h)>=cap&&HH(h).home<HOMES.length-1&&S.t-(S.nhaChatT??-99)>=36&&alive().some(p=>inClan(p)&&inMain(p)&&!p.inLaw&&age(p)>=25&&p.parents.some(x=>x===S.head||x===head().spouse))){S.nhaChatT=S.t;enqueue('ev',S.head,{ev:'gt_nha_chat',data:{}})}}
 function vioTick(){nuoiYear();nhaChat();if(!head()||!S.rules.length)return;const mh=mainHH();
   const L=alive().filter(p=>inClan(p)&&!isHead(p)&&age(p)>=12);const once=(p,k)=>!(p.vio&&p.vio[k]);
   L.forEach(p=>{
