@@ -15,9 +15,10 @@ const restore=()=>{try{ad.closeModal()}catch(e){}const s=JSON.parse(snap);s.queu
 for(const id of IDS){const e=E.find(x=>x.id===id);if(!e){out[id]={missing:1};continue}
  const rec={t:e.t,k:e.k,ky:!!e.ky,age:e.age||null,job:e.job||null,w:e.w,arc:e.arc||0,fixed:!!e.fixed,opts:[]};
  try{restore();const c=G.S().people.find(p=>p.id===FP[id])||G.S().people.find(p=>p.id===G.S().head);
-  let o=typeof e.o==='function'?e.o(c,{}):e.o;if(!Array.isArray(o)){rec.err='không dựng được lựa chọn (cần dữ liệu bước chuỗi)'}else{
+  const d={};if(e.pair){try{const os=G.S().people.filter(p=>p.dead==null&&p.id!==c.id&&e.pair(p,c));if(os.length)d.oid=os[0].id;else rec.err='không có người thứ hai hợp pair trong save'}catch(er){}}try{if(typeof e.x==='function')e.x(c,d)}catch(er){}
+  let o=typeof e.o==='function'?e.o(c,d):e.o;if(!Array.isArray(o)){rec.err='chưa dựng được lựa chọn (bước chuỗi cần dữ liệu từ bước trước, không phải lỗi game)'}else{
    for(const op of o){const r={l:strip(typeof op.l==='function'?op.l(c):op.l),paid:!!op.c,go:!!op.go,hard:op.r?op.r[1]:null,res:{}};
-    for(const k of ['f','y','n']){if(typeof op[k]==='function'){try{restore();const cc=G.S().people.find(p=>p.id===c.id);const t=op[k](cc,{});r.res[k]=strip(t)}catch(er){r.res[k]='(lỗi: '+String(er.message).slice(0,60)+')'}}}
+    for(const k of ['f','y','n']){if(typeof op[k]==='function'){try{restore();const cc=G.S().people.find(p=>p.id===c.id);const t=op[k](cc,d);r.res[k]=strip(t)}catch(er){r.res[k]='(lỗi: '+String(er.message).slice(0,60)+')'}}}
     rec.opts.push(r)}}}catch(er){rec.err=String(er.message).slice(0,100)}
  out[id]=rec}
 restore();return 'JSON::'+JSON.stringify(out)})()`;

@@ -1832,6 +1832,8 @@ function pickSeats(c){
 function officePopup(c){
   const mil=c.job==='quan_ngu';
   const cand=pickSeats(c);
+  /* d9.12: không còn ghế khả dĩ thì không hiện hộp chỉ có nút Yên phận (hộp một lựa chọn trơn, mục 6) */
+  if(!cand.length&&!(c.flags.wait&&seatTm(c.flags.wait.key))){c.flags.noPromoUntil=S.t+18;setTimeout(nextPopup,0);return}
   const opts=[];
   const tryWait=(c,key,why)=>{c.flags.wait={key,t:S.t};c.flags.noPromoUntil=S.t+12;return `${why} Tên được ghi vào danh sách chờ ghế này; khi ghế trống hoặc khi tài và công của mình vượt người đương chức thì sẽ được xét.`};
   cand.forEach(({tid,T,key})=>{const st=offState(key);
@@ -1977,7 +1979,7 @@ function jhPopup(c){
   M.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const v=amts[+b.dataset.a];S.money-=v;dropTrips(c);setJob(c,'hiep');c.purse=v;c.away={type:'jh'};log(`${nameOf(c)} khoác kiếm hành tẩu giang hồ, mang theo ${money(v)}.`,'gd');closeModal()});
   M.querySelector('[data-x]').onclick=closeModal;
 }
-function awayText(c){const a=c.away;if(!a)return '';return a.type==='luuday'?'đang bị lưu đày nơi biên viễn':a.type==='army'?'đang ở doanh trại':a.type==='jh'?'đang bôn ba giang hồ':a.type==='mourn'?'đang chịu tang':a.type==='trade'?'đang đi buôn':a.type==='follow'?(a.p?`đang theo ${(P(a.of)&&P(a.of).given)||'người thân'} nhậm chức ở ${provN(a.p)}`:`đang theo ${(P(a.of)&&P(a.of).given)||'người thân'} ở trại gia binh`):''}
+function awayText(c){const a=c.away;if(!a)return '';return a.type==='luuday'?'đang bị lưu đày nơi biên viễn':a.type==='army'?'đang ở doanh trại':a.type==='jh'?'đang bôn ba giang hồ':a.type==='odo'?'đang đi đường xa':a.type==='sep'?'đang ly thân':a.type==='mourn'?'đang chịu tang':a.type==='trade'?'đang đi buôn':a.type==='follow'?(a.p?`đang theo ${(P(a.of)&&P(a.of).given)||'người thân'} nhậm chức ở ${provN(a.p)}`:`đang theo ${(P(a.of)&&P(a.of).given)||'người thân'} ở trại gia binh`):'đang đi xa'}
 
 /* ================= học hành ================= */
 /* v6.3.4: con gái đi học tùy nếp nhà, không tùy mỗi chuyện nhà giàu hay có quan
@@ -4513,7 +4515,7 @@ function sheetHTML(c){
   const a=age(c),J=JOBS[c.job],dead=c.dead!=null,out=!inClan(c);
   const deg=['','Cử nhân','Đỗ thi Hội',c.flags.examTitle||'Tiến sĩ'][c.degree];
   let h=`<button class="xclose" data-close aria-label="Đóng">×</button><div class="who">${avatarSVG(c,64)}<div style="min-width:0"><h2>${esc(nameOf(c))}</h2>
-   <div class="chips"><span class="chip ${c.id===S.head?'gold':''}">${relation(c)}</span><span class="chip">${dead?'Đã mất':a+' tuổi'}</span>${selfPerks(c)}${c.hb?`<button class="chip gold" data-info="hb:${c.hb}">Uy gia chủ +${c.hb}</button>`:''}${c.tuoc?`<button class="chip gold" data-info="tr:tu_${Math.min(5,c.tuoc)}">${TUOC[c.tuoc]}</button>`:''}${c.degree?`<button class="chip gold" data-info="tr:dg_${Math.min(3,c.degree)}">${deg}</button>`:''}${ctChips(c)}${c.outSp?`<span class="chip">Về nhà họ ${esc(c.outSp.sur)}</span>`:''}${c.preg?'<span class="chip red">Mang thai</span>':''}${c.pst&&isOff(c)?`<span class="chip blue">Nhậm chức ${esc(provN(c.pst.p))}${c.pst.fam?(c.pst.fam>1?' · cả nhà theo':' · có vợ chồng theo'):''}</span>`:''}${c.away?`<span class="chip blue">${awayText(c)}</span>`:''}${c.hh!==mainHH()&&!out?`<span class="chip blue">${esc(HH(c.hh).name)}</span>`:''}</div>
+   <div class="chips"><span class="chip ${c.id===S.head?'gold':''}">${relation(c)}</span><span class="chip">${dead?'Đã mất':a+' tuổi'}</span>${selfPerks(c)}${c.hb?`<button class="chip gold" data-info="hb:${c.hb}">Uy gia chủ +${c.hb}</button>`:''}${c.tuoc?`<button class="chip gold" data-info="tr:tu_${Math.min(5,c.tuoc)}">${TUOC[c.tuoc]}</button>`:''}${c.degree?`<button class="chip gold" data-info="tr:dg_${Math.min(3,c.degree)}">${deg}</button>`:''}${ctChips(c)}${c.outSp?`<span class="chip">Về nhà họ ${esc(c.outSp.sur)}</span>`:''}${c.preg?'<span class="chip red">Mang thai</span>':''}${c.pst&&isOff(c)?`<span class="chip blue">Nhậm chức ${esc(provN(c.pst.p))}${c.pst.fam?(c.pst.fam>1?' · cả nhà theo':' · có vợ chồng theo'):''}</span>`:''}${c.away&&awayText(c)?`<span class="chip blue">${awayText(c)}</span>`:''}${c.hh!==mainHH()&&!out?`<span class="chip blue">${esc(HH(c.hh).name)}</span>`:''}</div>
    <div class="chips">${realTraits(c).map(traitChip).join('')}${habChips(c)}${viceChips(c)}</div></div></div>
    ${ctNote(c)?`<p class="muted small" style="margin:.3rem 0 .5rem">${ctNote(c)}</p>`:''}
    <div class="dsec tight"><h3>${I('axes','Tính cách')}</h3><div class="chips">${axChips(c)||'<span class="muted small">Chưa có nét nổi bật</span>'}</div></div>
