@@ -461,6 +461,7 @@ function clanDrift(){
 }
 function monthlyPerson(c,a){
   if(a<1)return;
+  if(S.gb&&S.gb.length&&!c.gbA)gbBonus(c);
   if(!c.nat0)ensureNat(c);
   if(a<18)natGrowth(c,a);
   if(c.job==='nong')c.lv=farmerLv();
@@ -6443,7 +6444,9 @@ function gbGrant(m,endId){const I=gbItems();const pool=Object.keys(I).filter(k=>
   const k=pick(fresh.length?fresh:pool);m.gb[k]=(m.gb[k]||0)+1;return Object.assign({id:k,fresh:fresh.length>0},I[k])}
 function gbOwned(){const m=meta();const I=gbItems();return Object.keys(m.gb||{}).filter(k=>I[k]).map(k=>Object.assign({id:k},I[k]))}
 function gbSlots(){const G0=window.D.GIABAO;const m=meta();const base=G0&&G0.slots?G0.slots(Object.keys(m.end||{}).length):1;return Math.min(3,base+Math.floor((m.gbPts||0)/3))} /* d9.5: mỗi 3 điểm gia bảo thêm một ô, tối đa 3 */
-function gbApply(ids){if(!ids||!ids.length)return;const I=gbItems();const h=head();S.gb=[];ids.forEach(id=>{const it=I[id];if(!it)return;const f=it.fx||{};if(f.m)S.money+=f.m;if(f.fame)S.fame+=f.fame;if(f.hung)S.hung=Math.min(100,S.hung+f.hung);if(f.on)S.on=Math.min(100,S.on+f.on);if(f.tk)S.tk=1;if(h){if(f.duyen)h.duyen=Math.min(100,(h.duyen||0)+f.duyen);for(const k in (f.st||{}))h[k]=Math.min(100,(h[k]||0)+f.st[k])}S.gb.push(id);log(`Gia bảo của họ ${S.surname}: ${it.n}. ${it.d}`,'gd')})}
+/* d9.7 (chủ dự án 23/11: "cộng cho tất cả người thuộc gia tộc, kể cả dâu rể con nuôi con thứ gì cũng được hết"): gia bảo cộng chỉ số cho MỌI người thuộc gia tộc, một lần mỗi người (cờ p.gbA): người có sẵn lúc tạo ván, và người vào sau (sinh ra, cưới vào, con nuôi) được cộng ở tháng đầu tiên từ 1 tuổi trở đi (monthlyPerson). Chỉ cộng 7 chỉ số chính; tiền, danh vọng, hưng thịnh, ổn định, Thiết khoán nếu món còn khóa cũ vẫn chỉ áp một lần cho cả nhà. */
+function gbBonus(p){if(!S||!S.gb||!S.gb.length||p.gbA||!inClan(p))return;const I=gbItems();S.gb.forEach(id=>{const it=I[id];if(!it)return;const f=it.fx||{};if(f.duyen)p.duyen=Math.min(100,(p.duyen||0)+f.duyen);for(const k in (f.st||{}))p[k]=Math.min(100,(p[k]||0)+f.st[k])});p.gbA=1}
+function gbApply(ids){if(!ids||!ids.length)return;const I=gbItems();S.gb=[];ids.forEach(id=>{const it=I[id];if(!it)return;const f=it.fx||{};if(f.m)S.money+=f.m;if(f.fame)S.fame+=f.fame;if(f.hung)S.hung=Math.min(100,S.hung+f.hung);if(f.on)S.on=Math.min(100,S.on+f.on);if(f.tk)S.tk=1;S.gb.push(id);log(`Gia bảo của họ ${S.surname}: ${it.n}. ${it.d}`,'gd')});alive().forEach(gbBonus)}
 function gbPopup(){const I=gbItems();const L=(S.gb||[]).filter(id=>I[id]);
   openModal(`<span class="eyebrow">Gia bảo</span><h2>Gia bảo của họ ${esc(S.surname)}</h2>${L.length?`<ul class="plain">${L.map(id=>`<li><b>${esc(I[id].n)}</b><br><small>${esc(I[id].d)}</small><br><small class="muted">Từ cái kết: ${esc(((window.D.ENDINGS||[]).find(x=>x.id===I[id].end)||{}).n||I[id].end)}</small></li>`).join('')}</ul>`:'<p class="muted">Ván này chưa mang gia bảo nào. Mỗi cái kết đã đạt cho một món gia bảo; chọn mang theo ở màn lập gia tộc.</p>'}<div class="choices"><button class="btn primary" data-ok>Đóng</button></div>`,false,'menu');
   M.querySelector('[data-ok]').onclick=closeModal}
