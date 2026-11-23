@@ -3,7 +3,7 @@
    Đã tách: giang hồ (ghYear), quân hộ (qhYear), Đông xưởng (dxYear), Thiết khoán (tkYear), chi phí giữ quan hệ (relYear). Nạp sau events-lv.js và trước engine.js. */
 window.ENGX=window.ENGX||[];
 window.ENGX.push(X=>{
-const {R,chance,log,alive,inClan,P,head,later,enqueue,mm,nameOf,shuf,pick,clamp,provN,qtLog}=X;
+const {R,chance,log,alive,inClan,P,head,later,enqueue,mm,nameOf,shuf,pick,clamp,provN,qtLog,age,fx,esc,money,dateStr,openModal,closeModal,infoPopup,inKinh}=X;
 /* d9.10: GIANG HỒ THÀNH HỆ THỐNG. Chiến tranh giữa hai môn phái chạy theo năm (S.wr.gwar: {a,b,t,len,yrs,da,db}); hành động của đệ tử hai phái cộng vào da, db (sự kiện gh_phai_chien); hết chiến tranh thì phái thắng tăng sức mạnh, phái thua giảm, đệ tử hai phái nhận sự kiện gh_chien_ket. Mỗi 10 năm có đại hội định kỳ (gh_hoi_dinh_ky). */
 function ghYear(){const S=X.S;const W=S.wr;if(!W||!W.sects||W.sects.length<2)return;const clampP=v=>Math.max(5,Math.min(100,Math.round(v)));
   const w=W.gwar;
@@ -46,6 +46,46 @@ const gbItems=()=>(window.D.GIABAO&&window.D.GIABAO.items)||{};
 function gbBonus(p){const S=X.S;if(!S||!S.gb||!S.gb.length||p.gbA||!inClan(p))return;const I=gbItems();S.gb.forEach(id=>{const it=I[id];if(!it)return;const f=it.fx||{};if(f.duyen)p.duyen=Math.min(100,(p.duyen||0)+f.duyen);for(const k in (f.st||{}))p[k]=Math.min(100,(p[k]||0)+f.st[k])});p.gbA=1}
 function gbApply(ids){const S=X.S;if(!ids||!ids.length)return;const I=gbItems();S.gb=[];ids.forEach(id=>{const it=I[id];if(!it)return;const f=it.fx||{};if(f.m)S.money+=f.m;if(f.fame)S.fame+=f.fame;if(f.hung)S.hung=Math.min(100,S.hung+f.hung);if(f.on)S.on=Math.min(100,S.on+f.on);if(f.tk)S.tk=1;S.gb.push(id);log(`Gia bảo của họ ${S.surname}: ${it.n}. ${it.d}`,'gd')});alive().forEach(gbBonus)}
 Object.assign(X.fn,{gbBonus,gbApply});
+
+/* ===== việc lớn (chuyển từ engine.js, d9.10) ===== */
+/* ================= d9.6 Q7: VIỆC LỚN (chủ dự án 22/11) =================
+   Thay cho hộp mơ hồ "Dấn thân vào việc lớn" ở mốc thông thạo 100. Người đạt mốc (thông thạo 100 hoặc một chỉ số từ 100) thấy trên trang mình nút "Việc lớn" với danh sách việc CÓ THỂ làm,
+   mỗi việc ghi rõ: điều kiện, giá, thời gian, khả năng thành (chữ), hậu quả khi thành và khi bại. Chọn một việc thì trả giá ngay, người ấy làm trong N tháng rồi có kết quả. */
+/* d9.7 (chủ dự án 23/11: việc lớn spam được, xuất hiện quá sớm, thông thạo thấp vẫn làm được, dễ đạt, tiêu tốn nhỏ, tổn hại thấp): tuổi từ 30; BẮT BUỘC thông thạo cao (và chỉ số liên quan); giá nhân khoảng 5 lần, phần thưởng tiền nhân theo; thất bại đau hơn; xác suất thành hạ 12 điểm (bigP); sau mỗi việc phải chờ 3 năm, cùng một việc phải chờ 10 năm (c.bigT, c.bigL). */
+const BIGS=X.BIGS;BIGS.push(
+ {id:'sach',n:'Soạn một bộ sách để đời',d:'Viết ra điều mình đúc kết cả đời nghề.',need:c=>(c.m||0)>=100&&c.tri>=80,jobs:null,cost:75,mo:[24,36],odds:c=>0.5+c.tri/400,win:'danh vọng +40, trí +3',lose:'mất công vô ích, tâm trạng -12, danh vọng -3',ok:c=>fx(c,{fame:40,tri:3,tam:6}),ko:c=>fx(c,{tam:-12,fame:-3})},
+ {id:'lop',n:'Mở lớp truyền nghề rộng rãi',d:'Dạy hết những gì mình biết cho người trẻ trong họ và trong vùng.',need:c=>(c.m||0)>=100&&c.eq>=60,jobs:null,cost:125,mo:[18,30],odds:c=>0.55+c.eq/300,win:'người trẻ trong họ học nghề nhanh hơn, danh vọng +25, hưng thịnh +2',lose:'ít người theo học, danh vọng -6, tâm trạng -6',ok:c=>{alive().filter(p=>inClan(p)&&age(p)<18).forEach(p=>{p.pre=p.pre||{};p.pre[c.job]=(p.pre[c.job]||0)+8});return fx(c,{fame:25,hung:2,tam:5})},ko:c=>fx(c,{fame:-6,tam:-6})},
+ {id:'kiettac',n:'Làm một kiệt tác',d:'Dốc hết tay nghề vào một tác phẩm để người sau nhắc tên.',need:c=>(c.m||0)>=100&&c.mi>=60,jobs:['tho','det','nghe','mo','diaky','chan'],cost:150,mo:[18,30],odds:c=>0.5+c.mi/400+c.tri/600,win:'danh vọng +50, bán được giá lớn',lose:'tác phẩm hỏng, mất thêm vật liệu, tâm trạng -14',ok:c=>fx(c,{fame:50,money:mm(600),tam:8}),ko:c=>fx(c,{tam:-14,money:-mm(30)})},
+ {id:'daibuon',n:'Chuyến buôn đường dài',d:'Gom vốn đi một chuyến buôn xa, lãi lớn nếu thông suốt.',need:c=>(c.m||0)>=100&&c.eq>=80,jobs:['chu','tieunhi','hangrong','tieu'],cost:600,mo:[6,12],odds:c=>0.5+c.eq/300,win:'lãi gấp năm lần vốn, danh vọng +8',lose:'mất vốn, thua thêm một phần, sức khỏe -10, tâm trạng -10',ok:c=>fx(c,{money:mm(3000),fame:8,tam:5}),ko:c=>fx(c,{suc:-10,tam:-10,money:-mm(120)})},
+ {id:'phongchua',n:'Mở phòng chữa bệnh cho dân nghèo',d:'Chữa không lấy tiền cho người nghèo trong vùng.',need:c=>(c.m||0)>=100&&c.tri>=70,jobs:['y'],cost:150,mo:[12,24],odds:c=>0.55+c.tri/400,win:'danh vọng +45, hưng thịnh +3, ổn định +2',lose:'thuốc thiếu, tiếng không vang, tâm trạng -8, danh vọng -3',ok:c=>fx(c,{fame:45,hung:3,on:2,tam:6}),ko:c=>fx(c,{tam:-8,fame:-3})},
+ {id:'bequan',n:'Bế quan luyện tuyệt học',d:'Rút khỏi mọi việc để luyện một môn tuyệt học.',need:c=>(c.vo>=100||c.tri>=100)&&(c.m||0)>=80,jobs:null,cost:25,mo:[12,24],odds:c=>0.5+c.suc/400,win:'chỉ số mạnh nhất +4',lose:'tẩu hỏa nhập ma: sức khỏe -25, tâm trạng -15, sức khỏe tối đa giảm',ok:c=>{const k=['tri','vo','mi','eq'].sort((a,b)=>c[b]-c[a])[0];return fx(c,{[k]:4,tam:6})},ko:c=>fx(c,{suc:-25,tam:-15,hpMax:-2})},
+ {id:'depgiac',n:'Xin dẹp một toán giặc',d:'Xin lệnh đem quân dẹp một toán giặc cỏ.',need:c=>c.job==='quan_ngu'&&c.lv>=3&&c.vo>=70,jobs:['quan_ngu'],cost:250,mo:[6,12],odds:c=>0.45+c.vo/400,win:'chiến công +60 tới +120, danh vọng +25',lose:'thua trận: chiến công -15, sức khỏe -20, danh vọng -12',ok:c=>fx(c,{merit:R(60,120),fame:25,tam:6}),ko:c=>fx(c,{merit:-15,suc:-20,fame:-12,tam:-10})},
+ {id:'ketgiao',n:'Kết giao với một nhà có thế',d:'Bỏ công bỏ lễ kết thân với một nhà lớn trong vùng.',need:c=>c.eq>=80&&(c.m||0)>=100,jobs:null,cost:300,mo:[12,12],odds:c=>0.55+c.eq/300,win:'danh vọng +20, ổn định +3, hưng thịnh +3',lose:'mất lễ, danh vọng -8, tâm trạng -6',ok:c=>fx(c,{fame:20,on:3,hung:3,tam:4}),ko:c=>fx(c,{fame:-8,tam:-6})},
+ {id:'hocphai',n:'Lập một học phái riêng',d:'Hợp nhiều người cùng chí hướng thành một học phái mang tên mình.',need:c=>c.tri>=100&&(c.m||0)>=100,jobs:['su','y','nghe','quan'],cost:300,mo:[36,60],odds:c=>0.4+c.tri/300,win:'danh vọng +80, trí +3',lose:'học phái tan, danh vọng -12, tâm trạng -12',ok:c=>fx(c,{fame:80,tri:3,tam:8}),ko:c=>fx(c,{fame:-12,tam:-12})},
+ {id:'xuan',n:'Xét một vụ án lớn',d:'Nhận một vụ án lớn còn tồn đọng ở địa hạt, xét cho thấu lý.',need:c=>c.job==='quan'&&c.lv>=3&&c.tri>=70,jobs:['quan'],cost:50,mo:[6,12],odds:c=>0.5+c.tri/300,win:'danh vọng +40, liêm chính +2',lose:'án không rõ, bị đàn hặc: danh vọng -10, tâm trạng -8',ok:c=>fx(c,{fame:40,liem:2,tam:5}),ko:c=>fx(c,{fame:-10,tam:-8})}
+);
+const bigWord=p=>p>=0.75?'khá chắc':p>=0.6?'nhiều hy vọng':p>=0.45?'năm ăn năm thua':'khó';
+const bigP=(b,c)=>Math.max(0.1,Math.min(0.85,b.odds(c)-0.12));
+function bigWait(c){const S=X.S;const L=c.bigL||{};const ids=[];if(c.bigT!=null&&S.t-c.bigT<36)ids.push(['*',c.bigT+36]);BIGS.forEach(b=>{if(L[b.id]!=null&&S.t-L[b.id]<120)ids.push([b.id,L[b.id]+120])});return ids}
+function bigAvail(c){const S=X.S;if(!c||c.dead!=null||age(c)<30||c.away||c.brk||c.viec)return [];if(c.bigT!=null&&S.t-c.bigT<36)return [];const L=c.bigL||{};return BIGS.filter(b=>(!b.jobs||b.jobs.includes(c.job))&&b.need(c)&&!(L[b.id]!=null&&S.t-L[b.id]<120))}
+function bigMenu(c){const S=X.S;const L=bigAvail(c);
+  if(!L.length){const w=bigWait(c);const nx=w.length?Math.min(...w.map(x=>x[1])):null;return infoPopup(c,'Việc lớn','Chưa có việc lớn nào',nx&&nx>S.t?`${esc(c.given)} vừa làm xong một việc lớn, phải nghỉ ngơi và chờ thời, khoảng ${dateStr(nx)} mới làm tiếp được (hoặc đổi sang việc khác).`:`${esc(c.given)} chưa đủ điều kiện cho việc lớn nào (từ 30 tuổi, thông thạo nghề từ 100 cùng chỉ số liên quan, và hợp nghề).`)}
+  openModal(`<span class="eyebrow">Việc lớn</span><h2>${esc(c.given)} muốn làm gì</h2><p>Mỗi việc lớn tốn tiền ngay, mất vài tháng đến vài năm, rồi thành hoặc bại. Hậu quả ghi rõ bên dưới.</p><div class="choices">${L.map((b,i)=>{const p=bigP(b,c);return `<button class="btn" data-bg="${i}" ${S.money<mm(b.cost)?'disabled':''}><strong>${esc(b.n)} · ${money(mm(b.cost))}, ${b.mo[0]===b.mo[1]?b.mo[0]:b.mo[0]+' đến '+b.mo[1]} tháng</strong><small>${esc(b.d)} Khả năng thành: ${bigWord(p)}. Thành: ${esc(b.win)}. Bại: ${esc(b.lose)}.</small></button>`}).join('')}<button class="btn ghost" data-bx>Thôi</button></div>`);
+  X.M.querySelector('[data-bx]').onclick=closeModal;
+  X.M.querySelectorAll('[data-bg]').forEach(x=>x.onclick=()=>{const b=L[+x.dataset.bg];const v=mm(b.cost);if(S.money<v)return;S.money-=v;const mo=R(b.mo[0],b.mo[1]);c.viec={id:b.id,start:S.t,end:S.t+mo};log(`${nameOf(c)} bắt đầu việc lớn: ${b.n.toLowerCase()}, dự kiến ${mo} tháng. Tốn ${money(v)}.`,'gd');closeModal()})}
+function bigDone(c){const S=X.S;const v=c.viec;c.viec=null;if(v){c.bigT=S.t;c.bigL=c.bigL||{};c.bigL[v.id]=S.t}const b=BIGS.find(x=>x.id===(v&&v.id));if(!b||c.dead!=null){setTimeout(nextPopup,0);return}
+  const p=bigP(b,c);const AD=window.BN_ADMIN;const x=AD&&AD.rollX?AD.rollX(p,{}):Math.random();const win=x<p;
+  let r='';try{r=win?b.ok(c):b.ko(c)}catch(e){r=''}
+  infoPopup(c,'Việc lớn',(win?'Thành: ':'Bại: ')+b.n,win?`Sau bao tháng công phu, việc lớn của ${esc(c.given)} đã thành.${r}`:`Việc lớn của ${esc(c.given)} không thành.${r}`)}
+
+/* ===== cả gia tộc đồng lòng (chuyển từ engine.js, d9.10) ===== */
+function clanSupport(c){const S=X.S;const L=alive().filter(p=>inClan(p)&&(!c||p.id!==c.id));
+  const mil=L.filter(p=>p.job==='quan_ngu'&&(p.lv||0)>=1&&!p.inLaw);const civ=L.filter(p=>p.job==='quan'&&(p.lv||0)>=2&&!p.inLaw);
+  const kinhCiv=civ.filter(p=>inKinh(p));const court=L.filter(p=>p.flags&&(p.flags.phoma||p.flags.vp||p.flags.hau));
+  const sum=(a,f)=>a.reduce((s,p)=>s+f(p),0);const nk=L.filter(p=>p.flags&&p.flags.kinh).length;
+  return {mil:sum(mil,p=>(p.lv+1)*Math.max(0.5,p.vo/100)),civ:sum(civ,p=>(p.lv+1)*Math.max(0.5,p.tri/100))+(S.tgq||0)*4,kinh:kinhCiv.length+nk,court:court.length*3+(S.royal?4:0),nMil:mil.length,nCiv:civ.length+(S.tgq||0),nKinh:kinhCiv.length+nk,nCourt:court.length}}
+
+Object.assign(X.fn,{bigAvail,bigMenu,bigDone,bigWait,clanSupport});
 
 X.yearly.push(ghYear,qhYear,dxYear,tkYear,relYear,tlForceYear);
 Object.assign(X.fn,{ghYear,qhYear,dxYear,tkYear,relYear,tlForceYear,tlForces});
