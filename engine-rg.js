@@ -41,7 +41,7 @@ const rgOf=node=>Object.entries(root().rg.e).filter(([k])=>k.startsWith(node+'|'
 /* ---------- hằng năm: người quen tìm đến, gia tộc giúp nhau ---------- */
 const TIEACT={ /* vai: [xác suất mỗi năm, sự kiện, điều kiện rel] */
  ban_than:[0.10,'tie_ban_nho',-100],an_nhan:[0.09,'tie_an_nhan_tra',10],quy_nhan:[0.10,'tie_quy_nhan_giup',20],ket_nghia:[0.11,'tie_ket_nghia_giup',10],
- thay:[0.07,'tie_thay_tham',10],doi_thu:[0.12,'tie_doi_thu_hai',-100],cao_nhan:[0.04,'tie_cao_nhan_ve',10],lang_gieng:[0.05,'tie_lang_gieng',-100]};
+ thay:[0.07,'tie_thay_tham',10],thuoc_ha:[0.10,'tie_thuoc_ha',-100],an_si:[0.04,'tie_cao_nhan_ve',5],doi_thu:[0.12,'tie_doi_thu_hai',-100],cao_nhan:[0.04,'tie_cao_nhan_ve',10],lang_gieng:[0.05,'tie_lang_gieng',-100]};
 function tieYear(){const s=root();s.rg.yc=0;
   const L=Object.values(s.np.l).filter(n=>n.ok!==0&&n.vai&&n.vai.length);
   for(const n of L){const a=G.np.age(n);if(a<14)continue;

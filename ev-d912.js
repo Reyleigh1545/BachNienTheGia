@@ -11,7 +11,9 @@ window.EVRETIRED=[
  /* chuỗi ân oán sư môn cũ c4_*: mở đầu và kết cục không có thật (chủ dự án 24/11); thay bằng chuỗi sm_* ở ev-d912b.js */
  'c4_su_mon','c4_b','c4_c',
  /* đề xuất bỏ, chờ chủ dự án (Q2, Q5): ghi ở CLAUDE.md mục 11 */
- 'v63_k_ban_khoan','cv_di_san'
+ 'v63_k_ban_khoan','cv_di_san',
+ /* thay bằng người thật: cv_tra_an -> tie_an_nhan_tra (người nhớ ơn thật, sổ ơn) */
+ 'cv_tra_an'
 ];
 window.EVDOWN=[ /* kỳ ngộ hạ xuống sự kiện thường (chủ dự án: "hạ thành sự kiện") */
  'cv_gia_heo','cv_hoi_han','f633_gieng','kn_nguoi_la_dua_thu','t_n_trau_de'
