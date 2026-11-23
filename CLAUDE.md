@@ -243,6 +243,13 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 ## 10. Ý mới của chủ dự án, chưa làm (chép nguyên văn)
 
+**Câu hỏi về tăng chỉ số khi đi giang hồ và đi lính (chủ dự án, 23/11), chép nguyên văn:**
+> "đi giang hồ và đi lính không tự tăng chỉ số theo thời gian à"
+
+*Kiểm tra (23/11, chưa sửa), đo bằng bot: bốn người 25 tuổi, võ ban đầu 60, tập võ 60 tháng:* **lính ở doanh trại 60 lên 78,1** (cách rảnh "luyện võ"), lính ở chế độ nghỉ 60 lên 61,9, thợ ở nhà tập võ 60 lên 61,7, **người đi giang hồ 60 lên 60,0 (không tăng chút nào)**. Nguyên nhân trong `monthlyPerson` và `jobGrow` (`engine.js`): (1) cách tập theo "thời gian rảnh" (`FOCUS`) chạy khi `!away`, mà `away` chỉ coi `trade` và `army` là còn rèn luyện được (ghi chú v6.4.1.5), nên **người đi giang hồ (`away.type==="jh"`) bị bỏ hoàn toàn**; (2) tăng chỉ số theo nghề (`jobGrow`, `JOBMETA.hiep.g.vo=1,6`) cũng `return` khi `c.away` khác `army`, nên **Hiệp khách đang hành tẩu cũng không nhận phần võ mà bảng nghề dành cho mình** (dù `JOBMETA` đã khai); (3) thông thạo vẫn tăng nhưng d9.8 đã bỏ thông thạo khỏi bậc giang hồ. **Lính thì có tăng** theo nghề (`JOBMETA.quan_ngu`: võ 1,4 và sức khỏe 0,5, hệ số theo thông thạo) cộng cách rảnh. Hậu quả: đường giang hồ bậc nào cũng đòi võ lực (120, 150, 200) mà người đi giang hồ lại **không tự lên võ**, chỉ lên nhờ sự kiện (`gh_*`, bí kíp) nên rất chậm.
+
+*Hướng sửa dự kiến, chờ chủ dự án bảo "làm":* cho người đi giang hồ **tăng võ lực theo thời gian** (cho `jobGrow` chạy với `away.type==="jh"`, hệ số `JOBMETA.hiep.g.vo`), thêm tăng nhẹ EQ và mị lực nhờ giao du, và để cách rảnh của người giang hồ mặc định là luyện võ hoặc giao du (tùy tính cách); giữ nguyên lính. Cần hỏi: tốc độ võ mong muốn mỗi năm khi đi giang hồ (để từ võ 80 lên 120 mất khoảng bao nhiêu năm) và có cho tăng cả trí khi đọc sách giang hồ hay không.
+
 (không có ý nào đang chờ. Các ý 23/11 đã làm ở d9.8 và chuyển thành luật: giao diện hộp sự kiện và hồ sơ ở mục 7, giang hồ ở mục 6, Thiên cơ ở mục 3, việc lớn ở mục 3, gia bảo ở mục 6, hệ số kỳ ngộ ở mục 5, cưới nhân phép của lính ở mục 3.)
 
 ---
