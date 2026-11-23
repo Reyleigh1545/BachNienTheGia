@@ -252,10 +252,6 @@ return [
     {l:'Từ chối, đã là người tự do',ax:{dl:4},f:c=>'Lòng nhẹ nhõm.'+fx(c,{tam:4})}]},
 
 /* ============ KỲ NGỘ MỚI ============ */
-{id:'v6_ky_lao_nhan',t:'Lão nhân bên bến đò',ky:1,u:'person',age:[14,60],w:1,good:1,
- x:c=>`Chờ đò, ${N(c)} gặp một lão nhân áo vải, nói chuyện như rót mật vào tai. Lão bảo: "Ngươi có tướng ăn nói, tiếc là chưa ai mài giũa."`,
- o:[{l:'Xin lão chỉ giáo',r:[{eq:0.6,duyen:0.5},45],y:c=>'Lão truyền cho mấy phép biện luận. Từ đó ăn nói khác hẳn.'+fx(c,{sk:{khau:R(8,14)},eq:2}),yy:c=>'Lão truyền hết sở học, còn tặng một cuốn sổ ghi chép.'+fx(c,{sk:{khau:R(14,20),muu:5},eq:3}),n:c=>'Lão cười, lên đò đi mất.'+fx(c,{sk:{khau:2}})},
-    {l:'Lịch sự chào rồi đi',f:c=>'Một cuộc gặp gỡ thoáng qua.'}]},
 {id:'v6_ky_thu_tich',t:'Thư tịch trong vách đất',ky:1,u:'clan',cyc:[100,250],age:[14,70],w:0.8,good:1,
  x:c=>`Sửa lại vách nhà, ${N(c)} thấy một hộp sắt gỉ. Trong là mấy cuốn sách tay chép kế sách ${pick(['trị gia','dụng binh','kinh thương'])} của một người đời trước.`,
  o:[{l:'Tự mình nghiền ngẫm',f:c=>'Đầu óc như được khai sáng.'+fx(c,{sk:{muu:R(8,12),ql:R(4,8)},tri:2})},
