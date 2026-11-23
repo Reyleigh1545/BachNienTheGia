@@ -440,6 +440,11 @@ Object.assign(JOBS,{
   bep:{n:'Đầu bếp',inc:420,st:'eq',stress:4,start:1,gift:'Bộ dao thớt và 6 lạng bạc',lv:[L('Phụ bếp',1),L('Đầu bếp',1.9,{m:25}),L('Bếp trưởng tửu lâu',3.4,{m:60,eq:50}),L('Ngự trù',7,{m:100,flag:'cung'})],d:'Nấu ăn cho tửu lâu, nhà giàu. Làm công, có chủ trả lương.'},
   diaky:{n:'Thầy địa lý',inc:380,st:'tri',stress:3,start:1,req:{tri:55},gift:'La bàn và 6 lạng bạc',lv:[L('Học trò thầy địa lý',1),L('Thầy địa lý',2.2,{m:30,tri:60}),L('Thầy phong thủy có tiếng',4,{m:65,tri:70,eq:50}),L('Khâm thiên giám sư',8,{m:100,tri:90,fame:200})],d:'Xem đất làm nhà, đặt mộ, chọn ngày. Tự làm, thu theo từng việc. Được nhà quyền quý mời.'}});
 STARTJOBS.push('det','mo','bep','diaky');
+/* d9.10 (mục 12, nghề mới cho đời sau): hai nghề chỉ mở từ đời thứ ba trở đi (khóa gen, kiểm ở meets), không làm nghề khởi đầu. Thợ săn (võ) và Lái đò (sức). */
+JOBS.thosan={n:'Thợ săn',inc:360,st:'vo',stress:6,gen:3,req:{vo:45},lv:[L('Người đi săn cùng',1),L('Thợ săn',2,{m:28,vo:55}),L('Thợ săn lão luyện',3.6,{m:62,vo:65,suc:60}),L('Thủ lĩnh đội săn',6,{m:95,vo:80,fame:120})],d:'Săn thú rừng, bán da và thịt cho thương nhân và nhà giàu. Tự làm, thu theo từng chuyến. Cần võ nghệ, sức bền và quen núi rừng. Chỉ có ở những đời sau, khi gia tộc đã có người biết đường rừng.'};
+JOBS.laido={n:'Lái đò',inc:340,st:'suc',stress:4,gen:3,req:{suc:50},lv:[L('Phụ chèo',1),L('Lái đò',1.9,{m:25,suc:55}),L('Lái đò có tiếng',3.2,{m:60,suc:65,eq:45}),L('Chủ bến đò',5.5,{m:92,eq:60,fame:100})],d:'Chở khách và hàng qua sông, qua bến. Làm công hoặc tự chèo, thu theo chuyến. Thạo nước, thạo người. Chỉ có ở những đời sau.'};
+PATHS.vo.jobs.push('thosan');PATHS.thuong.jobs.push('laido');STARTJOBS.push('thosan','laido'); /* chọn nghề lấy từ STARTJOBS; khóa gen ở meets nên đời một không chọn được */
+Object.assign(JOBX,{thosan:{ax:{gan:1,cc:.5},sk:{muu:1,ky:1}},laido:{ax:{cc:.5,rong:.3},sk:{khau:1,ql:.5}}});
 PATHS.van.jobs.push('diaky','mo');PATHS.thuong.jobs.push('bep','det');
 Object.assign(JOBX,{det:{ax:{cc:1,diem:.5},sk:{ky:3}},mo:{ax:{rong:1,gan:.5},sk:{ky:2,khau:1}},bep:{ax:{cc:1},sk:{ky:2,ql:1}},diaky:{ax:{diem:.5,tv:.3},sk:{khau:2,muu:1}}});
 /* đặc điểm nghề: self = từ bậc này trở đi là nghề tự thân, không chủ, không cấp trên; piece = thu theo năng suất (từ bậc này);
@@ -465,9 +470,11 @@ const JOBMETA={
   det:{self:0,piece:0,dig:[2,2,3,4],hand:1,g:{mi:.6,eq:.3}},
   mo:{self:0,piece:0,dig:[1,2,3,4],g:{eq:1,tri:.3}},
   bep:{dig:[1,2,3,5],hand:1,g:{eq:.5,suc:.3}},
-  diaky:{self:0,piece:0,dig:[3,4,5,7],light:1,g:{tri:1,eq:.5}}};
+  diaky:{self:0,piece:0,dig:[3,4,5,7],light:1,g:{tri:1,eq:.5}},
+  thosan:{self:0,piece:0,dig:[1,3,5,7],g:{vo:1.1,suc:.4}},
+  laido:{self:0,piece:0,dig:[1,2,4,6],g:{suc:.9,eq:.4}}};
 /* nghề có ông chủ để tả trong phỏng vấn */
-const EMPLOYER62={det:'bà chủ phường dệt',mo:'bà đỡ già trong vùng',bep:'bếp trưởng tửu lâu',diaky:'lão thầy địa lý'};
+const EMPLOYER62={det:'bà chủ phường dệt',mo:'bà đỡ già trong vùng',bep:'bếp trưởng tửu lâu',diaky:'lão thầy địa lý',thosan:'thợ săn già đầu núi',laido:'ông chủ bến đò'};
 
 /* kinh doanh: hệ số lương theo ngành, tỉ lệ nguyên liệu, phần lương người trông */
 const BIZX={quantra:{w:.9,mat:.3,mgr:.15},tiem:{w:1.1,mat:.32,mgr:.12},xuong:{w:1,mat:.3,mgr:.15},yquan:{w:1.2,mat:.25,mgr:.2},truong:{w:1.1,mat:.08,mgr:.25},
