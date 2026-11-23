@@ -230,7 +230,8 @@ function fx(c,d){
   const KYB=MMCTX&&MMCTX.ky?3:1; /* d9.7: hệ số kỳ ngộ 2,5 -> 3 (chủ dự án 23/11: thưởng kỳ ngộ hơi thấp) */
   const CHN=MMCTX&&MMCTX.arc===1; /* v6.7.0-d6: bước chuỗi cốt truyện cũ: thưởng theo gia thế, phạt có trần */
   const KY=!!(MMCTX&&MMCTX.ky); /* d9.9 (chủ dự án 23/11: nâng thưởng tất cả kỳ ngộ): kỳ ngộ có SÀN thưởng (tiền từ mm(4) theo bậc gia thế, danh vọng từ 4, danh vọng gia tộc từ 2) áp trước hệ số 3, và chỉ số trí, võ, mị lực, EQ, thông thạo nhận được nhân 1,5 làm tròn lên */
-  for(const k in d){let v=d[k];if(KY&&v>0){if(k==='money'||k==='purse')v=Math.max(v,mm(4));else if(k==='fame')v=Math.max(v,4);else if(k==='cfame')v=Math.max(v,2)}
+  for(const k in d){let v=d[k];if(!KY&&MMCTX&&!MMCTX.arc&&!MMCTX.keepFame&&(k==='fame'||k==='cfame')&&v>8)v=Math.round(8+(v-8)*0.5); /* d9.12 R7 (chủ dự án: chỉ số quan trọng hơn danh vọng): thưởng danh vọng trên 8 của sự kiện thường giảm nửa phần vượt */
+    if(KY&&v>0){if(k==='money'||k==='purse')v=Math.max(v,mm(4));else if(k==='fame')v=Math.max(v,4);else if(k==='cfame')v=Math.max(v,2)}
     if(KYB>1&&v>0&&['money','purse','fame','cfame','hung','merit'].includes(k))v=Math.round(v*KYB);
     if(KY&&v>0&&['tri','vo','mi','eq','m'].includes(k))v=Math.ceil(v*1.5);
     {const tn=MMCTX&&MMCTX.tune&&MMCTX.tune[k];if(tn&&typeof v==='number'&&v>0){if(tn.mul)v=Math.round(v*tn.mul);if(tn.min)v=Math.max(v,tn.min)}} /* d9.12: bảng TUNE (ev-d912.js): nhân hoặc sàn cho khoản NHẬN của từng sự kiện, theo số HIỂN THỊ chủ dự án yêu cầu */
@@ -910,6 +911,7 @@ function eligible(e,c){
   if(e.st!=null&&stg(c)<e.st)return false;
   if(e.stMax!=null&&stg(c)>e.stMax)return false;
   if(e.age&&(age(c)<e.age[0]||age(c)>e.age[1]))return false;
+  if(!e.age&&!e.baby&&!e.ky&&age(c)<14&&!(e.meta&&e.meta.who==='child'))return false; /* d9.12 R9: sự kiện không ghi tuổi và không phải việc của trẻ thì không ra cho người dưới 14 */
   if(e.sea&&!e.sea.includes(season()))return false;
   if(e.tier&&(tierIdx()<e.tier[0]||tierIdx()>e.tier[1]))return false;
   if(e.fame&&c.fame+S.fame*0.2<e.fame)return false;
