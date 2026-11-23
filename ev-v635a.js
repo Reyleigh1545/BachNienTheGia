@@ -81,8 +81,8 @@ HG('at',{id:'hg_a_ghetham',t:'Gia chủ ghé thăm',hw:0.8,hcd:60,hc:(hd,o,i)=>i
   {l:'Cáo bận, chỉ ra cổng chào',f:c=>{i.addRel(-R(4,7));return fx(c,{fame:-1})}}]}}),
 
 HGK('at',{id:'hg_a_monkhach',t:'Được nhận làm môn khách',hw:0.6,hcd:240,
- hc:(hd,o,i)=>i&&i.rel>=20&&alive().some(p=>G.inClan(p)&&age(p)>=14&&age(p)<=30&&!p.away&&Math.max(p.tri,p.vo,p.eq,p.mi)>=55),
- hwho:p=>age(p)>=14&&age(p)<=30&&!p.away&&Math.max(p.tri,p.vo,p.eq,p.mi)>=55,
+ hc:(hd,o,i)=>i&&i.rel>=20&&alive().some(p=>G.inClan(p)&&age(p)>=14&&age(p)<=40&&p.job==='hiep'&&p.away&&p.away.type==='jh'&&Math.max(p.tri,p.vo,p.eq,p.mi)>=55),
+ hwho:p=>age(p)>=14&&age(p)<=40&&p.job==='hiep'&&!!p.away&&p.away.type==='jh'&&Math.max(p.tri,p.vo,p.eq,p.mi)>=55, /* d9.12: chỉ người đang lang bạt giang hồ */
  x:(c,d)=>{const i=I(d);return i?`Gia chủ ${esc(i.headN)} của ${esc(i.name)} để ý ${N(c)} từ lâu, thấy người này chẳng giống con nhà thường. Ông cho người sang hỏi: "Có muốn ra vào nhà tôi, học hỏi với các bậc trong nhà chăng?"`:'Có người để ý tới nhà mình.'},
  o:(c,d)=>{const i=I(d);if(!i)return nope;const k=['tri','vo','eq','mi'].sort((a,b)=>c[b]-c[a])[0];return [
   {l:'Nhận lời, ra vào học hỏi',f:c=>{i.addRel(R(5,9));return `${N(c)} theo hầu mấy tháng, học được nhiều điều mà sách vở nhà thường không dạy.`+fx(c,{[k]:R(2,4),fame:R(3,6),tam:5,eq:1})}},

@@ -96,7 +96,11 @@ const ADD={
  nong_khoai_tay:[{opt:0,on:['f'],fx:{bonus:0.04,cfame:2}}],
  d631_sach_co_trong_ruong:[{opt:0,on:['y'],fx:{tri:4}}],                         /* nên cộng trí tuệ */
  v6_ky_dao_si:[{opt:0,on:['y'],fx:{hpMax:2}}],                                   /* tu đạo phải tăng sức khỏe tối đa */
- gj_16:[{opt:0,on:['y'],fx:{hpMax:3}}]                                           /* thầy thuốc giang hồ: sức khỏe tối đa */
+ gj_16:[{opt:0,on:['y'],fx:{hpMax:3}}],                                          /* thầy thuốc giang hồ: sức khỏe tối đa */
+ tai_bien_ai:[{opt:0,on:['y'],fx:G=>({merit:45,money:G.mm(70),cfame:3,tri:1})}], /* thành giữ được thì phải có thánh ân: chiến công, ban thưởng */
+ gia_huan:[{opt:0,on:['y'],fx:{on:4}},{opt:1,on:['f'],fx:{on:1}}],               /* viết gia huấn: thêm ổn định */
+ v6_tre_chia_qua:[{opt:0,on:['f'],fx:(G,c)=>{c.flags.deLua=(c.flags.deLua||0)+1;return {eq:2}}}], /* khen con: EQ tăng, nhưng dễ bị lừa (cờ deLua) */
+ v63_k_thay_do_quy:[{opt:2,on:['f'],fx:{m:1}}]
 };
 const closeKin=(c,G)=>G.alive().filter(p=>p.id!==c.id&&G.inClan(p)&&p.dead==null&&(p.spouse===c.id||(p.parents||[]).includes(c.id)||(c.parents||[]).includes(p.id)||((p.parents||[]).length&&(c.parents||[]).some(x=>p.parents.includes(x)))));
 const SPECIAL={
@@ -111,7 +115,7 @@ const SPECIAL={
 };
 window.EVPATCH.push(function(E,G){
  E.forEach(e=>{if(TUNE[e.id])e.tune=Object.assign({},e.tune||{},TUNE[e.id]);
-  const A=ADD[e.id];if(A&&Array.isArray(e.o)){A.forEach(a=>{const op=e.o[a.opt];if(!op)return;a.on.forEach(k=>{const f0=op[k];if(typeof f0!=='function')return;op[k]=function(c,d){const t=f0.call(this,c,d);return (typeof t==='string'?t:'')+G.fx(c,a.fx)}})})}});
+  const A=ADD[e.id];if(A&&Array.isArray(e.o)){A.forEach(a=>{const op=e.o[a.opt];if(!op)return;a.on.forEach(k=>{const f0=op[k];if(typeof f0!=='function')return;op[k]=function(c,d){const t=f0.call(this,c,d);return (typeof t==='string'?t:'')+G.fx(c,typeof a.fx==='function'?a.fx(G,c,d):a.fx)}})})}});
  Object.keys(SPECIAL).forEach(k=>{try{SPECIAL[k](E,G)}catch(er){console.error('SPECIAL',k,er)}});
  return E});
 })();

@@ -161,7 +161,7 @@ return [
  x:c=>`Thầy đồ làng để ý ${N(c)} hay ở lại sau giờ học, hỏi những điều sách không dạy. Thầy gọi riêng người lớn ra nói chuyện.`,
  o:[{l:'Biếu lễ, xin thầy nhận làm học trò thân',s:'Tốn tiền, được dạy kỹ',c:()=>G.money()>=m(12),f:c=>'Thầy cho mượn sách quý, dạy riêng buổi tối.'+fx(c,{money:-m(12),tri:R(6,10),eq:2,over:1})},
     {l:'Cảm ơn thầy, để con học như mọi đứa',f:c=>fx(c,{tri:R(1,3)})},
-    {l:'Cần con phụ việc đồng áng, từ chối',f:c=>'Tiếc, nhưng đồng ruộng cần người.'+fx(c,{money:m(3),tam:-5})}]},
+    {l:'Để con ở nhà phụ giúp việc nhà',f:c=>'Tiếc, nhưng nhà đang cần thêm tay làm.'+fx(c,{money:m(3),tam:-5})}]},
 {id:'v63_k_cao_nhan',t:'Cao nhân qua làng',k:'Kỳ ngộ',age:[8,16],ky:1,u:'person',w:1,good:1,
  x:c=>`Một đạo sĩ áo vá chằng chịu đi ngang, nhìn ${N(c)} mãi rồi hỏi người lớn: "Đứa nhỏ này có muốn theo lão học vài đường không?"`,
  o:[{l:'Gửi con theo học một mùa',s:'Có thể gặp thầy thật, có thể gặp kẻ lừa',r:[{tri:0.4,vo:0.3,duyen:0.5},30],y:c=>pick([`Thật là bậc cao nhân. Một mùa trôi qua, ${N(c)} trở về như đổi người.`,`Lão không nhận đồng bạc nào, chỉ dạy tận tâm rồi lại lên đường.`])+fx(c,{tri:R(4,8),vo:R(3,6),eq:R(2,4),over:1,sk:{muu:2}}),
