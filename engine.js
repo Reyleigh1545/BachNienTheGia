@@ -225,7 +225,7 @@ function fx(c,d){
   if(!c)return '';
   const out=[];const over=!!d.over;let close=false;
   /* v6.7.0-d3: kỳ ngộ thưởng gấp 2,5 lần sự kiện thường cho các khoản tiền và danh vọng nhận được */
-  const KYB=MMCTX&&MMCTX.ky?2.5:1;
+  const KYB=MMCTX&&MMCTX.ky?3:1; /* d9.7: hệ số kỳ ngộ 2,5 -> 3 (chủ dự án 23/11: thưởng kỳ ngộ hơi thấp) */
   const CHN=MMCTX&&MMCTX.arc===1; /* v6.7.0-d6: bước chuỗi cốt truyện cũ: thưởng theo gia thế, phạt có trần */
   for(const k in d){let v=d[k];if(KYB>1&&v>0&&['money','fame','cfame','hung','merit'].includes(k))v=Math.round(v*KYB);
     if(CHN){const tt=mmTier();if(v>0&&k==='money')v=Math.round(v*MM_THU[tt]/MM_NHE[tt]);else if(v>0&&(k==='fame'||k==='cfame'))v=Math.round(v*(1+0.3*tt));else if(v<0&&k==='hpMax')v=Math.max(v,-3);else if(v<0&&k==='suc')v=Math.max(v,-30)}if(['over','lethal','habit','unhabit','trait','untrait','ax','sk'].includes(k)||!v)continue;
