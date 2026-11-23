@@ -38,7 +38,7 @@ E({id:'hv_hoang_tu_san',t:'Hoàng tử đi săn qua vùng',head:1,age:[24,70],ti
 FX({id:'hv_hoang_tu_b',t:'Hoàng tử nhớ ơn',head:1,
  x:(c,d)=>{const p=P(d);card(d,p);return p?`${esc(rname(p))} gửi người đến: ${p.td==='nghi'?'đang bị triều đình để mắt, mong tìm người cùng chí hướng':'đang cần một vài người tin cẩn quanh mình'}. Người mang thư hỏi nhà ${N(c)} có muốn qua lại thân tình không.`:'Có thư từ hoàng tử.'},
  o:(c,d)=>{const p=P(d);if(!p)return [{l:'Thôi',f:()=>''}];return [
-  {l:'Nhận lời, giữ qua lại thư từ',r:[{eq:0.8,muu:0.5},50],y:c=>{meet(p,18);return `Hai bên qua lại thân tình. Hoàng tử nhờ nhà ghi chép việc dân trong vùng.`+fx(c,{eq:2,sk:{muu:2},cfame:3,tam:4,qh:[rname(p),18]})},n:c=>{meet(p,-3);return `Qua lại bị người ngoài để ý. Có kẻ xì xào nhà mình "đứng về một phía".`+fx(c,{tam:-5,fame:-2,qh:[rname(p),-3]})}},
+  {l:'Nhận lời, giữ qua lại thư từ',r:[{eq:0.8,muu:0.5},50],y:c=>{meet(p,18);G.later(c,'hv_hoang_tu_c',R(24,72),{p:p.id});return `Hai bên qua lại thân tình. Hoàng tử nhờ nhà ghi chép việc dân trong vùng.`+fx(c,{eq:2,sk:{muu:2},cfame:3,tam:4,qh:[rname(p),18]})},n:c=>{meet(p,-3);return `Qua lại bị người ngoài để ý. Có kẻ xì xào nhà mình "đứng về một phía".`+fx(c,{tam:-5,fame:-2,qh:[rname(p),-3]})}},
   {l:'Từ chối khéo, nói nhà chỉ lo ruộng nương',f:c=>meet(p,-4)+`Hoàng tử không ép. Nhà mình giữ được thân phận bình lặng.`+fx(c,{tam:2,qh:[rname(p),-4]})}]}}),
 /* ============ Nội phủ thu mua ============ */
 E({id:'hv_noi_phu_thu_mua',t:'Nội phủ thu mua',head:1,age:[28,75],tier:[2,6],w:0.5,c:c=>(G.S().biz||[]).length>0&&!!G.homeP(),
