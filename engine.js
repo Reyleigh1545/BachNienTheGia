@@ -1641,7 +1641,7 @@ function kingMonth(){const d=S.dyn;if(!d||!d.k||!head())return;crMonth();
   const L=Object.entries(W).filter(([id,w])=>w>0&&EVMAP[id]&&(S.cool[id]||-1e9)<=S.t);if(!L.length)return;let tot=L.reduce((s,x)=>s+x[1],0),r=Math.random()*tot;
   for(const [id,w] of L){r-=w;if(r<=0){S.cool[id]=S.t+48;enqueue('ev',S.head,{ev:id,data:{}});return}}}
 /* ---------- thanh trừng khi vua đa nghi (tuyến 4) ---------- */
-function purgeYear(){const d=S.dyn;if(!d||!d.k)return;const k=d.k;if(k.nghi<60||!chance((k.nghi-50)/120))return;
+function purgeYear(){const d=S.dyn;if(!d||!d.k)return;const k=d.k;if(k.nghi<60||!chance((k.nghi-50)/120+(S.dx&&S.dx.pow>=70?0.08:0)))return;
   const C=court();const big=FACK.slice().sort((a,b)=>C.f[b].pow-C.f[a].pow)[0];
   qtLog('Vua bắt đầu thanh trừng',`Hoàng đế ${d.emp} nghi kỵ phe ${facN(big)} lộng quyền.`);log(`Hoàng đế nghi kỵ phe ${facN(big)}, trong triều bắt đầu thanh trừng.`,'hi');
   alive().filter(p=>inClan(p)&&p.job==='quan').forEach(p=>{const q=qtOf(p);qtAdd(p,{risk:q.f===big?20:6});if(chance(0.5))enqueue('ev',p.id,{ev:pick(q.f===big?['qt4_danh_sach_bi_thu','qt4_dong_minh_quay','qt4_goi_doi_chat']:['qt4_trieu_kien','qt4_mat_chi','qt4_tu_sat_nguc']),data:{f:big}})});
@@ -6561,7 +6561,20 @@ function ghYear(){const W=S.wr;if(!W||!W.sects||W.sects.length<2)return;const cl
     alive().filter(p=>inClan(p)&&p.flags&&(p.flags.ghs===a.id||p.flags.ghs===b.id)&&(p.flags.gh||0)>=1).forEach(p=>later(p,'gh_phai_chien',R(1,10)))}}
   /* đại hội định kỳ mỗi 10 năm cho người đã có tiếng */
   if(S.t>=120&&S.t%120<12&&(W.hoiT||0)<S.t-60){W.hoiT=S.t;alive().filter(p=>inClan(p)&&p.job==='hiep'&&p.lv>=1).forEach(p=>later(p,'gh_hoi_dinh_ky',R(2,10)))}}
-function wpYear(){if(DRY||S.over||!head())return;S.wp=S.wp||{};tlYear();ghYear();
+/* d9.10: QUÂN HỘ ĐỜI ĐỜI, ĐÔNG XƯỞNG THEO NĂM, THU HỒI THIẾT KHOÁN.
+   Quân hộ (S.qh): khi nhà đã nhận giấy gọi quân hộ (cd_19) thì mỗi khoảng 20 đến 25 năm (một đời) phải có một người thật nhập ngũ; hết hạn, người đó chết hoặc về thì nhà bị gọi tiếp (sự kiện qh_phien_linh, chọn người nhà thật). Đông xưởng (S.dx.pow 0 đến 100): lên theo độ nghi kỵ của vua, quan nhà từ Tam phẩm bị dõi theo và tố cáo nhiều hơn khi thế lớn, và vua thanh trừng dễ hơn. Thiết khoán: vua mới hoặc vua nghi kỵ có thể thu lại (tk_thu_hoi). */
+function qhYear(){const q=S.qh;
+  if(!q){if(alive().some(p=>inClan(p)&&p.seen&&p.seen['cd_19']))S.qh={on:true,t0:S.t,next:S.t+R(60,120),who:null,pend:false};return}
+  if(!q.on)return;
+  if(q.who){const w=P(q.who);if(!w||w.dead!=null||!inClan(w)||(w.job!=='quan_ngu'&&S.t-(q.t0||0)>=24)){if(q.who){q.who=null;q.next=Math.min(q.next,S.t+R(12,36));q.pend=false}}}
+  if(!q.pend&&!q.who&&S.t>=q.next&&head()){q.pend=true;enqueue('ev',S.head,{ev:'qh_phien_linh',data:{}})}}
+function dxYear(){const d=S.dyn;if(!d||!d.k)return;const X=S.dx=S.dx||{pow:30,hi:0};const k=d.k;
+  X.pow=Math.max(0,Math.min(100,X.pow+(k.nghi-50)/25+R(-2,2)-(k.uy>=75?1:0)));
+  if(X.pow>=70&&!X.hi){X.hi=1;log('Đông xưởng thế lớn, quan lại trong triều ai cũng dè chừng.','hi')}else if(X.pow<45&&X.hi){X.hi=0;log('Đông xưởng bớt hống hách.','gd')}
+  if(X.pow>=60)alive().filter(p=>inClan(p)&&p.job==='quan'&&p.lv>=4&&p.seen&&p.seen['cd_12']).forEach(p=>{if(chance((X.pow-55)/250))later(p,pick(['dx_theo_doi','dx_bi_to']),R(1,10))})}
+function tkYear(){if(!S.tk||!head())return;const d=S.dyn;if(!d||!d.k)return;const e=d.emp||'';if(S.tkEmp==null){S.tkEmp=e;return}
+  const newKing=S.tkEmp!==e;S.tkEmp=e;if(chance(newKing?0.35:(d.k.nghi>=70?0.1:0.01)))enqueue('ev',S.head,{ev:'tk_thu_hoi',data:{}})}
+function wpYear(){if(DRY||S.over||!head())return;S.wp=S.wp||{};tlYear();ghYear();qhYear();dxYear();tkYear();
   WP.forEach(w=>{if(S.over)return;const r=S.wp[w.id]||(S.wp[w.id]={s:0,y:0});let s=0;try{s=w.st()}catch(e){s=0}
     if(s>r.s){r.s=s;log('Lời đồn: '+w.h[s-1],'hi');qtLog('Dấu hiệu',w.h[s-1])}else if(s<r.s)r.s=s;
     if(w.id==='T4'||w.noWin)return; /* T4 chốt trong crRes */
@@ -6626,7 +6639,7 @@ const G={matchmaker,pickKin,kinList,landDelta,landLose,landOk:()=>landRight(),le
   _v633:{HOUSE_DEF,hdef,house,houseName,houseRel,houseAlly,houseKid,vil,vilLog,vd,vAdd,kPow,vFlag,vStance,vilRoutes,vilReady,vilEnd,vilStart,vilQuan,vilFighters,vilYears,vPick,pickWho,KIEN,DUY,KRANK,achieve,cf,vBranch,vFi,VBR,hinfo,hnear,houseRefs,giftNorm,w_wed,w_mo,NEAR_MO,HOUSE_TIER},
   _v62:{willPopup,chunoPopup,debtTick,expelPopup2,doExpel,tumatPopup,oanPopup,tranhviPopup,ruleSlots,ruleWhy,addRule,dropRule,keugoiPopup,thiencoPopup,gateCheck,ttlPopup,wishPick,wishScore,obey,ctxOk,CTX,v62Month,v62Year,loveTick,outsTick,divorcePopup,vuotsinhPopup,rulepropPopup,ruleforcePopup,rulechgPopup,pieceF,jobDig,minDig}};
 /* v6.4.1.1: cổng riêng cho trang admin (admin.js). Bản thường không dùng tới */
-G._adm={ghYear,JH_G,bigAvail:c=>bigAvail(c),bigDone:c=>bigDone(c),bigStart:(c,id)=>{const b=BIGS.find(x=>x.id===id);c.viec={id:b.id,start:S.t,end:S.t};},gbApply,avatarSVG,deathPopup,clanSupport,metaImport,phamSeats,letterLv,letterAdd,letterDue,letterLines,startScreen,historyMenu,personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
+G._adm={qhYear,dxYear,tkYear,ghYear,JH_G,bigAvail:c=>bigAvail(c),bigDone:c=>bigDone(c),bigStart:(c,id)=>{const b=BIGS.find(x=>x.id===id);c.viec={id:b.id,start:S.t,end:S.t};},gbApply,avatarSVG,deathPopup,clanSupport,metaImport,phamSeats,letterLv,letterAdd,letterDue,letterLines,startScreen,historyMenu,personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
   getSel:()=>sel,setSel:v=>{sel=v},running:()=>running,speed:()=>speed,setRun:(r,sp)=>{running=!!r;if(sp)speed=sp;renderTop()},
   setS:st=>{S=st;sel=P(sel)?sel:S.head;O.hidden=true;M.innerHTML='';render();nextPopup()},page:()=>page,ensurePersona};
 window.BNTG=G;

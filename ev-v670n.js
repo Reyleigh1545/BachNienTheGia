@@ -6,13 +6,14 @@ const S=()=>G.S();const m=v=>G.mm(v);const N=c=>esc(c.given);
 const rich=v=>()=>G.money()>=m(v);
 const pay=(l,v,o)=>Object.assign({l:`${l} (${G.fmtMoney(m(v))})`,c:rich(v)},o);
 const QH=o=>Object.assign({tags:{},k:'Quân hộ',head:1,age:[25,70],tier:[0,3],ms:1,w:0.7,pcd:96,cd:48,c:c=>!!(c.seen&&c.seen['cd_19'])},o);
+const QHFLT=p=>G.age(p)>=18&&G.age(p)<=40&&p.g==='nam'&&p.job!=='quan_ngu'&&p.job!=='quan'&&!p.biz; /* d9.10: ai phải đi lính theo quân hộ */
 const DX=o=>Object.assign({tags:{},k:'Đông xưởng',job:['quan'],age:[32,75],ms:1,w:0.6,pcd:96,cd:48},o);
 return [
 QH({id:'qh_phien_linh',t:'Đến phiên người nhà nhập ngũ',
  x:c=>`Sổ quân hộ ghi tên nhà ${N(c)}: đến phiên lấy một người nhập ngũ thay người cũ đã già. Lý trưởng đứng ngoài sân, tay cầm tờ giấy gọi, nói ai cũng phải đi một lần.`,
- o:c=>[{l:'Cử một người con khỏe mạnh đi',f:c=>'Người con thu xếp hành lý, mẹ nó khóc suốt đêm. Làng nể nhà biết giữ lệ.'+fx(c,{tam:-4,fame:2})},
-  pay('Thuê người thay thế',30,{f:c=>'Một người nghèo trong làng nhận đi thay, giấy tờ đủ. Nhà khỏi mất người.'+fx(c,{money:-m(30),fame:-1})}),
-  {l:'Cho người nhà trốn đi nơi khác',r:[{muu:0.8,khau:0.6},45],y:c=>'Trốn thoát, tên bị gạch khỏi sổ vì "mất tích". Từ đó khó về quê cũ.'+fx(c,{fame:-4,tam:-3}),n:c=>'Bị bắt giữa đường, phạt đòn và nhà bị ghi tội trốn quân dịch.'+fx(c,{money:-m(15),fame:-8,suc:-4})}]}),
+ o:c=>{const q=()=>S().qh||{};const done=(per)=>{const x=S().qh;if(x){x.pend=false;x.next=S().t+per}};return [{l:'Cử một người trong nhà đi',c:c=>G.kinList(c,QHFLT).length>0,go:(c,d)=>G.pickKin(c,{eyebrow:'Quân hộ',title:'Cử ai nhập ngũ',text:'Người được cử phải rời nhà ra doanh trại, tới khi hết hạn hoặc đến phiên người khác. Lệ quân hộ đời nào cũng phải có người. Chọn người nào?',filter:QHFLT,cb:w=>{G.enlist(w,false);const x=S().qh;if(x){x.who=w.id;x.t0=S().t}done(R(240,300));return `${esc(w.given)} thu xếp hành lý, mẹ ${w.g==='nam'?'nó':'cô'} khóc suốt đêm. Làng nể nhà biết giữ lệ.`+G.fx(c,{tam:-4,fame:2})+G.fx(w,{tam:-6})}})},
+  pay('Thuê người thay thế',30,{f:c=>{done(R(120,180));return 'Một người nghèo trong làng nhận đi thay, giấy tờ đủ. Nhà khỏi mất người, nhưng phiên sau sẽ đến sớm hơn.'+fx(c,{money:-m(30),fame:-1})}}),
+  {l:'Cho người nhà trốn đi nơi khác',r:[{muu:0.8,khau:0.6},45],y:c=>{done(R(180,240));return 'Trốn thoát, tên bị gạch khỏi sổ vì "mất tích". Từ đó khó về quê cũ.'+fx(c,{fame:-4,tam:-3})},n:c=>{done(R(60,120));return 'Bị bắt giữa đường, phạt đòn và nhà bị ghi tội trốn quân dịch.'+fx(c,{money:-m(15),fame:-8,suc:-4})}}]}}),
 QH({id:'qh_chuoc_so',t:'Xin xóa tên khỏi quân hộ',tier:[1,4],w:0.5,
  x:c=>`Nhà ${N(c)} đã khá giả, người ta bảo giờ có thể lo lót để xin xóa tên khỏi sổ quân hộ, khỏi phải mỗi đời đưa một người. Nhưng quan lại sẽ không làm không công.`,
  o:c=>[pay('Lo lót bộ Binh xóa tên',120,{r:[{khau:1,eq:0.5},55],y:c=>'Tên được gạch khỏi sổ. Từ nay con cháu không bị gọi nhập ngũ theo kiểu cũ.'+fx(c,{money:-m(120),fame:4,tam:6}),n:c=>'Lễ nhận rồi mà sổ vẫn còn tên nhà. Mất oan.'+fx(c,{money:-m(120),tam:-6,fame:-2})}),
