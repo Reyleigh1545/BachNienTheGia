@@ -71,3 +71,47 @@ window.EVPATCH.push(function(E,G){
   out.push(e)});
  return out});
 })();
+/* ===== TUNE: nhân khoản NHẬN theo số HIỂN THỊ chủ dự án yêu cầu (engine.fx đọc e.tune) và ADD: thêm dòng thưởng vào một lựa chọn ===== */
+(function(){
+const TUNE={
+ t_c_thi_vo_lang:{vo:{mul:2.7}},                 /* chủ dự án: chỉ số cộng thêm ít */
+ kn_32:{vo:{mul:2.5}},                           /* thành phải tăng cực nhiều võ lực */
+ kn_43:{tri:{mul:3},m:{mul:3},fame:{mul:3},cfame:{mul:3}}, /* gấp 3 lần kết quả */
+ kn_61:{tri:{mul:2}},                            /* thành thì trí +6 */
+ qn653_ky_bao_kiem:{vo:{mul:3},fame:{mul:3},merit:{mul:3}},
+ qn653_ky_binh_thu:{tri:{mul:2},eq:{mul:2},merit:{mul:3}},
+ nb_b:{vo:{mul:1.4}},                            /* võ nên tăng 14 */
+ nong_duoc_lieu:{tri:{mul:3}},
+ t_g_hoc_bong:{tri:{mul:1.6}},
+ vv_tri_co_tran:{tri:{mul:4}},                   /* kết quả phải xứng kỳ ngộ hiếm */
+ y_benh_la:{tri:{mul:6}},                        /* trí tuệ nên tăng nhiều hơn */
+ v6_ky_thu_tich:{tri:{mul:2.5}}
+};
+/* ADD: id -> [{opt,on:['y','n','f'],fx:{...}}]. Số trong fx là GỐC; kỳ ngộ nhân thêm 1,5 cho trí/võ/mị/EQ, 3 cho tiền/danh vọng. */
+const ADD={
+ qn653_ky_binh_thu:[{opt:0,on:['y'],fx:{vo:10}},{opt:0,on:['n'],fx:{vo:3}}],  /* thành: võ +15 hiển thị */
+ t_q_binh_thu:[{opt:0,on:['y','yy'],fx:{vo:7}}],                                /* thiếu võ lực */
+ nb_c:[{opt:0,on:['y','n'],fx:{tri:4,eq:3}},{opt:1,on:['f'],fx:{eq:2}}],        /* cả hai lựa chọn nên cộng chỉ số */
+ nong_duoc_lieu:[{opt:0,on:['y'],fx:{bonus:0.08}}],                             /* dược liệu thành thu nhập thật */
+ nong_khoai_tay:[{opt:0,on:['f'],fx:{bonus:0.04,cfame:2}}],
+ d631_sach_co_trong_ruong:[{opt:0,on:['y'],fx:{tri:4}}],                         /* nên cộng trí tuệ */
+ v6_ky_dao_si:[{opt:0,on:['y'],fx:{hpMax:2}}],                                   /* tu đạo phải tăng sức khỏe tối đa */
+ gj_16:[{opt:0,on:['y'],fx:{hpMax:3}}]                                           /* thầy thuốc giang hồ: sức khỏe tối đa */
+};
+const closeKin=(c,G)=>G.alive().filter(p=>p.id!==c.id&&G.inClan(p)&&p.dead==null&&(p.spouse===c.id||(p.parents||[]).includes(c.id)||(c.parents||[]).includes(p.id)||((p.parents||[]).length&&(c.parents||[]).some(x=>p.parents.includes(x)))));
+const SPECIAL={
+ t_c_thao_duoc:(E,G)=>{const e=E.find(x=>x.id==='t_c_thao_duoc');if(!e||typeof e.o==='function')return;const o1=e.o[1];if(!o1||typeof o1.f!=='function')return;const f0=o1.f;
+  o1.f=function(c,d){const t=f0.call(this,c,d);const L=closeKin(c,G);const txt=L.map(p=>G.esc(p.given)+': '+G.fx(p,{hpMax:5})).join(' ');return t+(L.length?` Người thân thiết cũng được bồi bổ (${L.length} người): ${txt}`:'')+G.fx(c,{hpMax:3})}},
+ v6_ky_thu_tich:(E,G)=>{const e=E.find(x=>x.id==='v6_ky_thu_tich');if(!e||typeof e.o==='function')return;const o1=e.o[1];if(!o1||typeof o1.f!=='function')return;const f0=o1.f;
+  o1.f=function(c,d){const t=f0.call(this,c,d);let n=0;G.alive().filter(p=>G.inClan(p)&&G.inMain(p)&&G.age(p)>=12&&!p.away).forEach(p=>{G.addStat(p,'tri',2);G.addStat(p,'eq',1);n++});return t+` Cả nhà cùng đọc (${n} người): trí +2, EQ +1 mỗi người.`}},
+ qn653_duyet_doi:(E,G)=>{const e=E.find(x=>x.id==='qn653_duyet_doi');if(!e||typeof e.o==='function')return;const o0=e.o[0];const y0=o0&&o0.y;if(typeof y0!=='function')return;
+  o0.y=function(c,d){const t=y0.call(this,c,d);return t+G.fx(c,{merit:Math.round(12*0.35*Math.max(1,c.lv))})}},
+ v64_vo_tap_tran:(E,G)=>{const e=E.find(x=>x.id==='v64_vo_tap_tran');if(!e||typeof e.o!=='function')return;const o0=e.o;
+  e.o=function(c,d){const L=o0.call(this,c,d);if(Array.isArray(L)&&L[0]&&typeof L[0].y==='function'){const y0=L[0].y;L[0].y=function(cc,dd){return y0.call(this,cc,dd)+G.fx(cc,{merit:Math.round(2*Math.max(1,cc.lv))})}}return L}}
+};
+window.EVPATCH.push(function(E,G){
+ E.forEach(e=>{if(TUNE[e.id])e.tune=Object.assign({},e.tune||{},TUNE[e.id]);
+  const A=ADD[e.id];if(A&&Array.isArray(e.o)){A.forEach(a=>{const op=e.o[a.opt];if(!op)return;a.on.forEach(k=>{const f0=op[k];if(typeof f0!=='function')return;op[k]=function(c,d){const t=f0.call(this,c,d);return (typeof t==='string'?t:'')+G.fx(c,a.fx)}})})}});
+ Object.keys(SPECIAL).forEach(k=>{try{SPECIAL[k](E,G)}catch(er){console.error('SPECIAL',k,er)}});
+ return E});
+})();

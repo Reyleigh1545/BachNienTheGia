@@ -231,6 +231,7 @@ function fx(c,d){
   for(const k in d){let v=d[k];if(KY&&v>0){if(k==='money'||k==='purse')v=Math.max(v,mm(4));else if(k==='fame')v=Math.max(v,4);else if(k==='cfame')v=Math.max(v,2)}
     if(KYB>1&&v>0&&['money','purse','fame','cfame','hung','merit'].includes(k))v=Math.round(v*KYB);
     if(KY&&v>0&&['tri','vo','mi','eq','m'].includes(k))v=Math.ceil(v*1.5);
+    {const tn=MMCTX&&MMCTX.tune&&MMCTX.tune[k];if(tn&&typeof v==='number'&&v>0){if(tn.mul)v=Math.round(v*tn.mul);if(tn.min)v=Math.max(v,tn.min)}} /* d9.12: bảng TUNE (ev-d912.js): nhân hoặc sàn cho khoản NHẬN của từng sự kiện, theo số HIỂN THỊ chủ dự án yêu cầu */
     if(CHN){const tt=mmTier();if(v>0&&k==='money')v=Math.round(v*MM_THU[tt]/MM_NHE[tt]);else if(v>0&&(k==='fame'||k==='cfame'))v=Math.round(v*(1+0.3*tt));else if(v<0&&k==='hpMax')v=Math.max(v,-3);else if(v<0&&k==='suc')v=Math.max(v,-30)}if(['over','lethal','habit','unhabit','trait','untrait','ax','sk'].includes(k)||!v)continue;
     if(k==='money'){const lb=isHead(c)||(age(c)<16&&inMain(c))?'Công quỹ':!inMain(c)&&S.hh[c.hh]?'Quỹ hộ':v>0?'Tiền riêng':'Tiền';if(v>0)gain(c,v);else charge(c,-v);out.push([lb,v,'$'])}
     else if(k==='purse'){c.purse+=v;out.push(['Túi riêng',v,'$'])}
