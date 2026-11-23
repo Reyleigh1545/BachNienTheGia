@@ -23,7 +23,7 @@ GJ({id:'gh_ti_vo',t:'Tỉ võ giữa hai phái',c:c=>rk(c)>=1&&rk(c)<3&&!!sectOf
  x:c=>{const r=rival(c);return `${esc(r.n)} (${AL[r.al]||'phái khác'}) thách ${esc(sectOf(c).n)} một trận tỉ võ ở chợ phiên. Chưởng môn đẩy ${N(c)} ra đài: thắng thì phái nở mày, thua thì mất mặt cả môn.`},
  o:c=>[{l:'Lên đài, dốc hết sức',r:[{vo:1.2,suc:0.3},58],y:c=>{c.flags.gh=Math.max(rk(c),2);return 'Ba mươi hiệp, thắng sát nút. Cả chợ vỗ tay.'+fx(c,{vo:3,fame:10,tam:8})},n:c=>'Thua một chiêu cuối, nằm dưỡng thương mấy tuần. Đồng môn không trách nhưng im lặng.'+fx(c,{suc:-8,tam:-8,fame:-3})},
   {l:'Xin chưởng môn đổi người',f:c=>{return 'Chưởng môn nhìn một lúc rồi gọi người khác. Từ đó ánh mắt đồng môn khác đi.'+fx(c,{tam:-6,fame:-2})}}]}),
-GJ({id:'gh_bi_kip',t:'Một quyển bí kíp',c:c=>rk(c)===2,age:[20,60],
+GJ({id:'gh_bi_kip',t:'Một quyển bí kíp',c:c=>rk(c)===2&&c.lv>=1,age:[20,60],
  x:c=>`Một quyển bí kíp cũ lọt vào tay ${N(c)}, không rõ do ai để lại. Chiêu thức bên trong vừa lạ vừa mạnh, nhưng có đoạn phải luyện ngược khí, ai cũng bảo dễ hại thân.`,
  o:c=>[{l:'Luyện từng bước, bỏ đoạn hiểm',r:[{vo:1,tri:0.6},60],y:c=>{c.flags.gh=3;return 'Mất mấy năm, nhưng vững. Võ công thêm một tầng mới.'+fx(c,{vo:6,tam:6,fame:6})},n:c=>'Hiểu sai một đoạn, luyện hỏng một tháng.'+fx(c,{vo:1,suc:-6,tam:-4})},
   {l:'Luyện đủ cả đoạn hiểm',r:[{vo:1,suc:1},45],y:c=>{c.flags.gh=3;return 'Công lực tăng vọt, người ngoài nhìn vào cũng ngạc nhiên.'+fx(c,{vo:12,suc:-4,fame:8,tam:4})},n:c=>'Khí đi ngược kinh mạch, nôn ra máu. Phải nằm nhà hơn nửa năm.'+fx(c,{suc:-20,vo:-2,tam:-12})},

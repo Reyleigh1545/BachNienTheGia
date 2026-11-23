@@ -277,6 +277,11 @@ button.chip{border:0;font:inherit;font-size:11.5px;cursor:help}
 .pgtile b{display:block;font-size:15px}
 .pgtile small{font-size:11.5px;color:var(--muted)}
 .sheetm.pages .who{align-items:center}
+/* d9.8: hồ sơ một khung cố định (640 x 660), đầu hồ sơ và thanh trang đứng yên, chỉ phần trang cuộn */
+.modal.sheetm.pages{width:min(640px,100%);max-width:640px;height:min(660px,92vh);max-height:none;overflow:hidden;display:flex;flex-direction:column;gap:0;padding:20px 22px 0}
+.sheetm.pages>.who,.sheetm.pages>.pgtabs{flex:none}
+.sheetm.pages>.pgbody{flex:1 1 auto;min-height:0;overflow-y:auto;padding:2px 2px 18px;align-content:start}
+.sheetm.pages>.pgbody[hidden]{display:none}
 @media (max-width:560px){.ev1 .evband{padding:14px 12px 10px}.ev1 .evbody,.ev1 .choices{padding-left:14px;padding-right:14px}.pgtiles{grid-template-columns:repeat(2,1fr)}}
 
 .modal.sheetm{max-width:560px;position:relative;border-top-color:var(--jade)}
@@ -399,7 +404,7 @@ ul.plain{margin:4px 0 0;padding-left:18px;font-size:12.5px;display:grid;gap:3px}
 <div class="wrap" id="app"></div>
 <div class="overlay sheet" id="sheetO" hidden><div class="modal sheetm" id="sheetM" role="dialog" aria-modal="true" aria-label="Hồ sơ nhân vật"></div></div>
 <div class="tip" id="tip" hidden></div>
-<div class="verlbl" aria-hidden="true">v6.7.10-d9.8</div>
+<div class="verlbl" aria-hidden="true">v6.7.10-d9.9</div>
 <div class="overlay" id="overlay" hidden><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
 
 <script src="data.js"></script>

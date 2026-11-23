@@ -60,7 +60,7 @@ const JOBS={
   nguy:{n:'Ngự y',inc:6000,st:'tri',stress:7,lv:[L('Ngự y',1),L('Viện phán',2,{m:60,tri:90}),L('Thái y lệnh',3.5,{m:100,tri:110})],d:'Thầy thuốc của hoàng thất.'},
   vua:{n:'Hoàng đế',inc:1000000,st:'tri',stress:8,lv:[L('Hoàng đế',1)],d:'Thiên tử.'},
   quan_ngu:{n:'Quân ngũ',inc:0,st:'vo',stress:8,phys:50,lv:ARMY.map(a=>L(a[0],1)),d:'Ở doanh trại, xa nhà. Thăng cấp theo chiến công. Một nửa quân lương gửi về nhà. Thời chiến dễ tử trận.'},
-  hiep:{n:'Hiệp khách',inc:0,st:'vo',stress:4,lv:[L('Lãng khách',1),L('Hiệp sĩ',1,{m:30}),L('Đại hiệp',1,{m:70,fame:200}),L('Võ lâm minh chủ',1,{m:110,fame:600})],d:'Bôn ba giang hồ, sống bằng túi tiền riêng.'},
+  hiep:{n:'Hiệp khách',inc:0,st:'vo',stress:4,lv:[L('Lãng khách',1),L('Hiệp sĩ',1,{vo:120,fame:175}),L('Đại hiệp',1,{vo:150,fame:600}),L('Võ lâm minh chủ',1,{vo:200,fame:2000})],d:'Bôn ba giang hồ, sống bằng túi tiền riêng.'},
   chu:{n:'Chủ cơ sở',inc:0,st:'eq',stress:5,lv:[L('Chủ',1)],d:'Làm chủ một cơ sở kinh doanh. Thu nhập là lãi của cơ sở.'}};
 const STARTJOBS=['nong','tieunhi','khuanvac','tieuphu','ngu','hangrong','hau','tho','chan','y','su','nghe','tieu'];
 
