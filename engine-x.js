@@ -3,7 +3,7 @@
    Đã tách: giang hồ (ghYear), quân hộ (qhYear), Đông xưởng (dxYear), Thiết khoán (tkYear), chi phí giữ quan hệ (relYear). Nạp sau events-lv.js và trước engine.js. */
 window.ENGX=window.ENGX||[];
 window.ENGX.push(X=>{
-const {R,chance,log,alive,inClan,P,head,later,enqueue,mm,nameOf,shuf,pick,clamp}=X;
+const {R,chance,log,alive,inClan,P,head,later,enqueue,mm,nameOf,shuf,pick,clamp,provN,qtLog}=X;
 /* d9.10: GIANG HỒ THÀNH HỆ THỐNG. Chiến tranh giữa hai môn phái chạy theo năm (S.wr.gwar: {a,b,t,len,yrs,da,db}); hành động của đệ tử hai phái cộng vào da, db (sự kiện gh_phai_chien); hết chiến tranh thì phái thắng tăng sức mạnh, phái thua giảm, đệ tử hai phái nhận sự kiện gh_chien_ket. Mỗi 10 năm có đại hội định kỳ (gh_hoi_dinh_ky). */
 function ghYear(){const S=X.S;const W=S.wr;if(!W||!W.sects||W.sects.length<2)return;const clampP=v=>Math.max(5,Math.min(100,Math.round(v)));
   const w=W.gwar;
@@ -34,6 +34,13 @@ function tkYear(){const S=X.S;if(!S.tk||!head())return;const d=S.dyn;if(!d||!d.k
 function relYear(){const S=X.S;const nk=alive().filter(p=>inClan(p)&&p.flags&&p.flags.kinh).length;const n=(S.tgq||0)+nk;if(!n)return;const cost=mm(2*n);
   if(S.money>=cost){S.money-=cost;S.relMiss=0}else{S.relMiss=(S.relMiss||0)+1;if(S.relMiss>=2){S.relMiss=0;if(S.tgq>0){S.tgq--;log('Nhà thông gia quan lạnh nhạt vì hai năm liền không lễ tết, mối quan hệ nguội đi.','hi')}else{const p=alive().find(q=>inClan(q)&&q.flags&&q.flags.kinh);if(p){p.flags.kinh=0;log(`${nameOf(p)} ở kinh thành mất người đỡ đầu vì nhà không còn gửi lễ.`,'hi')}}}}}
 
-X.yearly.push(ghYear,qhYear,dxYear,tkYear,relYear);
-Object.assign(X.fn,{ghYear,qhYear,dxYear,tkYear,relYear});
+/* d9.10 (mục 12, thế lực tự phát đầy đủ): mỗi điểm nóng của hạt giống ván có MỘT THẾ LỰC có tên (S.wr.tl: {p, id, n, pow, rel, st}). st: ngam (âm thầm lớn dần theo độ nóng), noi (đã nổi dậy, loạn thiên hạ tăng, thu thuế dân, sự kiện đòi nhà chơi), tan (bị dẹp, một thời gian sau có thể trỗi lại). rel là cảm tình của nhà chơi với thế lực ấy. */
+const TLT=[{id:'hoikin',n:'Hội Bạch Liên'},{id:'giaco',n:'Giặc cỏ Hắc Phong'},{id:'bang',n:'Bang Thủy Tặc'}];
+function tlForces(){const S=X.S;const w=S.wr;if(!w||!w.hot)return [];w.tl=w.tl||[];w.hot.forEach((p,i)=>{if(!w.tl.find(f=>f.p===p)){const t=TLT[i%3];w.tl.push({p,id:t.id,n:t.n+' ở '+provN(p),pow:R(10,25),rel:0,st:'ngam',yr:0})}});return w.tl}
+function tlForceYear(){const S=X.S;const w=S.wr;if(!w||!w.hot||!S.dyn)return;tlForces().forEach(f=>{const h=(w.heat&&w.heat[f.p])||0;f.yr++;
+    if(f.st==='ngam'){f.pow=Math.max(0,Math.min(100,f.pow+(h-45)/20+R(-2,3)));if(f.pow>=75&&chance(0.25)){f.st='noi';f.noiT=S.t;S.dyn.loan=Math.min(100,(S.dyn.loan||0)+4);log(f.n+' nổi dậy, thiên hạ thêm xáo động.','hi');qtLog('Thế lực tự phát nổi dậy',f.n+' đã khởi sự.')}}
+    else if(f.st==='noi'){f.pow=Math.max(0,Math.min(100,f.pow+R(-6,4)-((S.dyn.dt||50)>=60?2:0)));if(f.pow<=30||S.t-f.noiT>=72){f.st='tan';f.tanT=S.t;S.dyn.loan=Math.max(0,(S.dyn.loan||0)-3);log(f.n+' bị triều đình dẹp, thiên hạ bớt xáo động.','gd')}}
+    else if(f.st==='tan'&&S.t-f.tanT>=120){f.st='ngam';f.pow=R(8,18);f.rel=Math.round(f.rel/2)}})}
+X.yearly.push(ghYear,qhYear,dxYear,tkYear,relYear,tlForceYear);
+Object.assign(X.fn,{ghYear,qhYear,dxYear,tkYear,relYear,tlForceYear,tlForces});
 });
