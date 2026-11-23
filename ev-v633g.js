@@ -125,14 +125,14 @@ K({id:'f633_gioong',t:'Đứa trẻ ba tuổi cất tiếng',age:[2,5],c:c=>tens
 K({id:'f633_khachla',t:'Ba người khách lạ đêm giao thừa',age:[16,80],sea:['dong'],
  x:c=>`Đêm giao thừa, ba người lạ mặt gõ cửa nhà ${N(c)}: một ông lão, một người đàn bà bế con, một chàng trai gầy. Họ xin một chỗ ngủ nhờ. Nhà đã đủ chật, cơm tất niên cũng chỉ vừa.`,
  o:c=>[
-  {l:'Mời vào, chia cơm tất niên',f:c=>`Cả nhà ăn chung một mâm. Sáng mùng một, ba người cúi chào đi, nhưng trên bàn có ba món lạ: một thỏi bạc, một bó thuốc quý, một cuốn sổ ghi kinh nghiệm làm ruộng.`+fx(c,{money:m(R(3,6)),tri:1,m:R(3,5),tam:10,fame:2})},
+  {l:'Mời vào, chia cơm tất niên',f:c=>`Cả nhà ăn chung một mâm. Sáng mùng một, ba người cúi chào đi, nhưng trên bàn có ba món lạ: một thỏi bạc, một bó thuốc quý, một cuốn sổ ghi kinh nghiệm làm ruộng.`+fx(c,{money:m(R(4,6)),tri:1,m:R(3,5),tam:10,fame:2})},
   {l:'Mời vào nhưng dặn giữ yên lặng, đừng làm ồn',f:c=>`Họ ngủ yên, sáng đi sớm, chỉ để lại lời cảm ơn khẽ. Không có phép lạ nào xảy ra.`+fx(c,{tam:2})},
   {l:'Chỉ đường đến chùa gần',f:c=>`Họ cúi đầu rồi đi. Cả nhà ăn tất niên mà thấy thiếu thiếu.`+fx(c,{tam:-4,eq:-1})}]}),
 K({id:'f633_gieng',t:'Giếng làng cạn nước',age:[18,70],sea:['ha','thu'],
  x:c=>`Năm hạn, giếng làng chỉ còn một vũng nước đục. Các nhà tranh nhau từng gáo. Nhà ${N(c)} có một giếng riêng vẫn đầy. Hàng xóm ngập ngừng đứng ngoài cổng, không dám xin.`,
  o:c=>[
   {l:'Mở cổng, cho cả xóm lấy nước theo phiên',f:c=>`Mỗi ngày hàng chục người xếp hàng. Nhà bớt yên tĩnh nhưng cả làng nhớ. Năm sau khi nhà gặp khó, nhiều tay xúm vào giúp.`+fx(c,{fame:R(4,8),cfame:2,eq:1,tam:8})},
-  {l:'Cho nước nhưng thu ít tiền để trả công người múc',f:c=>`Mọi người đồng ý, cũng không phiền lòng. Chuyện lặng lẽ qua.`+fx(c,{money:m(1),fame:1,tam:1})},
+  {l:'Cho nước nhưng thu ít tiền để trả công người múc',f:c=>`Mọi người đồng ý, cũng không phiền lòng. Chuyện lặng lẽ qua.`+fx(c,{money:m(4),fame:1,tam:1})},
   {l:'Giữ nước cho nhà mình',f:c=>`Bên ngoài ai cũng hiểu, nhưng không ai quên.`+fx(c,{fame:-3,eq:-1,tam:-4})}]}),
 K({id:'f633_bado',t:'Bà đồng nói điều chưa đến',age:[20,80],
  x:c=>`Qua chợ phiên, bà đồng già kéo tay ${N(c)} lại, nhìn vào lòng bàn tay lâu thật lâu: "Trong ba năm, nhà này có một việc lớn, sẽ khóc rồi sẽ cười, cuối cùng người ngoài sẽ giúp." Bà không đòi tiền.`,

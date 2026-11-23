@@ -380,7 +380,7 @@ const CLANOFF={
 /* mức tô khi phát canh ruộng: phần hoa lợi thu về, tác động danh vọng mỗi năm theo 10 mẫu */
 const TOLV=[['Tô nhẹ',0.1,1.2,'Tá điền biết ơn, tiếng thơm lan xa'],['Tô vừa',0.2,0,'Như lệ thường trong làng'],['Tô nặng',0.3,-1.5,'Thu nhiều nhưng bị chê là địa chủ ác, tá điền dễ bỏ trốn']]; /* v6.7.0-d8: tô tính trên giá trị nông sản tá điền thu về */
 /* mức góp công quỹ của người đi làm ở nhà chính */
-const GOP=[[0.3,'Ba phần mười',-2],[0.5,'Một nửa',-5],[0.8,'Tám phần mười',-10]]; /* d9.6: mọi người ở nhà chính đều phải góp quỹ chung, người chơi chỉnh ba mốc 30, 50, 80 phần trăm (chủ dự án 22/11) */
+const GOP=[[0.3,"Ba phần mười",-1],[0.5,"Một nửa",-3],[0.8,"Tám phần mười",-6]]; /* d9.6: mọi người ở nhà chính đều phải góp quỹ chung, người chơi chỉnh ba mốc 30, 50, 80 phần trăm (chủ dự án 22/11) */
 /* mừng thọ */
 const THO={60:'Lục tuần',70:'Thất tuần',80:'Bát tuần',90:'Cửu tuần',100:'Đại thọ bách tuế'};
 /* đột phá chỉ số 100: mỗi người được 3 con đường hợp với mình. mo: số tháng; sp: chỉ số góp vào phép thử; job/ax/tr: điều kiện; gain: đặc tính khi thành */

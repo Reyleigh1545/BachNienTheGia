@@ -285,7 +285,7 @@ return [
  x:c=>`Xe ngựa của một đại thương nhân gãy trục trước cửa nhà. ${N(c)} giúp sửa, được mời vào uống trà trò chuyện.`,
  o:[{l:'Hỏi về cách quản người, giữ của',f:c=>'Ông ta kể chuyện làm ăn ba mươi năm. Học được không ít.'+fx(c,{sk:{ql:R(6,10),khau:3}})},
     {l:'Xin theo ông ta một chuyến buôn',ax:{dl:3,gan:2},r:[{eq:0.5,suc:0.3,duyen:0.4},50],y:c=>'Chuyến đi trót lọt, được chia lãi hậu.'+fx(c,{money:m(R(10,20)),sk:{khau:4,ql:4}}),n:c=>'Giữa đường gặp cướp, may thoát thân.'+fx(c,{suc:-8,tam:-6})},
-    {l:'Nhận chút quà cảm ơn',f:c=>'Một món quà nhỏ.'+fx(c,{money:m(R(2,4))})}]},
+    {l:'Nhận chút quà cảm ơn',f:c=>'Một món quà nhỏ.'+fx(c,{money:m(R(4,6))})}]},
 {id:'v6_ky_tai_bay',t:'Tai bay vạ gió',ky:1,u:'person',age:[18,80],w:0.7,
  x:c=>`Một xác chết trôi dạt vào bờ đất nhà ${N(c)}. Nha dịch kéo đến, nhìn ai cũng như nhìn hung thủ.`,
  o:[{l:'Tự điều tra, tìm manh mối',ax:{gan:2},r:[{muu:0.7,tri:0.4},60],y:c=>'Lần ra người chết là nạn nhân của thủy tặc. Quan khen ngợi.'+fx(c,{fame:6,sk:{muu:3}}),n:c=>'Bị giữ lại hỏi cung mấy ngày.'+fx(c,{suc:-6,tam:-10,money:-m(2)})},
