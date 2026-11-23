@@ -1,7 +1,8 @@
 // smoke run: node smoke.js <file:///...admin.html> <years>
 const {spawn}=require('child_process');const url=process.argv[2],years=+process.argv[3]||20;
 const prof=__dirname+'/../prof'+(process.env.PN||'');const port=9333;
-const ch=spawn('C:/Program Files/Google/Chrome/Application/chrome.exe',['--headless=new','--disable-gpu','--no-first-run','--user-data-dir='+prof,'--remote-debugging-port='+port,'--allow-file-access-from-files','about:blank'],{stdio:'ignore'});
+const CHROME=process.env.CHROME||[ 'C:/Program Files/Google/Chrome/Application/chrome.exe','C:/Program Files (x86)/Google/Chrome/Application/chrome.exe','/Applications/Google Chrome.app/Contents/MacOS/Google Chrome','/usr/bin/google-chrome','/usr/bin/chromium' ].find(p=>require('fs').existsSync(p))||'chrome'; /* d9.10: đặt biến môi trường CHROME nếu Chrome ở nơi khác */
+const ch=spawn(CHROME,['--headless=new','--disable-gpu','--no-first-run','--user-data-dir='+prof,'--remote-debugging-port='+port,'--allow-file-access-from-files','about:blank'],{stdio:'ignore'});
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 (async()=>{let tabs;for(let i=0;i<40;i++){try{tabs=await (await fetch(`http://127.0.0.1:${port}/json`)).json();if(tabs.length)break}catch(e){}await sleep(250)}
  const t=tabs.find(x=>x.type==='page');const ws=new WebSocket(t.webSocketDebuggerUrl);let id=0;const wait={};const errs=[];
