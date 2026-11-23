@@ -12,6 +12,9 @@ function ghYear(){const S=X.S;const W=S.wr;if(!W||!W.sects||W.sects.length<2)ret
     a.pow=clampP((a.pow||50)+R(-3,3)+Math.round(d*3)-1);b.pow=clampP((b.pow||50)+R(-3,3)-Math.round(d*3)-1);
     if(w.yrs>=w.len){const win=pa>=pb?a:b,lose=win===a?b:a;win.pow=clampP(win.pow+6);lose.pow=clampP(lose.pow-6);W.gwar=null;W.gwarEnd=S.t;
       log(`Cuộc chiến giữa ${win.n} và ${lose.n} kết thúc: ${win.n} thắng thế.`,'gd');
+      if(lose.pow<=12){ /* d9.12: phái thua nặng thì tan; đệ tử mất phái và mất bí kíp của phái */
+        alive().filter(p=>inClan(p)&&p.flags&&p.flags.ghs===lose.id).forEach(p=>{const bk=p.flags.bk;const keys=bk?Object.keys(bk).filter(k=>bk[k]):[];let lostTxt='';if(keys.length&&chance(0.7)){const k=pick(keys);bk[k]=0;lostTxt=' Bí kíp của phái thất lạc theo.'}p.flags.ghs=null;p.flags.gh=0;log(`${nameOf(p)} mất phái vì ${lose.n} tan rã.${lostTxt}`,'hi')});
+        lose.pow=Math.max(lose.pow,15);log(`${lose.n} gần như tan rã sau cuộc chiến, đệ tử tản mác.`,'hi')}
       alive().filter(p=>inClan(p)&&p.flags&&p.flags.ghs&&(p.flags.ghs===win.id||p.flags.ghs===lose.id)&&(p.flags.gh||0)>=1).forEach(p=>later(p,'gh_chien_ket',R(1,8),{s:p.flags.ghs,win:p.flags.ghs===win.id?1:0}))}}
   else if(S.t-(W.gwarEnd||-999)>=60&&chance(0.05+((W.tl||[]).some(f=>f.st==='noi')?0.04:0))){const L=shuf(W.sects.slice());const a=L[0],b=L.find(s=>s!==a);if(a&&b){W.gwar={a:a.id,b:b.id,t:S.t,len:R(2,4),yrs:0,da:0,db:0};log(`Giang hồ dậy sóng: ${a.n} và ${b.n} khai chiến.`,'hi');
     alive().filter(p=>inClan(p)&&p.flags&&(p.flags.ghs===a.id||p.flags.ghs===b.id)&&(p.flags.gh||0)>=1).forEach(p=>later(p,'gh_phai_chien',R(1,10)))}}
