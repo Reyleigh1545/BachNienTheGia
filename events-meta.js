@@ -69,3 +69,5 @@ Object.assign(window.EVMETA,{"tie_ban_nho":["society","acquaintance","random","c
 Object.assign(window.EVMETA,{"tn_chua_xuong_cap":["society","faith","random","common","head","any"],"tn_b":["society","faith","random","common","head","any"]});
 /* thêm tự động bởi tools/addmeta.js */
 Object.assign(window.EVMETA,{"td_gap":["family","romance","random","common","any","any"],"td_b":["family","romance","random","common","any","any"],"td_c":["family","romance","random","common","any","any"],"td_d":["family","romance","random","common","any","any"],"td_e":["family","romance","random","common","any","any"],"td_f":["family","romance","random","common","any","any"]});
+/* thêm tự động bởi tools/addmeta.js */
+Object.assign(window.EVMETA,{"gh2_tin_don":["jianghu","secret_manual","random","common","any","any"],"gh2_b":["jianghu","secret_manual","random","common","any","any"],"gh2_c":["jianghu","secret_manual","random","common","any","any"],"gh2_d":["jianghu","secret_manual","random","common","any","any"]});
