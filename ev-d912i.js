@@ -26,7 +26,7 @@ FX({id:'gj_03e',t:'Phục kích trên đường về sơn môn',k:'Giang hồ',
   {l:'Giao chiến ở hẻm núi',r:[{vo:0.9,suc:0.5,gan:0.3},46],y:c=>{later(c,'gj_03c',1,3,Object.assign({},d,{win:1}));return `Một trận ác chiến, bọn truy sát tan tác. Cả giang hồ nghe tin.`+fx(w,{vo:R(3,5),fame:R(4,8),suc:-R(5,10),tam:5})},n:c=>{later(c,'gj_03c',2,5,Object.assign({},d,{win:0}));return `Quá đông, mình bị thương nặng, bà phải tự chạy đến sơn môn.`+fx(w,{suc:-R(18,28),hpMax:-R(1,3),tam:-7})}},
   {l:'Nhờ môn phái ra đón giữa đường',f:c=>{later(c,'gj_03c',2,4,Object.assign({},d,{win:1}));return `Một tin nhắn nhanh được gửi tới sơn môn, người của phái ra tận hẻm núi đón bà. Việc xong, nhưng ơn của nhà đã giảm bớt vì phái ra tay.`+fx(c,{tam:1})}}]}}),
 /* ============ CỐT TRUYỆN DÀI: HÀO CƯỜNG LẤN ĐẤT (hc_*) ============ */
-E({id:'hc_lan_bo',t:'Hào cường lấn bờ',head:1,age:[28,75],tier:[1,6],once:1,w:0.5,pcd:480,c:c=>G.landOk()||G.tierIdx()>=2,
+E({id:'hc_lan_bo',t:'Hào cường lấn bờ',head:1,age:[28,75],tier:[1,6],once:1,w:1.6,pcd:480,c:c=>G.landOk()||G.tierIdx()>=2,
  x:(c,d)=>{const n=G.tie.ensure(c,{key:'hao_cuong',vai:['doi_thu'],nghe:'hào cường có thế trong vùng',age:R(40,62),main:'eq',st:{eq:R(55,80)},tier:5,rel:-15,why:'lấn bờ ruộng'});d.npc=n.id;hf(c).hc={sc:0,st:1,npc:n.id};
   return `${nm(n)}, ${n.nghe}, cho người dời mốc, lấn qua bờ đất nhà ${N(c)} chừng một mẫu. Hắn quen thế nên ngang nhiên: "Bờ mốc năm xưa đã sai, nay ta chỉnh lại cho đúng". Cả xóm nhìn xem nhà này sẽ làm gì.`},
  o:(c,d)=>{const n=T(d);if(!n)return gone();const f=hf(c).hc;return [
@@ -60,7 +60,7 @@ FX({id:'hc_e',t:'Dứt điểm với hào cường',k:'Hào cường',
   {l:'Rút lui, bán bớt đất tránh tiếp xúc',f:c=>{f.end='rut';G.landLose&&G.landLose(1);return `Nhà bán bớt đất, chuyển sang việc khác. Yên ổn đổi bằng thể diện.`+fx(c,{money:m(8),cfame:-3,tam:-4})}}]}})
 ,
 /* ============ CỐT TRUYỆN DÀI: THƯƠNG ĐOÀN ĐƯỜNG TƠ (tdt_*) ============ */
-E({id:'tdt_mo_tuyen',t:'Rủ nhau mở tuyến buôn tơ',head:1,age:[28,65],tier:[2,6],once:1,w:0.45,pcd:480,c:c=>G.S().biz.length>0||['chu','tieunhi','tieu','hangrong'].includes(c.job),
+E({id:'tdt_mo_tuyen',t:'Rủ nhau mở tuyến buôn tơ',head:1,age:[28,65],tier:[2,6],once:1,w:1.4,pcd:480,c:c=>G.S().biz.length>0||['chu','tieunhi','tieu','hangrong'].includes(c.job),
  x:(c,d)=>{const n=G.tie.ensure(c,{key:'thuong_nhan_tdt',vai:['thuong_nhan'],nghe:'chủ đoàn buôn tơ lụa đường dài',age:R(38,58),main:'tri',tier:4,rel:5,why:'rủ mở tuyến'});d.npc=n.id;hf(c).tdt={sc:0,st:1,npc:n.id,cap:0};
   return `${nm(n)}, ${n.nghe}, tìm đến nhà ${N(c)} với một ý tưởng: mở tuyến tơ lụa đi từ vùng tơ về kinh thành, qua ba chặng sông núi. Lãi lớn, rủi ro cũng lớn. Ông cần một người góp vốn và đứng chân ở đầu tuyến.`},
  o:(c,d)=>{const n=T(d);if(!n)return gone();const f=hf(c).tdt;return [
