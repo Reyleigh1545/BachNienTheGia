@@ -37,11 +37,6 @@ V({id:'kn_chim_quy_ve_to',cyc:[15,30],t:'Chim lạ về làm tổ mái nhà',tie
  x:c=>`Một đôi chim lạ, lông sặc sỡ chưa ai biết tên, về làm tổ trên mái nhà ${N(c)}. Người già bảo đó là điềm tốt. Hàng xóm kéo nhau đến xem.`,
  o:c=>[{l:'Cho giữ tổ, tránh làm kinh động',f:c=>'Chim ở lại mấy mùa. Cả nhà thấy vui, người xóm cũng bảo nhà có phúc.'+fx(c,{fame:5,hung:2,tam:6})},
   {l:'Đem bắt bán cho người sưu tầm',f:c=>'Bán được món tiền, nhưng người làng nghĩ nhà phá điềm lành.'+fx(c,{money:m(6),fame:-4,tam:-2})}]}),
-V({id:'kn_cu_ao_cho_muon',cyc:[20,35],t:'Cụ già cho mượn đất',tier:[0,5],
- x:c=>`Một cụ già neo đơn trong làng, không con cháu, gọi ${N(c)} đến: cụ muốn cho mượn một mảnh đất trồng rau để sống cuối đời, đổi lại chỉ cần có người lo giỗ cụ sau này.`,
- o:c=>[{l:'Nhận lời, hứa lo giỗ cụ',f:c=>'Cụ mừng rỡ, trao mảnh vườn nhỏ. Nhà mình thêm mối tình nghĩa dài.'+fx(c,{money:m(5),fame:6,tam:6})},
-  {l:'Giúp cụ hết lòng nhưng không nhận đất',f:c=>'Cụ cảm động, tiếng nhà biết trọng người già vang trong xóm.'+fx(c,{fame:9,tam:5})},
-  {l:'Từ chối, sợ rắc rối',f:c=>''}]}),
 /* ===== cốt truyện lớn thứ hai: Tấm bản đồ kho cổ ===== */
 V({id:'bd_tim_thay',cyc:[40,70],t:'Tấm bản đồ trong hòm cũ',tier:[1,6],w:0.8,
  x:c=>`Dọn gác xép, người nhà tìm thấy một tấm da dê ố vàng giấu đáy hòm cũ: một bản đồ vẽ tay, có ký hiệu lạ và dòng chữ "kho của tổ". Không ai biết chuyện này có thật không.`,

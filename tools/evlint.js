@@ -19,7 +19,10 @@ const defs=live.filter(b=>/\bx\s*:|\bo\s*:/.test(b.t.slice(0,2500)));
 const seen={};const dup=[];defs.forEach(b=>{if(seen[b.id]&&seen[b.id].f+':'+seen[b.id].line!==b.f+':'+b.line)dup.push(b);else seen[b.id]=b});
 rep('G1 id lặp trong nguồn (khối có x:/o:)',dup,true);
 const fut=/(Về sau|vài năm sau|Vài năm sau|sau này|Sau này|ít lâu sau|Ít lâu sau|mấy tháng sau|Mấy tháng sau|Ba năm sau|ba năm sau|năm sau|Năm sau|mai sau|một thời gian sau|Một thời gian sau)/;
-rep('R2/G6 lời hứa tương lai không có hậu sự',defs.filter(b=>fut.test(b.t)&&!/later\(|nx\(|G\.later|enqueue\(|\bnx\b|rg\.later/.test(b.t)));
+/* d9.12: chỉ tính khi cụm tương lai nằm gần từ khóa hứa hẹn (hứa, hẹn, sẽ, dặn, nguyện, chờ...); câu kể kết quả ("Mấy tháng sau nghe tin...") không tính */
+const CUE=/(hứa|hẹn|sẽ |dặn|nguyện|để dành|đợi|chờ|mong|biết đâu)/;
+const promised=t=>{const g=new RegExp(fut.source,'g');let m;while((m=g.exec(t))){const ctx=t.slice(Math.max(0,m.index-90),m.index+110);if(CUE.test(ctx))return true}return false};
+rep('R2/G6 lời hứa tương lai không có hậu sự (có từ khóa hứa hẹn)',defs.filter(b=>promised(b.t)&&!/later\(|nx\(|G\.later|enqueue\(|\bnx\b|rg\.later|addProph/.test(b.t)));
 rep('R8/G7 mọi dòng fx chỉ tâm trạng',defs.filter(b=>{const m=b.t.match(/fx\(\w+,\{[^}]*\}\)/g)||[];return m.length>0&&m.every(t=>!/(money|fame|cfame|tri:|vo:|mi:|eq:|suc:|hpMax|merit|on:|hung|sk:|m:|bonus|habit|liem|lv:|duyen|cheer|rg)/.test(t))}));
 const nameWords=/(bạn thân|khách quý|người ấy|ân nhân|quý nhân|cao nhân|lão nhân|ông lão|bà đồng|thầy đồ|người bạn|kẻ lạ|ông già|đạo sĩ|thầy lang|thầy thuốc|thương nhân|người lạ)/;
 rep('R1/G9 người vô danh, không gọi sổ nhân vật',defs.filter(b=>nameWords.test(b.t)&&!/npc\.|mkMatch|G\.npc|npFam|npHouse|adopt|mkSpouse|pickKin|G\.fam|G\.tie/.test(b.t)));
