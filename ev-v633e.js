@@ -34,8 +34,8 @@ J({id:'n633_nong_luan',t:'Cụ già dạy luân canh',job:['nong'],age:[22,60],c
 K({id:'n633_nong_trau',t:'Con trâu biết đường',job:['nong'],age:[14,60],tier:[0,2],
  x:c=>`Bão qua, con trâu già nhà ${N(c)} sổng chuồng. Đi tìm ba ngày không thấy. Ngày thứ tư nó tự quay về, kéo theo một chiếc xe cũ gãy trục, trên xe là một cái rương nhỏ bọc vải dầu, chủ nhân đã không còn.`,
  o:c=>[
-  {l:'Mở rương xem',f:c=>`Trong rương có ít bạc vụn và một tờ giấy ghi nơi chôn cất. ${N(c)} đến, thấy một nấm mồ sơ sài của người lái buôn. Làm lễ tạ rồi giữ lại bạc.`+fx(c,{money:m(R(3,7)),tam:3,eq:1})},
-  {l:'Đem rương lên báo quan, chờ người nhận',f:c=>`Ba tháng không ai nhận. Quan huyện cho nhà mình giữ làm công, có thư khen.`+fx(c,{money:m(1),fame:3,liem:5,tam:4})}]}),
+  {l:'Mở rương xem',f:c=>`Trong rương có ít bạc vụn và một tờ giấy ghi nơi chôn cất. ${N(c)} đến, thấy một nấm mồ sơ sài của người lái buôn. Làm lễ tạ rồi giữ lại bạc.`+fx(c,{money:m(R(4,7)),tam:3,eq:1})},
+  {l:'Đem rương lên báo quan, chờ người nhận',f:c=>`Ba tháng không ai nhận. Quan huyện cho nhà mình giữ làm công, có thư khen.`+fx(c,{money:m(4),fame:3,liem:5,tam:4})}]}),
 J({id:'n633_nong_sau',t:'Châu chấu về',job:['nong'],c:c=>F().own>=2,cd:96,
  x:c=>`Một đám mây đen kéo lên từ phía nam, không phải mây: châu chấu. Chỉ trong nửa buổi, ruộng bên đã trơ gốc. Cả làng ra đốt rơm, gõ mõ, la hét, ${N(c)} đứng giữa quyết định.`,
  o:c=>[
@@ -58,7 +58,7 @@ J({id:'n633_tn_khachla',t:'Vị khách chỉ gọi nước chè',job:['tieunhi']
 K({id:'n633_tn_trang',t:'Anh hàng rong khôn khéo',job:['tieunhi','hangrong'],age:[16,40],
  x:c=>`Một tay buôn thuê ${N(c)} bán hàng ngoài chợ, bị chủ quán đối diện gây khó, cả hai đều khôn. Một ngày chủ quán ra đố: ai bán hết hàng trước trưa thì được thêm chỗ bày. Hàng của ${N(c)} chẳng khác hàng người ta, chỉ có cách nói.`,
  o:c=>[
-  {l:'Thay cách rao, kể chuyện khôi hài cho khách cười',r:RR({khau:1,eq:0.7,mi:0.3},0.5),y:c=>`Câu rao thành thơ, khách đứng nghe cười nghiêng ngả, mua hàng ào ào. Chưa đến trưa đã hết sạch. Chủ quán đối diện đành giữ lời.`+fx(c,{money:m(2),fame:4,sk:{khau:3},m:R(3,5),tam:6}),n:c=>`Nói nhiều mà khách không mua. Trưa vẫn còn nửa gánh.`+fx(c,{tam:-3})},
+  {l:'Thay cách rao, kể chuyện khôi hài cho khách cười',r:RR({khau:1,eq:0.7,mi:0.3},0.5),y:c=>`Câu rao thành thơ, khách đứng nghe cười nghiêng ngả, mua hàng ào ào. Chưa đến trưa đã hết sạch. Chủ quán đối diện đành giữ lời.`+fx(c,{money:m(4),fame:4,sk:{khau:3},m:R(3,5),tam:6}),n:c=>`Nói nhiều mà khách không mua. Trưa vẫn còn nửa gánh.`+fx(c,{tam:-3})},
   {l:'Hạ giá để thắng, chịu lỗ',f:c=>`Bán hết sớm nhưng lỗ vốn. Được thêm chỗ, mất tiền.`+fx(c,{money:-m(1),tam:1})}]}),
 /* ===================== KHUÂN VÁC / BẾN ===================== */
 J({id:'n633_kv_bao',t:'Bao hàng lạ',job:['khuanvac'],age:[16,55],cd:72,
@@ -84,7 +84,7 @@ K({id:'n633_tp_tran',t:'Con trăn tinh trong rừng',job:['tieuphu'],age:[16,50]
  x:c=>`Dân quanh vùng đồn trong khe núi có một con trăn lớn bằng cột đình, nuốt cả trâu. ${N(c)} đốn củi gần đó thì nghe tiếng rít dài, rồi thấy đất đá rung. Bên cạnh là một bó củi không ai nhặt, và dấu vết kéo lê vừa mới.`,
  o:c=>[
   {l:'Cầm rìu đứng chờ, đánh nếu nó ra',r:RR({vo:1,gan:0.8,suc:0.5},0.35),y:c=>`Một nhát rìu trúng vào chỗ yếu sau đầu. Con trăn quằn quại rồi chết. Da nó dài hơn năm sải, bán được rất nhiều tiền, cả vùng đồn tên ${N(c)}.`+fx(c,{money:m(R(8,14)),fame:R(6,10),vo:2,tam:8}),n:c=>`Con trăn quá nhanh, ${N(c)} bị quất ngã, gãy xương sườn. Thoát được nhờ bụi gai.`+fx(c,{suc:-12,tam:-6})},
-  {l:'Về báo làng, kêu gọi dân cùng vây',f:c=>`Dân làng vây ba ngày. Con trăn bị bắt, mỗi người một phần thịt và da. ${N(c)} được tiếng cầm đầu.`+fx(c,{money:m(R(2,4)),fame:4,eq:1,tam:5})},
+  {l:'Về báo làng, kêu gọi dân cùng vây',f:c=>`Dân làng vây ba ngày. Con trăn bị bắt, mỗi người một phần thịt và da. ${N(c)} được tiếng cầm đầu.`+fx(c,{money:m(R(4,6)),fame:4,eq:1,tam:5})},
   {l:'Bỏ rừng ấy, tìm lối khác',f:c=>`Không ai trách, nhưng bó củi ấy vẫn nằm đó.`+fx(c,{tam:-2})}]}),
 J({id:'n633_tp_bay',t:'Bẫy bị phá',job:['tieuphu'],cd:60,
  x:c=>`Sáng ra ${N(c)} thấy sáu cái bẫy đặt dọc suối bị tháo sạch. Dấu chân người lạ in rõ trên bùn. Mấy hôm trước có toán thợ săn từ vùng khác tới.`,
@@ -135,7 +135,7 @@ J({id:'n633_hau_rac',t:'Việc không ai biết',job:['hau'],cd:72,age:[16,60],
 K({id:'n633_hau_cau',t:'Cậu chủ nhỏ lạc đường',job:['hau'],age:[16,50],
  x:c=>`Cậu chủ nhỏ của nhà trốn học chạy ra phố, đến tối chưa về. Cả nhà lo, chủ sai ${N(c)} đi tìm. Gần canh hai, ${N(c)} nghe tiếng khóc trong ngôi miếu hoang, và thấy cậu ngồi cạnh một người ăn mày đang chia bánh.`,
  o:c=>[
-  {l:'Dỗ cậu về, nhắn lời cảm ơn người ăn mày',f:c=>`Cậu chủ kể mãi chuyện người ăn mày hát hay. Hôm sau chủ sai mang cơm đến miếu. Chủ khen ${N(c)} khéo nên giao thêm việc nhà.`+fx(c,{money:m(1),fame:2,eq:1,m:R(3,5),tam:6})},
+  {l:'Dỗ cậu về, nhắn lời cảm ơn người ăn mày',f:c=>`Cậu chủ kể mãi chuyện người ăn mày hát hay. Hôm sau chủ sai mang cơm đến miếu. Chủ khen ${N(c)} khéo nên giao thêm việc nhà.`+fx(c,{money:m(4),fame:2,eq:1,m:R(3,5),tam:6})},
   {l:'Mắng cậu một trận rồi dẫn về',f:c=>`Cậu khóc suốt đường, chủ biết chuyện mà không nói gì. Không thưởng, không phạt.`+fx(c,{tam:-1})}]}),
 /* ===================== THỢ ===================== */
 J({id:'n633_tho_no',t:'Khách lạ xin xem cơ nỏ',job:['tho'],age:[22,65],c:c=>c.lv>=2,cd:96,

@@ -122,7 +122,7 @@ K({id:'n633_det_gam',t:'Mảnh gấm cháy dở',job:['det'],age:[20,65],c:c=>c.
  x:c=>`Một vị phu nhân gửi cho ${N(c)} một mảnh gấm thêu rồng phượng cháy dở, kèm lời dặn: "Của mẹ ta để lại, bị cháy trong biến loạn. Có thể vá lại được không?" Mảnh gấm xưa, kim chỉ đã hóa đen.`,
  o:c=>[
   {l:'Nhận vá, thêu lại cả phần cháy từ ký ức của họa tiết',r:RR({ky:1,mi:0.6,cc:0.5},0.45),y:c=>`Ba tháng, ${N(c)} thêu từng sợi chỉ mảnh như tơ. Khi trả, vị phu nhân khóc, không phân biệt được chỗ vá và chỗ gốc. Bà gửi một khoản lớn và lời giới thiệu cho cung nữ.`+fx(c,{money:m(R(8,14)),m:R(6,9),sk:{ky:4},fame:R(6,10),cfame:1,tam:10}),n:c=>`Mảnh vải quá mục, kim đâm vào là rách thêm. ${N(c)} đành trả lại kèm lời xin lỗi.`+fx(c,{m:2,tam:-5})},
-  {l:'Nhận vá phần còn tốt, giữ nguyên chỗ cháy',f:c=>`Chỗ cháy để nguyên, viền mới được thêu quanh. Phu nhân bảo: "Có vết thương mới là kỷ niệm."`+fx(c,{money:m(R(2,4)),m:R(3,5),eq:1,tam:6})}]}),
+  {l:'Nhận vá phần còn tốt, giữ nguyên chỗ cháy',f:c=>`Chỗ cháy để nguyên, viền mới được thêu quanh. Phu nhân bảo: "Có vết thương mới là kỷ niệm."`+fx(c,{money:m(R(4,6)),m:R(3,5),eq:1,tam:6})}]}),
 J({id:'n633_mo_dem',t:'Ca đẻ khó giữa đêm',job:['mo'],age:[22,70],cd:60,
  x:c=>`Đêm mưa gió, người nhà gõ cửa ${N(c)}: sản phụ chuyển dạ đã hai ngày, thai ngôi ngược, thầy lang không dám làm. Cả nhà khóc. ${N(c)} nhớ lời thầy dạy: ca này chín phần chết, một phần sống.`,
  o:c=>[
