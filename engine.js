@@ -2003,7 +2003,7 @@ function jhPopup(c){
   M.querySelector('[data-x]').onclick=closeModal;
 }
 function marriedMonths(c){const x=(S.led||[]).slice().reverse().find(e=>e.k==='cuoi'&&e.a&&e.a.includes(c.id));return x?S.t-x.t:999} /* d9.12: số tháng đã cưới theo sổ; không có sổ (hôn nhân lúc mở ván) coi là lâu */
-function awayText(c){const a=c.away;if(!a)return '';return a.type==='luuday'?'đang bị lưu đày nơi biên viễn':a.type==='army'?'đang ở doanh trại':a.type==='jh'?'đang bôn ba giang hồ':a.type==='odo'?'đang đi đường xa':a.type==='sep'?'đang ly thân':a.type==='mourn'?'đang chịu tang':a.type==='trade'?'đang đi buôn':a.type==='follow'?(a.p?`đang theo ${(P(a.of)&&P(a.of).given)||'người thân'} nhậm chức ở ${provN(a.p)}`:`đang theo ${(P(a.of)&&P(a.of).given)||'người thân'} ở trại gia binh`):'đang đi xa'}
+function awayText(c){const a=c.away;if(!a)return '';return a.type==='luuday'?'đang bị lưu đày nơi biên viễn':a.type==='army'?'đang ở doanh trại':a.type==='jh'?'đang bôn ba giang hồ':a.type==='odo'?(a.why||'đang đi đường xa'):a.type==='sep'?'đang ly thân':a.type==='mourn'?'đang chịu tang':a.type==='trade'?'đang đi buôn':a.type==='follow'?(a.p?`đang theo ${(P(a.of)&&P(a.of).given)||'người thân'} nhậm chức ở ${provN(a.p)}`:`đang theo ${(P(a.of)&&P(a.of).given)||'người thân'} ở trại gia binh`):'đang đi xa'}
 
 /* ================= học hành ================= */
 /* v6.3.4: con gái đi học tùy nếp nhà, không tùy mỗi chuyện nhà giàu hay có quan
@@ -4294,7 +4294,7 @@ function keugoiPopup(){const h=head();if(!h)return;const f=S.fame;const pool=mm(
 function v62Month(){
   ensure62();
   alive().forEach(c=>{if(!inClan(c))return;const a=age(c);
-    if(c.away&&c.away.until&&S.t>=c.away.until&&['odo','sep'].includes(c.away.type)){const t=c.away.type;c.away=null;if(t==='odo'){log(`${nameOf(c)} hết hạn ở đợ, trở về nhà.`,'gd');addStat(c,'tam',10)}else log(`${nameOf(c)} trở về sau thời gian ly thân.`)}
+    if(c.away&&c.away.until&&S.t>=c.away.until&&['odo','sep'].includes(c.away.type)){const aw0=c.away,t=c.away.type;c.away=null;if(aw0.back){log(String(aw0.back).replace('{n}',nameOf(c)),'gd')}else if(t==='odo'){log(`${nameOf(c)} hết hạn ở đợ, trở về nhà.`,'gd');addStat(c,'tam',10)}else log(`${nameOf(c)} trở về sau thời gian ly thân.`)}
     if(c.viec&&!c.viec.q&&S.t>=c.viec.end){c.viec.q=1;enqueue('big',c.id,{})}
     jobGrow(c);kidLearn(c,a);oanTick(c);thiencoTick(c);ctTick(c)});
   loveTick();outsTick();debtTick();ruleMonth();

@@ -9,6 +9,8 @@ const N=c=>esc(c.given);
 const P=id=>G.P(id);
 const ax=(c,k)=>G.axv(c,k);
 const busy=(c,mo)=>{c.busyUntil=S().t+mo;return ''};
+/* d9.12: bế quan thật: người ấy rời nhà đúng số tháng (không có thu nhập, không gặp sự kiện), hết hạn mới có kết quả (v62_cg_vo_a_xong) */
+const cgAway=(c,mo,ok,k)=>{if(G.isHead(c)){busy(c,mo);return ok?'Một sáng nhìn lá rơi mà bỗng hiểu.'+fx(c,{vo:R(2,4),suc:-4}):'Luyện quá sức, bị nội thương nhẹ.'+fx(c,{suc:-10,vo:1})}c.away={type:'odo',until:S().t+mo,why:'đang bế quan khổ luyện trong núi',back:'{n} xuống núi sau '+mo+' tháng bế quan.'};G.later(c,'v62_cg_vo_a_xong',mo,{ok,k});return 'Thu xếp việc nhà, một mình vào núi '+mo+' tháng. Chưa biết kết quả ra sao.'};
 const prot=()=>G.protect();
 const hd=()=>G.head();
 const gc=(c,k)=>G.gateCap(c,k);
@@ -201,8 +203,11 @@ return [
     {l:'Tự mình suy ngẫm',f:c=>'Ngộ ra được một chút.'+fx(c,{tri:1})}]},
 {id:'v62_cg_vo_a',t:'Bức tường vô hình',age:[18,80],c:c=>inGate(c,'vo'),w:1,cd:36,k:'Cảnh giới',
  x:c=>`Luyện mãi một bộ quyền, ${N(c)} thấy mình đã nhanh nhất có thể, nhưng vẫn cảm giác còn gì đó chưa thông.`,
- o:[{l:'Vào núi khổ luyện (ba tháng)',r:[{vo:0.6,suc:0.4},55],y:c=>'Một sáng nhìn lá rơi mà bỗng hiểu.'+busy(c,3)+fx(c,{vo:R(2,4),suc:-4}),n:c=>'Luyện quá sức, bị nội thương nhẹ.'+busy(c,3)+fx(c,{suc:-10,vo:1})},
+ o:[{l:'Vào núi khổ luyện (ba tháng)',r:[{vo:0.6,suc:0.4},55],y:c=>cgAway(c,3,1,'vo'),n:c=>cgAway(c,3,0,'vo')},
     {l:'Tìm người ngang tầm luận võ',r:[{vo:0.8,eq:0.2},55],y:c=>'Đánh ba trăm hiệp, hai bên đều tiến bộ.'+fx(c,{vo:R(1,3),fame:4}),n:c=>'Thua, bị thương ở tay.'+fx(c,{suc:-8,tam:-4})}]},
+{id:'v62_cg_vo_a_xong',fixed:1,t:'Xuống núi sau bế quan',k:'Cảnh giới',
+ x:(c,d)=>d.ok?`${N(c)} xuống núi sau ba tháng khổ luyện, mắt sáng hơn, bước đi nhẹ hơn. Một sáng nhìn lá rơi, ${N(c)} bỗng hiểu điều chưa thông.`:`${N(c)} xuống núi sau ba tháng, người gầy và tay còn run: luyện quá sức nên nội thương nhẹ, chỉ ngộ được chút ít.`,
+ o:(c,d)=>[{l:'Tĩnh dưỡng vài ngày rồi trở lại việc nhà',f:c=>(d.ok?'Cảnh giới được mở thêm một bước.'+fx(c,{vo:R(2,4),suc:-4,tam:5}):'Nghỉ ngơi cho lại sức, vẫn học thêm được ít điều.'+fx(c,{suc:-10,vo:1,tam:-3}))}]},
 {id:'v62_cg_vo_b',t:'Kiếm phổ thất truyền',age:[18,80],c:c=>inGate(c,'vo'),w:0.6,cd:60,ky:1,k:'Cảnh giới',
  x:c=>`Một người buôn đồ cổ mang tới cuộn lụa vẽ những thế kiếm kỳ lạ, nói là di vật của một danh gia đã tuyệt tự.`,
  o:c=>[{l:`Mua về nghiền ngẫm (${G.fmtMoney(m(8))})`,c:()=>G.money()>=m(8),f:c=>'Mất nửa năm mới hiểu được ba thế.'+busy(c,6)+fx(c,{money:-m(8),vo:R(3,5)})},
