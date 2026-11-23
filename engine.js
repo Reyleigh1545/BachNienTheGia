@@ -954,7 +954,7 @@ function pickEvent(c,ky,baby){
       if(T.dom&&T.dom.includes(dm))w*=T.boost||1.4;if(T.quiet&&(e.ky||dm==='encounter'||dm==='jianghu'||dm==='dynasty'))w*=T.quiet}
     return w};
   const wt=e=>{const last=S.evLast[e.id];const rec=last==null?1:clamp((S.t-last)/(e.rep||(e.ky?240:96)),0.12,1);
-    return arcW(e)*(e.w||1)*({0:1.4,1:1,2:0.85,3:0.7}[e.lv]||1)*(e.td&&noble(c)?0.03:1)*(e.good?(c.duyen>60?1.6:1.2):1)*(c.seen[e.id]?1:2)*rec/(1+(S.evn[e.id]||0)*0.3)};
+    return arcW(e)*(e.w||1)*({0:1.4,1:1,2:0.85,3:0.7}[e.lv]||1)*(e.td&&noble(c)?0.03:1)*(e.good?(c.duyen>60?1.6:1.2):1)*(c.seen[e.id]?1:2)*rec*(e.opener&&(S.pace||[]).filter(t=>t>S.t-12).length>=3?0.25:1)/(1+(S.evn[e.id]||0)*0.3)};
   const tot=pool.reduce((a,e)=>a+wt(e),0);let r=Math.random()*tot;let ev=pool[0];
   for(const e of pool){r-=wt(e);if(r<=0){ev=e;break}}
   /* v6.4.1.3: chưa ghi nhận ở đây. Chỉ ghi lịch sử và thời gian hồi khi hộp thật sự mở (commitEv trong showPopup) */
@@ -963,7 +963,8 @@ function pickEvent(c,ky,baby){
   stt('pick');
   return {ev:ev.id,data,rnd:1};
 }
-function commitEv(c,ev){S.evn=S.evn||{};S.evLast=S.evLast||{};c.seen[ev.id]=S.t;S.evLast[ev.id]=S.t;S.cool[ev.id]=S.t+(ev.fixed||ev.arc||ev.ky?(ev.cd??(ev.ky?24:10)):Math.max(36,ev.cd??36));S.evn[ev.id]=(S.evn[ev.id]||0)+1;kyMark(ev)}
+function commitEv(c,ev){S.evn=S.evn||{};if(ev.fixed||ev.arc){S.pace=(S.pace||[]).filter(t=>t>S.t-12);S.pace.push(S.t)} /* d9.12 ARC.budget: ghi nhịp bước chuỗi */
+  S.evLast=S.evLast||{};c.seen[ev.id]=S.t;S.evLast[ev.id]=S.t;S.cool[ev.id]=S.t+(ev.fixed||ev.arc||ev.ky?(ev.cd??(ev.ky?24:10)):Math.max(36,ev.cd??36));S.evn[ev.id]=(S.evn[ev.id]||0)+1;kyMark(ev)}
 /* v6.4.1.3 (admin): đếm số hộp theo năm, giữ 12 năm gần nhất */
 function stt(k,v){if(DRY||!S)return;const y=Math.floor(S.t/12);S.stat=S.stat||[];let o=S.stat[S.stat.length-1];
   if(!o||o.y!==y){o={y,pick:0,show:0,drop:0,auto:0,big:0,other:0,evm:0,m0:S.money};S.stat.push(o);if(S.stat.length>12)S.stat.shift()}
