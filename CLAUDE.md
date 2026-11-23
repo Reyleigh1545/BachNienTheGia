@@ -257,6 +257,11 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 ## 10. Ý mới của chủ dự án, chưa làm (chép nguyên văn)
 
+**Ô tròn lạ cạnh tuổi ở hồ sơ (chủ dự án, 23/11), chép nguyên văn:**
+> "tao mới thêm 1 ảnh, có một ô tròn bên cạnh tuổi, lỗi gì vậy" (ảnh ở `Test result/Screenshot 2026-11-23 164452.png`: hồ sơ Ninh Sĩ Sơn, nhãn "Đời thứ 2", "16 tuổi", rồi một ô tròn rỗng)
+
+*Kiểm tra (23/11, chưa sửa):* ô tròn là một chip **`.chip.blue` rỗng** (nền trong suốt, viền xanh, nên chỉ còn hình viên thuốc nhỏ). Nó do `awayText(c)` (`engine.js:1980`) trả chuỗi rỗng: hàm chỉ biết các kiểu `away` luuday, army, jh, mourn, trade, follow, còn **`odo` (đi đường, như người hộ tống ở `gj_03b`, d9.11) và `sep` không có chữ**, nên hồ sơ người đang đi những chuyến ấy hiện chip trống ở đầu hồ sơ (`engine.js:4516`, `${c.away?`<span class="chip blue">${awayText(c)}</span>`:''}`). Lỗi nhỏ có từ trước (kiểu `odo` và `sep` có từ các bản cũ), d9.11 làm lộ nhiều hơn. **Hướng sửa dự kiến, chờ "làm":** thêm chữ cho `odo` ("đang đi đường xa") và `sep` (xem nghĩa của `sep` trong code), và không in chip khi `awayText` rỗng; rà các kiểu `away` khác chưa có chữ.
+
 (không có ý nào đang chờ. Các ý 23/11 đã làm ở d9.8 và d9.9 và chuyển thành luật: giao diện hộp sự kiện và hồ sơ ở mục 7, giang hồ ở mục 6, Thiên cơ ở mục 3, việc lớn ở mục 3, gia bảo ở mục 6, hệ số kỳ ngộ ở mục 5, cưới nhân phép của lính ở mục 3.)
 
 ---
