@@ -254,6 +254,13 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 ## 10. Ý mới của chủ dự án, chưa làm (chép nguyên văn)
 
+**Sự kiện giang hồ vô nghĩa (chủ dự án, 23/11), chép nguyên văn:**
+> "cái sự kiện giang hồ: người đàn bà bị truy đuổi ấy có tác dụng gì vậy, chẳng đáng để lựa chọn gì cả"
+
+*Kiểm tra (23/11, chưa sửa):* đó là `gj_03` "Người đàn bà bị truy đuổi" (`ev-v670b.js` dòng 262, nhóm `GH`, tuổi 20 đến 55, trọng số 0,5). **Đúng như chủ dự án nói, sự kiện gần như trống rỗng:** (1) **một bước, không có hậu quả sau đó**: người đàn bà không trở thành người thật (không NPC, không tên, không nguồn gốc), không có sự kiện hẹn sau (`G.later`), không ghi sổ hay ký ức, nên "cho trốn" không dẫn tới ơn nghĩa hay rắc rối nào; (2) **thưởng phạt rất nhỏ và gần như trang trí**: cho trốn thành (50%) chỉ +3 danh vọng, +3 tâm trạng, bại −3 và −2; từ chối chỉ −3 tâm trạng; mời quan chỉ +1 danh vọng; không có tiền, chỉ số, bậc, cảnh báo hay phần thưởng đáng kể, ba lựa chọn gần như ngang nhau; (3) **không gắn nghề hay cốt truyện giang hồ**: `GH` không có `job`, nên xuất hiện cho cả người không đi giang hồ, và không liên quan môn phái, chiến tranh phái (`ghYear`), bậc tiếng tăm hay thế lực tự phát. **Không riêng sự kiện này:** 13 sự kiện `gj_*` trong `ev-v670b.js` đều là kỳ ngộ lẻ cùng kiểu; theo `events-lv.js`, 5 cái ở mức "vặt" (0), 1 cái mức 2, 9 cái mức thường hoặc mặc định.
+
+*Hướng sửa dự kiến, chờ chủ dự án bảo "làm":* biến `gj_03` thành **chuỗi có người thật và hậu quả**: người đàn bà thành NPC (tên, tuổi, một trong vài lai lịch: vợ trốn của một chưởng môn, người bị thế lực tự phát truy bắt, nhân chứng của một vụ án, người nhà quan bỏ trốn), mỗi lựa chọn đổi **một thứ cụ thể và có giá**: cho trốn thì mang rủi ro bị đuổi tới nhà (bị lục kho, thương vong, kẻ truy đuổi thành kẻ thù `doi_thu`), kèm đền ơn hẹn sau 1 đến 5 năm (thông tin, tiền, một lời nhờ vả, hoặc một cuộc truy sát tới tận nhà); từ chối thì nàng bị bắt, hẹn một cái bóng (cảm giác tội, người ấy trở lại báo oán); mời quan thì phụ thuộc quan và tiền. Đồng thời **gắn nghề (`job:["hiep"]` hoặc người từ 80 võ)** hay đặt trọng số cao hơn cho người đi giang hồ, và nối vào môn phái, tiếng tăm. Cần rà các `gj_*` còn lại cùng kiểu một lượt (đặc biệt 5 cái mức vặt) và nâng thưởng phạt hoặc thêm hậu quả. **Cần hỏi:** muốn sửa riêng `gj_03` hay rà cả 13 sự kiện `gj_*`; và hướng lai lịch người đàn bà.
+
 (không có ý nào đang chờ. Các ý 23/11 đã làm ở d9.8 và d9.9 và chuyển thành luật: giao diện hộp sự kiện và hồ sơ ở mục 7, giang hồ ở mục 6, Thiên cơ ở mục 3, việc lớn ở mục 3, gia bảo ở mục 6, hệ số kỳ ngộ ở mục 5, cưới nhân phép của lính ở mục 3.)
 
 ---
