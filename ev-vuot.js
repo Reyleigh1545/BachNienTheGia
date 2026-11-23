@@ -51,10 +51,6 @@ V({id:'vv_mi_yen_tiec',t:'Yến tiệc vương phủ',age:[16,60],c:c=>c.mi>=100
  o:[{l:'Tỏa sáng giữa yến tiệc',r:[{mi:1,eq:0.6},100],y:c=>'Một khúc đàn làm cả tiệc lặng người.'+fx(c,{mi:R(3,6),over:1,fame:R(20,35)}),n:c=>'Bị một vị quận chúa lấn át.'+fx(c,{mi:1,over:1,tam:-4})},
     {l:'Ngồi yên lặng quan sát',f:c=>fx(c,{eq:2})}]}),
 /* EQ */
-V({id:'vv_eq_hoa_giai',t:'Hòa giải hai dòng họ',age:[25,90],c:c=>c.eq>=100,
- x:'Hai dòng họ lớn trong vùng thù nhau ba đời, sắp đánh nhau to. Cả hai đều chịu nghe một người.',
- o:[{l:'Đứng ra hòa giải',r:[{eq:1,fame:0.3},100],y:c=>'Hai họ bắt tay, lập bia giao hảo.'+fx(c,{eq:R(3,7),over:1,fame:R(25,40)}),n:c=>'Chỉ tạm yên một thời gian.'+fx(c,{eq:1,over:1})},
-    {l:'Không dính vào',f:c=>''}]}),
 V({id:'vv_eq_thien_su',t:'Thiền sư hỏi đạo',age:[20,90],c:c=>c.eq>=100,
  x:'Một thiền sư hỏi: "Lòng người như nước, lấy gì mà soi?"',
  o:[{l:'Đáp bằng im lặng',r:[{eq:1},100],y:c=>'Thiền sư mỉm cười. Lòng sáng như gương.'+fx(c,{eq:R(4,8),over:1,tam:10}),n:c=>'Thiền sư lắc đầu.'+fx(c,{eq:1,over:1})},
