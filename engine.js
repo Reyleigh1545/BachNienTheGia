@@ -1013,6 +1013,9 @@ function npPseudo(n){const w=String(n.n).split(' ');return {id:n.id,surname:w[0]
 function npSum(n){const t=n.st;return t?[['trí',t.tri],['võ',t.vo],['mị',t.mi],['EQ',t.eq]].filter(x=>x[1]!=null).map(x=>x[0]+' '+Math.round(x[1])).join(', '):''}
 function npCard(n){const p=npPseudo(n);const a=age(p);return `<div class="evcard solo npcard" title="Người ngoài gia tộc"><span class="evav">${avatarSVG(p,56)}<span class="evage">${a}</span></span><span class="evtx"><b>${esc(n.n)}</b><small>${esc([n.vaiTxt||'',n.nghe||''].filter(Boolean).join(' · '))}</small>${npSum(n)?`<span class="evinc">${esc(npSum(n))}</span>`:''}</span></div>`}
 function evBand(c,data){const ids=[c&&c.id,data&&data.who,data&&data.oid,data&&data.xg,data&&data.oth,data&&data.kid,data&&data.w,data&&data.hp].filter(Boolean);const L=[...new Set(ids)].map(P).filter(p=>p&&(p.dead==null||p.id===(c&&c.id)));const NL=[].concat((data&&data.npc)||[]).map(npGet).filter(Boolean);if(!L.length&&!NL.length)return '';const tot=L.length+NL.length;return `<div class="evband">${L.map(p=>evCard(p,tot===1)).join('')}${NL.map(npCard).join('')}</div>`}
+/* d9.12 (luật R3): mọi kết quả làm đổi quan hệ với họ khác/danh gia đều hiện dòng "Quan hệ với X ±n", kể cả sự kiện cũ gọi rel0/rel+= trực tiếp: chụp trước, so sau */
+function relSnap(){try{return relRefs().map(r=>{const I=hinfo(r);return I&&I.obj?[r.key,I.name||'',I.obj.rel||0]:null}).filter(Boolean)}catch(e){return []}}
+function relDiffTxt(a,rtxt){try{if(!a||!a.length)return '';const b=relSnap();const A=new Map(a.map(x=>[x[0],x[2]]));const L=[];b.forEach(x=>{if(!A.has(x[0]))return;const d=Math.round(x[2]-A.get(x[0]));if(d&&x[1]&&!String(rtxt).includes('Quan hệ với '+x[1]))L.push([x[1],d])});return L.length?`<span class="fx">${L.map(([n,d])=>`<span class="${d>0?'up':'down'}">Quan hệ với ${esc(n)} ${d>0?'+':''}${d}</span>`).join('')}</span>`:''}catch(e){return ''}}
 function choicePopup(c,eyebrow,title,text,opts,arc,data,evId){
   if(DRY)return;
   data=data||{};
@@ -1043,7 +1046,7 @@ function choicePopup(c,eyebrow,title,text,opts,arc,data,evId){
   M.querySelectorAll('[data-ch]').forEach(b=>b.onclick=()=>{
     const i=+b.dataset.ch;const o=ok[i];let r;popOpt(c,o);if(evId)optTook(c,o);
     if(o.go){o.go(c,data);return}
-    const m0=S.money;
+    const m0=S.money;const rs0=relSnap();
     try{
       if(o.r){const p=probs[i];const x=AD&&AD.rollX?AD.rollX(p,o):Math.random();
         if(x<p){r=(o.yy&&x<p*0.18)?'<b>Đại thành công!</b> '+o.yy(c,data):o.y(c,data)}
@@ -1052,7 +1055,7 @@ function choicePopup(c,eyebrow,title,text,opts,arc,data,evId){
     }catch(e){console.error(e);r='Mọi chuyện trôi qua.'}
     if(S.over)return;
     if(evId){stt('evm',S.money-m0);ruleHit(c,o,true)}
-    r=withLead(c,o,r);ledEv(c,evId,o,data);r+=arcTouch(c,evId);
+    r=withLead(c,o,r);ledEv(c,evId,o,data);r+=relDiffTxt(rs0,r);r+=arcTouch(c,evId);
     if(o.h&&hp&&hp.id!==c.id)r=`<i>${esc(hp.given)} ra mặt.</i> `+r;
     const axd=o.ax||autoAx(o.l);if(axd&&c.dead==null)r+=shiftAx(c,axd);
     log(`${nameOf(c)} · ${title}: ${r}`,/class="down"/.test(r)&&!/class="up"/.test(r)?'hi':'gd');
@@ -1637,7 +1640,8 @@ function kingMonth(){const d=S.dyn;if(!d||!d.k||!head())return;crMonth();
   const t=kingT();if((t==='hon'||t==='bao')&&S.t%12===6)alive().forEach(p=>{if(inClan(p)&&p.job==='quan')p.liem=Math.max(0,p.liem-1)});
   if(!chance(0.02))return;const W={tt_tuyen_tu:t==='hon'||t==='bao'?2:0.3,tt_xay_cung:t==='bao'?2:t==='hon'?1.2:0.2,tt_suu_thue:t==='hon'||t==='bao'||d.qk<25?1.5:0.2,
     tt_dai_xa:S.t-(d.newT||-99)<=12?2:t==='minh'?0.4:0,tt_an_dien:S.t-(d.newT||-99)<=24?1.5:0,tt_vi_hanh:t==='minh'?0.8:0.1,tt_cau_hien:t==='minh'?1:0.2,tt_dan_bien:d.loan>=55?1.5:0};
-  const L=Object.entries(W).filter(([id,w])=>w>0&&EVMAP[id]&&(S.cool[id]||-1e9)<=S.t);if(!L.length)return;let tot=L.reduce((s,x)=>s+x[1],0),r=Math.random()*tot;
+  const TTOK={tt_tuyen_tu:()=>alive().some(p=>inClan(p)&&inMain(p)&&p.g==='nữ'&&!p.spouse&&!p.away&&age(p)>=15&&age(p)<=22&&p.mi>=90)}; /* d9.12: lệnh tuyển tú chỉ gửi khi nhà có con gái đủ mị lực, tránh hộp một lựa chọn trơn */
+  const L=Object.entries(W).filter(([id,w])=>w>0&&EVMAP[id]&&(S.cool[id]||-1e9)<=S.t&&(!TTOK[id]||TTOK[id]()));if(!L.length)return;let tot=L.reduce((s,x)=>s+x[1],0),r=Math.random()*tot;
   for(const [id,w] of L){r-=w;if(r<=0){S.cool[id]=S.t+48;enqueue('ev',S.head,{ev:id,data:{}});return}}}
 /* ---------- thanh trừng khi vua đa nghi (tuyến 4) ---------- */
 function purgeYear(){const d=S.dyn;if(!d||!d.k)return;const k=d.k;if(k.nghi<60||!chance((k.nghi-50)/120+(S.dx&&S.dx.pow>=70?0.08:0)))return;
