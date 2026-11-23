@@ -66,7 +66,25 @@ function romYear(){const s=S();const open=G.ROM_OPEN().filter(id=>X.EVMAP[id]&&/
   alive().filter(c=>inClan(c)&&!c.inLaw&&!c.spouse&&!c.away&&!c.left&&age(c)>=18&&age(c)<=25&&G.romOk(c)).forEach(c=>{
     c.flags=c.flags||{};if(c.flags.yeu||(c.flags.romT!=null&&s.t-c.flags.romT<36))return;
     const p=0.12+(G.romP(c)-0.5)*0.2;if(chance(Math.max(0.05,Math.min(0.3,p)))){c.flags.romT=s.t;const id=pick(open);enqueue('ev',c.id,{ev:id,data:{}})}})}
-X.yearly.push(tieYear,romYear);
+/* ---------- THUẾ (d9.12; kế hoạch mục 3.3; chủ dự án 24/11: "thuế áp đặt lên gia tộc từ đầu, có đoạn triều đình miễn hoặc tăng thuế, quan lại lạm quyền đặt thêm thuế"). Làm lại hệ thuế đã bỏ ở d0, sửa CLAUDE.md mục 9. Thu mỗi mùa thu (tháng 10), mức chuẩn theo bậc gia thế nhân thu nhập năm, miễn giảm theo phẩm tước, chính sách triều đình đổi theo thời thế ---------- */
+const TAXR=[0.04,0.05,0.06,0.07,0.08,0.09,0.10];const POLF={thuong:1,giam:0.5,mien:0,tang:1.4};
+const POLN={thuong:'thuế như mọi năm',giam:'giảm một nửa',mien:'miễn thuế',tang:'tăng thuế'};
+const taxS=()=>{const s=S();s.tax=s.tax||{pol:'thuong',until:-1,owed:0,hist:[]};return s.tax};
+function taxEx(){let e=0;alive().filter(p=>inClan(p)&&p.dead==null).forEach(p=>{if(p.job==='quan'&&p.lv>=1)e+=0.04*(p.lv+1);if(p.job==='quan_ngu'&&p.lv>=3)e+=0.03*(p.lv-1);if(p.tuoc>0)e+=0.05*p.tuoc});return Math.min(0.6,e)}
+function taxBase(){return Math.max(0,Math.round(G.totalIncome()*12*TAXR[Math.min(6,G.tierIdx())]*(1-taxEx())))}
+function taxSetPol(k,months){const t=taxS();t.pol=k;t.until=S().t+(months||12)}
+function taxPolicy(){const t=taxS(),s=S();if(t.until>s.t)return;const d=s.dyn||{};let k='thuong';
+  if(d.newT!=null&&s.t-d.newT<=24)k='mien';else if(((d.qk!=null&&d.qk<30)||s.war)&&chance(0.5))k='tang';else if(chance(0.05))k='mien';else if(chance(0.08))k='giam';
+  t.pol=k;t.until=s.t+12;if(k!=='thuong')log('Triều đình năm nay '+POLN[k]+(k==='tang'?', vì quốc khố hụt hoặc có chiến sự.':'.'),'hi')}
+function taxCollect(){const t=taxS(),s=S();if(!X.S||!s.money&&s.money!==0)return;const base=taxBase();const due=Math.round(base*(POLF[t.pol]||1))+Math.round((t.owed||0)*1.2);
+  if(due<=0){t.hist.push({y:Math.floor(s.t/12),due:0,pol:t.pol});t.owed=0;if(t.pol==='mien')log('Năm nay triều đình miễn thuế, nhà không phải nộp.','gd');return}
+  const pay=Math.min(due,Math.max(0,s.money));s.money-=pay;t.owed=due-pay;t.hist.push({y:Math.floor(s.t/12),due,pay,pol:t.pol,base});if(t.hist.length>8)t.hist.shift();
+  log('Thuế mùa thu ('+POLN[t.pol]+'): nộp '+X.money(pay)+(t.owed>0?', còn nợ '+X.money(t.owed)+' (năm sau tính thêm 20%)':'')+(taxEx()>0.01?'; nhà có phẩm tước được miễn giảm '+Math.round(taxEx()*100)+'%':'')+'.','gd');
+  if(t.owed>0)X.fn&&0}
+function taxYear(){taxPolicy();const s=S();/* quan huyện lạm thu: người làm quan thật ở sổ (vai quan_huyen) có tham thì đặt thuế phụ */
+  if(!s.biz&&!G.tierIdx())return;if(chance(0.07+(s.war?0.05:0))&&X.EVMAP.thu_lam_thu&&G.tierIdx()>=1){const h=alive().find(p=>p.id===s.head);if(h)enqueue('ev',h.id,{ev:'thu_lam_thu',data:{}})}}
+G.tax={base:taxBase,ex:taxEx,state:taxS,pol:taxSetPol,POLN};
+X.yearly.push(tieYear,romYear,taxYear);Object.assign(X.fn,{taxCollect});
 Object.assign(G,{tie:{ensure,get,rel,on,oan,act,bonus,later:laterNpc,note,VAI},rg:{set:rgSet,get:rgGet,of:rgOf}});
 Object.assign(X.fn,{tieYear,rgFamilyYear});
 });

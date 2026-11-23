@@ -29,7 +29,7 @@ L.push(
   {l:'Trốn sưu',r:[{tri:0.6,eq:0.6},55],ax:{gan:1},y:c=>'Quan làm ngơ.',n:c=>'Bị bắt, phạt gấp đôi.'+fx(c,{money:-v*2,tam:-6})}]}},
 {id:'tt_suu_thue',t:'Sưu cao thuế nặng',k:'Thời thế',fixed:1,
  x:c=>`Quốc khố ${V.d().qk<30?'trống rỗng':'thiếu hụt'}, triều đình tăng thuế. Quan huyện đi thu tận nhà.`,
- o:c=>{const v=Math.max(m(5),Math.round(Math.max(0,G.money())*0.08));return [
+ o:c=>{const v=Math.max(m(5),Math.round(G.tax.base()*0.35)) /* d9.12: tính trên mức thuế chuẩn thật, không theo phần trăm quỹ (mục 9) */;return [
   {l:`Nộp đủ (${FM(v)})`,f:c=>{S().money-=v;return 'Nộp xong, thắt lưng buộc bụng.'}},
   {l:'Kêu khó, xin giảm',r:[{eq:1,khau:0.5},55],y:c=>{S().money-=Math.round(v/2);return 'Được giảm một nửa.'},n:c=>{S().money-=v;return 'Quan không nghe.'+fx(c,{tam:-3})}},
   {l:'Cùng cả làng làm đơn phản đối',r:[{eq:0.8,khau:0.8,fame:0.4},62],ax:{gan:2},y:c=>'Quan sợ dân biến, hoãn thu.'+fx(c,{fame:6}),n:c=>{S().money-=Math.round(v*1.5);return 'Người cầm đầu bị đánh trượng, thuế còn bị phạt thêm.'+fx(c,{suc:-12,tam:-8})}}]}},

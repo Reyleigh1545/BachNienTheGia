@@ -138,9 +138,9 @@ const ev=[
   {l:'Cho lính làm thêm nghề phụ',f:c=>'Lính có thêm thu nhập, dân cũng quý.'+fx(c,{money:m(2),fame:1})}]},
 /* ================= NHÀ VUA VÀ TRIỀU ĐẠI ================= */
 {id:'v64_dai_xa',t:'Đại xá đầu triều vua mới',k:'Triều đình',w:5,c:()=>{const d=G.S().dyn;return !!d&&d.newT>=0&&G.S().t-d.newT<=18},
- x:c=>`Vua mới ${esc(emp())} lên ngôi, ban chiếu đại xá thiên hạ, miễn thuế nửa năm. Cả làng mở hội ăn mừng.`,
- o:c=>[{l:'Cùng dân làng mừng hội',f:c=>'Lòng dân hân hoan.'+fx(c,{tam:6,fame:3,money:-m(1)})},
-  {l:'Nhân dịp dâng biểu chúc mừng',f:c=>'Tờ biểu ghi tên nhà mình vào sổ triều.'+fx(c,{fame:5,cfame:2})}]},
+ x:c=>{G.tax.pol('mien',12);const p=G.S().people.filter(q=>G.inClan(q)&&q.away&&q.away.type==='luuday');return `Vua mới ${esc(emp())} lên ngôi, ban chiếu đại xá thiên hạ: miễn thuế một năm, giảm án một bậc cho tù nhân.${p.length?' Trong nhà có '+p.map(q=>esc(q.given)).join(', ')+' đang bị lưu đày, nằm trong danh sách được xá.':''} Cả làng mở hội ăn mừng.`},
+ o:c=>{const p=G.S().people.filter(q=>G.inClan(q)&&q.away&&q.away.type==='luuday');const rel=()=>{p.forEach(q=>{q.away=null});return p.length?' '+p.map(q=>esc(q.given)).join(', ')+' được xá, trở về nhà.':''};return [{l:'Cùng dân làng mừng hội',f:c=>'Lòng dân hân hoan, năm nay nhà không phải nộp thuế.'+rel()+fx(c,{tam:6,eq:1,money:-m(1)})},
+  {l:'Nhân dịp dâng biểu chúc mừng',f:c=>'Tờ biểu ghi tên nhà mình vào sổ triều. Năm nay nhà không phải nộp thuế.'+rel()+fx(c,{fame:3,cfame:2,eq:1})}]}},
 {id:'v64_vua_trieu_kien',t:'Vua triệu kiến',job:Q,rmin:5,k:'Triều đình',w:1.2,
  x:c=>`${esc(emp())} triệu ${N(c)} vào điện, hỏi về tình hình dân sinh ở nơi từng làm quan và việc triều chính.`,
  o:c=>[{l:'Thẳng thắn tâu thật',r:[{tri:1,eq:0.7,fame:0.3},52],y:c=>'Vua nghe xong gật đầu, ban vàng lụa.'+fx(c,{fame:R(20,35),money:m(R(8,18)),liem:3}),n:c=>'Lời quá thẳng khiến vua cau mày.'+fx(c,{fame:-6,tam:-6})},
