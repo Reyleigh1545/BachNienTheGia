@@ -25,9 +25,9 @@ Phiên bản hiện tại: **v6.7.10-d9.11** (nhãn `.verlbl` trong `index.html`
 12. Lựa chọn trong sự kiện **không kèm dòng chú thích**; chỉ ghi giá khi lựa chọn là trả tiền ngay. Không hiện phần trăm tỉ lệ thành ở bản thường. Hiện **đủ mọi dòng cộng trừ** kết quả, kể cả ±1.
 13. **Chủ dự án báo lỗi hoặc đưa ý (từ 23/11):** Claude **kiểm tra, chép nguyên văn vào mục 10 kèm kết quả kiểm, rồi dừng**. Chỉ sửa hoặc làm khi chủ dự án bảo "làm". (Điều này đè quy tắc 0.2 về "sửa ngay lỗi kẹt hộp thoại" cho tới khi chủ dự án bảo khác.)
 
----
+14. **Mỗi lần chủ dự án bảo "kiểm tra" (hoặc nhắc tới ảnh, save, test) thì phải đọc file MỚI NHẤT trong `Test result/` trước** (xếp theo giờ sửa: save `.json` và ảnh chụp màn hình), rồi mới trả lời. Không đoán khi chưa mở file. Công cụ: `node tools/evreport.js "<save.json>" "<out.md>"` lập báo cáo sự kiện từ save.
+15. **Học từ phản hồi (từ 23/11):** chủ dự án nhận xét bản d9.8 đến d9.11 là Claude đã tự sửa lại quá nhiều chức năng bản cũ (làm mất chỉ số tính cách, hỏng trang Gia tộc, mất Tiềm năng, chip rỗng…). Từ nay: (a) **mỗi lỗi hoặc ý sửa chủ dự án chỉ ra phải ghi một bài học ngắn vào mục 13**, kèm cách tự quét cho các chỗ cùng loại; (b) **trước khi báo xong phải tự quét hồi quy các chỗ cùng loại** (đổi một hộp thì rà mọi hộp cùng khuôn; gỡ khối giao diện thì so với bản `main` bằng `git diff`/`git show main:...` xem còn thiếu gì; thêm kiểu trạng thái mới thì kiểm mọi nơi đọc trạng thái đó); (c) **không gỡ, đổi, "dọn" chức năng bản cũ nằm ngoài phạm vi được giao**; muốn đổi thì hỏi; (d) sau khi chủ dự án đưa đánh giá sự kiện mới, rút kinh nghiệm thành **luật xét lọc** áp cho cả kho sự kiện (mục 13) chứ không chỉ sửa đúng chỗ bị chỉ.
 
-## 1. Game là gì
 
 Game trình duyệt, JavaScript thuần, không build. Mô phỏng một gia tộc qua nhiều đời dưới triều **Đại Nguyễn** hư cấu (lễ chế và luật kiểu Minh, Nguyễn; dùng Đại Minh luật). Mỗi lượt một tháng; việc xảy ra hiện thành hộp sự kiện có lựa chọn.
 
@@ -264,7 +264,12 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 *Kiểm tra (23/11, chưa sửa):* ô tròn là một chip **`.chip.blue` rỗng** (nền trong suốt, viền xanh, nên chỉ còn hình viên thuốc nhỏ). Nó do `awayText(c)` (`engine.js:1980`) trả chuỗi rỗng: hàm chỉ biết các kiểu `away` luuday, army, jh, mourn, trade, follow, còn **`odo` (đi đường, như người hộ tống ở `gj_03b`, d9.11) và `sep` không có chữ**, nên hồ sơ người đang đi những chuyến ấy hiện chip trống ở đầu hồ sơ (`engine.js:4516`, `${c.away?`<span class="chip blue">${awayText(c)}</span>`:''}`). Lỗi nhỏ có từ trước (kiểu `odo` và `sep` có từ các bản cũ), d9.11 làm lộ nhiều hơn. **Hướng sửa dự kiến, chờ "làm":** thêm chữ cho `odo` ("đang đi đường xa") và `sep` (xem nghĩa của `sep` trong code), và không in chip khi `awayText` rỗng; rà các kiểu `away` khác chưa có chữ.
 
-(không có ý nào đang chờ. Các ý 23/11 đã làm ở d9.8 và d9.9 và chuyển thành luật: giao diện hộp sự kiện và hồ sơ ở mục 7, giang hồ ở mục 6, Thiên cơ ở mục 3, việc lớn ở mục 3, gia bảo ở mục 6, hệ số kỳ ngộ ở mục 5, cưới nhân phép của lính ở mục 3.)
+**Yêu cầu bản báo cáo sự kiện từ save và quy trình rút kinh nghiệm (chủ dự án, 23/11), chép nguyên văn:**
+> "mày đọc file save tao gửi trong test result, ghi thêm một luật là mỗi lần tao bảo kiểm tra thì phải đọc file mới trong test result. Từ file save lần này, mày ghi ra tất cả sự kiện, kỳ ngộ mà từng nhân vật đã gặp phải trong suốt quá trình chơi, ghi rõ chỉ số, địa vị, công việc của nhân vật nào gặp những sự kiện nào và các lựa chọn khác nhau mang lại lợi ích hay bất lợi như thế nào. Tao phát hiện ra được rất nhiều vấn đề trong các sự kiện và kỳ ngộ, tao muốn sửa lại một loạt, đồng thời tao còn nhận thấy ở bản mới này mày đã tự sửa lại các chức năng của bản cũ quá nhiều, điển hình là những lỗi mà tao đã chỉ ra trước đó, vậy nên mày cũng cần phải tự quét, sau khi nhận được những đánh giá chỉnh sửa mới của tao thì phải ghi nhớ và tự rút ra kinh nghiệm để xét lọc cho các cái khác cũng như sau này."
+
+*Đã làm (d9.11):* luật 0.14 và 0.15; `tools/evreport.js`; báo cáo `Test result/bao-cao-su-kien-nam84.md` (chủ dự án yêu cầu trực tiếp nên ngoại lệ của mục 0.8); mục 13 "Bài học". **Chờ chủ dự án gửi đánh giá từng sự kiện** để sửa một loạt.
+
+(không có ý nào đang chờ khác. Các ý 23/11 đã làm ở d9.8 và d9.9 và chuyển thành luật: giao diện hộp sự kiện và hồ sơ ở mục 7, giang hồ ở mục 6, Thiên cơ ở mục 3, việc lớn ở mục 3, gia bảo ở mục 6, hệ số kỳ ngộ ở mục 5, cưới nhân phép của lính ở mục 3.)
 
 ---
 
@@ -298,6 +303,16 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 - **Tách `engine.js` mới một phần** (`engine-x.js`: hằng năm, thế lực có tên, gia bảo, việc lớn, `clanSupport`, thư tay, hộp thành tựu, tang lễ, hôn lễ, mưu đại sự); phần còn lại (khoảng 6.000 dòng) vẫn một IIFE: tạo ván, vòng lặp tháng, quan trường, đất, kinh doanh, hoàng tộc, giao diện. Công cụ tách: script đọc nguồn hàm, tính tên dùng chung rồi đẩy sang `engine-x.js` (mẫu ở lịch sử git d9.10); kiểm bằng bot 40 năm, `tools/bal.js` và gọi hộp trực tiếp.
 - **Gọn trang Gia tộc và Cơ ngơi:** mới gập thẻ từ thẻ thứ ba (trang vốn đã có khối gập "Triều đình và thời thế"), chưa thiết kế lại bố cục.
 - **Không bật lại tương thích save cũ** (mục 0.11) khi chủ dự án chưa bảo; một số save cũ sẽ không có `S.qh`, `S.dx` (engine tự khởi tạo khi gặp điều kiện).
+
+---
+
+## 13. Bài học rút ra từ phản hồi của chủ dự án (cập nhật mỗi lần được chỉ lỗi, mục 0.15)
+
+1. **Gỡ một khối giao diện phải so với bản cũ.** d9.8 gỡ nhầm khối `.subs.ax` (chỉ số tính cách) vì đọc sai câu "bỏ lưới tự lập" ở mục 7. *Quét:* sau mỗi lần dựng lại hồ sơ hay hộp, so danh sách khối trước và sau (`git show main:engine.js`), đếm `AXES`, kỹ năng, Tiềm năng, danh vọng… còn đủ. Câu luật mơ hồ thì hỏi, không đoán.
+2. **Hàm xử lý hàng loạt phải bọc `try` và kiểm kiểu.** `foldCards` gọi `.trim` trên số làm trang Gia tộc không bấm được. *Quét:* mọi hàm chạy trong `render()` ngoài phần cốt lõi phải có `try`; `fulltest.js` phải chạy sau mỗi thay đổi giao diện.
+3. **Thêm một giá trị mới cho trường dạng "kiểu" thì rà mọi nơi đọc.** Kiểu `away` `odo` và `sep` thiếu chữ trong `awayText` nên hồ sơ in chip rỗng. *Quét:* khi thêm kiểu `away`, `flags`, `job`, `k`… phải grep mọi `switch`/chuỗi điều kiện trên trường đó (`awayText`, `isCtrl`, `whereP`, `monthlyPerson`).
+4. **Không tự mở rộng phạm vi.** Yêu cầu hẹp (phái người làm đi, chỉ việc xã giao) thì chỉ làm đúng chỗ hẹp, ghi rõ chỗ nào áp, chỗ nào không (đã áp dụng ở d9.11).
+5. **Sự kiện "đẹp" trong code chưa chắc đáng chơi.** `gj_03` ban đầu thưởng phạt chỉ ±1 đến 3, không hậu quả, ai cũng chọn được cái nào cũng như nhau. *Tiêu chí xét lọc sự kiện mới và cũ:* (a) mỗi lựa chọn phải khác nhau về **được và mất thật** (tiền, chỉ số, quan hệ, rủi ro) chứ không chỉ chữ; (b) không có lựa chọn "hiển nhiên tốt nhất" mọi lúc; (c) sự kiện có người thì người ấy phải là người thật hoặc có hậu sự; (d) điều kiện xuất hiện đúng người (nghề, tuổi, bậc, gia thế); (e) thưởng khớp bậc gia thế (mục 5). *Danh sách này sẽ mở rộng khi chủ dự án gửi đánh giá sự kiện.*
 
 ---
 
