@@ -259,6 +259,16 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 *Còn chờ chủ dự án:* xem ảnh, nói chỗ nào sửa, rồi bảo "làm" thì mới viết code (làm thử ở `admin.html` trước theo mục 7). Câu hỏi nhỏ đã nảy ra khi dựng ảnh: giá bên phải lựa chọn chỉ hiện khi trả tiền ngay (đúng mục 0.12), còn chữ "Thưởng 120 đồng" trong ảnh là ví dụ khoản trả; thẻ chân dung có chấm tuổi và thu nhập tháng; bấm thẻ mở hồ sơ (phải sửa lỗi hồ sơ nằm sau hộp ở trên).
 
+**Hai ý nữa (chủ dự án, 23/11, kèm ảnh `Test result/Screenshot 2026-11-23 101713.png`), chép nguyên văn:**
+> "khá được rồi, không cần sửa thêm nữa, nhưng mà tao mới gửi thêm một vấn đề là thưởng của kỳ ngộ đang hơi thấp, cần tăng thêm một chút"
+
+*Kiểm tra (23/11, chưa sửa):*
+- **Câu đầu** ("khá được rồi, không cần sửa thêm nữa") nói về bộ ảnh tham khảo giao diện mới ở `Mockup giao dien/d9.7/`: **chủ dự án đã chấp nhận ảnh, không sửa ảnh nữa**. Chưa có lệnh "làm" nên **chưa viết code giao diện** (hộp sự kiện một cột và hồ sơ nhân vật chia trang); đó vẫn là việc chờ ở mục 11A và mục 12.
+- **Kỳ ngộ trong ảnh** là "Thuật chữa thương cổ" (`kn_43`, `ev-v670b.js` dòng 228, người nghề Y hoặc Nguỵ, 22 đến 70 tuổi). Kết quả hiện **Trí +2, Thông thạo +3, Danh vọng +8**, không có tiền. Trong code: lựa chọn đầu cho `tri:R(1,3), m:3, fame:3`; lựa chọn hai cho `fame:5, cfame:2`. **Hệ số kỳ ngộ ×2,5** (`KYB`, `engine.js` dòng 228 đến 230) chỉ nhân `money`, `fame`, `cfame`, `hung`, `merit`; **không nhân chỉ số (`tri`, `vo`, `mi`, `eq`), không nhân thông thạo (`m`), không nhân tâm trạng**. Vì vậy phần thưởng chỉ số và thông thạo của kỳ ngộ vẫn chỉ +1 đến +3 như sự kiện thường, dù kỳ ngộ hiếm (chu kỳ vài chục năm, trọng số 0,4).
+- **Còn hiểu được là** thưởng của kỳ ngộ nói chung đang thấp (không riêng tiền; tiền đã nâng sàn ở d9.7, xem mục 5). Chưa rõ muốn nâng loại nào và bao nhiêu.
+
+*Cần hỏi trước khi làm:* (1) nâng **chỉ số và thông thạo** của kỳ ngộ lên (ví dụ nhân hệ số cho `tri, vo, mi, eq, m` như đã nhân `money, fame`), hay nâng **hệ số chung** từ 2,5 lên (ví dụ 3), hay cả hai; (2) "một chút" là bao nhiêu (đề xuất: chỉ số và thông thạo nhân 1,5 làm tròn lên, hệ số tiền, danh vọng giữ 2,5 vì đã nâng sàn tiền; hoặc hệ số 3 cho mọi khoản). Lưu ý mục 3 chỉ số khó lên và "đời đầu khó": nâng chỉ số kỳ ngộ ảnh hưởng tốc độ đạt chỉ số 150 và 200, nên không nên nâng quá tay.
+
 ---
 
 ## 11. Đang làm dở, đã biết là thiếu
