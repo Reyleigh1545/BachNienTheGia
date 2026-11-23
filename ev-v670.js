@@ -80,7 +80,7 @@ GH({id:'gj_72',t:'Tiêu xa bị cướp',job:['tieu'],age:[20,60],
 GH({id:'gj_45',ms:1,t:'Chân khí đảo lộn',age:[20,60],c:c=>c.vo>=75&&c.suc>=30,w:0.5,cd:120,
  x:c=>`Đang luyện công, ${N(c)} bỗng thấy chân khí chạy ngược, mắt hoa, tay chân run. Đây là điềm xấu mà sách võ đều nhắc tới.`,
  o:c=>[{l:'Ngừng luyện, tĩnh dưỡng',f:c=>'Nằm nghỉ mấy ngày, chân khí dần ổn lại.'+fx(c,{suc:-3,tam:-2})},
-  {l:'Gắng luyện tiếp để áp xuống',r:[{suc:0.7,tri:0.4},45],y:c=>'Chân khí khuất phục, công lực tiến bộ rõ rệt.'+fx(c,{vo:R(2,4),tam:3}),n:c=>'Chân khí phản lại, hộc máu. Căn cơ tổn thương.'+fx(c,{suc:-R(12,22),hpMax:-R(2,4),tam:-6})},
+  {l:'Gắng luyện tiếp để áp xuống',r:[{suc:0.7,tri:0.4},45],y:c=>'Chân khí khuất phục, công lực tiến bộ rõ rệt.'+fx(c,{vo:R(2,4),tam:3}),n:c=>{G.ill.start(c,'thuong_noi',3);return 'Chân khí phản lại, hộc máu. Căn cơ tổn thương, nội thương nặng.'+fx(c,{suc:-R(12,22),tam:-6})}},
   pay('Mời thầy thuốc xem mạch',10,{f:c=>'Thầy thuốc châm cứu, kê thuốc. Qua cơn nguy.'+fx(c,{money:-m(10),suc:-2})})]}),
 /* ===================== THẾ LỰC TỰ PHÁT ===================== */
 LO({id:'lo_01',t:'Tin có sơn tặc trên núi',head:1,age:[25,70],tier:[1,6],ms:1,

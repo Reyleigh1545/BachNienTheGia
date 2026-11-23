@@ -77,7 +77,7 @@ return [
 {id:'ret_dam',t:'Rét đậm',sea:['dong'],age:[1,90],cd:12,w:1.1,
  x:c=>G.homeLv()<2?`Gió bấc lùa qua vách. Nhà ${G.homeLv()===0?'lều tranh':'tranh vách đất'} không đủ ấm, ${N(c)} rét run cầm cập.`:`Đợt rét đậm tràn về, sương muối trắng cành. ${N(c)} ho khan mấy hôm.`,
  o:[{l:'Mua thêm chăn bông, than củi',c:()=>G.money()>=m(10),f:c=>'Ấm áp qua mùa đông.'+fx(c,{money:-m(10),tam:2})},
-    {l:'Đốt rơm sưởi, ráng chịu',r:[{suc:1},48],y:c=>'Qua khỏi đợt rét.'+fx(c,{suc:-3}),n:c=>'Nhiễm lạnh sinh bệnh phổi.'+fx(c,{suc:-R(10,18),hpMax:-R(0,2),tam:-5})}]},
+    {l:'Đốt rơm sưởi, ráng chịu',r:[{suc:1},48],y:c=>'Qua khỏi đợt rét.'+fx(c,{suc:-3}),n:c=>{G.ill.start(c,'ho_phoi');return 'Nhiễm lạnh sinh bệnh phổi.'+fx(c,{suc:-R(10,18),tam:-5})}}]},
 {id:'trom_cuoi_nam',t:'Trộm cuối năm',sea:['dong'],age:[14,90],tier:[1,6],cd:18,w:0.8,
  x:c=>`Gần Tết, trộm cắp hoành hành. Đêm qua có kẻ khoét vách nhà ${G.S().surname}.`,
  o:[{l:'Rình bắt tận tay',r:[{vo:1,tri:0.4},55],y:c=>'Tóm được tên trộm, giải lên quan.'+fx(c,{fame:5,tam:5}),n:c=>'Bị kẻ trộm đâm một nhát rồi tẩu thoát.'+fx(c,{suc:-R(10,20),hpMax:-R(0,2),money:-m(10),tam:-6})},

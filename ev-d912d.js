@@ -109,7 +109,7 @@ E({id:'nang_han',t:'Nắng hạn kéo dài',sea:['ha'],age:[12,90],cd:24,w:0.8,
 E({id:'thanh_lau',t:'Lầu hồng đèn đỏ',age:[18,60],g:'nam',tier:[2,6],c:c=>!(c.habits||[]).includes('thanhlau'),
  x:c=>`Bạn bè kéo ${N(c)} lên ${pick(['Túy Hồng lâu','Xuân Phong các','Vọng Nguyệt lâu'])} nghe hát. Cô đào nâng chén mời rượu.`,
  o:c=>[
-  pay('Vui chơi cho trọn đêm',15,{f:c=>{const roll=chance(0.7);const hab=!roll?(G.HABITS&&G.HABITS.bac&&chance(0.4)?'bac':undefined):'thanhlau';const sick=chance(0.12);return `Một đêm vui. ${roll?'Từ đó tối nào cũng thấy nhớ, thành khách quen.':'Về nhà vẫn còn lâng lâng.'}${sick?' Ít hôm sau trong người sinh bệnh lạ.':''}`+fx(c,{money:-m(15),tam:6,habit:hab,suc:sick?-8:0})}}),
+  pay('Vui chơi cho trọn đêm',15,{f:c=>{const roll=chance(0.7);const hab=!roll?(G.HABITS&&G.HABITS.bac&&chance(0.4)?'bac':undefined):'thanhlau';const sick=chance(0.12);if(sick)G.ill.start(c,'hoa_lieu');return `Một đêm vui. ${roll?'Từ đó tối nào cũng thấy nhớ, thành khách quen.':'Về nhà vẫn còn lâng lâng.'}${sick?' Ít hôm sau trong người sinh bệnh lạ.':''}`+fx(c,{money:-m(15),tam:6,habit:hab,suc:sick?-8:0})}}),
   pay('Chỉ nghe hát rồi về',4,{f:c=>`Nghe hát, uống rượu nhẹ, về sớm.`+fx(c,{money:-m(4),tam:3,eq:1,habit:chance(0.1)?'ruou':undefined})}),
   {l:'Lấy cớ bận việc',f:c=>`Bạn bè chê là sợ vợ, nhưng thật ra giữ được tiếng.`+fx(c,{tam:-1,liem:1})}]}),
 /* ============ Thuốc bổ: tăng sức khỏe tối đa và già chậm ============ */
@@ -123,15 +123,15 @@ E({id:'thuoc_bo',t:'Lời mời mua thuốc bổ',age:[30,90],c:c=>!(c.habits||[
 E({id:'cho_dai',t:'Chó dại',age:[4,80],w:0.3,cd:36,
  x:c=>`Con chó dại sổng xích lao vào cắn ${N(c)}. Bệnh dại không có thuốc chữa nếu phát, nên mỗi quyết định ngay lúc này rất quan trọng.`,
  o:c=>[
-  {l:'Rửa vết cắn bằng nước muối, đốt ngay và chạy chữa bằng bài thuốc gia truyền',r:[{suc:1,tri:0.3},55],y:c=>'Không phát bệnh. Vết thương lành sau mấy tuần.'+fx(c,{suc:-8,tam:-1}),n:c=>'Sốt mê sảng mấy tuần, may sống sót nhưng suy yếu nặng.'+fx(c,{suc:-R(25,40),hpMax:-R(4,8),tam:-12})},
-  pay('Mời thầy lang giỏi nhất vùng đến chữa',15,{r:[{eq:0.3,tri:0.3},80],y:c=>'Thầy lang chữa đúng cách, không phát bệnh.'+fx(c,{money:-m(15),suc:-3,tam:2}),n:c=>'Thầy lang đến muộn, bệnh vẫn phát nhưng nhẹ.'+fx(c,{money:-m(15),suc:-R(15,25),hpMax:-R(1,3),tam:-8})}),
-  {l:'Nhờ người trói con chó để xem có dại thật không',r:[{vo:0.4,tri:0.4},60],y:c=>'Quan sát vài ngày, hóa ra chó chỉ ốm chứ không dại. Hú vía.'+fx(c,{suc:-4,tam:2,tri:1}),n:c=>'Con chó thật sự dại, mất thời gian quý báu, vết thương đã quá muộn.'+fx(c,{suc:-R(30,45),hpMax:-R(4,8),tam:-12})},
-  {l:'Lên chùa cầu khấn, trông vào phúc phận',f:c=>chance(0.35)?'May mắn, không phát bệnh.'+fx(c,{suc:-8,tam:4}):'Bệnh phát, mê sảng mấy tuần, suýt không qua khỏi.'+fx(c,{suc:-R(30,45),hpMax:-R(5,9),tam:-14})}]}),
+  {l:'Rửa vết cắn bằng nước muối, đốt ngay và chạy chữa bằng bài thuốc gia truyền',r:[{suc:1,tri:0.3},55],y:c=>'Không phát bệnh. Vết thương lành sau mấy tuần.'+fx(c,{suc:-8,tam:-1}),n:c=>{G.ill.start(c,'dai',4);return 'Sốt mê sảng mấy tuần, bệnh dại phát: phải chạy chữa ngay.'+fx(c,{suc:-R(20,30),tam:-12})}},
+  pay('Mời thầy lang giỏi nhất vùng đến chữa',15,{r:[{eq:0.3,tri:0.3},80],y:c=>'Thầy lang chữa đúng cách, không phát bệnh.'+fx(c,{money:-m(15),suc:-3,tam:2}),n:c=>{G.ill.start(c,'dai',3);return 'Thầy lang đến muộn, bệnh vẫn phát nhưng nhẹ.'+fx(c,{money:-m(15),suc:-R(15,25),tam:-8})}}),
+  {l:'Nhờ người trói con chó để xem có dại thật không',r:[{vo:0.4,tri:0.4},60],y:c=>'Quan sát vài ngày, hóa ra chó chỉ ốm chứ không dại. Hú vía.'+fx(c,{suc:-4,tam:2,tri:1}),n:c=>{G.ill.start(c,'dai',4);return 'Con chó thật sự dại, mất thời gian quý báu, vết thương đã quá muộn.'+fx(c,{suc:-R(25,35),tam:-12})}},
+  {l:'Lên chùa cầu khấn, trông vào phúc phận',f:c=>chance(0.35)?'May mắn, không phát bệnh.'+fx(c,{suc:-8,tam:4}):(G.ill.start(c,'dai',4),'Bệnh dại phát, mê sảng mấy tuần, suýt không qua khỏi.')+fx(c,{suc:-R(25,35),tam:-14})}]}),
 /* ============ Trẻ ngã xuống ao: nhiều cách cứu ============ */
 E({id:'tre_nga_ao',t:'Ngã xuống ao',age:[3,9],w:0.4,cd:36,pcd:240,c:c=>G.homeLv()<=4,
  x:c=>`Tiếng hét thất thanh ngoài ao. ${N(c)} trượt chân xuống nước, chới với. Ai gần nhất sẽ phải quyết định thật nhanh.`,
  o:c=>[
-  {l:'Người lớn nhảy xuống cứu ngay',h:1,r:[{suc:1,vo:0.3},40],y:c=>'Kéo được lên kịp.'+fx(c,{suc:-5,tam:-4}),n:c=>'Cứu lên thì đã sặc nước, sốt mấy hôm.'+fx(c,{suc:-R(15,25),hpMax:-R(1,3),tam:-8})},
+  {l:'Người lớn nhảy xuống cứu ngay',h:1,r:[{suc:1,vo:0.3},40],y:c=>'Kéo được lên kịp.'+fx(c,{suc:-5,tam:-4}),n:c=>{G.ill.start(c,'viem_phoi',2);return 'Cứu lên thì đã sặc nước, sốt mấy hôm.'+fx(c,{suc:-R(12,20),tam:-8})}},
   {l:'Hô hàng xóm, nhờ người thạo nước',r:[{eq:0.6,khau:0.3},55],y:c=>'Có người nhanh tay kéo lên. Cả nhà nợ hàng xóm một món ơn.'+fx(c,{suc:-3,tam:-3,cfame:1}),n:c=>'Người đến chậm một chút, cứu lên thì đã sặc nặng.'+fx(c,{suc:-R(18,28),hpMax:-R(1,3),tam:-9})},
   {l:'Ném dây/sào cho bám vào rồi kéo vào bờ',r:[{tri:0.7,vo:0.2},50],y:c=>'Đứa trẻ bám được dây, kéo vào bờ bình an.'+fx(c,{suc:-2,tam:-2,tri:1}),n:c=>'Dây tuột khỏi tay, đứa trẻ chìm xuống một lúc mới được cứu.'+fx(c,{suc:-R(20,30),hpMax:-R(1,3),tam:-8})}]})
 ];
