@@ -61,7 +61,12 @@ function rgFamilyYear(){const L=alive().filter(p=>inClan(p)&&!p.inLaw);const don
     if(done[p.id])continue;done[p.id]=1;
     if(w>=25&&chance(0.4)){const v=Math.round(mm(8));q.purse-=v;p.purse=(p.purse||0)+v;rgSet('p:'+q.id,'p:'+p.id,'anh_em',6,'giúp lúc khó');rgSet('p:'+p.id,'p:'+q.id,'anh_em',10,'được giúp lúc khó');log(`${q.surname} ${q.given} bớt tiền riêng giúp ${p.given} lúc túng thiếu (anh chị em).`,'gd')}
     else if(w<5&&chance(0.3)){rgSet('p:'+p.id,'p:'+q.id,'anh_em',-6,'bị làm ngơ lúc khó');log(`${p.given} xin giúp mà ${q.given} làm ngơ, tình anh chị em thêm nguội.`)}}}
-X.yearly.push(tieYear);
+/* ---------- tình duyên: lập lịch để chắc chắn xảy ra (d9.12; kế hoạch mục 3.6). Luật mục 3: mở đầu chỉ cho người 18 đến 25 tuổi, có tài, có đức, dễ rung động tùy tính cách (romOk, romP trong engine). Trước đây chỉ trông vào bốc ngẫu nhiên nên 84 năm có 0 mối tình ---------- */
+function romYear(){const s=S();const open=G.ROM_OPEN().filter(id=>X.EVMAP[id]&&/^tinh_(hoi_xuan|thu_tinh|thanh_mai|tieu_thu)$/.test(id));if(!open.length)return;
+  alive().filter(c=>inClan(c)&&!c.inLaw&&!c.spouse&&!c.away&&!c.left&&age(c)>=18&&age(c)<=25&&G.romOk(c)).forEach(c=>{
+    c.flags=c.flags||{};if(c.flags.yeu||(c.flags.romT!=null&&s.t-c.flags.romT<36))return;
+    const p=0.12+(G.romP(c)-0.5)*0.2;if(chance(Math.max(0.05,Math.min(0.3,p)))){c.flags.romT=s.t;const id=pick(open);enqueue('ev',c.id,{ev:id,data:{}})}})}
+X.yearly.push(tieYear,romYear);
 Object.assign(G,{tie:{ensure,get,rel,on,oan,act,bonus,later:laterNpc,note,VAI},rg:{set:rgSet,get:rgGet,of:rgOf}});
 Object.assign(X.fn,{tieYear,rgFamilyYear});
 });

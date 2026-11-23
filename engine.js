@@ -66,7 +66,9 @@ const isHead=c=>c&&c.id===S.head;
 /* gen: mỗi chỉ số hai alen 15..100; tiềm năng = 0,65·alen lớn + 0,35·alen nhỏ */
 function rollGenes(lift){const g={};STATS.forEach(([k])=>{if(k!=='suc')g[k]=[R(15,85)+(lift||0),R(15,85)+(lift||0)].map(v=>clamp(v,10,100))});g.suc=[R(40,100),R(40,100)];return g}
 const pot=(c,k)=>{const a=c.gn&&c.gn[k];if(!a)return 60;const hi=Math.max(...a),lo=Math.min(...a);return hi*0.65+lo*0.35};
-function rollTraitGenes(){const tg={};for(const k in TRAITS){const T=TRAITS[k];if(!T.gene)continue;tg[k]=(chance(T.p)?1:0)+(chance(T.p)?1:0)}return tg}
+/* d9.12: p là XÁC SUẤT BIỂU HIỆN của đặc điểm trong dân số (không phải xác suất mỗi bản sao gen). Kiểu lặn cần hai bản sao nên xác suất mỗi bản sao là căn bậc hai của p; kiểu trội cần một bản sao nên 1-căn(1-p). Trước đây dùng thẳng p làm xác suất bản sao nên đặc điểm lặn (Khéo tay, Thiên tài, Ốm yếu...) chỉ hiện ở p² người: tưởng như "bị mất" (chủ dự án 24/11) */
+const alleleP=T=>T.gene==='r'?Math.sqrt(T.p):1-Math.sqrt(1-T.p);
+function rollTraitGenes(){const tg={};for(const k in TRAITS){const T=TRAITS[k];if(!T.gene)continue;const q=alleleP(T);tg[k]=(chance(q)?1:0)+(chance(q)?1:0)}return tg}
 function expressed(c,k){const T=TRAITS[k];if(!T)return false;if(c.traits.includes(k))return true;if(!T.gene||!c.tg)return false;const n=c.tg[k]||0;return T.gene==='D'?n>=1:n>=2}
 function traitsOf(c){const s=new Set(c.traits);if(c.tg)for(const k in c.tg)if(TRAITS[k]&&expressed(c,k))s.add(k);axLabels(c).forEach(t=>s.add(t));if(c.degree>0)s.add('dg_'+Math.min(3,c.degree));if(c.tuoc>0)s.add('tu_'+Math.min(5,c.tuoc));return [...s]}
 const realTraits=c=>traitsOf(c).filter(t=>!TRAITS[t].ax&&!TRAITS[t].ct);
@@ -745,7 +747,7 @@ function bizCalc(b){
   let mkF=1;if(b.type==='yquan'&&S.epi)mkF=1.6;if(b.type==='quantra'&&season()==='dong')mkF=0.85;if(S.war&&b.type==='tieucuc')mkF=1.3;if(S.war&&['ganhhat','quantra'].includes(b.type))mkF*=0.8;
   if(S.disaster)mkF*=0.85;
   const rev=L[2]*(0.25+0.75*fill)*ownerF*mkF*(0.85+((S.t*7+b.id.length)%30)/100)*(1+(b.bonus||0))*(rule('trongthuong')?1.08:1)*(rule('trongnong')?0.95:1)*(0.9+S.on/500);
-  const rv=Math.min(rev,L[2]*capF)*0.7*(thanHas('thuongthanh')?1.08:1) /* v6.5.4: doanh thu cơ sở giảm 30% để thu nhập không dư thừa */*(b.type==='xuong'&&thanHas('thantuong')?1.1:1);
+  const rv=Math.min(rev,L[2]*capF)*0.92*(thanHas('thuongthanh')?1.08:1) /* v6.5.4 giảm 30% (0,7); d9.12 nâng lại 0,92: chủ dự án báo nhiều lần lợi ích phải tăng (đề xuất, chờ duyệt Q9) */*(b.type==='xuong'&&thanHas('thantuong')?1.1:1);
   const wages=b.staff.reduce((s,x)=>s+x.wage,0);const mat=rv*((BIZX[b.type]||{}).mat??0.25)*(1-0.4*(nL>1?b.lv/(nL-1):0));const rent=L[3];
   return {rev:Math.round(rv),wages,mat:Math.round(mat),rent,profit:Math.round(rv-wages-mat-rent),fill,ownerF,cap:Math.round(L[2]*capF)};
 }
@@ -2070,7 +2072,7 @@ function birthPopup(m){
 function childOf(m,f,g){
   const blood=m.inLaw&&f?f:m;
   const gn={};STATS.forEach(([k])=>{const a=(m.gn&&m.gn[k])||[50,50],b=(f&&f.gn&&f.gn[k])||[R(20,80),R(20,80)];gn[k]=[pick(a),pick(b)].map(v=>clamp(v+(chance(0.05)?R(-15,15):0),10,100))});
-  const tg={};for(const k in TRAITS){if(!TRAITS[k].gene)continue;const pa=(m.tg&&m.tg[k])||0,pb=f?((f.tg&&f.tg[k])||0):(chance(TRAITS[k].p)?1:0);tg[k]=(chance(pa/2)?1:0)+(chance(pb/2)?1:0)}
+  const tg={};for(const k in TRAITS){if(!TRAITS[k].gene)continue;const pa=(m.tg&&m.tg[k])||0,pb=f?((f.tg&&f.tg[k])||0):((chance(alleleP(TRAITS[k]))?1:0)+(chance(alleleP(TRAITS[k]))?1:0));tg[k]=(chance(pa/2)?1:0)+(chance(pb/2)?1:0)}
   const kid=mkPerson({g,surname:blood.surname,age:0,young:true,gn,tg,hh:m.hh});
   kid.born=S.t;kid.parents=[m.id].concat(f?[f.id]:[]);kid.gen=(blood.gen||1)+1;kid.focus='nghi';
   kid.given=clanGiven(g,kid.gen);
@@ -2262,7 +2264,7 @@ function tradeReturn(c0,tr){
   const sk=c?((c.eq+c.tri*0.5)/150+c.m/200+tsum(c,'trade')):tr.skill/120;
   const fameB=Math.min(0.15,((c?c.fame:0)+S.fame*0.1)/2000);
   let risk=r.risk*(c?(1.2-c.vo/200-Math.min(0.2,c.m/600)):1.1)*(S.war?1.4:1)*(season()==='dong'&&(r.sea||r.war)?1.3:1)*(S.epi?1.2:1);
-  const spoil=w_spoil(tr.good,r.mo);const val=tr.qty*(tr.pv||priceOf(tr.good))*(1+((tr.sv||r.sell[tr.good]||1)-1)*w_damp(tr.good)*(r.fr||1))*(1-spoil)*(rule('trongthuong')?1.08:1)*(rule('trongnong')?0.95:1)*(0.75+Math.random()*0.25+sk*0.15+fameB)*(S.epi&&tr.good==='duoc'?1.4:1)*(S.war&&['lua','sat','muoi'].includes(tr.good)?1.15:1);
+  const spoil=w_spoil(tr.good,r.mo);const val=tr.qty*(tr.pv||priceOf(tr.good))*(1+((tr.sv||r.sell[tr.good]||1)-1)*w_damp(tr.good)*(r.fr||1))*(1-spoil)*(rule('trongthuong')?1.08:1)*(rule('trongnong')?0.95:1)*(0.92+Math.random()*0.25+sk*0.32+fameB)*(S.epi&&tr.good==='duoc'?1.4:1)*(S.war&&['lua','sat','muoi'].includes(tr.good)?1.15:1);
   const toll=Math.round(tr.cost*(0.01+0.02*r.mo+0.04*(r.cross||0))*tollOff());
   const fee=tr.hired?Math.max(0,(val-toll-tr.cost)*0.2):0;
   const got=Math.max(0,Math.round(val-fee-toll));
@@ -3868,8 +3870,8 @@ function lqYear(){lqSync();
    và có đức (trung bình hiếu thuận, thật thà, rộng lượng, tiết chế từ 60). Tính cách quyết định ai dễ rung động: hòa đồng, buông thả thì dễ; cô độc, tiết chế thì khó. */
 const ROM_OPEN=['tinh_hoi_xuan','tinh_thu_tinh','tinh_dich','tinh_thanh_mai','tinh_tieu_thu','tt_a','lnh_a','c7_thu'];
 function romOk(c){const a=age(c);if(a<18||a>25||c.spouse||c.away||c.left)return false;ensurePersona(c);
-  const tal=Math.max(c.tri,c.vo,c.mi,c.eq)>=70||(c.fame||0)>=FAME_SELF[0][0]||(c.degree||0)>=1;
-  const duc=(axv(c,'ht')+axv(c,'thanh')+axv(c,'rong')+axv(c,'tiet'))/4>=60;return tal&&duc}
+  const tal=Math.max(c.tri,c.vo,c.mi,c.eq)>=60||(c.fame||0)>=FAME_SELF[0][0]||(c.degree||0)>=1||c.job!=='none'&&(c.m||0)>=30; /* d9.12: ngưỡng tài 70 -> 60 (người khởi đầu đã 60 đến 80) */
+  const duc=(axv(c,'ht')+axv(c,'thanh')+axv(c,'rong')+axv(c,'tiet'))/4>=50;return tal&&duc} /* d9.12: ngưỡng đức 60 -> 50 */
 const romP=c=>clamp(0.45+(axv(c,'hd')-50)/100+(50-axv(c,'tiet'))/150-(axv(c,'tv')>=70?0.1:0),0.1,0.9);
 function guard6416(){ROM_OPEN.forEach(id=>{const e=EVMAP[id];if(!e||e._r)return;e._r=1;const oc=e.c;e.age=[18,25];e.w=(e.w||1)*1.3;e.c=(c,d)=>romOk(c)&&(!oc||oc(c,d))})}
 const ROM_TINH=['hiền hậu','kiêu kỳ','phóng khoáng','e lệ','sắc sảo','chân chất','nhanh nhẹn','đa sầu đa cảm'];
@@ -5359,7 +5361,7 @@ function w63Month(mo){
      const ids=['w63_tin_xa','w631_su_hanh_cuoc','w631_linh_tram','w631_thay_lang_rong','w631_nguoi_hat_rong','w631_chu_thuyen'].filter(id=>EVMAP[id]&&(!EVMAP[id].c||EVMAP[id].c(hd)));
      enqueue('ev',hd.id,{ev:pick(ids)})}}}
 }
-const w_damp=g=>['ngua','ngoc','traichau','huong'].includes(g)?0.82:0.55;
+const w_damp=g=>['ngua','ngoc','traichau','huong'].includes(g)?0.9:0.72; /* d9.12: 0,82/0,55 -> 0,9/0,72 (chủ dự án nhiều lần báo lãi đi buôn phải tăng; con số đề xuất, chờ duyệt Q9) */
 
 /* ================= v6.3: THẾ GIỚI · giao diện ================= */
 let mapProv=null,preRoute63=null;
@@ -6470,7 +6472,7 @@ function metaImport(j){const m=meta();let nGb=0,nEnd=0;const I=gbItems();
   metaSave(m);return `Đã thêm ${nGb} gia bảo và ${nEnd} kết cục mới vào Sử sách của trình duyệt này.`}
 
 function gbGiveMid(id){const I=gbItems();const it=I[id];if(!it||!S)return false;S.gb=S.gb||[];if(S.gb.includes(id))return false;S.gb.push(id);const f=it.fx||{};alive().filter(inClan).forEach(p=>{for(const k in (f.st||{}))p[k]=Math.min(100,(p[k]||0)+f.st[k]);if(f.duyen)p.duyen=Math.min(100,(p.duyen||0)+f.duyen)});log(`Gia bảo mới của họ ${S.surname}: ${it.n}. ${it.d}`,'gd');return true}
-const G={np:{new:npNew,get:npGet,age:npAge,taken:npTaken,card:npCard,pseudo:npPseudo},gbGiveMid,matchmaker,pickKin,kinList,landDelta,landLose,landOk:()=>landRight(),led:LEDAPI,inKinh,homeP,npc:{boss:npcBoss,add:npcAdd,cmp:seatCmp,ab:myAb},fam:{ens:famEnsure,person:famPerson,name:famName,heir:famHeir,year:famYear},pmBlock,pmOpen,romMarry,proj:{led:projLed,n:projN,size:projSize,on:projOn,def:projDef,start:projStart,cost:projCost,why:projWhy},law:{case:lawCase,get:LAWM},mem:{set:memSet,has:memHas,get:memGet,add:memAdd,clear:memClear},mmn,mmt,arc:{ARC,def:arcDef,start:arcStart,get:arcSt,add:arcAdd,flag:arcFlag,fork:arcFork,locked:arcLocked,log:arcLog,end:arcEnd,finish:finishGame,pool:arcPool,unlocked:unlockedKey,metaFlag},cname,cnameU,cHeadFull,R,pick,chance,clamp,fmt,esc,fx,fxAll,roll,prob,later,age,nameOf,spouseOf,kidsOf,alive,home,married,stg,season,month,tierIdx,tierName,hasJob,grantTitle,tuocNote,tuocCheck,landCost,hauBo,mkSpouse,ts:{end:()=>{S.usurp=null;S.usNo=S.t+R(240,480)},crown:usCrown,U:usU,start:usStart,add:usAdd,next:usNext,win:usWin,abandon:usAbandon,fail:usFail,crown:usCrown,N:US_N,steps:US_STEPS,stepsOf:usSteps,actors:usActors,
+const G={romOk:c=>romOk(c),romP:c=>romP(c),ROM_OPEN:()=>ROM_OPEN,np:{new:npNew,get:npGet,age:npAge,taken:npTaken,card:npCard,pseudo:npPseudo},gbGiveMid,matchmaker,pickKin,kinList,landDelta,landLose,landOk:()=>landRight(),led:LEDAPI,inKinh,homeP,npc:{boss:npcBoss,add:npcAdd,cmp:seatCmp,ab:myAb},fam:{ens:famEnsure,person:famPerson,name:famName,heir:famHeir,year:famYear},pmBlock,pmOpen,romMarry,proj:{led:projLed,n:projN,size:projSize,on:projOn,def:projDef,start:projStart,cost:projCost,why:projWhy},law:{case:lawCase,get:LAWM},mem:{set:memSet,has:memHas,get:memGet,add:memAdd,clear:memClear},mmn,mmt,arc:{ARC,def:arcDef,start:arcStart,get:arcSt,add:arcAdd,flag:arcFlag,fork:arcFork,locked:arcLocked,log:arcLog,end:arcEnd,finish:finishGame,pool:arcPool,unlocked:unlockedKey,metaFlag},cname,cnameU,cHeadFull,R,pick,chance,clamp,fmt,esc,fx,fxAll,roll,prob,later,age,nameOf,spouseOf,kidsOf,alive,home,married,stg,season,month,tierIdx,tierName,hasJob,grantTitle,tuocNote,tuocCheck,landCost,hauBo,mkSpouse,ts:{end:()=>{S.usurp=null;S.usNo=S.t+R(240,480)},crown:usCrown,U:usU,start:usStart,add:usAdd,next:usNext,win:usWin,abandon:usAbandon,fail:usFail,crown:usCrown,N:US_N,steps:US_STEPS,stepsOf:usSteps,actors:usActors,
   force:(path,who)=>{const a=who||head();S.usurp=null;return usStart(path,a,true)},hauSu,noPath:(path)=>{(S.usNoP=S.usNoP||{})[path]=S.t+R(240,480)}},vua:{d:()=>dynEns(),type:kingT,TN:KT_N,txt:thoiTheTxt,die:kingDie},than:{has:thanHas,holder:thanHolder,T:THAN,ok:thanEligible,grant:thanGrant,fail:thanFail,tm:tmOf},ch:{raid:warRaid},tinh:{ok:romOk,p:romP,partner:romPartner,marry:romMarry,elope:romElope},br:{far:farBranch,at:brAt,lead:branchLeader},rel:{info:rinfo,refs:relRefs,yieldOpts,win:relWin,lose:relLose,book:relBook,GP,MAR_N,bandN:relBandN,stand:xgStand,bySur:clanBySur,ens:relEns},qt:{autoSplit,rv:{add:n=>{S.rv=S.rv||{h:0,cd:{}};S.rv.h+=n},get:()=>(S.rv&&S.rv.h)||0},of:qtOf,add:qtAdd,join:qtJoin,log:qtLog,court,facN,FAC,FACK,CRIME_N,level:qtLevel,framed:qtFramed,sentence:qtSentence,truDi,fall:facFall,dismiss:qtDismiss,expel:p=>doExpel([p],true),newBranch,becomeHead,clanQuan,ruleSlots,addRule},mkPerson,addStat,setJob,
   S:()=>S,P,D:window.D,JOBS,RANKS,TUOC,ROUTES,routes,REGIONS,relOf,addRel,kin,subOf,ensurePersona,HABITS,TRAITS,CROPS,GOODS,OFFICES,BIZ,isOfficialFamily,log,enqueue,die,mm,money:()=>S.money,fame:()=>S.fame,fmtMoney:money,
   head,isHead,has,addTrait:addTraitEv,removeTrait,traitsOf,shiftAx,axv,skv,addSk,addHabit,dropHabit,cutVice,vlv,isVice,viceOf,axLabels,outsiderName,mkGiven,fullOutsider,inClan,adopt,enlist,wipeClan,assignPost,nguOpen,nguInvite,voEnlist,appoint,postOf,offState,quitOffice,seatName,rankTxt,provN,seatOfC,isOff,famOf,followers,bizOf,priceOf,mk,lone,noble,famLuck,clanTuoc,
