@@ -476,7 +476,7 @@ function monthlyPerson(c,a){
   const tg=tsum2(c,'grow');const all=tsum(c,'growAll');
   const grow=(k,perYear)=>{perYear=(perYear||0)+(perYear?ruleGrow(c,k):0);if(!perYear)return;const cap=capOf(c,k);if(c[k]>=cap)return;const dim=growDim(c,k,cap);
     const tb=inClan(c)&&a<30?((k==='vo'&&thanHas('vothan'))?0.15:(k==='mi'&&thanHas('camthanh'))?0.1:0):0;const tmB=(()=>{const T=tmOf(c);return T&&(T.tm==='kytai'||(THAN[T.tm]&&THAN[T.tm].sk===k))?0.5:0})();
-    const gene=0.5+pot(c,k)/100;addStat(c,k,perYear/12*dim*moodF*kidm*gene*(0.7+axv(c,'cc')/170)*(1)*(1+(tg[k]||0)+all+tb+tmB+(k==='vo'&&rule('thuongvo')?0.15:0)))};
+    const gene=0.5+pot(c,k)/100;addStat(c,k,perYear/12*dim*moodF*kidm*gene*(0.7+axv(c,'cc')/170)*(1)*(1+(tg[k]||0)+all+tb+tmB+(k==='vo'&&rule('thuongvo')?0.15:0)+(k==='vo'&&c.flags.bk&&c.flags.bk.kiem?0.25:0)))};
   if(a>=4&&!away){for(const k in F.g)grow(k,F.g[k]*(love?1.2:1))}
   /* d9.9 (chủ dự án 23/11: người đi giang hồ không tự tăng chỉ số): đi giang hồ tăng võ lực, trí tuệ và EQ theo thời gian, KHÔNG tăng mị lực; võ từ 80 lên 120 mất khoảng 5 đến 10 năm tùy tư chất (gồm cả thời gian đột phá mốc 100 và 120). Dùng chung hàm grow nên theo tư chất, tâm trạng, giảm dần khi gần trần. */
   if(c.job==='hiep'&&c.away&&c.away.type==='jh'&&a>=16){for(const k in JH_G)grow(k,JH_G[k])}
@@ -489,7 +489,7 @@ function monthlyPerson(c,a){
   if(has(c,'thamlam')&&c.job==='quan'&&!rule('thanhliem'))c.liem=Math.max(0,c.liem-0.04);
   if(rule('thanhliem')&&c.job==='quan')c.liem=Math.min(100,c.liem+0.05);
   // sức khỏe
-  let hp=(a>=c.decl+tsum(c,'decl')?0.4:0.7)+(F.hp||0)+(c.vo>=80?0.2:0)+tsum(c,'hp')-(HH(c.hh)&&HH(c.hh).life===0?0.4:0);
+  let hp=(a>=c.decl+tsum(c,'decl')?0.4:0.7)+(c.flags.bk&&c.flags.bk.noi?0.15:0)+(F.hp||0)+(c.vo>=80?0.2:0)+tsum(c,'hp')-(HH(c.hh)&&HH(c.hh).life===0?0.4:0);
   addStat(c,'suc',hp);if(c.suc>c.cap.suc)c.suc=c.cap.suc;
   // tâm trạng
   const tgt=moodTarget(c,a);c.tam=clamp(c.tam+(tgt-c.tam)*0.12+(Math.random()-0.5)*3,0,100);
@@ -509,7 +509,8 @@ function monthlyPerson(c,a){
      const hit=S.war?chance(0.18)?R(3,9):0:alert?chance(0.14)?R(2,5):0:chance(0.12)?R(1,4):0;
      if(hit){c.merit+=hit*vm*rk*(0.75+Math.min(c.tri,100)/400)*(1+tsum(c,'merit')+(rule('thuongvo')?0.2:0));meritFold(c)}}}
   // giang hồ
-  if(c.job==='hiep'&&c.away){c.purse-=Math.round(LIFE[1][1]*1.5);if(chance(0.0015*(1.5-c.vo/150))){die(c,'bỏ mạng nơi giang hồ');return}
+  if(c.job==='hiep'&&c.away){c.purse-=Math.round(LIFE[1][1]*1.5);{const ch=c.flags&&c.flags.ghc;if(ch)c.purse+=Math.round(mm({hophap:1.5,truonglao:4}[ch]||0))} /* d9.10: bổng chức trong phái */
+    if(chance(0.0015*(1.5-c.vo/150)*(c.flags.bk&&c.flags.bk.khinh?0.6:1))){die(c,'bỏ mạng nơi giang hồ');return}
     if(c.purse<0&&chance(0.2))enqueue('ev',c.id,{ev:'jh_het_tien'})}
   if(c.suc<=0){if(lone(c))c.suc=1;else die(c,'kiệt sức qua đời')}
 }
@@ -4663,7 +4664,9 @@ function sheetHTML(c){
   if(a>=16&&!['none','vua','huu'].includes(c.job)){
     h+=`${['quan_ngu','noi','hiep'].includes(c.job)?'':bar(c.job==='chu'&&JOBS[c.bizFrom]?'Thông thạo '+JOBS[c.bizFrom].n.toLowerCase():'Thông thạo',c.m,120,'mm','mm')}
     <div class="kvline">${c.job==='nong'?'Thu theo mùa vụ':c.job==='chu'?(bizOf(c)&&bizOf(c).last?`Lãi tháng trước ${money(bizOf(c).last.profit)}`:'Lãi cơ sở'):c.job==='hiep'?`Túi riêng ${money(c.purse)}`:`${money(income(c))}/tháng`}${c.job==='quan'?` · lộc ngoài ${money(sideIncome(c))}`:''}${c.job==='quan'&&postOf(c)?` · ${esc(postOf(c).n)}`:''}${c.job==='quan'&&c.qt?` · ${c.qt.f?'phe '+facN(c.qt.f):'không theo phe'}${c.qt.st?` · <b class="down">${QST_N[c.qt.st]}</b>`:''}`:''}${selfEmp(c)?' · tự làm, không có chủ':''}${pieceJob(c)?' · thu theo năng suất':''}</div>`;
-    if(c.job==='hiep'){const L=JOBS.hiep.lv[c.lv+1];h+=`<div class="kvline">Tiếng tăm (danh vọng) <b class="num">${fmt(c.fame)}</b> · ${SN.vo} <b class="num">${Math.round(c.vo)}</b></div>${L?`<div class="kvline muted">Muốn lên ${esc(L.n.toLowerCase())}: ${Object.entries(L.req).map(([k,v])=>k==='fame'?`danh vọng ${fmt(v)}`:`${SN[k].toLowerCase()} ${v}`).join(', ')}</div>`:'<div class="kvline muted">Đã đứng đầu võ lâm</div>'}`}
+    if(c.job==='hiep'){{const s0=c.flags.ghs&&(S.wr&&S.wr.sects||[]).find(x=>x.id===c.flags.ghs);const W0=S.wr&&S.wr.gwar;const ch=c.flags.ghc;const bk=c.flags.bk||{};const bks=[bk.kiem&&'kiếm phổ',bk.noi&&'nội công',bk.khinh&&'khinh công'].filter(Boolean);
+      h+=`<div class="kvline">${s0?`Phái <b>${esc(s0.n)}</b> (sức ${s0.pow||50})${ch?' · chức <b>'+({hophap:'Hộ pháp',truonglao:'Trưởng lão'}[ch]||ch)+'</b>':''}${W0&&(W0.a===s0.id||W0.b===s0.id)?' · <span class="down">đang giao tranh</span>':''}`:'Chưa vào môn phái nào'}${bks.length?' · bí kíp: '+bks.join(', '):''}</div>`}
+      const L=JOBS.hiep.lv[c.lv+1];h+=`<div class="kvline">Tiếng tăm (danh vọng) <b class="num">${fmt(c.fame)}</b> · ${SN.vo} <b class="num">${Math.round(c.vo)}</b></div>${L?`<div class="kvline muted">Muốn lên ${esc(L.n.toLowerCase())}: ${Object.entries(L.req).map(([k,v])=>k==='fame'?`danh vọng ${fmt(v)}`:`${SN[k].toLowerCase()} ${v}`).join(', ')}</div>`:'<div class="kvline muted">Đã đứng đầu võ lâm</div>'}`}
     const r=nextReq(c);if(r)h+=`<div class="kvline muted">Lên ${esc(J.lv[c.lv+1].n.toLowerCase())}: ${Object.entries(r).filter(([k])=>k!=='land').map(([k,v])=>k==='m'?`thông thạo ${v}`:k==='fame'?`danh vọng ${v}`:k==='degree'?'đỗ cử nhân':k==='flag'?(v==='thuyen'?'thuyền lớn':'cơ duyên riêng'):`${SN[k]} ${v}`).join(', ')||'thêm ruộng'}</div>`;
   }else if(a<16)h+=`<div class="kvline muted">${a>=6&&c.school!=='nha'?esc((SCHOOL[a<10?1:a<14?2:3][c.school]||{n:'Đi học'}).n):'Còn nhỏ'}${c.appr&&JOBS[c.appr]&&a>=6?' · học nghề '+JOBS[c.appr].n.toLowerCase():''}${Object.keys(c.pre).length?' · đã học việc '+Object.entries(c.pre).map(([j,v])=>`${JOBS[j].n.toLowerCase()} ${Math.round(v)}`).join(', '):''}</div>`;
   else h+=`<div class="kvline muted">${c.job==='huu'?'An hưởng tuổi già':c.flags.jobRetry>S.t?'Trượt phỏng vấn, đợi năm sau':'Chưa có nghề'}</div>`;
@@ -6545,7 +6548,20 @@ function tlYear(){const w=S.wr;if(!w||!w.hot||!S.dyn)return;w.heat=w.heat||{};co
   const top=w.hot.slice().sort((a,b)=>w.heat[b]-w.heat[a])[0];const mx=w.heat[top];
   if(mx>=60)S.dyn.loan=clamp((S.dyn.loan||0)+1,0,100);
   if(mx>=85&&chance(0.2)){S.dyn.loan=clamp((S.dyn.loan||0)+3,0,100);w.heat[top]-=10;log('Giặc cỏ nổi lên ở '+provN(top)+', thiên hạ thêm xáo động.','hi');qtLog('Giặc nổi',provN(top)+': thế lực tự phát nổi dậy, triều đình chưa dẹp nổi.')}}
-function wpYear(){if(DRY||S.over||!head())return;S.wp=S.wp||{};tlYear();
+/* d9.10: GIANG HỒ THÀNH HỆ THỐNG. Chiến tranh giữa hai môn phái chạy theo năm (S.wr.gwar: {a,b,t,len,yrs,da,db}); hành động của đệ tử hai phái cộng vào da, db (sự kiện gh_phai_chien); hết chiến tranh thì phái thắng tăng sức mạnh, phái thua giảm, đệ tử hai phái nhận sự kiện gh_chien_ket. Mỗi 10 năm có đại hội định kỳ (gh_hoi_dinh_ky). */
+function ghYear(){const W=S.wr;if(!W||!W.sects||W.sects.length<2)return;const clampP=v=>Math.max(5,Math.min(100,Math.round(v)));
+  const w=W.gwar;
+  if(w){const a=W.sects.find(s=>s.id===w.a),b=W.sects.find(s=>s.id===w.b);if(!a||!b){W.gwar=null;return}
+    w.yrs++;const pa=(a.pow||50)+w.da*4,pb=(b.pow||50)+w.db*4;const d=(pa-pb)/60;
+    a.pow=clampP((a.pow||50)+R(-3,3)+Math.round(d*3)-1);b.pow=clampP((b.pow||50)+R(-3,3)-Math.round(d*3)-1);
+    if(w.yrs>=w.len){const win=pa>=pb?a:b,lose=win===a?b:a;win.pow=clampP(win.pow+6);lose.pow=clampP(lose.pow-6);W.gwar=null;W.gwarEnd=S.t;
+      log(`Cuộc chiến giữa ${win.n} và ${lose.n} kết thúc: ${win.n} thắng thế.`,'gd');
+      alive().filter(p=>inClan(p)&&p.flags&&p.flags.ghs&&(p.flags.ghs===win.id||p.flags.ghs===lose.id)&&(p.flags.gh||0)>=1).forEach(p=>later(p,'gh_chien_ket',R(1,8),{s:p.flags.ghs,win:p.flags.ghs===win.id?1:0}))}}
+  else if(S.t-(W.gwarEnd||-999)>=60&&chance(0.05)){const L=shuf(W.sects.slice());const a=L[0],b=L.find(s=>s!==a);if(a&&b){W.gwar={a:a.id,b:b.id,t:S.t,len:R(2,4),yrs:0,da:0,db:0};log(`Giang hồ dậy sóng: ${a.n} và ${b.n} khai chiến.`,'hi');
+    alive().filter(p=>inClan(p)&&p.flags&&(p.flags.ghs===a.id||p.flags.ghs===b.id)&&(p.flags.gh||0)>=1).forEach(p=>later(p,'gh_phai_chien',R(1,10)))}}
+  /* đại hội định kỳ mỗi 10 năm cho người đã có tiếng */
+  if(S.t>=120&&S.t%120<12&&(W.hoiT||0)<S.t-60){W.hoiT=S.t;alive().filter(p=>inClan(p)&&p.job==='hiep'&&p.lv>=1).forEach(p=>later(p,'gh_hoi_dinh_ky',R(2,10)))}}
+function wpYear(){if(DRY||S.over||!head())return;S.wp=S.wp||{};tlYear();ghYear();
   WP.forEach(w=>{if(S.over)return;const r=S.wp[w.id]||(S.wp[w.id]={s:0,y:0});let s=0;try{s=w.st()}catch(e){s=0}
     if(s>r.s){r.s=s;log('Lời đồn: '+w.h[s-1],'hi');qtLog('Dấu hiệu',w.h[s-1])}else if(s<r.s)r.s=s;
     if(w.id==='T4'||w.noWin)return; /* T4 chốt trong crRes */
@@ -6610,7 +6626,7 @@ const G={matchmaker,pickKin,kinList,landDelta,landLose,landOk:()=>landRight(),le
   _v633:{HOUSE_DEF,hdef,house,houseName,houseRel,houseAlly,houseKid,vil,vilLog,vd,vAdd,kPow,vFlag,vStance,vilRoutes,vilReady,vilEnd,vilStart,vilQuan,vilFighters,vilYears,vPick,pickWho,KIEN,DUY,KRANK,achieve,cf,vBranch,vFi,VBR,hinfo,hnear,houseRefs,giftNorm,w_wed,w_mo,NEAR_MO,HOUSE_TIER},
   _v62:{willPopup,chunoPopup,debtTick,expelPopup2,doExpel,tumatPopup,oanPopup,tranhviPopup,ruleSlots,ruleWhy,addRule,dropRule,keugoiPopup,thiencoPopup,gateCheck,ttlPopup,wishPick,wishScore,obey,ctxOk,CTX,v62Month,v62Year,loveTick,outsTick,divorcePopup,vuotsinhPopup,rulepropPopup,ruleforcePopup,rulechgPopup,pieceF,jobDig,minDig}};
 /* v6.4.1.1: cổng riêng cho trang admin (admin.js). Bản thường không dùng tới */
-G._adm={JH_G,bigAvail:c=>bigAvail(c),bigDone:c=>bigDone(c),bigStart:(c,id)=>{const b=BIGS.find(x=>x.id===id);c.viec={id:b.id,start:S.t,end:S.t};},gbApply,avatarSVG,deathPopup,clanSupport,metaImport,phamSeats,letterLv,letterAdd,letterDue,letterLines,startScreen,historyMenu,personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
+G._adm={ghYear,JH_G,bigAvail:c=>bigAvail(c),bigDone:c=>bigDone(c),bigStart:(c,id)=>{const b=BIGS.find(x=>x.id===id);c.viec={id:b.id,start:S.t,end:S.t};},gbApply,avatarSVG,deathPopup,clanSupport,metaImport,phamSeats,letterLv,letterAdd,letterDue,letterLines,startScreen,historyMenu,personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
   getSel:()=>sel,setSel:v=>{sel=v},running:()=>running,speed:()=>speed,setRun:(r,sp)=>{running=!!r;if(sp)speed=sp;renderTop()},
   setS:st=>{S=st;sel=P(sel)?sel:S.head;O.hidden=true;M.innerHTML='';render();nextPopup()},page:()=>page,ensurePersona};
 window.BNTG=G;
