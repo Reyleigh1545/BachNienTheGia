@@ -44,6 +44,8 @@ const KIDCHK=/kidsOf|kidsOk|hasKid|\bkid\(|childOf|kinList|pickKin|hwho|\.parent
 rep('R28a lời kể nhắc con cái nhà mà không kiểm có con (kidsOf, hasKid, kinList, pickKin…)',defs.filter(b=>KIDW.test(b.t)&&!KIDCHK.test(b.t)));
 const SPW=/người vợ|vợ nhà|người chồng|chồng nhà|vợ của|chồng của|bà xã|ông xã/i;
 rep('R28b lời kể nhắc vợ chồng của nhân vật mà không kiểm có vợ chồng (spouseOf, married, spouse)',defs.filter(b=>SPW.test(b.t)&&!/spouseOf|married|\.spouse|G\.sp|vợ chồng:|hwho|pickKin/.test(b.t)));
+/* R29 (7.0.0-d.1.5.11): lời kể dùng "hắn", "gã" cho một NPC; từ d.1.5.11 proFix (engine.js) tự đổi thành "bà ta", "ả" khi NPC là nữ, nhưng sự kiện viết mới nên dùng tên hoặc đại từ đúng giới. Chỉ là thông tin. */
+rep('R29 (thông tin) lời kể dùng "hắn/gã" cho NPC, proFix đổi theo giới lúc chạy',defs.filter(b=>/(?<![\p{L}])(hắn|gã)(?![\p{L}])/iu.test(b.t)&&/tie\.ensure|\.npc|d\.npc/.test(b.t)));
 out.push('khối quét: '+blocks.length+' (định nghĩa sự kiện: '+defs.length+'), file: '+files.length+', RETIRED: '+RETIRED.size);
 if(RT){
   const tmp=path.join(process.env.TEMP||process.env.TMPDIR||'.','evlint_'+Date.now()+'.js');

@@ -326,3 +326,11 @@ body.ui2 .mmbody p.muted{font-size:13.5px;color:var(--muted)}
   body.ui2 .modal.sheetm{width:calc(100vw - 14px);height:calc(100dvh - 18px)}
   body.ui2 .pbanner{padding:12px 10px 10px}
 }
+
+/* ===== 7.0.0-d.1.5.11 · điện thoại: thanh trang xuống hàng thay vì cuộn ngang bị cắt (chủ dự án 24/11: "dài quá thì có thể làm nó thành 2 hàng, chứ kéo dài như thế kia xấu đau đớn"; ảnh tham khảo: các mục chính là ô lớn xếp ngay ngắn) ===== */
+@media (max-width:560px){
+  body.ui2 .tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;overflow:visible;padding-bottom:10px}
+  body.ui2 .tabs button{padding:10px 2px;text-align:center;font-size:13px;line-height:1.15;white-space:normal;background:var(--panel);border:1px solid var(--line);border-radius:10px}
+  body.ui2 .tabs button[aria-pressed="true"]{border-color:var(--seal);box-shadow:inset 0 -3px 0 var(--seal)}
+  body.ui2 .tabs .dot{top:3px;right:6px}
+}

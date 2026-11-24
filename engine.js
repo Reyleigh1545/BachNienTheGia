@@ -193,6 +193,8 @@ function proFix(t,n){if(typeof t!=='string'||!n||!n.g||!t)return t;const a=n.bor
     const MW='ông|lão|chàng|cụ ông|ông lão|ông già',FW='bà|nàng|cô gái|cụ bà|bà lão|bà già';
     if(n.g==='nữ'&&has(MW)&&!has(FW)){rep('cụ ông','cụ bà');rep('ông lão|ông già','bà lão');rep('ông|lão','bà');rep('chàng trai','cô gái');rep('chàng','nàng')}
     else if(n.g==='nam'&&has(FW)&&!has(MW)){rep('cụ bà','cụ ông');rep('bà lão|bà già','ông lão');rep('bà','ông');rep('cô gái','chàng trai');rep('nàng','chàng')}
+    /* 7.0.0-d.1.5.11: NPC nữ mà lời kể viết "hắn", "gã" (chủ dự án 24/11: bà Thôi Lệ Vịnh 52 tuổi bị gọi là hắn) */
+    if(n.g==='nữ'&&has('hắn|gã')&&!has('ông ta|anh ta|y ta'))rep('hắn|gã',a>=40?'bà ta':'ả');
     const OLD='lão|cụ|già|bà lão|ông lão',YG='cậu|chàng|cô gái|thiếu nữ|thiếu niên|đứa bé';
     if(a<50&&has(OLD)&&!has(YG)){rep('lão|cụ',n.g==='nữ'?'bà':'ông');rep('bà lão|ông lão',n.g==='nữ'?'bà':'ông')}
     else if(a>=50&&has(YG)&&!has(OLD)){rep('cậu|chàng',n.g==='nữ'?'bà':'ông');rep('cô gái|thiếu nữ',n.g==='nữ'?'bà':'ông')}
