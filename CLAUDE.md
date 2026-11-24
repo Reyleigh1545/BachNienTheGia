@@ -332,6 +332,11 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 *Kết quả kiểm màn mở game (24/11, chụp bằng `tools/shot-page.js`, ảnh `Mockup giao dien/d7.0.0-d.1.5.5/truoc-menu.png`):* đúng cả: (1) dòng "Phiên bản 6.7.0-d9.6" viết cứng trong `mainMenu` (`engine.js`), sai số bản và đè lên dòng phụ đề vì `margin-top:-.4rem`; (2) phụ đề, tên nút, dòng phụ trong nút không cùng trục (nút chính căn giữa cả hai chữ, các nút còn lại chữ phụ dạt phải; chữ phụ đỏ trên nền xanh của nút chính khó đọc); (3) khung hộp `ui2` cố định chiều cao nên bốn nút nằm sát trên, thừa khoảng trống lớn bên dưới. **Đã sửa ở 7.0.0-d.1.5.5 (phần B, xem mục 7).** Chủ dự án bảo chia nhỏ, trình bày chi tiết từng phần, duyệt ý xong mới làm: phần C (Gia phả) đã làm, phần D (avatar mới) còn chờ duyệt.
 
+**Mất Tiềm năng ở trang chỉ số nhân vật, lần hai (chủ dự án, 24/11), chép nguyên văn:**
+> "mày biết gì không, trang chỉ số nhân vật lại bị mất tiềm năng rồi"
+
+*Kết quả kiểm (24/11, bản `7.0.0-d.1.5.6`):* dòng Tiềm năng **vẫn được dựng** (`engine.js` dòng `kvline` có `I('pot','Tiềm năng:')`) nhưng từ khi giao diện `ui2` vào bản chính (7.0.0-d.1.5.4) hồ sơ chia trang bằng `UI2.sheet` (`ui2.js` dòng 31) và **luật phân trang của ui2 đẩy dòng Tiềm năng sang trang "Tính cách và kỹ năng" (`tc`) chứ không để ở "Tổng quan" (`tq`)**, trái với luật mục 7 ("giữ lại dòng Tiềm năng ở trang Tổng quan", chủ dự án 23/11 báo mất lần một). Cách sửa gọn: bỏ nhánh `else if(/Tiềm năng/.test(t))g='tc'` ở `ui2.js` để dòng rơi về `tq` (mặc định). Chưa sửa, chờ chủ dự án bảo "làm" (mục 0.13).
+
 (không có ý nào đang chờ khác. Các ý 23/11 đã làm ở d9.8 và d9.9 và chuyển thành luật: giao diện hộp sự kiện và hồ sơ ở mục 7, giang hồ ở mục 6, Thiên cơ ở mục 3, việc lớn ở mục 3, gia bảo ở mục 6, hệ số kỳ ngộ ở mục 5, cưới nhân phép của lính ở mục 3.)
 
 ---
@@ -434,6 +439,8 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 34. **"0 lỗi" của công cụ thử chỉ có nghĩa khi công cụ thật sự chơi (24/11, tự phát hiện khi tách engine).** `tools/run.js` đã không bấm qua hộp "Ghi đè ô lưu" của màn lập ván mới (từ d.1.5.4), nên `fulltest.js` và mọi script chạy sau đó chạy trên ván rỗng (`Van: nam 0, 1 nguoi song`, `state: no S`) mà vẫn báo `errors: 0`. Đã sửa `run.js` (bấm `[data-y]`). *Quét:* sau mỗi lần chạy công cụ phải đọc dòng `state:` và `Van:` (phải có `people>=1` và năm tăng); với thay đổi lõi thì chạy thêm bot dài (`scratchpad/sim.js` kiểu `ad.advance()` 60 năm, đếm `err`, `pops`).
 35. **Công cụ chuyển hàng loạt không được chuyển lại thân đã là dòng chuyển.** `xmove.js` lần đầu chuyển `gbApply` (vốn đã là dòng chuyển sang `engine-x.js`) vào gói mới rồi `Object.assign(X.fn,...)` đè mất thân thật, gây đệ quy vô hạn (`Maximum call stack`). Đã thêm kiểm bỏ qua hàm dưới 300 ký tự có `ENGX.fn.`. *Quét:* sau chuyển chạy `sim.js`; khi gói mới đăng ký `X.fn.<tên>` thì kiểm không trùng tên với gói khác.
+
+36. **Đưa một giao diện vào bản chính phải đối chiếu luật phân khối với bản đã chốt (24/11, chủ dự án: "trang chỉ số nhân vật lại bị mất tiềm năng").** Luật phân trang hồ sơ của `ui2.js` (viết ở admin từ d9.2) không biết luật d9.8 "Tiềm năng ở Tổng quan" trong `sheetPages` của `engine.js`; khi `ui2` thành mặc định (d.1.5.4) thì lỗi cũ quay lại. *Quét:* khi hai nơi cùng phân khối vào trang (`sheetPages` và `UI2.sheet`), khai báo luật một nơi (bảng khối → trang) và kiểm bằng ảnh chụp từng trang hồ sơ cả hai giao diện (`tools/shot-ev.js` kiểu) trước khi báo xong; mỗi lần chủ dự án báo "mất" cái đã chốt thì grep cả hai nơi.
 
 ---
 
