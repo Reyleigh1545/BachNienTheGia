@@ -70,4 +70,31 @@ addOpts('jh_bi_kip',c=>[
 addOpts('lnh_a',c=>[
   pay('Nhờ thị nữ chuyển một chầu trà và lời mời không tên, để nàng tự đoán',2,{r:RR({mi:0.6,eq:0.7},0.55),y:c=>nx(c,'lnh_b',3,8)+'Nàng bật cười, bảo hiếm có người không đòi nổi tiếng. Mời mình ngồi lại một lúc.'+fx(c,{money:-m(2),tam:6}),n:c=>'Thị nữ trả lời nàng bận tiếp khách khác. Mình ra về nhưng không ai cười chê.'+fx(c,{money:-m(2),tam:-2})}),
   {l:'Nghe hết khúc, rồi nhờ bạn đưa danh thiếp cho nàng sau, không lên lầu ngay',r:RR({eq:0.8,tri:0.3},0.6),y:c=>nx(c,'lnh_b',6,12)+'Nàng thích sự chừng mực, nhận danh thiếp và hẹn dịp khác.'+fx(c,{tam:5,eq:1}),n:c=>'Danh thiếp bị gạt bỏ giữa bao người; nhưng không ai biết chuyện này ngoài bạn bè thân.'+fx(c,{tam:-2})}]);
+
+/* ---- đợt hai (đo lại bằng gọi o(c,d) ở game thật: 22 kỳ ngộ dưới 3 lựa chọn, trong đó nhiều bước sau của chuỗi chỉ có 1 lựa chọn có chủ ý; nới thêm 7 kỳ ngộ độc lập) ---- */
+/* ---- c12_khuc_nhac: khúc nhạc thất truyền (chuỗi c12_b) ---- */
+addOpts('c12_khuc_nhac',c=>[
+  pay('Xin lão nhạc công hát lại nhiều lần, ghi lại nhạc phổ trước khi lên núi',6,{r:RR({mi:0.6,tri:0.6},0.6),y:c=>nx(c,'c12_b',3,6)+'Ghi được gần trọn nửa khúc; lên núi sau đó biết rõ mình tìm gì.'+fx(c,{money:-m(6),tri:R(1,2),tam:4}),n:c=>nx(c,'c12_b',3,6)+'Tai chưa đủ tinh, bản ghi chép sai nhiều chỗ; mình mất công sao chép.'+fx(c,{money:-m(6),tam:-2})}),
+  {l:'Nhờ một bạn nhạc sĩ cùng lên núi, chia nhau việc tìm',f:c=>nx(c,'c12_b',3,6)+'Có bạn đi cùng, đường núi đỡ vắng và đỡ liều; nhưng sau này nửa khúc tìm được sẽ phải chia tên.'+fx(c,{money:-m(4),eq:2,tam:4})}]);
+/* ---- tk_a: bà vú già trở về (chuỗi tk_b) ---- */
+addOpts('tk_a',c=>[
+  pay('Viết thư lên kinh trước, nhờ người quen dò hỏi nhà ấy rồi mới tính đi',8,{f:c=>nx(c,'tk_b',6,14)+'Thư đi thư lại mất gần một năm. Khi lên kinh thì đã biết nhà ấy thế nào, đỡ bỡ ngỡ.'+fx(c,{money:-m(8),eq:1,tam:-1})}),
+  {l:'Xin bà vú kể thêm chuyện cũ, giữ kín với cha mẹ nuôi, chưa quyết gì cả',f:c=>'Bà kể đến khuya, rồi mất vài ngày sau. Mình mang một bí mật trong lòng; có đêm không ngủ nổi.'+fx(c,{tam:-5,eq:2,tri:1})}]);
+/* ---- tuoc_ky_ngo: thiên tử vi hành ghé nhà ---- */
+addOpts('tuoc_ky_ngo',c=>[
+  {l:'Tạ ơn rồi xin dâng sớ, xin được góp một việc cho dân vùng này thay vì nhận thưởng',r:RR({eq:1,tri:0.5},0.55),y:c=>{G.grantTitle(c,R(1,2),'được thiên tử khen lòng vì dân');return 'Vua trầm ngâm rồi chuẩn; vùng này được miễn một mùa thuế dịch. Dân khắp nơi ghi ơn nhà mình.'+G.tuocNote()+fx(c,{fame:R(100,140),eq:3,tam:8})},n:c=>'Vua cho rằng sớ này thiếu chuẩn bị, chỉ ban lời khen miệng. Cơ hội qua đi, nhưng tiếng không xấu.'+fx(c,{fame:R(20,40),tam:-2})}]);
+/* ---- v62_cg_vo_b: kiếm phổ thất truyền ---- */
+addOpts('v62_cg_vo_b',c=>[
+  {l:'Trả giá thấp và xin giữ cuộn lụa vài ngày để chép lại',r:RR({tri:0.6,eq:0.5},0.55),y:c=>'Người buôn bằng lòng, mình chép được cả sáu thế rồi mới trả cuộn lụa.'+fx(c,{money:-m(2),vo:R(2,4),tri:1}),n:c=>'Người buôn nghi mình định giữ lụa, đòi lại ngay trong ngày.'+fx(c,{tam:-2,fame:-1})},
+  pay('Mời một kiếm sư có tiếng trong vùng cùng xem và chỉ giải',12,{r:RR({vo:0.6,eq:0.5},0.7),y:c=>'Kiếm sư chỉ ra thế nào là hư chiêu, thế nào là sát chiêu. Mình mua lại cuộn lụa với giá hời, và học nhanh hơn hẳn.'+fx(c,{money:-m(12),vo:R(4,6),tam:4,eq:1}),n:c=>'Kiếm sư xem xong chê là chép đời sau, không có gì đáng. Mình mất công mời.'+fx(c,{money:-m(12),tam:-2})})]);
+/* ---- f633_gioong: đứa trẻ ba tuổi cất tiếng ---- */
+addOpts('f633_gioong',c=>[
+  {l:'Giữ kín chuyện, bảo hàng xóm đứa trẻ chỉ mơ ngủ lảm nhảm',f:c=>'Cả nhà dặn nhau không nhắc lại. Đứa trẻ lớn lên bình thường, nhưng thỉnh thoảng nó nhìn về phía xa như nhớ điều gì.'+fx(c,{tam:2,eq:1})},
+  pay('Đưa đứa trẻ đến thầy thuốc xem có phải chứng bệnh lạ',3,{f:c=>'Thầy khám xong bảo đứa trẻ tỉnh táo, chỉ nhạy hơn người. Cả nhà yên lòng, thêm một tiếng khen trong làng.'+fx(c,{money:-m(3),tam:5,tri:1})})]);
+/* ---- kn_85: giấc mơ tiên tri ---- */
+addOpts('kn_85',c=>[
+  {l:'Kể giấc mơ cho một cụ già trong làng nghe và hỏi ý',r:RR({eq:0.7,tri:0.3},0.6),y:c=>'Cụ nghe xong, vuốt râu: "Điềm ấy không xấu, chỉ cần sống ngay thẳng." Lời cụ làm lòng mình nhẹ hẳn.'+fx(c,{tam:6,eq:1}),n:c=>'Cụ cười bảo trẻ con mơ vớ vẩn; lời cụ đồn ra, người trong làng chọc mình mấy hôm.'+fx(c,{tam:-3,fame:-1})}]);
+/* ---- kn_13: người đàn bà bí ẩn ---- */
+addOpts('kn_13',c=>[
+  {l:'Hỏi bà là ai và vì sao chọn mình trước khi nghe',r:RR({tri:0.5,eq:0.6},0.55),y:c=>'Bà mỉm cười, đáp rằng chỉ là người từng đi nhiều nơi và nay muốn gửi lại một chuyện. Câu hỏi thẳng thắn làm bà quý mình hơn.'+fx(c,{tam:4,eq:1,tri:1}),n:c=>'Bà chỉ cười không đáp rồi bước đi; mình ngẩn ngơ đứng lại bên cầu.'+fx(c,{tam:-2})}]);
 });
