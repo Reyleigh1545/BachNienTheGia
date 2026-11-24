@@ -40,10 +40,14 @@ function pickGoal(n){const L=Object.keys(GW).map(k=>[k,Math.max(0,GW[k](n))]).fi
 /* mô tả tính cách ngắn (hai nét nổi nhất) để lời kể đọc ra */
 function desc(n){if(!n||!n.sub)return 'người khó đoán';const L=AXK.map(k=>[k,ax(n,k)-50]).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1])).slice(0,2);return L.map(([k,v])=>AXL[k][v>=0?0:1]).join(', ')}
 /* ---------- hẹn sự kiện cho nhà chơi (không làm tin) ---------- */
+/* d9.12.65: NPC chỉ tìm tới người đang ở cùng nơi; người hay đi lại (lái buôn, đạo sĩ, ẩn sĩ…) thì ghé qua nơi nhà ở với xác suất 50% */
+function reach(n){const h=alive().filter(p=>inClan(p)&&!p.away&&age(p)>=16);if(!h.length)return null;const hd=h.find(p=>p.id===S().head);const L=h.filter(p=>!n.loc||G.placeOf(p)===n.loc);
+  if(L.length)return L.find(p=>p.id===S().head)||pick(L);
+  if(n.wander&&chance(0.5)){n.loc=G.placeOf(hd||h[0]);return hd||pick(h)}return null}
 function hook(n,ev,extra,opt){const s=S();opt=opt||{};s.np.nc=s.np.nc||{y:-1,c:0};const y=Math.floor(s.t/12);if(s.np.nc.y!==y){s.np.nc={y,c:0}}
   if(((s.evLast&&s.evLast[ev])||-999)>s.t-6&&!opt.force)return false; /* d9.12.63: cùng id không ra hai lần trong 6 tháng */
   if(s.np.nc.c>=1&&!opt.force)return false; /* một việc của NPC mỗi năm là đủ: bot 60 năm với tối đa 2 cho 20 đến 29 sự kiện mỗi loại, quá dày */if(!X.EVMAP[ev])return false;if((n.hookT||-999)>s.t-24&&!opt.force)return false;
-  const h=alive().filter(p=>inClan(p)&&!p.away&&age(p)>=16);const head=h.find(p=>p.id===s.head);const tgt=head||(h.length?pick(h):null);if(!tgt)return false;
+  const h=alive().filter(p=>inClan(p)&&!p.away&&age(p)>=16);const head=h.find(p=>p.id===s.head);const tgt=reach(n)||(opt.force?(head||h[0]||null):null);if(!tgt)return false;
   enqueue('ev',tgt.id,{ev,data:Object.assign({npc:n.id},extra||{})});n.hookT=s.t;s.np.nc.c++;return true}
 /* ---------- một năm sống của NPC ---------- */
 function setNghe(n,t){n.cond=t} /* tình cảnh hiện tại; n.nghe giữ nguyên lai lịch gốc */
@@ -64,6 +68,7 @@ function npcYear(){const s=S();if(!s||!s.np||!s.np.l)return;
   for(const n of L){if(!n.sub)deepen(n);const a=nage(n);if(a<14)continue;
     /* sống và chết */
     n.hp=Math.max(0,(n.hp||80)-(a>55?R(0,4):R(-1,1)));
+    if(n.wander&&chance(0.3))n.loc=pick(Object.keys(window.D.PROV));else if((n.vai||[]).includes('quan')&&chance(0.1))n.loc=pick(Object.keys(window.D.PROV)); /* d9.12.65: người hay đi lại đổi chỗ, quan thuyên chuyển */
     const pd=(a>=60?(a-60)/200:0)+(a>=85?0.1:0)+(a<60?0.004:0)+(n.hp<=0?0.3:0);
     if(chance(pd)){die(n);if(n.rel>=35||(n.on||0)>=8||(n.oan||0)>=20)hook(n,'np_qua_doi',{},{force:true});continue}
     const g=n.goal||(n.goal=pickGoal(n));
@@ -106,6 +111,6 @@ function famGoalYear(){const s=S();let req=0;alive().filter(c=>inClan(c)&&!c.inL
   if(g.y>=2&&!g.asked&&chance(0.05)&&req<1&&X.EVMAP.gd_y_nguyen&&!c.away){g.asked=1;req++;const hd=alive().find(p=>p.id===s.head);if(hd&&hd.id!==c.id)enqueue('ev',hd.id,{ev:'gd_y_nguyen',data:{who:c.id,gk:g.k}})}})}
 function pastAddFam(c,x){c.pastX=c.pastX||[];c.pastX.push({t:S().t,x});if(c.pastX.length>6)c.pastX.shift()}
 function goalAff(c,l){try{if(!c||!c.goal||!l)return 0;const f=FG[c.goal.k];return f&&f.aff.test(String(l).replace(/<[^>]*>/g,''))?0.6:0}catch(e){return 0}}
-G.npc={deepen,ax,desc,pickGoal,hook,die,AXL,FG,goalTxt:k=>FG[k]?FG[k].n:k};
+G.npc={deepen,ax,desc,pickGoal,hook,reach,die,AXL,FG,goalTxt:k=>FG[k]?FG[k].n:k};
 X.yearly.push(npcYear);Object.assign(X.fn,{npcYear,deepen,goalAff,famGoalYear});
 });

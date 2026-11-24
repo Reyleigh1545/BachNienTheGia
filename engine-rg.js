@@ -25,11 +25,16 @@ function ensure(c,o){o=o||{};const s=root();
   n.rel=o.rel!=null?o.rel:10;n.on=0;n.oan=0;n.ky=[];n.loc=(s.loc&&s.loc.p)||null;n.src=c?c.id:null;
   if(o.why)note(n,o.why);
   if(G.npc)G.npc.deepen(n,o); /* d9.13: NPC có quan hệ thì có tính cách, kỹ năng, mục tiêu ẩn, quá khứ (engine-npc.js) */
+  /* d9.12.65: nơi ở thật (nơi người gặp đang đứng), người hay đi lại, và họ thật (danh gia gần đó) */
+  n.loc=o.loc||(G.placeOf?G.placeOf(c):n.loc);n.wander=!!o.wander||n.vai.some(v=>['thuong_nhan','cao_nhan','an_si'].includes(v))||/lái buôn|thương nhân|đi dạo|lưu lạc|khách lạ|đạo sĩ|kiếm khách|thầy tướng|hát rong|người chạy thư|ngư phủ già|lão nhân|ẩn sĩ/.test(n.nghe||'');
+  if(!o.noHouse&&G.houseFor&&((n.tier||0)>=3||(['quy_nhan','thuong_nhan'].some(v=>n.vai.includes(v))&&(n.tier||0)>=2))&&chance(0.55)){const hid=G.houseFor(n);if(hid){n.house=hid;n.hn=G.houseSur(hid)+' Gia';n.nghe=(n.nghe?n.nghe+', ':'')+'người của '+n.hn}}
   return n}
+/* người đã có sẵn trong sổ (như quan giữ ghế thật) nhận vai và tính cách */
+function adopt(n,o){o=o||{};if(!n||n.sub)return n;n.vai=[].concat(o.vai||'quan');n.vaiTxt=n.vai.map(v=>VAI[v]||v).join(', ');n.nghe=o.nghe||n.nghe||'';n.tier=o.tier!=null?o.tier:4;n.rel=o.rel!=null?o.rel:0;n.on=0;n.oan=0;n.ky=n.ky||[];n.st=n.st||{tri:R(55,80),vo:R(30,50),mi:R(40,60),eq:R(50,75)};n.loc=o.loc||n.loc;n.key=o.key||n.key;if(G.npc)G.npc.deepen(n,o);if(o.liem!=null&&n.sub){n.sub.thanh=clamp(Math.round(o.liem),5,98);n.sub.rong=clamp(Math.round(o.liem*0.7+10),5,98)}return n}
 const get=id=>G.np.get(id);
 function note(n,t){n.ky=n.ky||[];n.ky.push({t:S().t,x:String(t).slice(0,80)});if(n.ky.length>6)n.ky.shift()}
 /* đổi quan hệ với cả nhà; trả về cặp [tên, n] để đặt vào fx(c,{qh:...}) */
-function rel(n,d,why){if(!n)return ['',0];const o=n.rel||0;n.rel=clamp(o+d,-100,100);const dv=Math.round(n.rel-o);if(why)note(n,why);if(dv>=5&&!n.vai.includes('doi_thu')&&n.rel<-40&&!n.vai.includes('doi_thu')){n.vai.push('doi_thu');n.vaiTxt=n.vai.map(v=>VAI[v]||v).join(', ')}return [n.n,dv]}
+function rel(n,d,why){if(!n)return ['',0];const o=n.rel||0;n.rel=clamp(o+d,-100,100);const dv=Math.round(n.rel-o);if(n.house&&G.houseRel&&Math.abs(dv)>=8)G.houseRel(n.house,Math.round(dv/4)); /* d9.12.65: giúp hay làm mất lòng người của một họ thì họ ấy cũng nhớ */if(why)note(n,why);if(dv>=5&&!n.vai.includes('doi_thu')&&n.rel<-40&&!n.vai.includes('doi_thu')){n.vai.push('doi_thu');n.vaiTxt=n.vai.map(v=>VAI[v]||v).join(', ')}return [n.n,dv]}
 function on(n,d){n.on=Math.max(0,(n.on||0)+d)}
 function oan(n,d){n.oan=Math.max(0,(n.oan||0)+d);if(n.oan>=30&&!n.vai.includes('doi_thu')){n.vai.push('doi_thu');n.vaiTxt=n.vai.map(v=>VAI[v]||v).join(', ')}}
 const act=vai=>Object.values(root().np.l).filter(n=>n.ok!==0&&n.vai&&n.vai.includes(vai));
@@ -61,7 +66,7 @@ function tieYear(){const s=root();s.rg.yc=0;
     for(const v of n.vai){const T=TIEACT[v];if(!T)continue;if(s.rg.yc>=2)break;
       if(v==='doi_thu'?(n.rel>-10&&(n.oan||0)<10):(n.rel||0)<T[2])continue;
       let why=null;if(v==='quy_nhan'||v==='ket_nghia'){why=trouble();if(!why&&!((n.on||0)>0))continue;if(!npStable(n,v==='quy_nhan'?2:1))continue}
-      if(chance(T[0]*0.4)){const h=alive().filter(p=>inClan(p)&&!p.away&&age(p)>=16);const tgt=h.length?pick(h):null;if(!tgt)continue;
+      if(chance(T[0]*0.4)){const tgt=G.npc&&G.npc.reach?G.npc.reach(n):null;if(!tgt)continue; /* d9.12.65: chỉ tìm tới người đang ở cùng nơi */
         if(!X.EVMAP[T[1]])continue;
         if(((s.evLast&&s.evLast[T[1]])||-999)>s.t-12)continue; /* d9.12.63: cùng một sự kiện người quen không ra hai lần trong 12 tháng */
         if((s.cool&&(s.cool[T[1]]||-1e9)>s.t&&false))continue;
@@ -97,11 +102,11 @@ function taxCollect(){const t=taxS(),s=S();if(!X.S||!s.money&&s.money!==0)return
   log('Thuế mùa thu ('+POLN[t.pol]+'): nộp '+X.money(pay)+(t.owed>0?', còn nợ '+X.money(t.owed)+' (năm sau tính thêm 20%)':'')+(taxEx()>0.01?'; nhà có phẩm tước được miễn giảm '+Math.round(taxEx()*100)+'%':'')+'.','gd');
   if(t.owed>0)X.fn&&0}
 function taxYear(){taxPolicy();const s=S();/* quan huyện lạm thu: người làm quan thật ở sổ (vai quan_huyen) có tham thì đặt thuế phụ */
-  if(!s.biz&&!G.tierIdx())return;if(chance(0.07+(s.war?0.05:0))&&X.EVMAP.thu_lam_thu&&G.tierIdx()>=1){const h=alive().find(p=>p.id===s.head);if(h)enqueue('ev',h.id,{ev:'thu_lam_thu',data:{}})}}
+  if(!s.biz&&!G.tierIdx())return;const lo=G.localOfficer?G.localOfficer('trihuyen'):null;/* d9.12.65: chỉ khi quan huyện thật đang ngồi ghế ở tỉnh nhà và không thanh liêm (liêm dưới 50) */if(lo&&lo.st.liem<50&&chance(0.07+(50-lo.st.liem)/400+(s.war?0.05:0))&&X.EVMAP.thu_lam_thu&&G.tierIdx()>=1){const h=alive().find(p=>p.id===s.head);if(h)enqueue('ev',h.id,{ev:'thu_lam_thu',data:{}})}}
 G.tax={base:taxBase,ex:taxEx,state:taxS,pol:taxSetPol,POLN};
 /* thu nhập của chức võ sư dân binh và chủ võ đường (v641_vo_do) */
 function statusYear(){alive().filter(p=>inClan(p)&&p.dead==null&&p.flags).forEach(p=>{if(p.flags.vosinh){p.purse=(p.purse||0)+mm(1.5)*3}if(p.flags.vodduong){p.purse=(p.purse||0)+mm(4);if(chance(0.1))G.addStat(p,'vo',1)}})}
 X.yearly.push(tieYear,romYear,taxYear,statusYear);Object.assign(X.fn,{taxCollect});
-Object.assign(G,{tie:{ensure,get,rel,on,oan,act,bonus,later:laterNpc,note,VAI,trouble,stable:npStable},rg:{set:rgSet,get:rgGet,of:rgOf}});
+Object.assign(G,{tie:{ensure,adopt,get,rel,on,oan,act,bonus,later:laterNpc,note,VAI,trouble,stable:npStable},rg:{set:rgSet,get:rgGet,of:rgOf}});
 Object.assign(X.fn,{tieYear,rgFamilyYear});
 });
