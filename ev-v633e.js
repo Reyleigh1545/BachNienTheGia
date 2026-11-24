@@ -26,11 +26,6 @@ J({id:'n633_nong_gieng',t:'Mạch nước dưới ruộng khô',job:['nong'],c:c
   {l:`Thuê người đào giếng đủ sâu (${fm(pay)})`,c:()=>G.money()>=pay,r:RR({suc:0.5,cc:0.5,tri:0.4},0.6),y:c=>`Ba hôm sau nước ứa lên đục ngầu rồi trong dần. Giếng cứu được cả đất nhà lẫn hai nhà bên cạnh.`+fx(c,{money:-pay,m:R(3,5),fame:2,tam:5}),n:c=>`Đào xuống chín thước vẫn khô, tiền công mất, ruộng vẫn nứt.`+fx(c,{money:-pay,tam:-4,suc:-2})},
   {l:'Tự đào cùng người nhà, ngày ngày',r:RR({suc:1,cc:0.7},0.5),y:c=>{busy(c,2);return `Hai tháng đào, tay phồng rộp. Nước đến vào đêm cuối, ai cũng ướt như chuột lột vì mừng.`+fx(c,{m:R(4,6),suc:-2,tam:6,hpMax:1})},n:c=>{busy(c,2);return `Đào mãi không ra, người kiệt lực. Cụ già chỉ lắc đầu: "Sai chỗ rồi."`+fx(c,{suc:-6,tam:-5})}},
   {l:'Bỏ ruộng ấy, chờ mưa',f:c=>`Mưa đến muộn một tháng, vụ ấy mất đến hai phần ba.`+fx(c,{money:-m(3),tam:-4})}]}}),
-J({id:'n633_nong_luan',t:'Cụ già dạy luân canh',job:['nong'],age:[22,60],c:c=>F().own>=2,
- x:c=>`Một cụ già đi ngang thấy đất nhà ${N(c)} bạc màu, bảo: "Ruộng cũng như người, mệt thì phải nghỉ. Mùa này trồng đậu, mùa sau mới lại cấy lúa." ${N(c)} nghi ngờ nhưng cụ nói rất chắc.`,
- o:c=>[
-  {l:'Nghe theo, đổi cách trồng ở một nửa ruộng',r:RR({cc:0.6,tri:0.6,ky:0.4},0.65),y:c=>`Năm sau lúa bông dày hơn hẳn. Hàng xóm kéo đến hỏi, ${N(c)} chỉ lại cách trồng.`+fx(c,{m:R(4,7),tri:1,fame:2,tam:4,sk:{ky:2}}),n:c=>`Đổi cách mà không hợp đất, năm đó giảm sản lượng. Cụ già đã đi xa, không hỏi lại được.`+fx(c,{money:-m(2),tam:-3})},
-  {l:'Bỏ ngoài tai, làm như cũ',f:c=>`Ruộng vẫn thế, năm sau cũng thế.`+fx(c,{tam:-1})}]}),
 K({id:'n633_nong_trau',t:'Con trâu biết đường',job:['nong'],age:[14,60],tier:[0,2],
  x:c=>`Bão qua, con trâu già nhà ${N(c)} sổng chuồng. Đi tìm ba ngày không thấy. Ngày thứ tư nó tự quay về, kéo theo một chiếc xe cũ gãy trục, trên xe là một cái rương nhỏ bọc vải dầu, chủ nhân đã không còn.`,
  o:c=>[
@@ -43,18 +38,6 @@ J({id:'n633_nong_sau',t:'Châu chấu về',job:['nong'],c:c=>F().own>=2,cd:96,
   {l:'Gặt gấp phần lúa chưa chín',f:c=>`Cả nhà gặt như chạy giặc. Lúa non, hạt lép, nhưng còn hơn không có gì.`+fx(c,{money:-m(1),suc:-3,tam:-2})},
   {l:'Cầu trời, ngồi nhìn',f:c=>`Ruộng bị phá sạch. Không còn gì để trách ai.`+fx(c,{money:-m(4),tam:-6})}]}),
 /* ===================== TIỂU NHỊ / BÁN HÀNG ===================== */
-J({id:'n633_tn_quanan',t:'Ông quan ăn quỵ',job:['tieunhi','hangrong'],age:[16,50],cd:72,
- x:c=>`Một ông quan nhỏ vào quán nhà ${N(c)} ăn hết hai mâm cỗ, uống ba bình rượu, đứng dậy phủi tay: "Ghi sổ, tháng sau trả." Cả quán biết "tháng sau" nghĩa là không bao giờ. Chủ quán nhìn ${N(c)} đầy ái ngại.`,
- o:c=>[
-  {l:'Ra giữa quán đọc bài thơ đố, ai giải được thì khỏi trả',r:RR({khau:0.9,tri:0.5,eq:0.4},0.5),y:c=>`Bài thơ khen ông quan rộng lượng mà cuối bài lại ngầm ghi số tiền. Cả quán vỗ tay, ông ta đỏ mặt móc túi ra trả đủ, còn thưởng thêm.`+fx(c,{money:m(R(1,3)),fame:3,sk:{khau:2},tam:6}),n:c=>`Ông ta nghe ra ý, đập bàn. Chủ quán phải xin lỗi rối rít, ${N(c)} bị trừ công.`+fx(c,{money:-m(1),tam:-5})},
-  {l:'Lặng lẽ cho ông ta đi, cắn răng ghi sổ',f:c=>`Số nợ ấy chủ quán lấy lương mình bù. Chẳng ai nhắc lại.`+fx(c,{tam:-3})},
-  {l:'Đòi tiền thẳng, mặc hậu quả',r:RR({gan:0.8,eq:0.5,khau:0.4},0.4),y:c=>`Lời đòi nói dõng dạc đến mức cả quán đứng dậy theo. Ông quan lúng túng, móc đủ tiền, bỏ đi nhanh.`+fx(c,{fame:3,tam:6}),n:c=>`Lính huyện được gọi đến, ${N(c)} bị cảnh cáo về tội "bất kính".`+fx(c,{money:-m(1),fame:-2,tam:-6})}]}),
-J({id:'n633_tn_khachla',t:'Vị khách chỉ gọi nước chè',job:['tieunhi'],age:[16,60],
- x:c=>`Một vị khách mặc áo vải cũ, ngồi từ sáng đến chiều chỉ uống nước chè, ghi chép gì đó vào quyển nhỏ. Chủ quán định đuổi vì chiếm bàn, ${N(c)} thì thấy ông ta nhìn mọi người rất kỹ, như đang tìm một điều gì.`,
- o:c=>[
-  {l:'Rót nước đầy đủ, mời thêm bánh miễn phí',f:c=>`Trước khi đi, ông để lại một đồng bạc lớn: "Ta đang lập sổ ghi chuyện thiên hạ, quán này tử tế." Hôm sau có người nói ông là quan thanh tra.`+fx(c,{money:m(2),fame:3,eq:1,tam:4})},
-  {l:'Nhắc nhẹ rằng bàn đang đông khách',f:c=>`Ông cười, đứng dậy, trả tiền nước và đi. Không ai biết ông là ai.`+fx(c,{tam:0})},
-  {l:'Ngầm theo dõi xem ông ta ghi gì',r:RR({muu:0.8,tri:0.6},0.5),y:c=>`${N(c)} đọc lén được vài dòng: ông đang ghi giá gạo, giá muối từng quán. Một người lập bảng giá cho quan trên.`+fx(c,{tri:1,sk:{muu:2},tam:2}),n:c=>`Bị bắt gặp, ông nhìn ${N(c)} lạnh lẽo. Chủ quán sau đó trách không ngớt.`+fx(c,{money:-m(1),tam:-4})}]}),
 K({id:'n633_tn_trang',t:'Anh hàng rong khôn khéo',job:['tieunhi','hangrong'],age:[16,40],
  x:c=>`Một tay buôn thuê ${N(c)} bán hàng ngoài chợ, bị chủ quán đối diện gây khó, cả hai đều khôn. Một ngày chủ quán ra đố: ai bán hết hàng trước trưa thì được thêm chỗ bày. Hàng của ${N(c)} chẳng khác hàng người ta, chỉ có cách nói.`,
  o:c=>[
@@ -86,11 +69,6 @@ K({id:'n633_tp_tran',t:'Con trăn tinh trong rừng',job:['tieuphu'],age:[16,50]
   {l:'Cầm rìu đứng chờ, đánh nếu nó ra',r:RR({vo:1,gan:0.8,suc:0.5},0.35),y:c=>`Một nhát rìu trúng vào chỗ yếu sau đầu. Con trăn quằn quại rồi chết. Da nó dài hơn năm sải, bán được rất nhiều tiền, cả vùng đồn tên ${N(c)}.`+fx(c,{money:m(R(8,14)),fame:R(6,10),vo:2,tam:8}),n:c=>`Con trăn quá nhanh, ${N(c)} bị quất ngã, gãy xương sườn. Thoát được nhờ bụi gai.`+fx(c,{suc:-12,tam:-6})},
   {l:'Về báo làng, kêu gọi dân cùng vây',f:c=>`Dân làng vây ba ngày. Con trăn bị bắt, mỗi người một phần thịt và da. ${N(c)} được tiếng cầm đầu.`+fx(c,{money:m(R(4,6)),fame:4,eq:1,tam:5})},
   {l:'Bỏ rừng ấy, tìm lối khác',f:c=>`Không ai trách, nhưng bó củi ấy vẫn nằm đó.`+fx(c,{tam:-2})}]}),
-J({id:'n633_tp_bay',t:'Bẫy bị phá',job:['tieuphu'],cd:60,
- x:c=>`Sáng ra ${N(c)} thấy sáu cái bẫy đặt dọc suối bị tháo sạch. Dấu chân người lạ in rõ trên bùn. Mấy hôm trước có toán thợ săn từ vùng khác tới.`,
- o:c=>[
-  {l:'Lần theo dấu chân, đòi người ta trả',r:RR({vo:0.6,muu:0.7,gan:0.5},0.5),y:c=>`Gặp họ bên suối, nói vài lời cứng, họ hiểu ra mình đã vào đất người. Hai bên thỏa thuận chia vùng săn.`+fx(c,{money:m(1),fame:2,tam:4}),n:c=>`Họ đông hơn, hăm dọa. ${N(c)} đành rút lui, mất thêm hai cái bẫy.`+fx(c,{tam:-4})},
-  {l:'Đặt bẫy ở chỗ khác',f:c=>`Mất một tuần cho cả thung lũng mới, nhưng thú đông hơn.`+fx(c,{m:R(2,3),tam:1})}]}),
 J({id:'n633_tp_het',t:'Rừng cấm của quan',job:['tieuphu'],cd:72,
  x:c=>`Quan huyện ra lệnh cấm đốn gỗ trong rừng phía bắc vì "giữ cho phủ dựng đền". Từ đó củi trong vùng đắt gấp đôi. Chỗ ấy toàn gỗ tốt, và lính canh chỉ có hai người.`,
  o:c=>[
@@ -120,11 +98,6 @@ J({id:'n633_hr_gui',t:'Lời nhờ của bà lão',job:['hangrong'],age:[16,55],
   {l:'Mang giúp, đưa nguyên vẹn',f:c=>`Người con trai khóc khi nhận gói. Cả hai nhớ ơn lâu, còn ${N(c)} được trả công và ăn một bữa no.`+fx(c,{money:m(1),fame:2,liem:4,tam:6})},
   {l:'Giữ lại nửa số bạc',f:c=>`Hai ngày đường, ${N(c)} nghĩ đi nghĩ lại. Lương tâm không để yên.`+fx(c,{money:m(R(1,2)),liem:-10,tam:-6})},
   {l:'Từ chối vì đường xa',f:c=>`Bà lão mỉm cười buồn, tìm người khác.`+fx(c,{tam:-1})}]}),
-K({id:'n633_hr_tre',t:'Cây tre trăm đốt',job:['hangrong','tieunhi'],age:[16,40],tier:[0,2],
- x:c=>`Một ông chủ nhà giàu hứa gả con gái cho ai tìm được cây tre đủ trăm đốt. ${N(c)} nghe người hàng quán bàn tán. Ai cũng cười bảo chẳng có thật, ông chủ chỉ muốn đuổi khéo. Nhưng ông già bán tre ngoài chợ chợt nháy mắt với ${N(c)}.`,
- o:c=>[
-  {l:'Hỏi ông già bán tre, nhờ chỉ cách',r:RR({tri:0.8,khau:0.6,eq:0.5},0.5),y:c=>`Ông bảo: "Cây không có, nhưng người khôn nối được trăm đốt." ${N(c)} gom ba mươi cây tre nhỏ, nối lại bằng sợi mây, khoét lỗ cho khớp. Ông chủ đứng ngắm hồi lâu rồi cười lớn: "Khá khen. Hứa là hứa." Không gả nhưng thưởng một món tiền lớn.`+fx(c,{money:m(R(5,10)),fame:4,tri:1,tam:7}),n:c=>`Nối vụng, khoảng nối bị gãy khi đo. Ông chủ lắc đầu.`+fx(c,{money:-m(1),tam:-4})},
-  {l:'Bỏ qua, cho là trò chơi chữ',f:c=>`${N(c)} cười rồi quay đi làm việc. Nghe nói có người khác tìm ra.`+fx(c,{tam:-1})}]}),
 /* ===================== GIA NHÂN ===================== */
 J({id:'n633_hau_rac',t:'Việc không ai biết',job:['hau'],cd:72,age:[16,60],
  x:c=>`Quét dọn thư phòng, ${N(c)} thấy một tờ giấy bị vò nhét sau tủ: bản nháp thư gửi quan trên vu cho đối thủ của chủ, kèm lời dặn "đốt đi". Chủ không nhớ để quên, hoặc cố tình.`,
@@ -132,11 +105,6 @@ J({id:'n633_hau_rac',t:'Việc không ai biết',job:['hau'],cd:72,age:[16,60],
   {l:'Đốt đi như lời dặn, không hỏi',f:c=>`Giấy cháy thành tro. Chủ biết ${N(c)} giữ im, mừng thầm. Lương tháng sau nhiều hơn một chút.`+fx(c,{money:m(1),liem:-4,tam:-2})},
   {l:'Cất lại, đề phòng khi cần',r:RR({muu:0.7,eq:0.6,tri:0.4},0.55),y:c=>`Mãi về sau tờ giấy ấy cứu ${N(c)} khỏi một vụ vu oan. Biết giữ là biết sống.`+fx(c,{sk:{muu:2},tam:3}),n:c=>`Chủ phát hiện mất tờ giấy, nghi ngờ. ${N(c)} phải giải thích mãi.`+fx(c,{fame:-1,tam:-5})},
   {l:'Báo cho đối thủ của chủ',f:c=>`Một phần thưởng nhỏ, một bài học lớn: kẻ phản chủ cuối cùng cũng không được ai tin.`+fx(c,{money:m(R(2,4)),liem:-12,fame:-3,tam:-5})}]}),
-K({id:'n633_hau_cau',t:'Cậu chủ nhỏ lạc đường',job:['hau'],age:[16,50],
- x:c=>`Cậu chủ nhỏ của nhà trốn học chạy ra phố, đến tối chưa về. Cả nhà lo, chủ sai ${N(c)} đi tìm. Gần canh hai, ${N(c)} nghe tiếng khóc trong ngôi miếu hoang, và thấy cậu ngồi cạnh một người ăn mày đang chia bánh.`,
- o:c=>[
-  {l:'Dỗ cậu về, nhắn lời cảm ơn người ăn mày',f:c=>`Cậu chủ kể mãi chuyện người ăn mày hát hay. Hôm sau chủ sai mang cơm đến miếu. Chủ khen ${N(c)} khéo nên giao thêm việc nhà.`+fx(c,{money:m(4),fame:2,eq:1,m:R(3,5),tam:6})},
-  {l:'Mắng cậu một trận rồi dẫn về',f:c=>`Cậu khóc suốt đường, chủ biết chuyện mà không nói gì. Không thưởng, không phạt.`+fx(c,{tam:-1})}]}),
 /* ===================== THỢ ===================== */
 J({id:'n633_tho_no',t:'Khách lạ xin xem cơ nỏ',job:['tho'],age:[22,65],c:c=>c.lv>=2,cd:96,
  x:c=>`Một người lạ mặc áo thương nhân ghé xưởng ${N(c)}, ngắm bản vẽ cơ nỏ liên châu treo trên tường: "Thế này mà làm được thật à? Tôi muốn mua mười bộ, trả gấp ba." Người ấy nói giọng lơ lớ, có thể là người nước ngoài.`,

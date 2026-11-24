@@ -115,10 +115,6 @@ const ev=[
  o:c=>[{l:'Chặn lại hỏi',r:[{vo:1,eq:0.5},50],y:c=>'Hóa ra là toán do thám. Bắt sống được hai tên.'+fx(c,{merit:R(5,10),fame:6}),n:c=>'Họ thoát mất, để lại vài vết thương.'+fx(c,{suc:-R(2,6),merit:1})},
   {l:'Theo dõi từ xa, báo lên trên',f:c=>'Cấp trên phái thêm người, công lao ghi chung.'+fx(c,{merit:R(2,4)})},
   {l:'Để họ đi, đỡ gây chuyện',f:c=>'Hôm sau có tin họ cướp một thôn gần đó.'+fx(c,{merit:-2,tam:-5})}]},
-{id:'v64_vo_doi_don',t:'Lệnh điều đồn',job:QN,k:'Quân ngũ',st:1,
- x:c=>`Đô ty gửi lệnh điều ${N(c)} sang đồn xa. Ở đồn mới thì nguy hiểm hơn nhưng dễ lập công.`,
- o:c=>[{l:'Nhận lệnh, lên đường',f:c=>{G.S().queue.push({kind:'office',cid:c.id});return 'Chuẩn bị nhận chức mới.'+fx(c,{merit:R(1,4),tam:-2})}},
-  {l:'Xin ở lại đồn cũ vì gia đình',r:[{eq:1},46],y:c=>'Đô ty chuẩn.'+fx(c,{tam:4}),n:c=>'Không được, lệnh đã xuống.'+fx(c,{tam:-4})}]},
 {id:'v64_vo_tap_tran',t:'Diễn tập quân vệ',job:QN,k:'Quân ngũ',st:1,sea:['xuan','thu'],
  x:c=>`Đô ty tổ chức diễn tập các vệ. ${N(c)} phải đem quân của ${esc(seat(c))} ra đối luyện với đồn khác.`,
  o:c=>[{l:'Dồn sức thắng đồn bạn',r:[{vo:1,tri:0.5,eq:0.3},52],y:c=>'Quân của ngài thắng, được ban thưởng.'+fx(c,{merit:R(4,8),fame:5,money:m(2)}),n:c=>'Thua đậm, cả vệ bị cười.'+fx(c,{tam:-5,fame:-3})},
@@ -138,9 +134,9 @@ const ev=[
   {l:'Cho lính làm thêm nghề phụ',f:c=>'Lính có thêm thu nhập, dân cũng quý.'+fx(c,{money:m(2),fame:1})}]},
 /* ================= NHÀ VUA VÀ TRIỀU ĐẠI ================= */
 {id:'v64_dai_xa',t:'Đại xá đầu triều vua mới',k:'Triều đình',w:5,c:()=>{const d=G.S().dyn;return !!d&&d.newT>=0&&G.S().t-d.newT<=18},
- x:c=>`Vua mới ${esc(emp())} lên ngôi, ban chiếu đại xá thiên hạ, miễn thuế nửa năm. Cả làng mở hội ăn mừng.`,
- o:c=>[{l:'Cùng dân làng mừng hội',f:c=>'Lòng dân hân hoan.'+fx(c,{tam:6,fame:3,money:-m(1)})},
-  {l:'Nhân dịp dâng biểu chúc mừng',f:c=>'Tờ biểu ghi tên nhà mình vào sổ triều.'+fx(c,{fame:5,cfame:2})}]},
+ x:c=>{G.tax.pol('mien',12);const p=G.S().people.filter(q=>G.inClan(q)&&q.away&&q.away.type==='luuday');return `Vua mới ${esc(emp())} lên ngôi, ban chiếu đại xá thiên hạ: miễn thuế một năm, giảm án một bậc cho tù nhân.${p.length?' Trong nhà có '+p.map(q=>esc(q.given)).join(', ')+' đang bị lưu đày, nằm trong danh sách được xá.':''} Cả làng mở hội ăn mừng.`},
+ o:c=>{const p=G.S().people.filter(q=>G.inClan(q)&&q.away&&q.away.type==='luuday');const rel=()=>{p.forEach(q=>{q.away=null});return p.length?' '+p.map(q=>esc(q.given)).join(', ')+' được xá, trở về nhà.':''};return [{l:'Cùng dân làng mừng hội',f:c=>'Lòng dân hân hoan, năm nay nhà không phải nộp thuế.'+rel()+fx(c,{tam:6,eq:1,money:-m(1)})},
+  {l:'Nhân dịp dâng biểu chúc mừng',f:c=>'Tờ biểu ghi tên nhà mình vào sổ triều. Năm nay nhà không phải nộp thuế.'+rel()+fx(c,{fame:3,cfame:2,eq:1})}]}},
 {id:'v64_vua_trieu_kien',t:'Vua triệu kiến',job:Q,rmin:5,k:'Triều đình',w:1.2,
  x:c=>`${esc(emp())} triệu ${N(c)} vào điện, hỏi về tình hình dân sinh ở nơi từng làm quan và việc triều chính.`,
  o:c=>[{l:'Thẳng thắn tâu thật',r:[{tri:1,eq:0.7,fame:0.3},52],y:c=>'Vua nghe xong gật đầu, ban vàng lụa.'+fx(c,{fame:R(20,35),money:m(R(8,18)),liem:3}),n:c=>'Lời quá thẳng khiến vua cau mày.'+fx(c,{fame:-6,tam:-6})},
@@ -154,10 +150,6 @@ const ev=[
  o:c=>[{l:'Nhận chức, chấm công tâm',f:c=>'Ân khoa thành công, tiếng ngài lên cao.'+fx(c,{fame:R(10,20),liem:3,m:2})},
   {l:'Xin thôi, tránh thị phi',f:c=>'Người khác thế vào, ngài đỡ lo.'+fx(c,{tam:2})}]},
 /* ================= v6.4.1: đỗ võ cử, chọn bổ dụng ================= */
-{id:'v641_vo_do',t:'Bổ dụng sau võ cử',fixed:1,k:'Võ cử',
- x:c=>`Triều đình xét ${N(c)} ${c.flags.voTop?'đỗ đầu bảng':'đỗ'} võ cử, cho chọn: vào quân ngũ nhận chức ${c.flags.voTop?'Thiên hộ':'Bách hộ'}, hay ở lại nhà giữ danh võ cử.`,
- o:c=>[{l:c.flags.voTop?'Vào quân, nhận chức Thiên hộ':'Vào quân, nhận chức Bách hộ',s:'Rời nhà ra doanh trại, sau đó chọn nơi nhậm chức',f:c=>{G.voEnlist(c,c.flags.voTop?4:3);return `${N(c)} cáo biệt gia đình, mang ấn bổ dụng ra doanh trại.`+fx(c,{fame:R(5,12),tam:4})}},
-  {l:'Ở lại nhà, giữ danh võ cử',f:c=>'Danh võ cử ở lại với dòng họ, đi đâu người ta cũng nể.'+fx(c,{fame:R(4,9),tam:3})}]}
 ];
 /* điều kiện riêng, để không lệch bối cảnh */
 const set=(id,f)=>{CTX[id]=f};

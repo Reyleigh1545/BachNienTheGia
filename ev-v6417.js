@@ -7,7 +7,7 @@ const S=()=>G.S();const m=v=>G.mm(v);const N=c=>esc(c.given);const FM=v=>G.fmtMo
 const cr=()=>{const d=V.d();return d.cr};const NO=[{l:'Cho qua',f:()=>'Mọi chuyện trôi qua.'}];
 const crN=s=>{const C=cr();return C?esc(C[s].n):''};
 const kt=()=>V.type();const kN=()=>V.TN[kt()];const emp=()=>esc(V.d().emp);
-const daughter=()=>G.alive().find(p=>G.inClan(p)&&G.inMain(p)&&p.g==='nữ'&&!p.spouse&&!p.away&&G.age(p)>=14&&G.age(p)<=18);
+const daughter=()=>G.alive().find(p=>G.inClan(p)&&G.inMain(p)&&p.g==='nữ'&&!p.spouse&&!p.away&&G.age(p)>=15&&G.age(p)<=22&&p.mi>=90); /* d9.12 (chủ dự án 24/11): chỉ con gái mị lực từ 90 mới bị gọi tuyển tú */
 const manAt=()=>G.alive().filter(p=>G.inClan(p)&&G.inMain(p)&&p.g==='nam'&&!p.away&&G.age(p)>=16&&G.age(p)<=45&&!G.isHead(p)&&!['quan','quan_ngu','nguy'].includes(p.job)).sort((a,b)=>G.age(a)-G.age(b))[0];
 const deadTxt=r=>r.dead.length?` ${r.dead.map(p=>esc(p.given)).join(', ')} không qua khỏi.`:' Cả nhà may mắn không ai mất mạng.';
 const bestTxt=r=>r.best&&r.best.vo>=60?` ${esc(r.best.given)} cầm đao đứng chắn cổng.`:'';
@@ -18,9 +18,9 @@ L.push(
  x:c=>{const g=daughter();return `Triều đình ban lệnh tuyển tú khắp nơi.${g?` ${N(g)} vừa tuổi cập kê, tên đã có trong sổ của quan huyện.`:' Nhà mình không có con gái hợp tuổi, chỉ nghe người làng than khóc.'}`},
  o:c=>{const g=daughter();if(!g)return [{l:'Thở phào',f:()=>'Nhà mình không phải lo.'}];const v=m(15);return [
   {l:`Dâng ${g.given} vào cung`,ax:{tv:1},f:c=>{g.left='vaocung';g.leftT=S().t;g.flags=g.flags||{};G.later(c,'vp_1',R(3,6),{g:g.id});G.cf(8,'Có con gái vào cung');return `${N(g)} theo xe hoa vào cung. Sống chết, vinh nhục từ nay ở trong tường thành.`+fx(c,{fame:5,tam:-6})}},
-  {l:`Lo lót để được miễn (${FM(v)})`,c:()=>G.money()>=v,vio:'trugian',f:c=>{S().money-=v;return 'Tên con gái được gạch khỏi sổ.'}},
+  {l:`Lo lót để được miễn (${FM(v)})`,c:()=>G.money()>=v,vio:'trugian',r:[{khau:0.7,eq:0.6},58],y:c=>{S().money-=v;return 'Tên con gái được gạch khỏi sổ.'+fx(c,{tam:2})},n:c=>{S().money-=v;g.left='vaocung';g.leftT=S().t;g.flags=g.flags||{};G.later(c,'vp_1',R(3,6),{g:g.id});return 'Việc lo lót bị phát giác: tội lừa dối triều đình. Gia sản bị phạt nặng, gia chủ bị giam vài tháng, con gái vẫn bị đưa đi.'+fx(c,{money:-m(40),fame:-10,liem:-4,risk:6,tam:-12})}},
   {l:`Gả vội ${g.given} cho xong`,ax:{rong:-1},f:c=>{const pt=G.tinh.partner(g);G.tinh.marry(g,pt);return `Đám cưới làm trong ba ngày. ${N(g)} về nhà chồng trước khi quan tới.`}},
-  {l:'Giấu con đi nơi khác',r:[{tri:0.8,eq:0.6},55],ax:{gan:1},y:c=>'Qua được đợt tuyển.',n:c=>{g.left='vaocung';g.leftT=S().t;g.flags=g.flags||{};G.later(c,'vp_1',R(3,6),{g:g.id});return 'Bị phát giác. Con gái vẫn bị đưa đi, nhà còn bị phạt.'+fx(c,{money:-m(8),tam:-10})}}]}},
+  {l:'Giấu con đi nơi khác',r:[{tri:0.8,eq:0.6},55],ax:{gan:1},y:c=>'Qua được đợt tuyển.',n:c=>{g.left='vaocung';g.leftT=S().t;g.flags=g.flags||{};G.later(c,'vp_1',R(3,6),{g:g.id});return 'Bị phát giác. Con gái vẫn bị đưa đi, nhà bị phạt nặng vì giấu người khi quan sở tại đã lập sổ.'+fx(c,{money:-m(25),fame:-6,risk:4,tam:-10})}}]}},
 {id:'tt_xay_cung',t:'Xây cung điện mới',k:'Thời thế',fixed:1,
  x:c=>`Vua ${emp()} cho xây cung điện mới. Mỗi nhà phải góp người đi phu hoặc nộp tiền thay.`,
  o:c=>{const p=manAt();const v=m(10);return [
@@ -29,7 +29,7 @@ L.push(
   {l:'Trốn sưu',r:[{tri:0.6,eq:0.6},55],ax:{gan:1},y:c=>'Quan làm ngơ.',n:c=>'Bị bắt, phạt gấp đôi.'+fx(c,{money:-v*2,tam:-6})}]}},
 {id:'tt_suu_thue',t:'Sưu cao thuế nặng',k:'Thời thế',fixed:1,
  x:c=>`Quốc khố ${V.d().qk<30?'trống rỗng':'thiếu hụt'}, triều đình tăng thuế. Quan huyện đi thu tận nhà.`,
- o:c=>{const v=Math.max(m(5),Math.round(Math.max(0,G.money())*0.08));return [
+ o:c=>{const v=Math.max(m(5),Math.round(G.tax.base()*0.35)) /* d9.12: tính trên mức thuế chuẩn thật, không theo phần trăm quỹ (mục 9) */;return [
   {l:`Nộp đủ (${FM(v)})`,f:c=>{S().money-=v;return 'Nộp xong, thắt lưng buộc bụng.'}},
   {l:'Kêu khó, xin giảm',r:[{eq:1,khau:0.5},55],y:c=>{S().money-=Math.round(v/2);return 'Được giảm một nửa.'},n:c=>{S().money-=v;return 'Quan không nghe.'+fx(c,{tam:-3})}},
   {l:'Cùng cả làng làm đơn phản đối',r:[{eq:0.8,khau:0.8,fame:0.4},62],ax:{gan:2},y:c=>'Quan sợ dân biến, hoãn thu.'+fx(c,{fame:6}),n:c=>{S().money-=Math.round(v*1.5);return 'Người cầm đầu bị đánh trượng, thuế còn bị phạt thêm.'+fx(c,{suc:-12,tam:-8})}}]}},
@@ -39,16 +39,11 @@ L.push(
 {id:'tt_an_dien',t:'Khoa thi ân điển',k:'Thời thế',fixed:1,
  x:c=>`Mừng vua mới lên ngôi, triều đình mở một khoa thi ân điển ngoài lệ ba năm.`,
  o:c=>[{l:'Báo cho con cháu chuẩn bị',f:c=>{S().anK={y:Math.floor(S().t/12)};return 'Tháng Tám năm nay có thi Hương, sang năm có thi Hội.'}}]},
-{id:'tt_vi_hanh',t:'Khách lạ trong làng',k:'Thời thế',fixed:1,
- x:c=>`Một vị khách phong thái khác thường ghé nhà xin nước, hỏi chuyện làm ăn, chuyện quan lại trong vùng. Người hầu theo ông đi đứng như lính.`,
- o:c=>[{l:'Tiếp đãi tử tế',ax:{rong:1},f:c=>{if(chance(kt()==='minh'?0.6:0.3)){G.cf(10,'Được vua vi hành ghé thăm');G.alive().filter(p=>G.inClan(p)&&p.job==='quan').forEach(p=>Q.add(p,{fav:6}));return 'Mấy tháng sau mới biết vị khách là đương kim hoàng đế. Cả vùng truyền tai nhau.'}return 'Khách cảm tạ rồi đi.'+fx(c,{tam:2})}},
-  {l:'Nói thật nỗi khổ của dân',r:[{eq:0.8,gan:0.5},50],ax:{gan:1,thanh:1},y:c=>{V.d().dt=Math.min(100,V.d().dt+2);return 'Khách lặng nghe, gật đầu. Ít lâu sau quan huyện bị cách chức.'+fx(c,{fame:6})},n:c=>'Khách nghe rồi đi, không nói gì.'},
-  {l:'Lánh mặt, cho người nhà tiếp',f:c=>'Khách đi rồi cũng chẳng ai nhớ.'}]},
 /* d9.6: bỏ chiếu cầu hiền chung chung (ai cũng có thể dự thi). Chỉ còn cầu MỘT người cụ thể rất tài mà không ra làm quan, vào một ghế đang trống cần người tài. */
 {id:'tt_cau_hien',t:'Triều đình cầu người tài',k:'Thời thế',fixed:1,
- c:c=>{const vac=Object.values(S().off||{}).some(o=>o&&o.vac);if(!vac)return false;return !!G.alive().find(p=>G.inClan(p)&&G.inMain(p)&&!p.away&&G.age(p)>=22&&G.age(p)<=58&&p.tri>=88&&!['quan','quan_ngu','nguy','vua'].includes(p.job))},
- x:c=>{const p=G.alive().find(p=>G.inClan(p)&&G.inMain(p)&&!p.away&&G.age(p)>=22&&G.age(p)<=58&&p.tri>=88&&!['quan','quan_ngu','nguy','vua'].includes(p.job));return p?`Trong triều đang có một chức khuyết mà mãi chưa tìm được người xứng. Tiếng ${N(p)} học rộng tài cao truyền tới tai vua ${emp()}, dù người ấy chưa từng ra làm quan. Triều đình cho người đến hỏi thăm riêng.`:'Triều đình cần người tài.'},
- o:c=>{const p=G.alive().find(p=>G.inClan(p)&&G.inMain(p)&&!p.away&&G.age(p)>=22&&G.age(p)<=58&&p.tri>=88&&!['quan','quan_ngu','nguy','vua'].includes(p.job));return p?[
+ c:c=>{const vac=Object.values(S().off||{}).some(o=>o&&o.vac);if(!vac)return false;return !!G.alive().find(p=>G.inClan(p)&&G.inMain(p)&&!p.away&&p.g==='nam'&&G.age(p)>=22&&G.age(p)<=58&&p.tri>=88&&!['quan','quan_ngu','nguy','vua'].includes(p.job))},
+ x:(c,d)=>{const p=G.alive().find(p=>G.inClan(p)&&G.inMain(p)&&!p.away&&p.g==='nam'&&G.age(p)>=22&&G.age(p)<=58&&p.tri>=88&&!['quan','quan_ngu','nguy','vua'].includes(p.job));if(p)d.oid=p.id;return p?`Trong triều đang có một chức khuyết mà mãi chưa tìm được người xứng. Tiếng ${N(p)} (trí ${Math.round(p.tri)}, EQ ${Math.round(p.eq)}, ${G.age(p)} tuổi) học rộng tài cao truyền tới tai vua ${emp()}, dù người ấy chưa từng ra làm quan. Triều đình cho người đến hỏi thăm riêng.`:'Triều đình cần người tài.'},
+ o:c=>{const p=G.alive().find(p=>G.inClan(p)&&G.inMain(p)&&!p.away&&p.g==='nam'&&G.age(p)>=22&&G.age(p)<=58&&p.tri>=88&&!['quan','quan_ngu','nguy','vua'].includes(p.job));return p?[
   {l:`Để ${p.given} nhận lời ra làm quan`,ax:{tv:1},f:c=>{const r=G.appoint(p,0);return `${N(p)} được bổ làm ${esc(G.seatName(r.key))}, đúng chức đang cần người.`+fx(p,{fame:8,tam:8})}},
   {l:`Để ${p.given} từ chối, giữ nếp ở nhà`,f:c=>`${N(p)} cảm tạ rồi cáo từ. Người ta khen người ấy không màng danh lợi.`+fx(p,{fame:3,tam:2})}]:[{l:'Chưa ai đủ tài',f:c=>'Đành để cơ hội trôi qua.'}]}},
 {id:'tt_dan_bien',t:'Dân biến',k:'Thời thế',fixed:1,

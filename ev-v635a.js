@@ -81,8 +81,8 @@ HG('at',{id:'hg_a_ghetham',t:'Gia chủ ghé thăm',hw:0.8,hcd:60,hc:(hd,o,i)=>i
   {l:'Cáo bận, chỉ ra cổng chào',f:c=>{i.addRel(-R(4,7));return fx(c,{fame:-1})}}]}}),
 
 HGK('at',{id:'hg_a_monkhach',t:'Được nhận làm môn khách',hw:0.6,hcd:240,
- hc:(hd,o,i)=>i&&i.rel>=20&&alive().some(p=>G.inClan(p)&&age(p)>=14&&age(p)<=30&&!p.away&&Math.max(p.tri,p.vo,p.eq,p.mi)>=55),
- hwho:p=>age(p)>=14&&age(p)<=30&&!p.away&&Math.max(p.tri,p.vo,p.eq,p.mi)>=55,
+ hc:(hd,o,i)=>i&&i.rel>=20&&alive().some(p=>G.inClan(p)&&age(p)>=14&&age(p)<=40&&p.job==='hiep'&&p.away&&p.away.type==='jh'&&Math.max(p.tri,p.vo,p.eq,p.mi)>=55),
+ hwho:p=>age(p)>=14&&age(p)<=40&&p.job==='hiep'&&!!p.away&&p.away.type==='jh'&&Math.max(p.tri,p.vo,p.eq,p.mi)>=55, /* d9.12: chỉ người đang lang bạt giang hồ */
  x:(c,d)=>{const i=I(d);return i?`Gia chủ ${esc(i.headN)} của ${esc(i.name)} để ý ${N(c)} từ lâu, thấy người này chẳng giống con nhà thường. Ông cho người sang hỏi: "Có muốn ra vào nhà tôi, học hỏi với các bậc trong nhà chăng?"`:'Có người để ý tới nhà mình.'},
  o:(c,d)=>{const i=I(d);if(!i)return nope;const k=['tri','vo','eq','mi'].sort((a,b)=>c[b]-c[a])[0];return [
   {l:'Nhận lời, ra vào học hỏi',f:c=>{i.addRel(R(5,9));return `${N(c)} theo hầu mấy tháng, học được nhiều điều mà sách vở nhà thường không dạy.`+fx(c,{[k]:R(2,4),fame:R(3,6),tam:5,eq:1})}},
@@ -94,6 +94,7 @@ HG('near',{id:'hg_n_thu',t:'Thư từ xa',hw:1.1,hcd:36,
  x:(c,d)=>{const i=I(d);return i?`Một lá thư của ${esc(i.name)} từ ${esc(i.seat)} gửi tới, đường xa ${d.hr&&d.hr.mo?d.hr.mo:'vài'} tháng. Họ nghe danh nhà mình, mong có dịp qua lại, mời một người trong nhà đến thăm khi thuận đường.`:'Có thư từ xa.'},
  o:(c,d)=>{const i=I(d);if(!i)return nope;const trip=cost(i,0.12,22),gift=cost(i,0.05,10);return [
   {l:'Cử người đến tận nơi thăm hỏi',s:`Tốn khoảng ${fm(trip)} đường sá và lễ`,c:c=>G.money()>=trip&&G.kinList(c,p=>G.age(p)>=16&&G.age(p)<=60).length>0,go:(c,d)=>G.pickKin(c,{eyebrow:'Quen biết xa',title:'Cử ai đi thăm',text:'Người được cử sẽ thật sự đi đường xa vài tháng. Tài ăn nói của người ấy quyết định mối quen biết. Chọn người nào?',filter:p=>G.age(p)>=16&&G.age(p)<=60,cb:w=>{i.addRel(R(7,12)+(w.eq>=60?3:0));G.setAway(w,{type:'odo',until:S().t+R(2,4)});return `${G.nameOf(w)} lên đường. Chuyến đi vất vả, nhưng được đón tiếp trọng thị. Mối quen biết mới mở ra một cánh cửa.`+fx(c,{money:-trip,fame:R(2,5),cfame:1,tam:3})+fx(w,{eq:1})}})},
+  {l:`Phái một người làm đi thay (${fm(Math.round(trip*0.35/10)*10)})`,c:()=>G.tierIdx()>=2&&G.money()>=Math.round(trip*0.35/10)*10,f:c=>{const f=Math.round(trip*0.35/10)*10;i.addRel(Math.max(1,Math.round((R(7,12))/5)));return 'Người làm mang thư và lễ đi một chuyến. Bên kia tiếp đãi lịch sự, nhưng người ta vẫn nhớ gia chủ chưa đến.'+fx(c,{money:-f})}},
   {l:'Viết thư hồi âm, kèm chút lễ mọn',s:`Tốn khoảng ${fm(gift)}`,c:()=>G.money()>=gift,f:c=>{i.addRel(R(3,6));return 'Thư đi lại thưa thớt nhưng giữ được tình nghĩa.'+fx(c,{money:-gift,fame:1})}},
   {l:'Để đó, không trả lời',f:c=>{i.addRel(-R(1,3));return ''}}]}}),
 

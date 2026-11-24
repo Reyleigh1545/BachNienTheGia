@@ -105,12 +105,6 @@ J({id:'n633_tl_ho',t:'Hồ sơ bị xóa dòng',job:['thulai'],age:[20,65],cd:72
   {l:'Tố cáo cấp trên với thanh tra',r:RR({eq:0.7,khau:0.6,gan:0.5},0.4),y:c=>`Thanh tra đối chiếu bản gốc, tìm ra dòng bị xóa. Cấp trên bị khiển trách, ${N(c)} được khen là người ngay thẳng.`+fx(c,{fame:5,liem:5,m:R(4,6),tam:6}),n:c=>`Hồ sơ bị chuyển đi, ${N(c)} bị thuyên chuyển xa.`+fx(c,{fame:-2,tam:-7})},
   {l:'Lặng lẽ chép lại bản gốc từ sổ cũ',r:RR({tri:0.8,muu:0.6,cc:0.4},0.55),y:c=>`${N(c)} khôi phục dòng bị xóa trong một bản sao riêng, cất kỹ. Mai sau ai tra cứu cũng có chỗ dựa.`+fx(c,{tri:1,sk:{muu:2},liem:3,tam:3}),n:c=>`Chép sai ngày tháng, bản sao vô dụng.`+fx(c,{tam:-3})},
   {l:'Coi như không thấy',f:c=>`Một người dân mất đất mà không biết vì sao. ${N(c)} đi qua mỗi ngày đều thấy mệt.`+fx(c,{liem:-4,tam:-4})}]}),
-J({id:'n633_nd_quen',t:'Bắt kẻ trộm là người quen',job:['nhadich'],age:[20,60],cd:72,
- x:c=>`Truy lùng kẻ trộm kho thóc, ${N(c)} lần ra dấu giày dẫn về căn nhà tranh của một người bạn cũ. Anh ta bần cùng, vợ ốm, con mới sinh, gạo ăn cũng không còn.`,
- o:c=>[
-  {l:'Bắt theo lệ, dẫn về huyện',f:c=>`Bạn cũ bị phạt nặng. Ngày anh ra tù, anh không nhìn ${N(c)}.`+fx(c,{fame:1,liem:3,tam:-8})},
-  {l:'Bảo anh trả lại, xin chủ kho tha, tự mình đền một phần',c:()=>G.money()>=m(2),f:c=>`Chủ kho chấp nhận. Bạn cũ khóc nghẹn, hứa làm lụng trả nợ. Việc êm xuôi.`+fx(c,{money:-m(2),eq:1,tam:6})},
-  {l:'Lờ đi, báo là chưa tìm ra',f:c=>`Hồ sơ vụ trộm bị bỏ lửng. Cấp trên nhận ra ${N(c)} thiếu cương quyết.`+fx(c,{liem:-6,fame:-1,tam:-2})}]}),
 J({id:'n633_nd_vu',t:'Bắt oan người hiền',job:['nhadich'],age:[20,60],cd:96,
  x:c=>`Cấp trên ra lệnh bắt một thầy đồ nghèo với tội "xúi giục dân chúng". ${N(c)} biết thầy ấy chỉ giảng sách, không làm chuyện gì sai. Lệnh có dấu quan, chống lại là mất việc.`,
  o:c=>[

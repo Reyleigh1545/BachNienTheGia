@@ -9,6 +9,8 @@ const N=c=>esc(c.given);
 const P=id=>G.P(id);
 const ax=(c,k)=>G.axv(c,k);
 const busy=(c,mo)=>{c.busyUntil=S().t+mo;return ''};
+/* d9.12: bế quan thật: người ấy rời nhà đúng số tháng (không có thu nhập, không gặp sự kiện), hết hạn mới có kết quả (v62_cg_vo_a_xong) */
+const cgAway=(c,mo,ok,k)=>{if(G.isHead(c)){busy(c,mo);return ok?'Một sáng nhìn lá rơi mà bỗng hiểu.'+fx(c,{vo:R(2,4),suc:-4}):'Luyện quá sức, bị nội thương nhẹ.'+fx(c,{suc:-10,vo:1})}c.away={type:'odo',until:S().t+mo,why:'đang bế quan khổ luyện trong núi',back:'{n} xuống núi sau '+mo+' tháng bế quan.'};G.later(c,'v62_cg_vo_a_xong',mo,{ok,k});return 'Thu xếp việc nhà, một mình vào núi '+mo+' tháng. Chưa biết kết quả ra sao.'};
 const prot=()=>G.protect();
 const hd=()=>G.head();
 const gc=(c,k)=>G.gateCap(c,k);
@@ -84,11 +86,6 @@ return [
  o:[{l:'Tiếp đãi tử tế, giữ lễ',ax:{diem:2},f:c=>'Quan huyện về khen nhà này có gia giáo.'+fx(c,{fame:4,eq:1})},
     {l:'Nhân tiện nhờ vài việc trong làng',r:[{khau:0.5,eq:0.5},40],y:c=>'Quan huyện vâng dạ, việc đường sá trong làng được lo ngay.'+fx(c,{fame:3,hung:2}),n:c=>'Quan huyện vâng nhưng chẳng làm.'+fx(c,{})},
     {l:'Lạnh nhạt, cho biết thân phận',ax:{rong:-3,tv:2},f:c=>'Quan huyện về mặt tái mét. Người đời nói nhà này cậy thế.'+fx(c,{fame:-2,tam:3})}]},
-{id:'v62_q_ha_quan_cau',job:['quan'],t:'Quan dưới đến cầu cạnh',age:[25,85],c:c=>c.lv>=4,w:0.9,cd:30,k:'Hoạn lộ',
- x:c=>`Một viên ${pick(['tri huyện','thông phán','giáo thụ'])} hàm thấp đem lễ đến phủ ${N(c)}, khúm núm xin được chiếu cố khi xét khảo công cuối năm.`,
- o:[{l:'Nhận lễ, hứa lời',ax:{thanh:-3},f:c=>'Thêm một người dưới trướng, túi cũng đầy thêm.'+fx(c,{money:m(R(3,6)),liem:-3})},
-    {l:'Trả lễ, khuyên làm tốt việc dân',ax:{thanh:4},f:c=>'Người kia vừa sợ vừa phục.'+fx(c,{fame:3,liem:2})},
-    {l:'Xem người này có thực tài không',r:[{eq:0.6,tri:0.4},50],y:c=>'Quả có tài. Tiến cử lên, sau này thành cánh tay đắc lực.'+fx(c,{fame:4,sk:{muu:1}}),n:c=>'Nhìn lầm người, về sau hắn làm hỏng việc, liên lụy tiếng mình.'+fx(c,{fame:-4})}]},
 {id:'v62_q_quyen_quy_moi',t:'Thiếp mời của nhà quyền quý',age:[18,80],c:c=>prot()>=5||G.clanTuoc()>0,w:0.6,cd:36,k:'Thế gia',
  x:c=>`Nhà ${pick(['Quốc công','Thượng thư','Đô đốc'])} trong kinh gửi thiếp mời ${N(c)} dự yến thưởng hoa. Thế gia qua lại, một bữa tiệc có khi định cả một mối thông gia.`,
  o:[{l:'Dự tiệc, giữ đúng lễ',r:[{mi:0.5,eq:0.5},45],y:c=>'Ăn nói đúng mực, được các nhà để mắt.'+fx(c,{fame:6,mi:1}),n:c=>'Lỡ lời trước mặt chủ nhà.'+fx(c,{fame:-3,tam:-4})},
@@ -105,11 +102,6 @@ return [
  o:[{l:'Mở tiệc mời cả làng',f:c=>'Ăn uống no say, lời đồn tắt dần.'+fx(c,{money:-m(4),fame:3})},
     {l:'Tìm kẻ tung tin nói chuyện',r:[{khau:0.6,eq:0.4},50],y:c=>'Kẻ kia đuối lý, xin lỗi trước làng.'+fx(c,{fame:3}),n:c=>'Cãi nhau to, càng thêm thù.'+fx(c,{fame:-3,tam:-4})},
     {l:'Lặng lẽ làm việc thiện',ax:{rong:3},f:c=>'Lâu ngày, người ta tự hiểu.'+fx(c,{money:-m(2),fame:4})}]},
-{id:'v62_ho_xa_xin_viec',t:'Họ xa đến nương nhờ',age:[25,85],c:c=>G.tierIdx()>=3&&G.isHead(c),w:0.7,cd:48,k:'Họ hàng',
- x:c=>`Một người nhận là họ xa ba đời, từ quê lên tìm đến, xin gia chủ cho chút việc làm, ăn ở đâu cũng được.`,
- o:[{l:'Cho làm việc ở cơ sở',c:()=>S().biz.length>0,f:c=>'Người này chăm chỉ, cả nhà khen.'+fx(c,{fame:2,on:1})},
-    {l:'Cho ít tiền về quê làm vốn',f:c=>'Người kia lạy tạ ra về.'+fx(c,{money:-m(2),fame:2})},
-    {l:'Không nhận, ai biết thật giả',ax:{rong:-2},f:c=>'Người ấy đi rêu rao nhà giàu quên gốc.'+fx(c,{fame:-2})}]},
 {id:'v62_trom_ngam_nha',t:'Kẻ trộm để mắt',age:[20,85],c:c=>G.tierIdx()>=3&&G.isHead(c)&&prot()<4,w:0.6,cd:60,k:'Gia sự',
  x:c=>`Mấy đêm liền chó sủa dữ, sáng ra thấy dấu chân quanh tường rào. Có người bảo bọn trộm đang dò nhà giàu trong vùng.`,
  o:[{l:'Thuê thêm người canh đêm',f:c=>'Bọn trộm thấy khó, đi chỗ khác.'+fx(c,{money:-m(2)})},
@@ -160,10 +152,6 @@ return [
  x:c=>`Tửu lâu nhận cỗ mừng thọ trăm mâm cho nhà ${pick(['tri phủ','đại thương họ Quách','ông Bá hộ'])}. Bếp trưởng giao ${N(c)} lo món chính.`,
  o:[{l:'Làm món sở trường',r:[{eq:0.4,m:0.6},50],y:c=>'Khách ăn xong hỏi tên người nấu.'+fx(c,{fame:4,m:3,bonus:0.04}),n:c=>'Món mặn quá, bị bếp trưởng mắng.'+fx(c,{tam:-5})},
     {l:'Thử món mới',r:[{tri:0.3,eq:0.3,m:0.5},60],y:c=>'Món mới được khen nức nở, chủ tửu lâu tăng công.'+fx(c,{fame:6,bonus:0.08,m:2}),n:c=>'Món mới thất bại giữa tiệc lớn.'+fx(c,{fame:-3,tam:-6})}]},
-{id:'v62_bep_khach_kho',job:['bep'],t:'Khách kén ăn',age:[16,70],w:1,cd:24,k:'Bếp núc',
- x:c=>`Một vị khách áo gấm trả lại món ăn lần thứ ba, chê "không ra vị". Chưởng quỹ toát mồ hôi.`,
- o:[{l:'Ra tận bàn hỏi khẩu vị',r:[{eq:0.7,khau:0.3},50],y:c=>'Khách gật gù. Hóa ra là người trong phủ quan, từ đó hay ghé.'+fx(c,{bonus:0.05,fame:2}),n:c=>'Khách càng cáu, bỏ đi không trả tiền.'+fx(c,{bonus:-0.02})},
-    {l:'Nấu lại theo kiểu quê nhà',r:[{m:0.6,eq:0.3},45],y:c=>'Khách ăn xong lặng người, nói nhớ mẹ.'+fx(c,{fame:3,eq:1}),n:c=>'Vẫn bị chê.'+fx(c,{tam:-3})}]},
 {id:'v62_bep_tuyen_vao_phu',job:['bep'],t:'Phủ quan tuyển đầu bếp',age:[20,60],c:c=>c.m>=50,w:0.6,cd:60,k:'Bếp núc',
  x:c=>`Phủ Tuần phủ cần đầu bếp nấu cho khách triều đình. Có người tiến cử ${N(c)}.`,
  o:[{l:'Đi thử tài',r:[{m:0.7,eq:0.3},55],y:c=>'Được nhận, tiền công gấp rưỡi.'+fx(c,{bonus:0.15,fame:5}),n:c=>'Không được chọn.'+fx(c,{tam:-3})},
@@ -201,8 +189,11 @@ return [
     {l:'Tự mình suy ngẫm',f:c=>'Ngộ ra được một chút.'+fx(c,{tri:1})}]},
 {id:'v62_cg_vo_a',t:'Bức tường vô hình',age:[18,80],c:c=>inGate(c,'vo'),w:1,cd:36,k:'Cảnh giới',
  x:c=>`Luyện mãi một bộ quyền, ${N(c)} thấy mình đã nhanh nhất có thể, nhưng vẫn cảm giác còn gì đó chưa thông.`,
- o:[{l:'Vào núi khổ luyện (ba tháng)',r:[{vo:0.6,suc:0.4},55],y:c=>'Một sáng nhìn lá rơi mà bỗng hiểu.'+busy(c,3)+fx(c,{vo:R(2,4),suc:-4}),n:c=>'Luyện quá sức, bị nội thương nhẹ.'+busy(c,3)+fx(c,{suc:-10,vo:1})},
+ o:[{l:'Vào núi khổ luyện (ba tháng)',r:[{vo:0.6,suc:0.4},55],y:c=>cgAway(c,3,1,'vo'),n:c=>cgAway(c,3,0,'vo')},
     {l:'Tìm người ngang tầm luận võ',r:[{vo:0.8,eq:0.2},55],y:c=>'Đánh ba trăm hiệp, hai bên đều tiến bộ.'+fx(c,{vo:R(1,3),fame:4}),n:c=>'Thua, bị thương ở tay.'+fx(c,{suc:-8,tam:-4})}]},
+{id:'v62_cg_vo_a_xong',fixed:1,t:'Xuống núi sau bế quan',k:'Cảnh giới',
+ x:(c,d)=>d.ok?`${N(c)} xuống núi sau ba tháng khổ luyện, mắt sáng hơn, bước đi nhẹ hơn. Một sáng nhìn lá rơi, ${N(c)} bỗng hiểu điều chưa thông.`:`${N(c)} xuống núi sau ba tháng, người gầy và tay còn run: luyện quá sức nên nội thương nhẹ, chỉ ngộ được chút ít.`,
+ o:(c,d)=>[{l:'Tĩnh dưỡng vài ngày rồi trở lại việc nhà',f:c=>(d.ok?'Cảnh giới được mở thêm một bước.'+fx(c,{vo:R(2,4),suc:-4,tam:5}):'Nghỉ ngơi cho lại sức, vẫn học thêm được ít điều.'+fx(c,{suc:-10,vo:1,tam:-3}))}]},
 {id:'v62_cg_vo_b',t:'Kiếm phổ thất truyền',age:[18,80],c:c=>inGate(c,'vo'),w:0.6,cd:60,ky:1,k:'Cảnh giới',
  x:c=>`Một người buôn đồ cổ mang tới cuộn lụa vẽ những thế kiếm kỳ lạ, nói là di vật của một danh gia đã tuyệt tự.`,
  o:c=>[{l:`Mua về nghiền ngẫm (${G.fmtMoney(m(8))})`,c:()=>G.money()>=m(8),f:c=>'Mất nửa năm mới hiểu được ba thế.'+busy(c,6)+fx(c,{money:-m(8),vo:R(3,5)})},
@@ -273,10 +264,6 @@ return [
  o:[{l:'Cho theo học phường dệt',f:c=>{c.pre.det=(c.pre.det||0)+5;return 'Được nhận vào học.'+fx(c,{mi:1,tam:4})}},
     {l:'Đem khăn bán thử',f:c=>'Bán được giá.'+fx(c,{purse:m(0.4),tam:3})}]},
 /* ================= việc nặng ở nhà, tự làm chủ ================= */
-{id:'v62_tu_lam_khach_quen',t:'Khách quen',age:[18,75],c:c=>G.selfEmp(c)&&!['nong','chu'].includes(c.job),w:1,cd:24,k:'Tự làm',
- x:c=>`Làm ăn tự lực đã lâu, ${N(c)} có mấy mối khách quen. Một người muốn đặt hàng dài hạn, trả trước một nửa.`,
- o:[{l:'Nhận, giữ chữ tín',f:c=>'Thu nhập đều đặn hơn.'+fx(c,{purse:m(R(2,4)),m:1})},
-    {l:'Đòi giá cao hơn',r:[{khau:0.6,eq:0.4},50],y:c=>'Khách chịu giá.'+fx(c,{purse:m(R(3,6))}),n:c=>'Khách bỏ đi tìm người khác.'+fx(c,{})}]},
 {id:'v62_tu_lam_trai_mua',t:'Tháng ế ẩm',age:[18,75],c:c=>G.selfEmp(c)&&!['nong','chu'].includes(c.job),w:0.9,cd:24,k:'Tự làm',
  x:c=>`Tháng này chẳng mấy ai thuê, ${N(c)} ngồi không mấy ngày liền. Tự làm thì không ai trả lương.`,
  o:[{l:'Đi các làng xa tìm việc',r:[{eq:0.4,suc:0.3,khau:0.3},50],y:c=>'Kiếm được mấy mối mới.'+fx(c,{purse:m(1),suc:-3}),n:c=>'Đi mỏi chân mà chẳng được gì.'+fx(c,{suc:-4,tam:-3})},

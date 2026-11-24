@@ -132,10 +132,6 @@ return [
  o:c=>[{l:'Nhận, thuê thêm thợ phụ',s:`Tốn khoảng ${fm(m(3))}`,c:()=>G.money()>=m(3),r:[{vo:0.4,ky:0.4,eq:0.2},DW(0.65,55)],y:c=>'Giao đúng hạn, hàng đẹp. Thương gia dặn lần sau còn đặt.'+fx(c,{money:m(R(8,14))-m(3),fame:R(3,5),m:3}),n:c=>'Hàng giao muộn mấy ngày, bị trừ tiền.'+fx(c,{money:-m(3),tam:-4})},
     {l:'Nhận một nửa số lượng',f:c=>'Thương gia hơi tiếc nhưng nhận. Công việc vừa sức.'+fx(c,{money:m(4),m:1})},
     {l:'Từ chối, sợ quá sức',f:c=>''}]},
-{id:'tho631_thay_la',t:'Thợ lạ truyền mẹo',job:THO,stMax:2,pcd:150,cd:36,
- x:c=>`Một ông thợ từ xa ghé xưởng xin nghỉ chân. Thấy ${N(c)} chăm chỉ, ông gợi ý một mẹo xử lý mối ghép mà trong vùng ít người biết.`,
- o:c=>[{l:'Mời cơm, xin học bằng được',s:`Tốn khoảng ${fm(m(1))}`,c:()=>G.money()>=m(1),f:c=>'Hai bên thức trắng đêm. Sáng ra tay nghề lên một bậc.'+fx(c,{money:-m(1),m:R(4,7),vo:1})},
-    {l:'Nghe qua rồi tự mày mò',f:c=>chance(0.5)?'Làm thử đúng mẹo, sản phẩm đẹp hơn.'+fx(c,{m:R(2,4)}):'Mày mò sai nhiều lần, hỏng ít vật liệu.'+fx(c,{money:-m(1),m:1})}]},
 {id:'tho631_dung_cu',t:'Dụng cụ hỏng giữa mùa đắt hàng',job:THO,pcd:96,
  x:c=>`Giữa lúc khách đông nhất, lưỡi cưa chính của ${N(c)} gãy làm đôi. Thợ rèn đầu chợ báo phải chờ nửa tháng mới có thép.`,
  o:c=>[{l:'Mua lưỡi cưa mới tốn kém ở chợ khác',s:`Tốn khoảng ${fm(m(4))}`,c:()=>G.money()>=m(4),f:c=>'Có đồ nghề mới ngay, kịp làm hàng cho khách.'+fx(c,{money:-m(4),m:1})},
@@ -217,12 +213,6 @@ return [
  o:c=>[{l:'Nộp đủ, tránh rắc rối',f:c=>fx(c,{money:-m(1)})},
     {l:'Hỏi xem lệnh có dán ở cổng chợ không',r:[{tri:0.5,khau:0.5},DW(0.5,50)],y:c=>'Lính không đưa ra được lệnh nào, đành thu giá cũ.'+fx(c,{fame:1,tam:3}),n:c=>'Lính nổi nóng, đạp đổ gánh hàng.'+fx(c,{money:-m(2),tam:-6})},
     {l:'Dọn sang chỗ khác bán',f:c=>'Chỗ mới ít khách hơn nhưng đỡ phải nộp.'+fx(c,{money:-m(0.5)})}]},
-{id:'tn631_khach_sang',t:'Khách sang ghé quán',job:TN,pcd:96,
- x:c=>`Một vị khách ăn mặc sang trọng ghé quán, gọi món ít nhưng đòi hỏi rất khó chiều. ${N(c)} đang bưng bàn.`,
- o:c=>[{l:'Phục vụ chu đáo, nhẹ nhàng',r:[{eq:0.7,khau:0.3},DW(0.65,50)],y:c=>'Khách hài lòng, thưởng hậu và nhắn chủ quán nhớ tên '+N(c)+'.'+fx(c,{money:m(R(2,4)),fame:1,m:2}),n:c=>'Khách vẫn chê, quở trách trước mặt mọi người.'+fx(c,{tam:-5})},
-    {l:'Nhờ người thâm niên ra tiếp thay',f:c=>'Chuyện êm, khách vui, không ai trách.'+fx(c,{tam:1})},
-    {l:'Cãi lại khi bị quở',f:c=>chance(0.3)?'Khách là người quen biết của quan, quán bị phiền.'+fx(c,{money:-m(2),tam:-5,fame:-3}):'Khách hậm hực bỏ đi.'+fx(c,{tam:-2})}]},
-
 /* ============ NÔNG: đường tới ruộng riêng ============ */
 {id:'nong631_khai_hoang',t:'Đất bồi ven sông',job:NONG,sea:['xuan'],c:()=>wet()&&F().own<40,pcd:120,cd:60,
  x:c=>`Sau mùa nước, bãi đất bồi ven sông lộ ra rộng chưa ai cày. Làng cho phép ai khai hoang trước thì được làm chủ, nộp thuế nhẹ ba năm đầu.`,

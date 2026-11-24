@@ -56,14 +56,14 @@ const TOUCH={
  economy:[['Người làm ăn cùng nghề thở dài về cách họ Phạm chèn ép, và hứa sẽ giúp khi cần.',{all:1}],['Hiệu buôn thân họ Phạm để ý đến khoản tiền nhà mình vừa động tới.',{ky:1}]],
  family:[['Nhà thêm việc, thêm người, và thêm sức khi cần đối phó với họ Phạm.',{pw:1}]],
  education:[['Học trò của nhà mình bắt đầu được người ta để ý. Có người nói đời sau sẽ có người dám nói thẳng.',{all:1}]]};
-G.arc.def('pm',{name:'Ân oán họ Phạm',gap:[4,9],
+G.arc.def('pm',{name:'Ân oán họ Phạm',gap:[16,34], /* d9.12: 4-9 tháng -> 16-34 tháng giữa hai bước chính (chủ dự án: tốc độ đi nhanh, không có chiều sâu; 10 bước chạy hết trong 6 năm) */
  theme:a=>{if(a.ch<2||a.ch>5)return null;return {dom:['government','society','economy'],boost:1.25,quiet:a.ch>=4?0.5:0.8}},
  touch:(a,e,c)=>{if(a.ch<2||a.ch>5||!chance(0.35))return '';const dm=(e.meta&&e.meta.d)||'';const L=TOUCH[dm];if(!L)return '';
   if(dm==='government'&&!(c.job==='quan'||c.job==='quan_ngu'))return '';
   if(dm==='economy'&&!['chu','tieunhi','tieuphu','hangrong','tieu','tho','ngu'].includes(c.job))return '';
   if(dm==='education'&&G.age(c)>=26)return '';
   if(dm==='family'&&!(e.meta&&e.meta.s&&/(marriage|birth|child|wed|inherit|household)/i.test(e.meta.s)))return '';const [txt,up2]=pick(L);for(const k in up2)G.arc.add('pm',k,up2[k]);return txt},
- start:()=>{const s=S();return s.t>=96&&hasQuan()&&chance(s.t>=120?0.06:0.04)},
+ start:()=>{const s=S();return (s.t>=96&&hasQuan()&&chance(s.t>=120?0.06:0.04))||(s.t>=300&&G.tierIdx()>=3&&chance(0.04))}, /* d9.12: thêm đường mở thứ hai: nhà từ Hương thân trở lên sau năm 25 dù chưa có quan văn, để ván nào cũng gặp họ Phạm (save 84 năm mở năm 77) */
  onStart:a=>{const w=(S().wr&&S().wr.pm)||{};a.fl.org=w.org||pick(['ruong','so','hon','buon']);a.fl.kind=w.kind||pick(['nguy','manh','muu']);
   const gy=Math.floor(S().t/12);  a.K={n:'Phạm Trung Kiên',g:'Kiên',age:24+gy,rank:0,pow:R(18,24),life:R(70,88),ok:1,sched:[72,192,312,408,504],lag:0};
   a.D={n:'Nguyễn Thành Duy',age:R(28,34),link:0,ok:1};

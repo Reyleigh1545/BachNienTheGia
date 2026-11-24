@@ -134,12 +134,6 @@ K({id:'f633_gieng',t:'Giếng làng cạn nước',age:[18,70],sea:['ha','thu'],
   {l:'Mở cổng, cho cả xóm lấy nước theo phiên',f:c=>`Mỗi ngày hàng chục người xếp hàng. Nhà bớt yên tĩnh nhưng cả làng nhớ. Năm sau khi nhà gặp khó, nhiều tay xúm vào giúp.`+fx(c,{fame:R(4,8),cfame:2,eq:1,tam:8})},
   {l:'Cho nước nhưng thu ít tiền để trả công người múc',f:c=>`Mọi người đồng ý, cũng không phiền lòng. Chuyện lặng lẽ qua.`+fx(c,{money:m(4),fame:1,tam:1})},
   {l:'Giữ nước cho nhà mình',f:c=>`Bên ngoài ai cũng hiểu, nhưng không ai quên.`+fx(c,{fame:-3,eq:-1,tam:-4})}]}),
-K({id:'f633_bado',t:'Bà đồng nói điều chưa đến',age:[20,80],
- x:c=>`Qua chợ phiên, bà đồng già kéo tay ${N(c)} lại, nhìn vào lòng bàn tay lâu thật lâu: "Trong ba năm, nhà này có một việc lớn, sẽ khóc rồi sẽ cười, cuối cùng người ngoài sẽ giúp." Bà không đòi tiền.`,
- o:c=>[
-  {l:'Cúi đầu cảm ơn, không đặt nặng',f:c=>`Câu nói ấy cứ vang trong đầu nhiều đêm. Ba năm sau, khi chuyện đến, ${N(c)} nhớ lại và thấy lòng bình thản.`+fx(c,{tam:3,eq:1})},
-  {l:'Hỏi kỹ từng điều, biếu bà tiền hương',c:()=>G.money()>=m(1),f:c=>`Bà chỉ cười: "Điềm không nói thêm được." ${N(c)} nghe một lúc thì thấy mình đã tin quá.`+fx(c,{money:-m(1),tam:-1})},
-  {l:'Cười, không tin lời đồn thổi',f:c=>`Bà nhìn ${N(c)} rất lâu rồi buông tay. Ba năm sau, có việc xảy ra thật. ${N(c)} chẳng thể không nhớ.`+fx(c,{tam:-2})}]}),
 K({id:'f633_cuoi',t:'Cây đa của ông Cuội',age:[6,16],
  x:c=>`Bà cụ đầu làng kể cho đám trẻ nghe chuyện chú Cuội, người có cây thuốc quý, vì quên lời dặn mà bị cây đưa lên trăng. ${N(c)} nghe tới khuya, ngồi lại bên bà thật lâu: "Bà ơi, cây thuốc thật có không?"`,
  o:c=>[

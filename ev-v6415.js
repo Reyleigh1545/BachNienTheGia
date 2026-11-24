@@ -72,7 +72,7 @@ ev({id:'rg_hoc_chung',t:'Con cháu hai họ học chung',rgcd:96,rg:{f:1,b:POS,c
  o:(c,d)=>{const i=I(d);if(!i)return NO;return [{l:'Mời con cháu nhà ấy sang chơi',ax:{hd:1},f:c=>{i.rel0(6);return 'Bọn trẻ quấn quýt, người lớn cũng thân hơn.'}},{l:'Dặn con cháu giữ khoảng cách',f:c=>{i.rel0(-2);return 'Bọn trẻ buồn, nhưng nghe lời.'}}]}}),
 ev({id:'rg_dam_tang',t:'Đám tang nhà họ khác',rgcd:180,rgg:72,w:0.4,rg:{f:1,b:['men','xala','dongminh','trike','bathoa']},
  x:(c,d)=>{const i=I(d);return i?`Nhà ${nm(i)} có tang. Cả vùng đến viếng.`:''},
- o:(c,d)=>{const i=I(d);if(!i)return NO;const g=m(1+i.tier);return [{l:`Đến viếng, phúng điếu (${FM(g)})`,c:()=>G.money()>=g,ax:{rong:1},f:c=>{S().money-=g;i.rel0(i.band==='bathoa'?12:6);if(i.band==='bathoa')i.addOan(-5);return i.band==='bathoa'?'Thấy nhà mình đến viếng, gia chủ nhà kia cúi đầu đáp lễ. Mối bất hòa dịu đi.':'Lễ viếng chu đáo.'}},{l:'Gửi người đại diện',c:c=>G.kinList(c,p=>G.age(p)>=14).length>0,go:(c,d)=>G.pickKin(c,{eyebrow:'Họ khác',title:'Cử ai đi viếng thay',text:'Người được cử sẽ thật sự đi viếng. Chọn người nào?',filter:p=>G.age(p)>=14,cb:w=>{i.rel0(w.eq>=60?3:1);return `${G.nameOf(w)} đi viếng thay, có mặt cho phải phép.`}})}]}}),
+ o:(c,d)=>{const i=I(d);if(!i)return NO;const g=m(1+i.tier);return [{l:`Đến viếng, phúng điếu (${FM(g)})`,c:()=>G.money()>=g,ax:{rong:1},f:c=>{S().money-=g;i.rel0(i.band==='bathoa'?12:6);if(i.band==='bathoa')i.addOan(-5);return i.band==='bathoa'?'Thấy nhà mình đến viếng, gia chủ nhà kia cúi đầu đáp lễ. Mối bất hòa dịu đi.':'Lễ viếng chu đáo.'}},{l:`Phái người làm đi viếng thay (${FM(m(1))})`,c:()=>G.tierIdx()>=2&&G.money()>=m(1),f:c=>{S().money-=m(1);i.rel0(1);return 'Người làm mang phúng điếu đến viếng thay. Đủ phép tắc, chứ chưa đủ tình.'}},{l:'Gửi người đại diện',c:c=>G.kinList(c,p=>G.age(p)>=14).length>0,go:(c,d)=>G.pickKin(c,{eyebrow:'Họ khác',title:'Cử ai đi viếng thay',text:'Người được cử sẽ thật sự đi viếng. Chọn người nào?',filter:p=>G.age(p)>=14,cb:w=>{i.rel0(w.eq>=60?3:1);return `${G.nameOf(w)} đi viếng thay, có mặt cho phải phép.`}})}]}}),
 ev({id:'rg_suy_cau_dua',t:'Họ suy yếu tìm chỗ dựa',rgcd:120,rg:{f:1,b:['xala','men','dongminh'],d:['down'],c:i=>(i.wealth||50)<35},
  x:(c,d)=>{const i=I(d);return i?`${nm(i)} sa sút, ruộng đã cầm, nhà đã bán bớt. Gia chủ nhà ấy xin nương nhờ thế nhà mình.`:''},
  o:(c,d)=>{const i=I(d);if(!i)return NO;const g=m(8+i.tier*4);return [
@@ -134,11 +134,6 @@ ev({id:'rg_song_con',t:'Một sống một còn',rgcd:120,rg:{b:['songcon']},
   {l:'Nhờ trưởng lão cả vùng đứng ra hòa giải lần cuối',r:[{eq:1,khau:0.6},78],ax:{rong:1},y:c=>{i.rel0(70);i.addOan(-40);i.log('Hòa giải ở bước đường cùng');return 'Trưởng lão cả vùng quỳ giữa hai nhà. Cuối cùng hai gia chủ cùng cúi đầu.'},n:c=>{i.rel0(-5);return 'Hòa giải không thành. Ngày tàn của một trong hai nhà đã gần.'}}]}}),
 
 /* ===================== Hôn nhân ===================== */
-{id:'hn_moi_xau',t:'Mối mai có tiếng xấu',k:'Hôn nhân',w:0.6,cd:60,age:[18,30],c:c=>!c.spouse&&!c.away&&G.inMain(c),
- x:c=>`Bà mối giới thiệu cho ${N(c)} một mối nhà khá giả. Nhưng có người thì thầm: người ấy mê cờ bạc, nợ nần.`,
- o:[{l:'Cho người dò hỏi cho rõ',r:[{tri:0.8,eq:0.5},50],y:c=>'Đúng là có chuyện. Từ chối khéo, may mà biết sớm.'+fx(c,{tam:2}),n:c=>{const sp=G.mkSpouse(c,false);if(sp&&G.D.HABITS.bac)G.addHabit(sp,'bac',35);return 'Dò không ra gì, cứ cưới. Về nhà mới biết lời đồn là thật.'+fx(c,{tam:-6})}},
-    {l:'Lời đồn chưa chắc, cứ cưới',f:c=>{const sp=G.mkSpouse(c,false);if(sp&&chance(0.6)&&G.D.HABITS.bac)G.addHabit(sp,'bac',35);return 'Đám cưới linh đình.'+fx(c,{tam:3})}},
-    {l:'Từ chối ngay',f:c=>'Thà muộn còn hơn lầm.'}]},
 {id:'hn_sinh_le_cao',t:'Nhà gái đòi sính lễ cao',k:'Hôn nhân',w:0.6,cd:60,age:[18,30],g:'nam',c:c=>!c.spouse&&!c.away&&G.inMain(c),
  x:c=>`Một mối rất xứng cho ${N(c)}: con gái nhà gia giáo, đẹp người đẹp nết. Nhưng nhà gái đòi sính lễ gấp đôi lệ thường.`,
  o:c=>{const f=m(30);return [{l:`Chịu, lo đủ sính lễ (${FM(f)})`,c:()=>G.money()>=f,f:c=>{S().money-=f;const sp=G.mkSpouse(c,false);good(sp);return 'Cưới được người vợ hiền.'+fx(c,{tam:6,cfame:2})}},
@@ -161,11 +156,6 @@ ev({id:'rg_song_con',t:'Một sống một còn',rgcd:120,rg:{b:['songcon']},
  x:c=>`Nhà vợ của ${N(c)} có thế lực. Bố vợ ngỏ ý viết thư tiến cử con rể lên một chức cao hơn.`,
  o:[{l:'Nhận lời',ax:{tv:1},f:c=>fx(c,{lv:1,fav:3,loy:0})+' Thư tiến cử có tác dụng.'},
     {l:'Từ chối, muốn tự mình đi lên',ax:{dl:2},f:c=>'Bố vợ khen có chí.'+fx(c,{fame:3})}]},
-{id:'hn_ep_gia',t:'Con không ưng mối nhà chọn',k:'Hôn nhân',w:0.5,cd:96,age:[16,26],c:c=>!c.spouse&&!c.away&&G.inMain(c)&&G.axv(c,'dl')>=60,
- x:c=>`Gia đình đã ưng một mối cho ${N(c)}, nhưng ${N(c)} nhất quyết không chịu, nói lấy người mình không thương thì khổ cả đời.`,
- o:[{l:'Ép cưới, cha mẹ đặt đâu con ngồi đấy',ax:{dl:-2},f:c=>{const sp=G.mkSpouse(c,false);if(sp){c.marT=sp.marT='cuongep';if(c.love!=null)c.love=sp.love=Math.max(0,c.love-20)}G.addStat(c,'tam',-12);return 'Đám cưới diễn ra trong nước mắt.'}},
-    {l:'Chiều con, hủy mối',ax:{dl:1},f:c=>'Nhà kia không vui, nhưng con thì nhẹ lòng.'+fx(c,{tam:6})}]},
-
 /* ===================== Con gái đã gả đi ===================== */
 {id:'xg_qua_tet',t:'Quà Tết từ nhà con gái',fixed:1,k:'Thông gia',
  x:(c,d)=>{const p=xgOf(d);return p?`${N(p)} gửi quà Tết từ nhà họ ${esc(surOf(p))} về, kèm thư hỏi thăm cha mẹ.`:''},
