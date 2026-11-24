@@ -23,7 +23,9 @@ function ensure(c,o){o=o||{};const s=root();
   if(o.main)n.st[o.main]=Math.max(n.st[o.main],R(70,92));
   n.vai=[].concat(o.vai||'quen');n.vaiTxt=o.vaiTxt||n.vai.map(v=>VAI[v]||v).join(', ');n.nghe=o.nghe||NG[n.vai[0]]||'';n.job=o.job||null;n.tier=ti;n.key=o.key||null;
   n.rel=o.rel!=null?o.rel:10;n.on=0;n.oan=0;n.ky=[];n.loc=(s.loc&&s.loc.p)||null;n.src=c?c.id:null;
-  if(o.why)note(n,o.why);return n}
+  if(o.why)note(n,o.why);
+  if(G.npc)G.npc.deepen(n,o); /* d9.13: NPC có quan hệ thì có tính cách, kỹ năng, mục tiêu ẩn, quá khứ (engine-npc.js) */
+  return n}
 const get=id=>G.np.get(id);
 function note(n,t){n.ky=n.ky||[];n.ky.push({t:S().t,x:String(t).slice(0,80)});if(n.ky.length>6)n.ky.shift()}
 /* đổi quan hệ với cả nhà; trả về cặp [tên, n] để đặt vào fx(c,{qh:...}) */
@@ -49,7 +51,7 @@ function tieYear(){const s=root();s.rg.yc=0;
   for(const n of L){const a=G.np.age(n);if(a<14)continue;
     for(const v of n.vai){const T=TIEACT[v];if(!T)continue;if(s.rg.yc>=2)break;
       if(v==='doi_thu'?(n.rel>-10&&(n.oan||0)<10):(n.rel||0)<T[2])continue;
-      if(chance(T[0])){const h=alive().filter(p=>inClan(p)&&!p.away&&age(p)>=16);const tgt=h.length?pick(h):null;if(!tgt)continue;
+      if(chance(T[0]*0.6)){const h=alive().filter(p=>inClan(p)&&!p.away&&age(p)>=16);const tgt=h.length?pick(h):null;if(!tgt)continue;
         if(!X.EVMAP[T[1]])continue;
         if((s.cool&&(s.cool[T[1]]||-1e9)>s.t&&false))continue;
         enqueue('ev',tgt.id,{ev:T[1],data:{npc:n.id}});s.rg.yc++}}}

@@ -196,12 +196,6 @@ return [
  o:c=>[{l:'Nuôi chu đáo, chăm từng bữa',r:[{eq:0.5,ky:0.3,suc:0.2},DW(0.65,50)],y:c=>'Lợn béo tròn, bán dịp Tết được giá. Khoản tiền riêng đáng kể.'+fx(c,{purse:m(R(5,9)),tam:5,m:1}),n:c=>'Lợn bị dịch, chỉ giữ được vài con.'+fx(c,{purse:-m(1),tam:-4})},
     {l:'Nuôi vài con để nhà ăn Tết',f:c=>'Tết nhà có thịt tươi, cả nhà vui.'+fx(c,{tam:6})},
     {l:'Thôi, nhà không có chỗ',f:c=>''}]},
-{id:'noi631_hoc_tho_cam',t:'Học dệt thổ cẩm',job:NOI,c:c=>age(c)<45&&['tay','bac','nam'].includes(reg()),pcd:200,
- x:c=>`Một người quen trong làng sẵn lòng dạy ${N(c)} dệt thổ cẩm vào những buổi nông nhàn, hứa rằng sau này làm thêm có thu.`,
- o:c=>[{l:'Học đều đặn mỗi chiều',s:'Mất nhiều tháng',f:c=>{busy(c,2);return 'Sau mấy tháng, tay nghề khá lên rõ rệt. Có thể làm thêm bán chợ.'+fx(c,{m:R(3,5),mi:1,purse:m(2)})}},
-    {l:'Học qua loa cho biết',f:c=>fx(c,{mi:1})},
-    {l:'Bận việc nhà, không học được',f:c=>''}]},
-
 /* ============ HÀNG RONG / TIỂU NHỊ ============ */
 {id:'hr631_mua_tet',t:'Chợ Tết đông khách',job:HR,sea:['dong'],pcd:48,cd:11,
  x:c=>`Những ngày giáp Tết, chợ đông nghịt người. ${N(c)} nghĩ nên mua thêm hàng để bán được nhiều hơn.`,

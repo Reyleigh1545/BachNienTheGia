@@ -154,10 +154,6 @@ KN({id:'kn_45',ms:1,t:'Quyển da ghi võ công',age:[18,60],c:c=>c.vo>=50&&c.tr
  o:c=>[pay('Mua, đem về tự luyện',15,{r:[{tri:0.7,suc:0.4},50],y:c=>'Luyện ngày đêm, quả có tiến bộ. Chân khí vững hơn bao giờ hết.'+fx(c,{money:-m(15),vo:R(5,9),tam:4}),n:c=>'Luyện vội, chân khí rối loạn.'+fx(c,{money:-m(15),suc:-R(10,18),hpMax:-R(1,3)})}),
   pay('Mua, nhờ thầy võ xem trước',25,{f:c=>'Thầy võ chỉ ra chỗ nguy hiểm, bảo luyện chậm. Tiến bộ vừa, an toàn.'+fx(c,{money:-m(25),vo:R(3,5),tam:3})}),
   {l:'Để lại quyển sách',f:c=>'Nhà sách giữ lại quyển da cho người khác.'}]}),
-KN({id:'kn_56',t:'Danh nho tặng bút',age:[18,70],c:c=>c.tri>=60&&['su','quan','thulai'].includes(c.job),w:0.4,
- x:c=>`Một danh nho ghé thăm huyện, dạo qua nhà ${N(c)}. Đọc xong bài văn của mình, ông gật gù, đưa tặng một cây bút cũ: "Dùng đi, bút này đã viết nhiều chuyện hay".`,
- o:c=>[{l:'Nhận bút, xin được chỉ giáo',f:c=>'Ông chỉ ra ba chỗ trong bài. Cả ba đều đúng.'+fx(c,{tri:R(2,4),fame:4,tam:4})},
-  {l:'Nhận bút, cảm ơn rồi thôi',f:c=>'Cây bút để trên bàn. Văn của mình viết mượt hơn.'+fx(c,{fame:2,tri:1})}]}),
 KN({id:'kn_89',t:'Cơ hội ngàn năm có một',u:'clan',cyc:[30,60],head:1,age:[30,70],tier:[2,6],ms:1,w:0.3,
  x:c=>`Người bạn cũ của cha ${N(c)} từ xa về, kể có một mối làm ăn vừa mở, người biết còn ít. Ông chỉ nói với mình, vì nhớ ơn nhà.`,
  o:c=>[pay('Hùn vốn lớn',100,{r:[{tri:0.6,eq:0.5},55],y:c=>'Mối làm ăn thành. Vốn về gấp hai.'+fx(c,{money:m(200)*1,cfame:3}),n:c=>'Mối làm ăn đổ bể. Người bạn xin lỗi, trả được một phần.'+fx(c,{money:-m(60)})}),
@@ -190,19 +186,10 @@ TG({id:'tg_26',t:'Tiền giả lưu hành',job:['tieunhi','tieuphu','hangrong','
   {l:'Chỉ nhận bạc nén',f:c=>'Khách than phiền. Một vài khách bỏ đi.'+fx(c,{money:-m(3)})},
   {l:'Báo quan',f:c=>'Quan cử người kiểm tra chợ. Tin nhà tốt.'+fx(c,{fame:2})}]}),
 /* ===================== TRIỀU ĐÌNH ===================== */
-CD({id:'cd_01',ms:1,t:'Người lạ theo dõi',job:['quan'],c:c=>c.lv>=3,age:[28,70],w:0.6,
- x:c=>`Đã ba hôm, ${N(c)} thấy cùng một người đàn ông áo xám đứng ở đầu ngõ, lúc nào cũng nhìn về phía cổng nhà. Hắn không giống kẻ bán hàng rong.`,
- o:c=>[{l:'Cho người theo dõi lại',r:[{muu:0.7,tri:0.4},50],y:c=>'Biết hắn là người của một quan lớn trong phe khác, chỉ dò xét. Mình ghi nhớ.'+fx(c,{tam:1,risk:-5}),n:c=>'Bị phát hiện. Từ đó người ta càng nghi.'+fx(c,{risk:8,tam:-2})},
-  {l:'Giữ nếp sống bình thường',f:c=>'Vài ngày sau người đó biến mất. Chưa biết là gì.'+fx(c,{risk:2})},
-  pay('Mời người đó vào nhà, hỏi thẳng',10,{r:[{eq:0.8,khau:0.5},45],y:c=>'Hắn lúng túng rồi thú thật. Mình biết ai sai hắn đến.'+fx(c,{money:-m(10),risk:-3,fame:1}),n:c=>'Hắn bỏ chạy ngay trong đêm.'+fx(c,{money:-m(10),risk:6})})]}),
 CD({id:'cd_31',ms:1,t:'Xin tập ấm cho con',job:['quan'],c:c=>c.lv>=5&&kidsOf(c).some(k=>G.age(k)>=8&&G.age(k)<=22),age:[30,75],
  x:c=>{const k=kidsOf(c).find(k=>G.age(k)>=8&&G.age(k)<=22);return `Lệ triều cho con quan từ Tứ phẩm được tập ấm, vào Giám sinh hoặc nhận chức nhỏ không qua thi. ${N(c)} đang nhìn ${k?esc(k.given):'đứa con'} và nghĩ ngợi.`},
  o:c=>{const k=kidsOf(c).find(k=>G.age(k)>=8&&G.age(k)<=22);return [
   pay('Xin tập ấm cho con',50,{f:c=>{if(k)k.flags.am=1;return 'Con được vào Giám sinh. Thanh lưu hơi nhìn nghiêng, nhưng đường đi nhẹ nhàng hơn.'+fx(c,{money:-m(50),fame:-2,cfame:2})+(k?fx(k,{tam:3}):'')}}),
   {l:'Để con tự thi',f:c=>'Con phải học nhiều năm. Thanh lưu nể mình.'+fx(c,{fame:3,liem:3})+(k?fx(k,{tri:1}):'')}]}}),
-CD({id:'cd_42',t:'Chuyện mua hàm Giám sinh',head:1,age:[28,70],tier:[3,6],ms:1,w:0.6,
- x:c=>`Một người môi giới nhắc ${N(c)}: triều đình đang cho "quyên nạp", bỏ bạc ra là được hàm Giám sinh cho con cháu, miễn lao dịch cho cả nhà. Người ta bàn tán không ít.`,
- o:c=>[pay('Quyên nạp một hàm',150,{r:[{muu:0.5,eq:0.5},70],y:c=>'Giấy tờ đàng hoàng. Cả nhà được miễn dịch, con cháu có đường vào học.'+fx(c,{money:-m(150),cfame:4,fame:-2}),n:c=>'Người môi giới ăn chặn một nửa rồi biến mất.'+fx(c,{money:-m(150),fame:-3})}),
-  {l:'Từ chối, giữ phép tắc',f:c=>'Thanh lưu khen. Nhà vẫn chịu lao dịch.'+fx(c,{fame:2,liem:2})}]})
 ];
 });
