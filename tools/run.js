@@ -17,7 +17,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
  await send('Page.navigate',{url});await sleep(2500);
  console.log('boot:',await ev(`(()=>{const b=document.querySelector('[data-m="new"]');if(b)b.click();return !!b})()`));
  await sleep(500);
- console.log('modal:',await ev(`(document.querySelector('#modal')||{}).innerText?.slice(0,200)`));console.log('setup:',await ev(`(()=>{let b=document.querySelector('#modal [data-go]');if(!b){const all=[...document.querySelectorAll('#modal .choices button, #modal [data-slot]')];const x=all.find(y=>/trống/i.test(y.innerText))||all[0];if(x)x.click();b=document.querySelector('#modal [data-go]')}if(b)b.click();return !!b})()`));
+ console.log('modal:',await ev(`(document.querySelector('#modal')||{}).innerText?.slice(0,200)`));console.log('setup:',await ev(`(()=>{let b=document.querySelector('#modal [data-go]');if(!b){const all=[...document.querySelectorAll('#modal .choices button, #modal [data-slot]')];const x=all.find(y=>/trống/i.test(y.innerText))||all[0];if(x)x.click();{const y=document.querySelector('#modal [data-y]');if(y)y.click()}b=document.querySelector('#modal [data-go]')}if(b)b.click();return !!b})()`));
  await sleep(800);
  console.log('state:',await ev(`(()=>{const S=BNTG.S();return S?('t='+S.t+' people='+S.people.length+' head='+S.head):'no S'})()`));
  console.log(await ev(require('fs').readFileSync(process.argv[3],'utf8')));

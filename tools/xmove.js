@@ -8,7 +8,7 @@
    Sau khi apply: node --check, node tools/make-admin.js, chạy tools/fulltest.js. */
 const fs=require('fs'),path=require('path');
 const ROOT=path.join(__dirname,'..');const ENG=path.join(ROOT,'engine.js');
-const args=process.argv.slice(2);const pack=args[0];const spec=(args[1]||'').split(',').filter(Boolean);const APPLY=args.includes('--apply');
+const args=process.argv.slice(2);const pack=args[0];const spec0=(args[1]||'').split(',').filter(Boolean);const EXCL=new Set(spec0.filter(x=>x[0]==='-').map(x=>x.slice(1)));const spec=spec0.filter(x=>x[0]!=='-'); /* -tên: loại hàm khỏi nhóm */const APPLY=args.includes('--apply');
 if(!pack||!spec.length){console.log('Dùng: node tools/xmove.js <tên gói> <hàm,hàm,tiền_tố*> [--apply]');process.exit(1)}
 const src=fs.readFileSync(ENG,'utf8');
 /* ---- bộ tách từ ---- */
@@ -65,7 +65,9 @@ const LETS=new Set();{const re=/^(let|var)\s+([^;\n]+)/gm;let m;while((m=re.exec
 const isLetName=w=>LETS.has(w);
 /* chọn hàm */
 let chosen=[];spec.forEach(sp=>{if(sp.endsWith('*')){const p=sp.slice(0,-1);FN.forEach((b,nm)=>{if(nm.startsWith(p))chosen.push(nm)})}else if(FN.has(sp))chosen.push(sp);else console.log('Không thấy hàm: '+sp)});
-chosen=[...new Set(chosen)];
+chosen=[...new Set(chosen)].filter(n=>!EXCL.has(n));
+/* bỏ hàm đã là dòng chuyển (ENGX.fn.<tên>): chuyển tiếp nữa sẽ đè thân thật ở gói khác và gây đệ quy vô hạn */
+chosen=chosen.filter(n=>{const b=FN.get(n);const t=body.slice(b.st,b.en);const stub=t.length<300&&/ENGX.fn./.test(t);if(stub)console.log('Bỏ qua (đã là dòng chuyển): '+n);return !stub});
 if(!chosen.length){console.log('Không chọn được hàm nào');process.exit(1)}
 const moved=new Set(chosen);
 const needEC=new Set(),readLets=new Set(),writeLets=new Set(),warn=[];
