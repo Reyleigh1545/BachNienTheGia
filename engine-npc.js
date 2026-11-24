@@ -61,7 +61,9 @@ function becomeAdult(n,a){n.adult=1;n.stage='lon';const st=n.st||{tri:50,vo:50,m
 const GIVEN_M=['Quang','Văn','Đức','Minh','Thành','Hữu','Bảo','Nhật'],GIVEN_N=['Anh','Bình','Cường','Dũng','Hải','Khải','Long','Nam','Phúc','Sơn'],GIVEN_F=['Thu','Lan','Hoa','Mai','Ngọc','Liên','Hạnh','Thảo'];
 function lifeFam(n,a){n.fam=n.fam||{spouse:false,kids:0};
   if(!n.fam.spouse&&a>=20&&a<=40&&chance(0.14)){n.fam.spouse=true;pastAdd(n,'Lập gia đình')}
-  if(n.fam.spouse&&a>=22&&a<=44&&(n.fam.kl||[]).length<4&&chance(0.14)){const sur=String(n.n).split(' ')[0];const g=chance(0.5)?'nam':'nữ';const nm=sur+' '+(g==='nam'?pick(GIVEN_M)+' '+pick(GIVEN_N):pick(GIVEN_F)+' '+pick(['Hương','Lụa','Nhi','Yến','Chi','Vy']));
+  const worth=(n.rel||0)>=15||(n.on||0)>0||(n.oan||0)>0||!!n.house||(n.tier||0)>=4||(n.vai||[]).some(v=>KEEPV.includes(v)); /* d9.12.69: chỉ NPC có ý nghĩa với nhà mới có con là NPC thật (bot 50 năm: NPC con cháu phình tới 449 người sống) */
+  if(n.fam.spouse&&a>=22&&a<=44&&(n.fam.kl||[]).length<4&&chance(0.14)&&!worth&&(n.fam.kids||0)<4){n.fam.kids=(n.fam.kids||0)+1}
+  if(n.fam.spouse&&worth&&a>=22&&a<=44&&(n.fam.kl||[]).length<4&&chance(0.14)){const sur=String(n.n).split(' ')[0];const g=chance(0.5)?'nam':'nữ';const nm=sur+' '+(g==='nam'?pick(GIVEN_M)+' '+pick(GIVEN_N):pick(GIVEN_F)+' '+pick(['Hương','Lụa','Nhi','Yến','Chi','Vy']));
     const kid=G.np.new({n:nm,g,age:0,role:'quen'});const st=n.st||{};const mix=k=>clamp(Math.round((st[k]||50)+R(-14,14)),10,98);kid.st={tri:mix('tri'),vo:mix('vo'),mi:mix('mi'),eq:mix('eq')};
     kid.vai=['quen'];kid.vaiTxt=kid.vai.map(v=>G.tie.VAI[v]||v).join(', ');kid.nghe='con của '+n.n;kid.tier=n.tier;kid.loc=n.loc;kid.parent=n.id;kid.guard='cha mẹ';kid.key='con_'+kid.id;kid.rel=Math.round((n.rel||0)*0.4);kid.on=0;kid.oan=0;kid.ky=[];kid.src=n.src;
     if(n.fid){kid.fid=n.fid;const F=S().np.hs&&S().np.hs[n.fid];if(F)F.mem.push(kid.id)}deepen(kid,{why:'con của '+n.n});n.fam.kl=(n.fam.kl||[]).concat(kid.id);n.fam.kids=n.fam.kl.length;pastAdd(n,'Có thêm con')}}
@@ -89,7 +91,18 @@ function die(n){const s=S();n.ok=0;n.dead=s.t;pastAdd(n,'Qua đời');if(n.seat)
     deepen(kid,{why:'là con của '+n.n});if(kid.oan>=15)kid.goal={k:'bao_thu',p:0,t:s.t};else if(kid.on>=5)kid.goal={k:'bao_an',p:0,t:s.t};pastAdd(kid,'Cha là '+n.n+(n.dead!=null?' (đã mất)':''));
     n.heir=kid.id}
   return n}
+/* d9.12.69: trần NPC còn sống (save họ Công Tôn: 231 NPC, 128 sống cho một nhà 12 người): quá 90 thì NPC lâu năm, không quan hệ ơn oán, không giữ ghế, không có con hay họ, không có việc hẹn, được cho xa nhà (ok=0, arch), cũ nhất trước */
+const KEEPV=['doi_thu','an_nhan','ban_than','quy_nhan','ket_nghia','thay','mon_sinh','nguoi_thuong','tinh_dich','khach'];
+function archiveNpc(s,L){const live=L.filter(n=>n.ok!==0);if(live.length<=90)return;const ref=new Set();(s.sched||[]).forEach(x=>{if(x.data&&x.data.npc)ref.add(x.data.npc)});Object.values(s.off||{}).forEach(o=>{if(o&&o.np)ref.add(o.np)});const byId=Object.fromEntries(live.map(n=>[n.id,n]));
+  const tt=n=>n.parent&&byId[n.parent]?Math.min(n.t||0,byId[n.parent].t||0):(n.t||0);
+  const base=n=>!ref.has(n.id)&&!n.seat&&!n.house&&Math.abs(n.rel||0)<12&&!(n.on||0)&&!(n.oan||0)&&!(n.vai||[]).some(v=>KEEPV.includes(v))&&s.t-tt(n)>=240;
+  const A=new Set(live.filter(base).map(n=>n.id));
+  for(let k=0;k<3;k++){live.forEach(n=>{if(!A.has(n.id))return;if(n.parent&&byId[n.parent]&&!A.has(n.parent))A.delete(n.id); /* con ở lại khi cha mẹ ở lại */
+    if((n.fam&&n.fam.kl||[]).some(i=>byId[i]&&!A.has(i)))A.delete(n.id)})} /* cha mẹ ở lại khi con còn ở lại */
+  const cand=live.filter(n=>A.has(n.id)).sort((a,b)=>tt(a)-tt(b));
+  let over=live.length-90;for(const n of cand){if(over<=0)break;n.ok=0;n.arch=s.t;pastAdd(n,'Đã xa nhà, không còn qua lại');over--}}
 function npcYear(){const s=S();if(!s||!s.np||!s.np.l)return;
+  archiveNpc(s,Object.values(s.np.l));
   const L=Object.values(s.np.l).filter(n=>n.ok!==0&&n.vai&&n.vai.length);
   for(const n of L){if(!n.sub)deepen(n);const a=nage(n);if(a<18){kidLife(n,a);continue}if(!n.adult)becomeAdult(n,a);lifeFam(n,a);seatYear(n,a);
     /* sống và chết */

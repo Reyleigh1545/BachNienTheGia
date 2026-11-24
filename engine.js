@@ -1207,6 +1207,7 @@ function ledCheck(){const out=[];const L=S.evl||[];const byp=Object.fromEntries(
     else if(kind==='ev'&&ev)out.push(`${ev}@${y}: sự kiện không còn trong kho`)}
   return out}
 function popOpt(c,o){if(DRY||!S||!S.evl||!c)return;for(let i=S.evl.length-1,n=0;i>=0&&n<40;i--,n++){const e=S.evl[i];if(e[1]===c.id&&e[4]==null){e[4]=String(o&&o.l||'').replace(/<[^>]*>/g,'').slice(0,40);return}}}
+const FIXCD={tie_an_nhan_tra:[18,72],w63_duong_xa:[12,60],tc_cuop_duong:[24,120],rg_tranh_cai:[12,48],rg_chen_ep:[18,60],hg_n_tindon:[18,48]};
 function showPopup(it,c){
   popLog(it,c);
   const skip=()=>{popSkip(c);setTimeout(nextPopup,0)};
@@ -1216,6 +1217,7 @@ function showPopup(it,c){
   switch(it.kind){
     case 'ev':{const ev=EVMAP[it.ev];if(!ev){skip();return}const d=it.data||{};
       if(ev.job&&!d._force&&!jobMatch(ev,c)){skip();return} /* d9.12.68: nghề đổi giữa lúc xếp hàng và lúc hiện hộp */
+      {const rc=FIXCD[it.ev];if(rc&&!d._force){const k1='fcd|'+it.ev,k2=k1+'|'+c.id;if((S.cool[k1]||-1e9)>S.t||(S.cool[k2]||-1e9)>S.t){if(d.npc&&(d._dly||0)<4)later(c,it.ev,12,Object.assign({},d,{_dly:(d._dly||0)+1}));skip();return}S.cool[k1]=S.t+rc[0];S.cool[k2]=S.t+rc[1]}} /* d9.12.69: chống lặp cho việc cố định hay lặp (save họ Công Tôn: tie_an_nhan_tra 10 lần, 2 lần cùng tháng; w63_duong_xa cách 3 tháng; tc_cuop_duong cách 4 tháng): [tháng giữa hai lần trong cả nhà, tháng trên cùng một người] */
       if(it.ev==='bat_linh'&&(c.away||c.job==='quan_ngu')){skip();return}
       if(/^tc_/.test(it.ev)&&!(S.dyn&&S.dyn.cr)){skip();return}
       /* v6.7.0-d5.1: sự kiện cố định do hệ thống khác gọi thẳng (nhà chật, thời thế, sứ giả...) cũng phải cách nhau mười năm; bước nối tiếp trong chuỗi (có dữ liệu kèm theo) thì không bị chặn */
