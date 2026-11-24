@@ -38,11 +38,6 @@ J({id:'n633_nong_sau',t:'Châu chấu về',job:['nong'],c:c=>F().own>=2,cd:96,
   {l:'Gặt gấp phần lúa chưa chín',f:c=>`Cả nhà gặt như chạy giặc. Lúa non, hạt lép, nhưng còn hơn không có gì.`+fx(c,{money:-m(1),suc:-3,tam:-2})},
   {l:'Cầu trời, ngồi nhìn',f:c=>`Ruộng bị phá sạch. Không còn gì để trách ai.`+fx(c,{money:-m(4),tam:-6})}]}),
 /* ===================== TIỂU NHỊ / BÁN HÀNG ===================== */
-K({id:'n633_tn_trang',t:'Anh hàng rong khôn khéo',job:['tieunhi','hangrong'],age:[16,40],
- x:c=>`Một tay buôn thuê ${N(c)} bán hàng ngoài chợ, bị chủ quán đối diện gây khó, cả hai đều khôn. Một ngày chủ quán ra đố: ai bán hết hàng trước trưa thì được thêm chỗ bày. Hàng của ${N(c)} chẳng khác hàng người ta, chỉ có cách nói.`,
- o:c=>[
-  {l:'Thay cách rao, kể chuyện khôi hài cho khách cười',r:RR({khau:1,eq:0.7,mi:0.3},0.5),y:c=>`Câu rao thành thơ, khách đứng nghe cười nghiêng ngả, mua hàng ào ào. Chưa đến trưa đã hết sạch. Chủ quán đối diện đành giữ lời.`+fx(c,{money:m(4),fame:4,sk:{khau:3},m:R(3,5),tam:6}),n:c=>`Nói nhiều mà khách không mua. Trưa vẫn còn nửa gánh.`+fx(c,{tam:-3})},
-  {l:'Hạ giá để thắng, chịu lỗ',f:c=>`Bán hết sớm nhưng lỗ vốn. Được thêm chỗ, mất tiền.`+fx(c,{money:-m(1),tam:1})}]}),
 /* ===================== KHUÂN VÁC / BẾN ===================== */
 J({id:'n633_kv_bao',t:'Bao hàng lạ',job:['khuanvac'],age:[16,55],cd:72,
  x:c=>`Khi khuân hàng lên thuyền, ${N(c)} nhận thấy một bao gạo nặng hơn hẳn mức, tiếng kêu leng keng bên trong. Chủ hàng đang đứng xa nói chuyện với nha dịch, ánh mắt thỉnh thoảng nhìn sang.`,

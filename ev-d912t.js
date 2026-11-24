@@ -43,18 +43,6 @@ FX({id:'tpha_e',t:'Lễ ra mắt gia phả',k:'Mục tiêu gia tộc',head:1,
   {l:'Đọc lời mở đầu, đọc tên từng đời tổ tiên, dâng hương',f:c=>{G.tie.rel(n,24,'cùng ra mắt gia phả');addVai(n,'quy_nhan');const L=youngKin(c);L.forEach(p=>{G.addStat(p,'tri',good?3:2);G.addStat(p,'eq',good?3:2)});G.cf(good?10:5,'Gia phả họ '+S().surname+' ra mắt');return `Mọi người lặng đi khi tên các cụ được xướng lên từng đời. ${good?'Cả từ đường rưng rưng.':'Không khí trang trọng.'} Con cháu trong nhà học được gia huấn từ những dòng chữ ấy.`+fx(c,{eq:3,cfame:good?R(8,14):R(4,7),on:good?5:3,tam:9,hpMax:good?1:0,qh:[n.n,24]})}},
   {l:'Tặng mỗi nhánh một lễ vật nhỏ và lời cảm tạ, mời cả họ dùng cơm đoàn viên',c:()=>G.money()>=m(12),f:c=>{G.tie.rel(n,16,'cùng ăn cơm đoàn viên');const L=youngKin(c);L.forEach(p=>G.addStat(p,'eq',1));return `Bữa cơm đoàn viên lớn nhất trong nhiều năm. Các nhánh xa gần nhau hơn.`+fx(c,{money:-m(12),eq:2,cfame:3,on:4,tam:8,qh:[n.n,16]})}}]}}),
 /* ============ KỲ NGỘ GIA TỘC (3) ============ */
-E({id:'ky_gt_hom_bac',t:'Hòm bạc dưới gốc cau',k:'Kỳ ngộ gia tộc',ky:1,good:1,u:'clan',cyc:[25,50],head:1,age:[28,85],w:0.5,
- x:c=>`Đào móng xây lại bếp, thợ đụng phải một chiếc hòm sắt dưới gốc cau già. Mở ra là một số bạc cũ cùng mảnh giấy ghi tên một người tổ đời trước: "để dành cho con cháu gặp hoạn nạn".`,
- o:c=>[
-  {l:'Dùng số bạc vào việc có ích cho cả họ (học bổng, sửa từ đường)',f:c=>`Cả họ biết ơn người đi trước và người dám dùng của ấy vào việc chung. Số bạc hóa thành sách và mái ngói.`+fx(c,{money:m(R(15,30)),cfame:R(4,8),eq:2,on:4,tam:6})+G.fxAll({tri:1})},
-  {l:'Cất làm của để dành cho hoạn nạn như lời dặn',f:c=>`Hòm bạc được cất kỹ, mảnh giấy được đóng khung treo bên bàn thờ. Lòng người nhà yên hơn.`+fx(c,{money:m(R(20,40)),on:3,tam:6})},
-  {l:'Chia đều cho các nhánh',f:c=>`Mỗi nhánh nhận một phần. Có nhánh mừng, có nhánh bảo ít, nhưng ai cũng nhớ người đi trước.`+fx(c,{money:m(R(10,20)),eq:1,tam:3})}]}),
-E({id:'ky_gt_cay_dang',t:'Cây quý trong vườn nhà',k:'Kỳ ngộ gia tộc',ky:1,good:1,u:'clan',cyc:[30,60],head:1,age:[28,85],w:0.5,
- x:c=>`Một thầy thuốc đi ngang vườn nhà bỗng dừng lại: cây dại góc vườn mọc lâu năm hóa ra là một vị thuốc quý ít người biết, lá và rễ đều dùng được. Ông cho biết nó có thể chữa nhiều chứng bệnh.`,
- o:c=>[
-  {l:'Học cách bào chế từ thầy thuốc, giữ làm thuốc cho cả nhà',f:c=>`Thầy thuốc ở lại nhiều ngày chỉ cách hái, phơi, sắc. Từ đó cả họ ít ốm đau, bệnh nhẹ tự chữa được trong nhà.`+fx(c,{tri:R(1,2),hpMax:1,suc:4,tam:6})+G.fxAll({suc:4})},
-  {l:'Bán lá và rễ cho hiệu thuốc, mỗi mùa một ít',f:c=>`Hiệu thuốc trả giá cao, mỗi mùa thu thêm một khoản đều. Cây vẫn sống vì chỉ hái vừa phải.`+fx(c,{money:m(R(20,40)),tam:4})},
-  {l:'Tặng cây giống cho người trong làng, cùng trồng',f:c=>`Người làng mang ơn, vài năm sau cả xóm có thuốc dùng. Nhà được tiếng tốt trong vùng.`+fx(c,{cfame:R(5,9),eq:2,on:2,tam:6})}]}),
 E({id:'ky_gt_ky_vat_thuyen',t:'Vật lạ do con sông mang đến',k:'Kỳ ngộ gia tộc',ky:1,good:1,u:'clan',cyc:[35,70],head:1,age:[28,85],w:0.5,
  x:c=>`Sau trận lụt, con sông để lại trước cửa nhà một chiếc rương gỗ bọc đồng, nửa chìm trong bùn. Bên trong là mấy cuốn sách cổ ghi chép nghề đóng thuyền và đo dòng sông, chữ viết lạ nhưng tinh tế.`,
  o:c=>[
