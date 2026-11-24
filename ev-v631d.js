@@ -25,16 +25,6 @@ const V=o=>Object.assign({k:'Kỳ ngộ',ky:1,good:1,u:'person',pcd:200,w:1},o);
 const VH=o=>Object.assign({k:'Kỳ ngộ hiếm',ky:1,good:1,u:'person',pcd:240,w:0.5},o);
 return [
 /* ============ TUỔI TRẺ: gặp thầy, gặp bạn, gặp người nâng đỡ ============ */
-V({id:'d631_tho_ren_dao',t:'Thợ rèn dạo dựng lò tạm',age:[12,20],c:c=>c.vo>=30&&['bac','trung','tay'].includes(reg())&&(kind()==='lang'||kind()==='phu'||kind()==='bien'),tier:[0,2],
- x:c=>`Một ông thợ rèn đi dạo các làng, dựng lò tạm ở đầu làng để rèn lưỡi cuốc, vá nồi. Ông cần người thổi bễ. ${N(c)} khỏe mạnh và chịu khó, được rủ ra làm.`,
- o:c=>[{l:'Làm giúp ông suốt mùa, học quan sát',r:[{vo:0.4,suc:0.3,ky:0.5},DW(0.65,50)],y:c=>{busy(c,3);return 'Ông chỉ cách nhìn màu lửa đoán độ nóng, cách nhúng nước để tôi thép. Học được nhiều hơn chờ đợi.'+fx(c,{suc:1,m:R(4,7),sk:{ky:R(3,5)},money:mr(4,6)})},n:c=>{busy(c,3);return 'Ông chỉ giao việc thổi bễ cả mùa, ít chịu chỉ bảo. Có tiền công nhưng ít học được.'+fx(c,{money:mr(4,6),suc:-2})}},
-    {l:'Xin một lưỡi dao nhỏ làm tiền công',f:c=>'Ông rèn cho lưỡi dao chắc tay, dùng được nhiều năm.'+fx(c,{vo:1})},
-    {l:'Không đi, bố mẹ cần phụ việc đồng',f:c=>''}]}),
-V({id:'d631_su_co_day_chu',t:'Sư cô dạy chữ ở am',age:[6,13],tier:[0,2],c:()=>wet(),
- x:c=>`Am nhỏ đầu làng có sư cô tuổi đã cao, thấy ${N(c)} thường đứng ngoài hàng rào nhìn vào, bèn gọi vào cho ngồi nghe kinh và tập đọc tập viết.`,
- o:c=>[{l:'Xin cha mẹ cho đến am đều đặn',r:[{tri:0.7,mi:0.2,duyen:0.2},DW(0.7,45)],y:c=>'Sau một năm, biết đọc kinh Phật, đọc được cả sách vỡ lòng. Tính tình điềm đạm lạ thường.'+fx(c,{tri:R(4,7),tam:6,eq:1}),n:c=>'Hay mải chơi, học được ít chữ.'+fx(c,{tri:2,tam:2})},
-    {l:'Ngồi nghe kinh thôi',f:c=>fx(c,{tri:1,tam:4})},
-    {l:'Ngại, không dám vào',f:c=>''}]}),
 V({id:'d631_kiem_khach_ghe_lang',t:'Kiếm khách dừng chân',age:[12,22],c:c=>c.vo>=35&&['bac','tay','trung','nam'].includes(reg())&&civil(c),tier:[0,3],
  x:c=>`Một kiếm khách đeo gươm cũ dừng chân nghỉ ở quán nước đầu làng. Thấy ${N(c)} đang tập quyền ngoài sân, ông xem một lúc rồi lắc đầu, bảo "gân cốt khá, chỉ tiếc thế quyền sai".`,
  o:c=>[{l:'Xin được chỉ giáo',r:[{vo:0.6,suc:0.3,duyen:0.3},DW(0.55,50)],y:c=>{busy(c,2);return 'Ông ở lại mấy tuần, sửa từng thế quyền, dạy cách đứng tấn và hơi thở. Võ nghệ tiến lên hẳn một bậc.'+fx(c,{vo:R(3,6),suc:2,m:R(2,4),tam:5,fame:2})},n:c=>'Ông chỉ vài chiêu rồi tiếp tục lên đường, để lại một lời dặn.'+fx(c,{vo:R(1,2),tam:2})},
@@ -146,11 +136,6 @@ V({id:'d631_goa_phu_hien_dat',u:'clan',cyc:[15,30],t:'Bà góa hiến mảnh ru�
  o:c=>[{l:'Nhận, lo hương khói cho bà',s:`Tốn khoảng ${fm(m(1.5))}`,c:()=>G.money()>=m(1.5),f:c=>'Lo đám tang chu đáo, cả làng thấy việc đó đúng đạo lý.'+land(R(1,2))+fx(c,{money:-m(1.5),fame:R(3,6),cfame:1,tam:4})},
     {l:'Từ chối, bảo nhà chăm bà không vì ruộng',f:c=>'Làng càng quý hơn. Cuối cùng ruộng được giao cho chùa.'+fx(c,{fame:R(4,8),cfame:2,tam:3})},
     {l:'Nhận ruộng, nhưng chia một nửa cho họ hàng bên chồng bà',f:c=>'Hợp tình hợp lý, họ hàng bên kia cảm kích.'+land(1)+fx(c,{fame:R(2,4),eq:1})}]}),
-V({id:'d631_che_co_thu',u:'clan',cyc:[22,40],t:'Gốc chè cổ thụ trên đồi',head:1,tier:[1,4],age:[30,75],c:c=>['nam','trung'].includes(reg())&&F().own>=3,
- x:c=>`Trên đồi đất nhà ${N(c)}, mấy gốc chè cổ thụ do tổ tiên trồng từ lâu cho búp thơm lạ. Một thương nhân sành trà nếm thử, mắt sáng lên.`,
- o:c=>[{l:'Ký hợp đồng bán búp hằng năm',r:[{eq:0.5,khau:0.4,tri:0.3},DW(0.65,50)],y:c=>'Thương nhân đặt trước mỗi mùa, giá cao gấp ba chè thường. Nhà có thêm nguồn thu ổn định.'+fx(c,{money:mr(8,16),bonus:0.04,hung:1,cfame:2}),n:c=>'Thương nhân ép giá thấp, ký ngắn hạn.'+fx(c,{money:mr(4,6)})},
-    {l:'Tự chế biến, đem đến phiên chợ lớn',s:'Mất công nhưng giữ được lợi',f:c=>chance(0.55)?'Khách sành trà mua hết. Danh tiếng chè nhà lan xa.'+fx(c,{money:mr(8,14),fame:R(2,4),cfame:1}):'Chế không đều tay, bán ế một nửa.'+fx(c,{money:mr(4,6),tam:-2})},
-    {l:'Giữ lại uống trong nhà và biếu khách',f:c=>fx(c,{fame:1,tam:4})}]}),
 /* ============ HỘI TÀI VÀ NGHỀ THỦ CÔNG ============ */
 V({id:'d631_hoi_thi_vo',t:'Hội thi võ trong huyện',age:[16,35],c:c=>['bac','tay','trung'].includes(reg())&&c.vo>=55&&civil(c),sea:['xuan','thu'],tier:[0,4],pcd:150,u:'free',
  x:c=>`Huyện mở hội thi võ nghệ thường niên, giải thưởng là tiền và tiếng tăm. Người từ khắp nơi đổ về. ${N(c)} nghe lời bạn bè ghi danh.`,
