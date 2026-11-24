@@ -12,6 +12,6 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
  await send('Runtime.enable');await send('Page.enable');
  await send('Emulation.setDeviceMetricsOverride',{width:W,height:H,deviceScaleFactor:1,mobile:W<600});
  await send('Page.navigate',{url});await sleep(2200);
- if(pre){await send('Runtime.evaluate',{expression:pre,awaitPromise:true,returnByValue:true});await sleep(900)}
+ if(pre){const q=await send('Runtime.evaluate',{expression:pre,awaitPromise:true,returnByValue:true});const v=q.result&&q.result.result?q.result.result.value:'';if(v)console.log(String(v));await sleep(900)}
  const r=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(out,Buffer.from(r.result.data,'base64'));
  ws.close();ch.kill();setTimeout(()=>{try{fs.rmSync(prof,{recursive:true,force:true})}catch(e){}process.exit(0)},800)})().catch(e=>{console.error(e);ch.kill();process.exit(1)});

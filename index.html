@@ -1,4 +1,5 @@
-<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="ui2.css">
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="stylesheet" href="ui2.css">
 </head><body>
 <title>Bách Niên Thế Gia</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -40,7 +41,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
 .top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px;border-bottom:2px solid var(--ink);padding-block:4px 12px}
 .brand{display:flex;align-items:center;gap:12px;margin-right:auto}
-.sealmark{width:44px;height:44px;display:grid;place-items:center;background:var(--seal);color:var(--on-seal);font-size:24px;border-radius:6px;font-family:serif;transform:rotate(-4deg);flex:none}
+.sealmark{width:44px;height:44px;display:grid;place-items:center;background:var(--seal);color:var(--on-seal);font-size:26px;line-height:1;border-radius:8px;font-family:'Noto Serif TC','Noto Serif CJK TC','Source Han Serif TC','Songti TC','PMingLiU','MingLiU','SimSun','Microsoft JhengHei','Microsoft YaHei',serif;font-weight:700;transform:rotate(-4deg);flex:none;box-shadow:inset 0 0 0 2px rgba(255,248,239,.5)}
+.sealmark .han2{display:flex;flex-direction:column;align-items:center;font-size:17px;line-height:1.02}.sealmark .han2 i{font-style:normal}
+.sealimg{width:44px;height:44px;border-radius:9px;transform:rotate(-4deg);flex:none}
 .brand h1{font-size:30px;line-height:1}
 .brand small{display:block;color:var(--muted);font-size:13px;margin-top:3px}
 .stat{display:grid;line-height:1.15}
@@ -382,7 +385,14 @@ details.more{margin-top:10px}details.more>summary{cursor:pointer;font-weight:600
 .stat.gm b{font-size:16px}
 .modal.menu{max-width:560px}
 .menu{text-align:center}.menu .choices{text-align:left}
-.sealbig{width:72px;height:72px;margin:6px auto 8px;border-radius:14px;background:var(--seal);color:var(--on-seal);display:grid;place-items:center;font-size:40px;font-family:var(--display)}
+.menu .muted{max-width:none;margin-left:auto;margin-right:auto;text-align:center}
+.menu h2{margin:.25rem 0 .15rem}.menu .menu-sub{margin:.2rem 0;font-size:.95rem}.menu .menu-ver{margin:.1rem 0 .2rem;font-size:.78rem;letter-spacing:.04em}
+.menu .choices{display:grid;gap:10px;margin-top:16px}
+.menu .choices .btn{display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:left;padding:13px 18px;width:100%}
+.menu .choices .btn strong{flex:0 0 auto}.menu .choices .btn small{flex:1 1 auto;text-align:right;color:var(--muted);font-weight:500}
+.menu .choices .btn.primary small{color:rgba(255,248,239,.88)}
+.menu .choices .btn:disabled small{color:var(--muted)}
+.sealbig{width:84px;height:84px;margin:4px auto 10px;border-radius:18px;overflow:hidden;display:block;box-shadow:0 6px 16px rgba(120,40,30,.28)}.sealbig img{display:block;width:100%;height:100%}
 .slots{display:grid;gap:8px;margin:8px 0}
 .slot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--paper)}
 .slot .acts{display:flex;gap:6px;flex-wrap:wrap}
@@ -436,13 +446,14 @@ ul.plain{margin:4px 0 0;padding-left:18px;font-size:12.5px;display:grid;gap:3px}
 <div class="wrap" id="app"></div>
 <div class="overlay sheet" id="sheetO" hidden><div class="modal sheetm" id="sheetM" role="dialog" aria-modal="true" aria-label="Hồ sơ nhân vật"></div></div>
 <div class="tip" id="tip" hidden></div>
-<div class="verlbl" aria-hidden="true">v7.0.0-d.1.5.4</div>
+<div class="verlbl" aria-hidden="true">v7.0.0-d.1.5.5</div>
 <div class="overlay" id="overlay" hidden><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
 
 <script src="data.js"></script>
 <script src="data-v64.js"></script>
 <script src="data-v64m.js"></script>
 <script src="data-v670.js"></script>
+<script src="data-han.js"></script>
 <script src="data-giabao.js"></script>
 <script>window.EVF=window.EVF||[];</script>
 <script src="ev-chung.js"></script>

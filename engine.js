@@ -4591,7 +4591,7 @@ const moodWord=v=>v>=80?'Hân hoan':v>=60?'Vui vẻ':v>=40?'Bình thường':v>=
 function topHTML(){
   const d=dOf(S.t);const net=S.lastNet??(totalIncome()-expenses().total);
   const tags=[S.war?'chiến sự':'',S.epi?'có dịch':'',S.disaster?(DIS[S.disaster.k]?DIS[S.disaster.k].n.toLowerCase():'thiên tai'):'',S.recruit>S.t?'tuyển quân':''].filter(Boolean);
-  return `<div class="brand"><div class="sealmark" aria-hidden="true">${esc((S.surname||'家').slice(0,1))}</div><div><h1>Họ ${esc(S.surname)}</h1><small>${I('tier',tierName())} · ${I('reg:'+(S.region||'trung'),REGIONS[S.region||'trung'].n)}${S.loc&&PROV[S.loc.p]?' · '+esc(PROV[S.loc.p].n):''} · ${alive().length} người</small></div></div>
+  return `<div class="brand"><div class="sealmark" aria-hidden="true" title="${esc(window.hanChars?window.hanChars(S.surname):'')}">${window.hanMarkHtml?window.hanMarkHtml(S.surname):esc((S.surname||'家').slice(0,1))}</div><div><h1>Họ ${esc(S.surname)}</h1><small>${I('tier',tierName())} · ${I('reg:'+(S.region||'trung'),REGIONS[S.region||'trung'].n)}${S.loc&&PROV[S.loc.p]?' · '+esc(PROV[S.loc.p].n):''} · ${alive().length} người</small></div></div>
    <div class="stat"><b class="num">T${d.m} · năm ${d.y}</b><span>${tags.length?'<em class="down">'+tags.join(', ')+'</em>':'&nbsp;'}</span></div>
    <button class="stat" data-info="money"><b class="num ${S.money<0?'down':''}">${money(S.money,1)}</b><span class="${net>=0?'up':'down'}">công quỹ ${net>=0?'+':''}${money(net,1)}</span></button>
    <button class="stat" data-info="fame"><b class="num">${fmt(S.fame)}</b><span>danh vọng</span></button>
@@ -5105,7 +5105,7 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden&&S)save()})
 const fmtAt=t=>{try{return new Date(t).toLocaleString('vi-VN',{dateStyle:'short',timeStyle:'short'})}catch(e){return ''}};
 function slotLine(n){const m=meta().slots[n];return m?`Họ ${esc(m.surname)} · năm ${m.year} · ${m.n} người${TIERS[m.tier]?' · '+TIERS[m.tier][0]:''}${m.over?' · đã khép lại':''}<br><small class="muted">Lưu lúc ${fmtAt(m.at)}</small>`:'<span class="muted">Ô trống</span>'}
 function brandHead(){
-  document.getElementById('app').innerHTML=`<header class="top"><div class="brand"><div class="sealmark" aria-hidden="true">家</div><div><h1>Bách Niên Thế Gia</h1><small>Từ túp lều tranh đến danh gia vọng tộc</small></div></div></header>`;
+  document.getElementById('app').innerHTML=`<header class="top"><div class="brand"><img class="sealimg" src="icon.svg" alt="" width="44" height="44"><div><h1>Bách Niên Thế Gia</h1><small>Từ túp lều tranh đến danh gia vọng tộc</small></div></div></header>`;
 }
 function migrate(st){if(st&&st.farm&&st.farm.fld==null){st.farm.fld=0;st.farm.clr=[]}if(st&&!st.led){st.led=[];st.ledN=0;st.fm=[]}if(st&&!st.evl)st.evl=[];
   if(!st)return st;
@@ -5132,7 +5132,7 @@ function mainMenu(){
   running=false;S=null;page='giapha';brandHead();
   const m=meta();const last=m.last&&m.slots[m.last]&&!m.slots[m.last].over?m.last:null;
   const any=Object.keys(m.slots).length||loadOld();
-  openModal(`<div class="menu"><div class="sealbig" aria-hidden="true">家</div><h2>Bách Niên Thế Gia</h2><p class="muted">Từ túp lều tranh đến danh gia vọng tộc</p><p class="muted" style="font-size:.78rem;margin-top:-.4rem">Phiên bản 6.7.0-d9.6${window.BN_ADMIN?' · admin':''}</p>
+  openModal(`<div class="menu"><div class="sealbig" aria-hidden="true"><img src="icon.svg" alt="" width="84" height="84"></div><h2>Bách Niên Thế Gia</h2><p class="muted menu-sub">Từ túp lều tranh đến danh gia vọng tộc</p><p class="muted menu-ver">Phiên bản ${((document.querySelector('.verlbl')||{}).textContent||'').replace(/^v/,'').trim()}</p>
    <div class="choices">${last?`<button class="btn primary" data-m="cont"><strong>Tiếp tục</strong><small>${slotLine(last)}</small></button>`:''}
    <button class="btn ${last?'':'primary'}" data-m="new"><strong>Trò chơi mới</strong><small>Lập một dòng họ mới</small></button>
    <button class="btn" data-m="load" ${any?'':'disabled'}><strong>Tải bản lưu</strong><small>Ba ô lưu, mỗi ô một gia tộc</small></button>
