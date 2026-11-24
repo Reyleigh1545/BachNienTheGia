@@ -273,11 +273,6 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 ## 10. Ý mới của chủ dự án, chưa làm (chép nguyên văn)
 
-**Ô tròn lạ cạnh tuổi ở hồ sơ (chủ dự án, 23/11), chép nguyên văn:**
-> "tao mới thêm 1 ảnh, có một ô tròn bên cạnh tuổi, lỗi gì vậy" (ảnh ở `Test result/Screenshot 2026-11-23 164452.png`: hồ sơ Ninh Sĩ Sơn, nhãn "Đời thứ 2", "16 tuổi", rồi một ô tròn rỗng)
-
-*Kiểm tra (23/11, chưa sửa):* ô tròn là một chip **`.chip.blue` rỗng** (nền trong suốt, viền xanh, nên chỉ còn hình viên thuốc nhỏ). Nó do `awayText(c)` (`engine.js:1980`) trả chuỗi rỗng: hàm chỉ biết các kiểu `away` luuday, army, jh, mourn, trade, follow, còn **`odo` (đi đường, như người hộ tống ở `gj_03b`, d9.11) và `sep` không có chữ**, nên hồ sơ người đang đi những chuyến ấy hiện chip trống ở đầu hồ sơ (`engine.js:4516`, `${c.away?`<span class="chip blue">${awayText(c)}</span>`:''}`). Lỗi nhỏ có từ trước (kiểu `odo` và `sep` có từ các bản cũ), d9.11 làm lộ nhiều hơn. **Hướng sửa dự kiến, chờ "làm":** thêm chữ cho `odo` ("đang đi đường xa") và `sep` (xem nghĩa của `sep` trong code), và không in chip khi `awayText` rỗng; rà các kiểu `away` khác chưa có chữ.
-
 **Yêu cầu bản báo cáo sự kiện từ save và quy trình rút kinh nghiệm (chủ dự án, 23/11), chép nguyên văn:**
 > "mày đọc file save tao gửi trong test result, ghi thêm một luật là mỗi lần tao bảo kiểm tra thì phải đọc file mới trong test result. Từ file save lần này, mày ghi ra tất cả sự kiện, kỳ ngộ mà từng nhân vật đã gặp phải trong suốt quá trình chơi, ghi rõ chỉ số, địa vị, công việc của nhân vật nào gặp những sự kiện nào và các lựa chọn khác nhau mang lại lợi ích hay bất lợi như thế nào. Tao phát hiện ra được rất nhiều vấn đề trong các sự kiện và kỳ ngộ, tao muốn sửa lại một loạt, đồng thời tao còn nhận thấy ở bản mới này mày đã tự sửa lại các chức năng của bản cũ quá nhiều, điển hình là những lỗi mà tao đã chỉ ra trước đó, vậy nên mày cũng cần phải tự quét, sau khi nhận được những đánh giá chỉnh sửa mới của tao thì phải ghi nhớ và tự rút ra kinh nghiệm để xét lọc cho các cái khác cũng như sau này."
 
@@ -366,6 +361,9 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 16. **Lựa chọn "nói chuyện" không được dễ hơn lựa chọn "đánh" với người giỏi võ (24/11, góp ý `ct_vo1b`).** Khuôn sự kiện `ev-v632a.js` cho cả hai lựa chọn cùng thang khó nhưng công thức chỉ số khác nhau; với người võ 118 mà "nhận thử một trận" khó 89 còn "nói chuyện" khó 80. Đã sửa riêng `ct_vo1b` (đánh phụ thuộc võ và sức, nói phụ thuộc khẩu tài và EQ). *Quét:* các cặp "đánh/nói" khác trong cùng khuôn (`sa`/`sb`) chưa rà.
 
 17. **Công cụ xóa phải dừng ở dòng đóng mảng (24/11, tự phát hiện).** `tools/rmev.js` khi xóa sự kiện **cuối cùng** của một file đã xóa luôn dòng `];` và `});` đóng file, làm `ev-v653.js` hỏng cú pháp. Đã sửa công cụ (dừng ở dòng bắt đầu bằng `]`). *Quét:* **`rmev.js` bỏ qua mọi file `ev-d912*`** (cố ý, để không xóa gói mới), nên sự kiện viết lại mà bản cũ nằm trong một `ev-d912*.js` (ví dụ `cs_khai_truong` ở `ev-d912d.js`) phải xóa tay; luôn chạy `node tools/evlint.js` sau đó, phải báo 0 id lặp (đợt 18 bắt được một trường hợp). Sau mỗi lần chạy `rmev.js` phải `node --check` mọi `ev-*.js` ngay (đã làm, nên bắt được); khi viết công cụ sửa mã hàng loạt thì thử cả trường hợp phần tử cuối.
+
+18. **Chip hoặc nhãn có nội dung lấy từ dữ liệu phải bảo vệ khi dữ liệu rỗng (24/11, chủ dự án 23/11: "một ô tròn lạ cạnh tuổi ở hồ sơ").** Ô tròn rỗng là chip tên hộ (`HH(c.hh).name`) của người ở hộ khác hộ chính nhưng hộ ấy không có tên. Đã sửa `engine.js` (không in chip khi tên rỗng). *Quét:* mọi chip hoặc nhãn kiểu `<span class="chip…">${giá trị}</span>` phải có điều kiện giá trị khác rỗng; khi thêm chip mới thì grep các chip cùng khuôn trong `render` hồ sơ (đầu hồ sơ, `habChips`, `ctChips`, `selfPerks`).
+19. **Giao việc "làm hết trong một lượt" thì phải ghi phần chưa xong thật thà (24/11).** Có nội dung hàng trăm sự kiện không thể viết tay hết trong một lượt; thay vì kéo dài mãi, nâng khung chung (NPC có tính cách, `r1gen.js` dùng tính cách để quyết kết quả và hậu sự) để mọi sự kiện cũ cũng hưởng lợi, viết tay tiếp các cái hay gặp, và ghi rõ còn bao nhiêu ở mục 11 (không báo "xong" khi chưa xong).
 
 ---
 
