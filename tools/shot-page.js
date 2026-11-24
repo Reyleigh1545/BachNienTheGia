@@ -12,6 +12,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
  await send('Runtime.enable');await send('Page.enable');
  await send('Emulation.setDeviceMetricsOverride',{width:W,height:H,deviceScaleFactor:1,mobile:W<600});
  await send('Page.navigate',{url});await sleep(2200);
- if(pre){const q=await send('Runtime.evaluate',{expression:pre,awaitPromise:true,returnByValue:true});const v=q.result&&q.result.result?q.result.result.value:'';if(v)console.log(String(v));await sleep(900)}
+ if(process.env.GAME){const ev=async e=>{await send('Runtime.evaluate',{expression:e,awaitPromise:true,returnByValue:true})};await ev(`(()=>{const b=document.querySelector('[data-m="new"]');if(b)b.click()})()`);await sleep(500);await ev(`(()=>{let b=document.querySelector('#modal [data-go]');if(!b){const all=[...document.querySelectorAll('#modal .btn,#modal button')];b=all.find(x=>/Ô 1|Ô trống/.test(x.textContent))||all[0]}if(b)b.click()})()`);await sleep(700);await ev(`(()=>{const b=[...document.querySelectorAll('#modal button')].find(x=>/Bắt đầu/.test(x.textContent));if(b)b.click()})()`);await sleep(1200)}
+ if(pre){const q=await send('Runtime.evaluate',{expression:pre,awaitPromise:true,returnByValue:true});const v=q.result&&q.result.result?q.result.result.value:'';if(typeof v==="string"&&v)console.log(v);await sleep(900)}
  const r=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(out,Buffer.from(r.result.data,'base64'));
  ws.close();ch.kill();setTimeout(()=>{try{fs.rmSync(prof,{recursive:true,force:true})}catch(e){}process.exit(0)},800)})().catch(e=>{console.error(e);ch.kill();process.exit(1)});

@@ -4609,6 +4609,11 @@ function nodeHTML(p,old){
   const cls=['node',p.g==='nữ'?'fem':'mal'];if(old)cls.push('old');if(p.dead!=null)cls.push('dead');if(p.left)cls.push('left');if(p.id===S.head)cls.push('head');
   const badge=p.preg?'<span class="badge preg">thai</span>':p.away?`<span class="badge away">${p.away.type==='army'?'lính':p.away.type==='jh'?'giang hồ':p.away.type==='mourn'?'cư tang':p.away.type==='follow'?'theo quan':'đi buôn'}</span>`:p.tuoc?`<span class="badge">${TUOC[p.tuoc]}</span>`:p.exam?'<span class="badge">ứng thí</span>':p.hh!==mainHH()&&inClan(p)?'<span class="badge away">ở riêng</span>':'';
   const a=age(p);
+  if(U2()){ /* 7.0.0-d.1.5.5 phần C: thẻ gia phả cùng kiểu thẻ chân dung ở hộp sự kiện: cùng bề rộng, tuổi, ảnh, tên, nghề, thu nhập mỗi tháng */
+    const ci=cardInfo(p);const showInc=p.dead==null&&inClan(p)&&a>=16;
+    const incH=showInc?`<span class="pinc ${ci.inc>0?'up':ci.inc<0?'dn':'nl'}">${ci.inc===0?'0/tháng':ci.incTxt}</span>`:'<span class="pinc ph">&nbsp;</span>';
+    const sub=p.dead!=null?`† ${dOf(p.dead).y} · thọ ${a}`:p.left?relation(p):(a<16?(a>=6&&p.school!=='nha'?'đang đi học':'còn nhỏ'):jobName(p));
+    return `<button class="${cls.join(' ')}" data-sel="${p.id}" aria-pressed="${sel===p.id}">${badge}<span class="pa">${p.dead!=null?'†':a}</span><span class="pav">${avatarSVG(p,76)}</span><b>${esc(nameOf(p))}</b><small>${esc(sub)}</small>${incH}</button>`}
   return `<button class="${cls.join(' ')}" data-sel="${p.id}" aria-pressed="${sel===p.id}">${badge}<span class="nrow">${avatarSVG(p,30)}<span><b>${esc(nameOf(p))}</b>
    <small>${p.dead!=null?`† ${dOf(p.dead).y} · thọ ${a}`:p.left?relation(p):`${a} · ${a<16?(a>=6&&p.school!=='nha'?'đi học':'nhỏ'):esc(jobName(p))}`}</small></span></span>
    ${inClan(p)?`<span class="hp"><i style="width:${clamp(p.suc/1.5,0,100)}%"></i></span><span class="md"><i style="width:${p.tam}%"></i></span>`:''}</button>`;
