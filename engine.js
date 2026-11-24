@@ -4136,6 +4136,7 @@ const AUTO_K={bold:2.4,vio:{phat:1.5,truc:3,tu:6}};
 function autoPick(c,ok,probs){ensurePersona(c);const uy=S.uy??50;const ran=S.t-(c.flags.ran||-999)<36?1.6:1;
   const sc=ok.map((o,i)=>{let s=0;const ax=o.ax||autoAx(o.l)||{};
     for(const k in ax)if(c.sub&&c.sub[k]!=null)s+=ax[k]*(axv(c,k)-50)/25;   /* hợp tính thì chọn */
+    if(ENGX.fn.goalAff)s+=ENGX.fn.goalAff(c,o.l); /* d9.13: mục tiêu ẩn của người trong gia tộc nghiêng lựa chọn tự quyết */
     if(probs[i]!=null){const bold=axv(c,'gan')/100;s+=(probs[i]-0.5)*(AUTO_K.bold-2*bold)+(o.yy?0.25*bold:0)}  /* nhát thì chọn chắc ăn, gan thì dám liều */
     const v=vioOf(o);if(v)s-=AUTO_K.vio[ruleG(v)]*(0.4+uy/100)*(0.3+obey(c)/100)*ran*(obey(c)>=70?3:1); /* v6.5.4: người nghe lời gần như không phạm gia quy */   /* sợ gia pháp thì né */
     return s+Math.random()*0.8});
