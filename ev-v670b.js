@@ -222,7 +222,7 @@ CD({id:'cd_12',t:'Cầu cạnh Đông xưởng',job:['quan'],c:c=>c.lv>=4,age:[3
  o:c=>[{l:'Từ chối thẳng',f:c=>'Hoạn quan cười, bảo "ngươi sẽ nhớ lời hôm nay". Từ đó có người dõi mình.'+fx(c,{risk:3,liem:4})},
   pay('Mượn tay họ chuyện nhỏ',60,{f:c=>'Việc xong gọn. Nhưng sau này trong sổ của họ có tên mình.'+fx(c,{money:-m(60),fav:5,risk:6,liem:-4})}),
   {l:'Nói để suy nghĩ',f:c=>'Hoạn quan gật. Mấy hôm sau thêm lời nhắc khẽ.'+fx(c,{risk:3})}]}),
-CD({id:'cd_19',t:'Giấy gọi nhập quân hộ',head:1,age:[25,60],tier:[0,3],ms:1,w:0.4,
+CD({id:'cd_19',t:'Giấy gọi nhập quân hộ',head:1,age:[25,60],tier:[0,3],ms:1,w:0.4,c:c=>G.kinList(c,p=>G.age(p)>=16&&!G.isHead(p)).length>0, /* 7.0.0-d.1.5.9: nhà phải có người để cử, nhà một người không bị gọi quân hộ */
  x:c=>`Lý trưởng đưa tới nhà ${N(c)} tờ giấy: nhà bị xếp vào quân hộ, mỗi đời phải có một người nhập ngũ. Dân làng bảo giấy này khó cãi, nhưng cũng có cách.`,
  o:c=>[{l:'Cử một người con nhập ngũ',c:c=>G.kinList(c,p=>G.age(p)>=16&&!G.isHead(p)).length>0,go:(c,d)=>G.pickKin(c,{eyebrow:'Quân hộ',title:'Cử ai nhập ngũ',text:'Sổ quân hộ đòi một người trong nhà nhập ngũ. Người ấy sẽ thật sự rời nhà ra doanh trại, bắt đầu từ lính. Chọn người nào?',filter:p=>G.age(p)>=16&&!G.isHead(p),cb:w=>{G.enlist(w,false);return `${N(w)} khăn gói lên đường ra doanh trại. Cả nhà ngậm ngùi.`+fx(c,{tam:-3,on:-1})+fx(w,{tam:-4})}})},
   pay('Nộp bạc xin chuộc',40,{f:c=>'Lý trưởng ghi nhận. Nhà khỏi phải đi, lần này.'+fx(c,{money:-m(40)})}),

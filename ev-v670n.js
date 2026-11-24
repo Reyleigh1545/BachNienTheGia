@@ -6,6 +6,7 @@ const S=()=>G.S();const m=v=>G.mm(v);const N=c=>esc(c.given);
 const rich=v=>()=>G.money()>=m(v);
 const pay=(l,v,o)=>Object.assign({l:`${l} (${G.fmtMoney(m(v))})`,c:rich(v)},o);
 const QH=o=>Object.assign({tags:{},k:'Quân hộ',head:1,age:[25,70],tier:[0,3],ms:1,w:0.7,pcd:96,cd:48,c:c=>!!(c.seen&&c.seen['cd_19'])},o);
+const SOLDIERS=()=>G.alive().filter(p=>G.inClan(p)&&p.job==='quan_ngu'&&p.away&&p.away.type==='army'&&!G.isHead(p)); /* người nhà thật đang ở doanh */
 const QHFLT=p=>G.age(p)>=18&&G.age(p)<=40&&p.g==='nam'&&p.job!=='quan_ngu'&&p.job!=='quan'&&!p.biz; /* d9.10: ai phải đi lính theo quân hộ */
 const DX=o=>Object.assign({tags:{},k:'Đông xưởng',job:['quan'],age:[32,75],ms:1,w:0.6,pcd:96,cd:48},o);
 return [
@@ -19,8 +20,8 @@ QH({id:'qh_chuoc_so',t:'Xin xóa tên khỏi quân hộ',tier:[1,4],w:0.5,
  o:c=>[pay('Lo lót bộ Binh xóa tên',120,{r:[{khau:1,eq:0.5},55],y:c=>'Tên được gạch khỏi sổ. Từ nay con cháu không bị gọi nhập ngũ theo kiểu cũ.'+fx(c,{money:-m(120),fame:4,tam:6}),n:c=>'Lễ nhận rồi mà sổ vẫn còn tên nhà. Mất oan.'+fx(c,{money:-m(120),tam:-6,fame:-2})}),
   {l:'Dâng đơn xin theo đúng thủ tục',r:[{tri:1,khau:0.5},35],y:c=>'Hồ sơ được xét, tên nhà được gạch.'+fx(c,{fame:5,tam:5}),n:c=>'Đơn bị gác lại, không lời hồi âm.'+fx(c,{tam:-2})},
   {l:'Giữ nguyên, chấp nhận lệ quân hộ',f:c=>'Nhà quen dần với lệ ấy.'+fx(c,{tam:1})}]}),
-QH({id:'qh_nguoi_linh_ve',t:'Người nhà trong quân hộ về thăm',
- x:c=>`Người con nhà ${N(c)} nhập ngũ theo quân hộ mấy năm nay lần đầu được về thăm. Người rám nắng, đầy sẹo, kể chuyện trong doanh toàn lính nghèo như nó.`,
+QH({id:'qh_nguoi_linh_ve',t:'Người nhà trong quân hộ về thăm',c:c=>!!(c.seen&&c.seen['cd_19'])&&SOLDIERS().length>0, /* 7.0.0-d.1.5.9: chỉ ra khi có người nhà thật đang ở doanh */
+ x:(c,d)=>{const q=S().qh&&S().qh.who;const L=SOLDIERS();const w=L.find(p=>p.id===q)||L[0];if(w)d.who=w.id;return `${w?N(w):'Người nhà'} nhập ngũ theo quân hộ mấy năm nay, lần đầu được về thăm nhà ${N(c)}. Người rám nắng, đầy sẹo, kể chuyện trong doanh toàn lính nghèo như mình.`},
  o:c=>[{l:'Cho nghỉ lâu, nấu bữa cơm ngon',f:c=>'Cả nhà vui. Nó đi mang theo túi lương và vài lời dặn.'+fx(c,{money:-m(2),tam:6})},
   {l:'Nhờ nó dò đường xin thăng chức',r:[{eq:0.8,khau:0.5},40],y:c=>'Nó nói giúp được với một viên đội trưởng quen. Có triển vọng.'+fx(c,{fame:3,tam:2}),n:c=>'Nó xấu hổ không dám mở lời với cấp trên.'+fx(c,{tam:-2})}]}),
 DX({id:'dx_theo_doi',t:'Có người dõi theo',c:c=>c.lv>=4&&!!(c.seen&&c.seen['cd_12']),

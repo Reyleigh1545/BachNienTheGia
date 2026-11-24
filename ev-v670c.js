@@ -14,6 +14,8 @@ const clan=()=>G.alive().filter(p=>G.inClan(p));
 const kidsOk=c=>G.kidsOf(c).filter(k=>k.dead==null&&G.inClan(k)&&G.age(k)>=8&&G.age(k)<=34);
 const kid=c=>{const L=kidsOk(c);return L.length?pick(L):null};
 const hasKid=c=>kidsOk(c).length>0;
+/* 7.0.0-d.1.5.9: người thân mất trong 36 tháng (cha mẹ, vợ chồng hoặc con của người trong nhà) mới có tang để hỏi cưới trong tang (lw_48) */
+const mournFor=()=>{const t=S().t;const L=clan();return S().people.find(d=>d.dead!=null&&t-d.dead<=36&&!d.left&&L.some(p=>(p.parents||[]).includes(d.id)||p.spouse===d.id||(d.parents||[]).includes(p.id)))||null};
 const CASE=(p,id,o)=>{if(p)G.law.case(p,id,o||{})};
 const farmOk=()=>S().farm&&(S().farm.own>0||S().farm.fief>0);
 const PR=id=>G.proj.on(id);
@@ -225,8 +227,8 @@ LW({id:'lw_47',ms:1,t:'Lương tiện bất hôn',c:c=>clan().some(p=>!G.spouseO
  o:c=>[{l:'Cản, giải thích luật',f:c=>'Người con tức giận mấy tuần rồi nguôi.'+fx(c,{on:-1,tam:-1})},
   pay('Chuộc thân cho cô gái trước rồi mới tính',60,{f:c=>'Cô gái được chuộc, trở thành dân thường. Hai bên mới tính tiếp.'+fx(c,{money:-m(60),cfame:2,tam:3})}),
   {l:'Âm thầm cưới',f:c=>{CASE(c,'cuoi_sai',{ctx:`con nhà ${c.given} cưới người tiện dân trái luật`,ev:80});return 'Sau này chuyện bị lộ.'}}]}),
-LW({id:'lw_48',t:'Hỏi cưới trong tang',c:c=>clan().some(p=>!G.spouseOf(p)&&G.age(p)>=18&&G.age(p)<=30),w:0.3,
- x:c=>`Nhà đang có tang chưa đầy ba năm. Nhà bên kia hối: "Xin cưới sớm kẻo lỡ duyên". Luật triều cấm cưới trong thời hạn để tang.`,
+LW({id:'lw_48',t:'Hỏi cưới trong tang',c:c=>!!mournFor()&&clan().some(p=>!G.spouseOf(p)&&G.age(p)>=18&&G.age(p)<=30),w:0.3,
+ x:(c,d)=>{const dd=mournFor();if(dd)d.who=dd.id;return `Nhà đang để tang ${dd?esc(dd.given):'người thân'} chưa đầy ba năm. Nhà bên kia hối: "Xin cưới sớm kẻo lỡ duyên". Luật triều cấm cưới trong thời hạn để tang.`},
  o:c=>[{l:'Hoãn đến hết tang',f:c=>'Nhà kia đồng ý chờ. Ai cũng khen nhà biết lễ.'+fx(c,{cfame:2,tam:1})},
   {l:'Làm lễ nhỏ kín đáo',r:[{muu:0.5,eq:0.4},50],y:c=>'Không ai biết. Hôn sự thành.'+fx(c,{liem:-2}),n:c=>{CASE(c,'cuoi_sai',{ctx:`nhà ${c.given} cưới trong thời gian để tang`,mi:1,ev:75});return 'Hàng xóm đi tố.'}},
   {l:'Bàn lại với nhà kia',f:c=>'Hai nhà thống nhất: nhận lễ hỏi trước, cưới sau.'+fx(c,{tam:1})}]}),

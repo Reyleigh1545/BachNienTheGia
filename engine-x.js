@@ -35,7 +35,11 @@ function qhYear(){const S=X.S;const q=S.qh;
   if(!q){if(alive().some(p=>inClan(p)&&p.seen&&p.seen['cd_19']))S.qh={on:true,t0:S.t,next:S.t+R(60,120),who:null,pend:false};return}
   if(!q.on)return;
   if(q.who){const w=P(q.who);if(!w||w.dead!=null||!inClan(w)||(w.job!=='quan_ngu'&&S.t-(q.t0||0)>=24)){if(q.who){q.who=null;q.next=Math.min(q.next,S.t+R(12,36));q.pend=false}}}
-  if(!q.pend&&!q.who&&S.t>=q.next&&head()){q.pend=true;enqueue('ev',S.head,{ev:'qh_phien_linh',data:{}})}}
+  if(!q.pend&&!q.who&&S.t>=q.next&&head()){
+    /* 7.0.0-d.1.5.9: không có người nam 18 đến 40 tuổi ngoài gia chủ để cử thì hoãn 12 đến 24 tháng, không gọi phiên cho nhà không có ai */
+    const elig=alive().some(p=>inClan(p)&&p.id!==S.head&&age(p)>=18&&age(p)<=40&&p.g==='nam'&&p.job!=='quan_ngu'&&p.job!=='quan'&&!p.biz);
+    if(!elig){q.next=S.t+R(12,24);return}
+    q.pend=true;enqueue('ev',S.head,{ev:'qh_phien_linh',data:{}})}}
 function dxYear(){const S=X.S;const d=S.dyn;if(!d||!d.k)return;const DXS=S.dx=S.dx||{pow:30,hi:0};const k=d.k;
   DXS.pow=Math.max(0,Math.min(100,DXS.pow+(k.nghi-50)/25+R(-2,2)-(k.uy>=75?1:0)));
   if(DXS.pow>=70&&!DXS.hi){DXS.hi=1;log('Đông xưởng thế lớn, quan lại trong triều ai cũng dè chừng.','hi')}else if(DXS.pow<45&&DXS.hi){DXS.hi=0;log('Đông xưởng bớt hống hách.','gd')}
