@@ -17,8 +17,9 @@ function ensure(c,o){o=o||{};const s=root();
   if(o.key){const ex=Object.values(s.np.l).find(n=>n.key===o.key&&n.ok!==0);if(ex){if(o.vai&&!ex.vai.includes(o.vai)){ex.vai.push(o.vai);ex.vaiTxt=ex.vai.map(v=>VAI[v]||v).join(', ')}return ex}}
   /* d9.12: suy giới tính từ lời mô tả để tên không lệch với lời kể ("ông già" mà tên nữ) */
   const gInfer=t=>{t=' '+String(t||'').toLowerCase()+' ';if(/ (bà|cô gái|nàng|đàn bà|phụ nữ|sư tỷ|bà mối|phi tần|công chúa|vương phi|hoàng hậu|nữ )/.test(t))return 'nữ';if(/ (ông|lão|chàng|thầy|sư huynh|sư phụ|sư trụ trì|kiếm khách|kiếm sĩ|võ quan|hoạn quan|thái giám|nội thị|đạo sĩ|ngư phủ|thợ rèn|lý trưởng|chủ tướng|thân vương|quốc công|hoàng tử|người con trai|ông già|cậu )/.test(t))return 'nam';return null};
-  const g=o.g||gInfer(o.nghe)||(chance(0.5)?'nam':'nữ');
-  const n=G.np.new({n:o.name,g,age:o.age!=null?o.age:R(24,60),role:o.role||'quen'});
+  const vv=[].concat(o.vai||[]);const g=o.g||gInfer(o.nghe)||(vv.includes('nguoi_thuong')&&c&&c.g?(c.g==='nam'?'nữ':'nam'):vv.includes('tinh_dich')&&c&&c.g?c.g:null)||(chance(0.5)?'nam':'nữ'); /* d9.12.68: người thương khác giới với người chơi, tình địch cùng giới (chủ dự án 24/11: kết hôn đồng tính) */
+  let ag=o.age!=null?o.age:R(24,60);{const nn=' '+String(o.nghe||'').toLowerCase()+' ';if(/ (già|lão|cụ|bà lão|ông lão|lão nhân|trụ trì) /.test(nn)&&ag<55)ag=R(58,74);else if(/ (thiếu niên|thiếu nữ|cậu bé|cô bé|chàng trai|cô gái) /.test(nn)&&ag>38)ag=R(18,28)} /* tuổi khớp chữ chỉ tuổi trong mô tả */
+  const n=G.np.new({n:o.name,g,age:ag,role:o.role||'quen'});
   const ti=o.tier!=null?o.tier:Math.max(0,Math.min(6,G.tierIdx()+R(-1,1)));
   const base=35+ti*4;const rs=()=>clamp(Math.round(base+R(-12,28)),20,100);
   n.st=Object.assign({tri:rs(),vo:rs(),mi:rs(),eq:rs()},o.st||{});

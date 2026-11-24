@@ -75,7 +75,7 @@ E({id:'lw_36',t:'Ruộng quan bán rẻ',c:c=>G.landOk(),tier:[2,6],ms:1,w:0.4,
   {l:'Không mua',f:c=>'Nhà khác mua hết.'}]}}),
 /* ============ Ghen tuông: có tác nhân thật và hệ quả hôn nhân ============ */
 E({id:'ghen_tuong',t:'Ghen tuông',age:[18,60],c:c=>G.married(c)&&c.mi>=60,
- x:(c,d)=>{const n=G.tie.ensure(c,{vai:['tinh_dich'],nghe:pick(['đồng nghiệp','khách quen','người bạn cũ']),age:R(22,40),main:'mi',rel:5,why:'bị ghen vì người này'});d.npc=n.id;return `${N(c)} có duyên, người ngoài để ý nhiều, nhất là ${nm(n)}. ${esc(G.spouseOf(c).given)} bắt đầu ghen bóng ghen gió.`},
+ x:(c,d)=>{const n=G.tie.ensure(c,{vai:['tinh_dich'],g:c.g==='nam'?'nữ':'nam',nghe:pick(['đồng nghiệp','khách quen','người bạn cũ']),age:R(22,40),main:'mi',rel:5,why:'bị ghen vì người này'});d.npc=n.id;return `${N(c)} có duyên, người ngoài để ý nhiều, nhất là ${nm(n)}. ${esc(G.spouseOf(c).given)} bắt đầu ghen bóng ghen gió.`},
  o:(c,d)=>{const sp=G.spouseOf(c);const n=T(d);return [
   {l:'Thề thốt chung thủy, thẳng thắn kể mọi chuyện',r:[{eq:1,thanh:0.5},50],y:c=>{G.addStat(sp,'tam',6);G.rg.set('p:'+c.id,'p:'+sp.id,'vo_chong',12,'giải tỏa ghen');return 'Người kia yên lòng, hai vợ chồng gần nhau hơn.'+fx(c,{tam:3,on:1})},n:c=>{G.addStat(sp,'tam',-6);G.rg.set('p:'+c.id,'p:'+sp.id,'vo_chong',-12,'giải thích không xuôi');return 'Càng giải thích càng nghi, cãi nhau mấy ngày.'+fx(c,{tam:-4,on:-2})}},
   {l:'Giữ khoảng cách với người ấy, ít ra ngoài',f:c=>{G.tie.rel(n,-10,'bị tránh mặt');return `Vợ chồng yên ổn, nhưng việc giao thiệp và thu nhập đều bị ảnh hưởng.`+fx(c,{tam:-3,fame:-1,bonus:-0.03})}},

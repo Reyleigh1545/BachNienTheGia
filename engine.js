@@ -191,6 +191,25 @@ const MS_RE=/tiệc|yến tiệc|đám cưới|lễ cưới|sính|mừng thọ|l
 const MS_NO=new Set(['n633_quan_le','qt3_nhan_thay','nd631_hoi_lo','q_hoi_lo','n633_bep_doc']);
 /* v6.6.0: thêm các việc vay mượn, góp tiền, cháy nhà, cứu đói, hùn vốn, các bước mưu đại sự vào nhóm chi theo cỡ nhà */
 const MS_YES=new Set(['hoi_lang_xuan','quyen_gop_dinh','chay_nha','n_kho_cuu_doi','noi_gio','tai_cuu_doi','hh_hoa_hoan','v6_ban_vay','w63_ho_xin_vay','w631_ho_gop_dinh','c631_chay_nha_lang','c631_cau_ben_lang','c631_phat_gao_cuu_doi','c631_hoi_lang_xuan','vil_l_dan','vil_p_dot','n633_chu_hun','v61_gop_xay_tu_duong','c631_den_chua_cau_an','hau631_chuoc_than','br_dong_gop','tet_nguyen_dan','chuan_bi_tet','ky_niem_cuoi','n_thue_nguoi','qh_mo_truong','qh_tro_gioi','hr631_mua_tet','c631_don_thay_day','h_ng_duyet','h_ng_nguaquy','h_du_phatthuoc','v62_q_quyen_quy_moi','n633_y_ngheo','qn653_ban_no','thuoc_bo','su_so_sach','vil_bd_chan','tre_om_vat','y_nguoi_ngheo','su_tro_do_dat','tr_thanh_tra','v63_k_thoi_noi','d631_nguoi_tai_tro_truong','qt1_khuyen_hoc','vil_z_phap','vil_bp_don','vil_bp_thaykien','c631_hop_phu_lao','n633_y_oan','v64_con_hoc_nha_mon','tre_hoc_gioi_ve','d631_thay_dia_ly','w631_thay_lang_rong','c631_thay_lang_dao','c631_gia_nhan_xin_nghi','stf_sick','lu_lut','w63_dis_lu','trom_cuoi_nam','c631_trom_ga_dem','v62_trom_ngam_nha']); /* v6.7.0-d1, d2: thêm theo bản rà tiền */
+/* d9.12.68 (chủ dự án 24/11: lời kể gọi ông cho người nữ, gọi sai tuổi): sau khi tạo NPC (d.npc), lời kể, tên lựa chọn, kết quả của sự kiện được chỉnh xưng hô theo giới và tuổi thật của NPC. Chỉ đổi khi đoạn chỉ có kiểu xưng hô sai và không có kiểu đúng; che tên người trước khi đổi; không đụng ông bà nội ngoại, ông trời... */
+const PRO_KEEP=/(ông|bà|Ông|Bà)\s+(nội|ngoại|bà|ông|con|trời|tơ|địa|táo|cố|tổ|thầy|mụ|đỡ|mối)/g;
+function proFix(t,n){if(typeof t!=='string'||!n||!n.g||!t)return t;const a=n.born!=null?Math.floor((S.t-n.born)/12):40;
+  const names=[];S.people.forEach(p=>{if(p.given&&p.given.length>=2)names.push(p.given)});if(S.np&&S.np.l)Object.values(S.np.l).forEach(x=>{if(x.n)names.push(x.n)});names.sort((x,y)=>y.length-x.length);
+  return t.split(/(<[^>]*>)/).map(seg=>{if(!seg||seg[0]==='<')return seg;const keep=[];let s=seg.replace(PRO_KEEP,m=>{keep.push(m);return '\u0001'+(keep.length-1)+'\u0002'});
+    names.forEach(nm=>{if(s.includes(nm)){keep.push(nm);const k='\u0001'+(keep.length-1)+'\u0002';s=s.split(nm).join(k)}});
+    const L=String.raw`(?<![\p{L}\u0001\u0002])`,E=String.raw`(?![\p{L}\u0001\u0002])`;const has=w=>new RegExp(L+'(?:'+w+')'+E,'iu').test(s);
+    const rep=(w,to)=>{s=s.replace(new RegExp(L+'('+w+')'+E,'giu'),m=>m[0]===m[0].toUpperCase()?to[0].toUpperCase()+to.slice(1):to)};
+    const MW='ông|lão|chàng|cụ ông|ông lão|ông già',FW='bà|nàng|cô gái|cụ bà|bà lão|bà già';
+    if(n.g==='nữ'&&has(MW)&&!has(FW)){rep('cụ ông','cụ bà');rep('ông lão|ông già','bà lão');rep('ông|lão','bà');rep('chàng trai','cô gái');rep('chàng','nàng')}
+    else if(n.g==='nam'&&has(FW)&&!has(MW)){rep('cụ bà','cụ ông');rep('bà lão|bà già','ông lão');rep('bà','ông');rep('cô gái','chàng trai');rep('nàng','chàng')}
+    const OLD='lão|cụ|già|bà lão|ông lão',YG='cậu|chàng|cô gái|thiếu nữ|thiếu niên|đứa bé';
+    if(a<50&&has(OLD)&&!has(YG)){rep('lão|cụ',n.g==='nữ'?'bà':'ông');rep('bà lão|ông lão',n.g==='nữ'?'bà':'ông')}
+    else if(a>=50&&has(YG)&&!has(OLD)){rep('cậu|chàng',n.g==='nữ'?'bà':'ông');rep('cô gái|thiếu nữ',n.g==='nữ'?'bà':'ông')}
+    return s.replace(/\u0001(\d+)\u0002/g,(m0,i)=>keep[+i])}).join('')}
+function wrapPro(){EVENTS.forEach(e=>{if(e._pw)return;e._pw=1;const npcOf=d=>d&&d.npc&&S&&S.np&&S.np.l?S.np.l[d.npc]:null;const fixR=(r,n)=>typeof r==='string'&&n?proFix(r,n):r;
+    if(typeof e.x==='function'){const x0=e.x;e.x=function(c,d){return fixR(x0.apply(this,arguments),npcOf(d))}}
+    if(typeof e.o==='function'){const o0=e.o;e.o=function(c,d){const arr=o0.apply(this,arguments);const n=npcOf(d);if(!n||!Array.isArray(arr))return arr;
+      return arr.map(o=>{if(!o||typeof o!=='object')return o;const q=Object.assign({},o);if(typeof q.l==='string')q.l=proFix(q.l,n);['f','y','n','yy','nn'].forEach(k=>{if(typeof q[k]==='function'){const f0=q[k];q[k]=function(){return fixR(f0.apply(this,arguments),npcOf(d))}}});return q})}}})}
 function wrapEvMoney(){
   EVENTS.forEach(e=>{if(e._mw)return;e._mw=1;if(e.ms===undefined)e.ms=!e.ky&&!MS_NO.has(e.id)&&(MS_YES.has(e.id)||/^(ts_|rv_|wl_)/.test(e.id)||MS_RE.test(typeof e.t==='string'?e.t:''));
     const wf=f=>typeof f==='function'?function(){const p=MMCTX;MMCTX=e;try{return f.apply(this,arguments)}finally{MMCTX=p}}:f;
@@ -423,7 +442,8 @@ function advance(){
   if(mo===9)alive().forEach(c=>{if(c.vexam&&['quan','quan_ngu','vua'].includes(c.job)){c.vexam=null;return}if(c.vexam&&!c.away)enqueue('vexam',c.id,{})});
   // việc đã hẹn
   const due=S.sched.filter(s=>s.t<=S.t);S.sched=S.sched.filter(s=>s.t>S.t);
-  due.forEach(s=>{const c=P(s.cid);if(!c||!inClan(c))return;const E0=EVMAP[s.ev];if((c.busyUntil||0)>S.t&&!(E0&&E0.fixed)&&(s.def||0)<6){S.sched.push(Object.assign({},s,{t:c.busyUntil+1,def:(s.def||0)+1}));return}enqueue('ev',c.id,{ev:s.ev,data:s.data})});
+  due.forEach(s=>{const c=P(s.cid);if(!c||!inClan(c))return;const E0=EVMAP[s.ev];if(E0&&E0.job&&!(s.data&&s.data._force)&&!jobMatch(E0,c))return; /* d9.12.68: việc hẹn có điều kiện nghề thì kiểm lại lúc tới hạn: người đã nghỉ hưu, mất chức, đổi nghề không còn gặp việc của nghề cũ */
+  if((c.busyUntil||0)>S.t&&!(E0&&E0.fixed)&&(s.def||0)<6){S.sched.push(Object.assign({},s,{t:c.busyUntil+1,def:(s.def||0)+1}));return}enqueue('ev',c.id,{ev:s.ev,data:s.data})});
   // đi buôn về
   S.trips=S.trips.filter(tr=>{if(S.t<tr.until)return true;const c=tr.cid?P(tr.cid):null;if(c){if(c.away&&c.away.type==='trade')c.away=null;if(!inClan(c))return false}enqueue('trade',c?c.id:S.head,{trip:tr});return false});
   // sự kiện đời thường: thường xuyên. Kỳ ngộ: hiếm, theo cơ duyên
@@ -589,17 +609,41 @@ function die(c,cause){
   const sp0=spouseOf(c);if(sp0&&sp0.dead==null){sp0.flags.widowT=S.t;sphEnd(sp0,c.id,'mat')}
   kidsOf(c).forEach(k=>{if(k.dead!=null)return;const w=spouseOf(k);if(w&&w.dead==null&&w.g==='nữ'&&inClan(w))w.flags.tangCM=S.t});
   log(`${nameOf(c)} ${cause}, hưởng ${age(c)} tuổi.${est}`,'hi');
-  // duyên nợ dang dở truyền cho con cháu
-  const arcs=S.sched.filter(x=>x.cid===c.id&&EVMAP[x.ev]&&EVMAP[x.ev].arc);
-  if(arcs.length){const heir=kidsOf(c).filter(k=>inClan(k)&&age(k)>=12&&!k.inLaw).sort((a,b)=>a.born-b.born)[0]||(spouseOf(c)&&inClan(spouseOf(c))?spouseOf(c):null);
-    if(heir){arcs.forEach(x=>{x.cid=heir.id;x.t=Math.max(x.t,S.t+R(6,24))});log(`${nameOf(heir)} gánh tiếp chuyện dang dở của ${c.given}.`,'gd')}}
+  passLong(c); /* d9.12.68: duyên nợ, cốt truyện dài và kỳ vật đang nuôi truyền cho con cháu */
   alive().forEach(p=>{if(p.spouse===c.id||c.parents.includes(p.id)||p.parents.includes(c.id)){p.flags.griefUntil=S.t+12;p.flags.lostParent=c.parents.length?S.t:p.flags.lostParent}});
   alive().forEach(p=>{if(c.parents.includes(p.id))p.flags.lostKid=S.t;if(p.parents.includes(c.id))p.flags.parentDied=S.t});
   S.on=clamp(S.on-2,0,100);
   enqueue('death',c.id,{cause},true);
 }
-/* tước truyền cho con trai trưởng, hạ một bậc */
+/* d9.12.68 (chủ dự án 24/11: "việc hoặc vật kéo dài, khó thành cho phép truyền lại cho con cháu"): chuỗi dài đang hẹn (arc hoặc id thuộc LONGRE) và kỳ vật đang nuôi (c.flags.ccv) của người mất chuyển sang người thừa kế phù hợp nhất: con đã trưởng thành, rồi cháu, rồi vợ hoặc chồng, rồi con còn nhỏ (việc chờ tới khi đủ 18 tuổi). Kỳ vật còn kèm hộp Di nguyện cho người nhận. */
+const LONGRE=/^(cv_nuoi|cv_dom_ngo|yl_|tpha_|hd_|bd_|kt_|hc_|tdt_|kiem_|ky_o_|ky_lua_|ky_tranh_|dan_|cau_|bg_|cp_|ky_hd_)/;
+function longHeir(c){const kids=kidsOf(c).filter(k=>inClan(k)&&!k.inLaw).sort((a,b)=>a.born-b.born);const ad=kids.filter(k=>age(k)>=18);if(ad.length)return ad[0];
+  const gk=[];kids.forEach(k=>kidsOf(k).forEach(g=>{if(inClan(g)&&age(g)>=18)gk.push(g)}));if(gk.length)return gk.sort((a,b)=>a.born-b.born)[0];
+  const sp=spouseOf(c);if(sp&&inClan(sp))return sp;return kids.filter(k=>age(k)>=8)[0]||null}
+function passLong(c){const arcs=S.sched.filter(x=>x.cid===c.id&&EVMAP[x.ev]&&(EVMAP[x.ev].arc||LONGRE.test(x.ev)));const kv=(c.flags.ccv||0)>0&&!c.flags.ccv_x;if(!arcs.length&&!kv)return;
+  const heir=longHeir(c);
+  if(!heir){if(kv){c.flags.ccv_x=1;c.flags.ccv=0;log(`Không còn ai trong nhà nối nghiệp, kỳ vật của ${nameOf(c)} thất lạc.`,'gd')}arcs.forEach(x=>{x.t=-1});S.sched=S.sched.filter(x=>x.t!==-1);return}
+  const wait=Math.max(0,18-age(heir))*12;arcs.forEach(x=>{x.cid=heir.id;x.t=Math.max(x.t,S.t+R(6,24)+wait)});
+  if(kv){heir.flags.ccv=c.flags.ccv;heir.flags.ccvT=c.flags.ccvT||0;heir.flags.ccvFrom=c.id;c.flags.ccv=0;if(!arcs.some(x=>/^cv_(nuoi|dom_ngo)/.test(x.ev)))later(heir,'cv_nuoi',R(12,24)+wait);
+    if(isCtrl(heir))enqueue('ev',heir.id,{ev:'di_nguyen',data:{from:c.id,lvl:heir.flags.ccv,kind:'kyvat'}},true)}
+  log(`${nameOf(heir)} gánh tiếp ${kv?'kỳ vật và ':''}chuyện dang dở của ${c.given}.`,'gd')}
+/* tước truyền: con trai ruột lớn nhất còn sống; nếu đã mất thì con trai của người ấy (cháu đích tôn); rồi các con trai kế tiếp; con nuôi chỉ khi không còn huyết thống; không có nam thì thu hồi; hạ một bậc, tước bậc 1 không truyền (d9.12.68) */
 function inheritTitle(c){
+  if(!c.tuoc)return '';
+  const n=c.tuoc-1;
+  if(n<1)return ` Tước ${TUOC[c.tuoc]} là bậc thấp nhất, theo lệ không truyền cho đời sau, triều đình thu hồi.`;
+  const byAge=ks=>ks.slice().sort((a,b)=>a.born-b.born);const male=ks=>ks.filter(k=>k.g==='nam');
+  const blood=kidsOf(c).filter(k=>!k.adopted);let heir=null;
+  for(const s of byAge(male(blood))){if(inClan(s)){heir=s;break}const gs=byAge(male(kidsOf(s).filter(k=>!k.adopted&&inClan(k))));if(gs.length){heir=gs[0];break}}
+  if(!heir){const gd=[];blood.filter(k=>k.g!=='nam').forEach(d=>male(kidsOf(d).filter(k=>!k.adopted&&inClan(k))).forEach(k=>gd.push(k)));if(gd.length)heir=byAge(gd)[0]}
+  if(!heir){const dg=byAge(blood.filter(k=>k.g!=='nam'&&inClan(k)&&age(k)>=18));if(dg.length)heir=dg[0]}
+  if(!heir){const ad=byAge(male(kidsOf(c).filter(k=>k.adopted&&inClan(k))));if(ad.length)heir=ad[0]}
+  if(!heir)return ` Tước ${TUOC[c.tuoc]} không có người trong nhà đủ điều kiện kế tục, triều đình thu hồi.`;
+  heir.tuoc=Math.max(heir.tuoc||0,n);heir.tuocPrev=heir.tuoc;heir.cong=Math.max(heir.cong||0,TUOC_CONG[n]);fiefSync();
+  log(`${nameOf(heir)} kế tập tước ${TUOC[n]}.`,'gd');
+  return ` ${heir.parents&&heir.parents.includes(c.id)?(heir.adopted?'Con nuôi':heir.g==='nam'?'Con trai':'Con gái'):(kidsOf(c).some(k=>k.id===(heir.parents||[])[0]&&k.g!=='nam')?'Cháu ngoại':'Cháu nội')} ${esc(nameOf(heir))} kế tập tước ${TUOC[n]}.`;
+}
+function inheritTitleOld(c){
   if(!c.tuoc)return '';
   const sons=kidsOf(c).filter(k=>k.g==='nam'&&inClan(k)&&!k.adopted).sort((a,b)=>a.born-b.born);
   const n=c.tuoc-1;if(!sons.length||n<1)return `Tước ${TUOC[c.tuoc]} không có người kế tục, triều đình thu hồi.`;
@@ -865,7 +909,7 @@ function canPromote(c){
 function farmerLv(){const o=S.farm.own;return o>=40?3:o>=15?2:o>=3?1:0}
 /* ================= chọn kỳ ngộ ================= */
 let EVENTS=[],EVMAP={};
-function buildEvents(){EVENTS=[];window.EVMEM=window.EVMEM||{};(window.EVF||[]).forEach(f=>{try{EVENTS.push(...f(G))}catch(e){console.error(e)}});(window.EVPATCH||[]).forEach(f=>{try{EVENTS=f(EVENTS,G)||EVENTS}catch(e){console.error('EVPATCH',e)}});EVMAP=Object.fromEntries(EVENTS.map(e=>[e.id,e]));classifyEvents();tagEvents();patchEvents();initBrk62();guard6415();guard6416();guard653();attachMeta();attachMem();wrapEvMoney()}
+function buildEvents(){EVENTS=[];window.EVMEM=window.EVMEM||{};(window.EVF||[]).forEach(f=>{try{EVENTS.push(...f(G))}catch(e){console.error(e)}});(window.EVPATCH||[]).forEach(f=>{try{EVENTS=f(EVENTS,G)||EVENTS}catch(e){console.error('EVPATCH',e)}});EVMAP=Object.fromEntries(EVENTS.map(e=>[e.id,e]));classifyEvents();tagEvents();patchEvents();initBrk62();guard6415();guard6416();guard653();attachMeta();attachMem();wrapEvMoney();wrapPro()}
 /* v6.5.4: gắn metadata kho sự kiện (window.EVMETA, sinh bởi tools/classify.js) để lọc và thống kê ở trang admin. Không ảnh hưởng cách game chọn sự kiện. */
 /* d9.6 Q5: mức sự kiện và kỳ ngộ (chủ dự án 22/11): 0 vặt, 1 thường, 2 quan trọng, 3 lớn. Khóa e.lv ghi đè; mặc định suy từ loại (cốt truyện 3, kỳ ngộ và việc cố định 2) và độ hiếm (rare trở lên 3, uncommon 2). */
 function evLvOf(e){if(e.lv!=null)return e.lv;if(window.EVLV&&window.EVLV[e.id]!=null)return window.EVLV[e.id]; /* d9.10: events-lv.js (tools/lvgen.js) */const M=e.meta||{};if(e.arc||M.tr==='arc')return 3;if(['rare','very_rare','unique'].includes(M.ra))return 3;if(M.ra==='uncommon'||e.ky||M.tr==='encounter'||e.fixed||M.tr==='fixed')return 2;return 1}
@@ -1025,10 +1069,10 @@ function npCard(n,solo){const p=npPseudo(n);const a=age(p);const sub=(n.vaiTxt||
 const ID_P=/^p[0-9a-z]{8,}$/,ID_N=/^n\d+$/;
 function evPeople(c,data,text){const L=[],NL=[],sp=new Set(),sn=new Set();
   const addP=id=>{if(id==null||sp.has(id))return;const p=P(id);if(p&&(p.dead==null||(c&&p.id===c.id))){sp.add(id);L.push(p)}};
-  const addN=id=>{if(id==null||sn.has(id))return;const n=npGet(id);if(n&&!S.people.some(p=>nameOf(p)===n.n)){sn.add(id);NL.push(n)}}; /* d9.12.63: NPC trùng tên một người trong gia phả (người đã vào nhà) không hiện thành thẻ thứ hai */
+  const addN=(id,explicit)=>{if(id==null||sn.has(id))return;const n=npGet(id);if(n&&(n.ok!==0||explicit)&&!S.people.some(p=>nameOf(p)===n.n)){sn.add(id);NL.push(n)}}; /* d9.12.68: NPC đã mất chỉ có thẻ khi dữ liệu sự kiện nêu đích danh */ /* d9.12.63: NPC trùng tên một người trong gia phả (người đã vào nhà) không hiện thành thẻ thứ hai */
   const any=v=>{if(typeof v!=='string')return;if(ID_N.test(v))addN(v);else if(ID_P.test(v))addP(v)};
   if(c)addP(c.id);
-  if(data){['who','oid','xg','oth','kid','w','hp'].forEach(k=>addP(data[k]));[].concat(data.npc||[]).forEach(addN);
+  if(data){['who','oid','xg','oth','kid','w','hp'].forEach(k=>addP(data[k]));[].concat(data.npc||[]).forEach(i=>addN(i,true));
     Object.keys(data).forEach(k=>{const v=data[k];if(Array.isArray(v)){if(v.length<=3)v.forEach(any)}else any(v)})}
   if(text&&typeof text==='string'){const tx=text.replace(/<[^>]*>/g,'');try{alive().forEach(p=>{if(p.id!==(c&&c.id)&&p.given&&p.given.length>=2&&tx.includes(esc(p.given))&&!sp.has(p.id)&&L.length<5)addP(p.id)});if(S.np&&S.np.l)Object.values(S.np.l).forEach(n=>{if(n.n&&n.n.length>=4&&tx.includes(esc(n.n))&&!sn.has(n.id)&&NL.length<5)addN(n.id)})}catch(er){}} /* d9.12.63: người nhắc tên trong lời kể mà không nằm trong dữ liệu vẫn có thẻ */
   const L4=L.slice(0,5),N4=NL.slice(0,Math.max(0,6-L4.length));return {L:L4,NL:N4}}
@@ -1171,6 +1215,7 @@ function showPopup(it,c){
   if(it.kind==='ev'&&it.data&&it.data.xg){const p=P(it.data.xg);if(p&&p.outSp){if(it.ev==='v62_xg_bi_bat_nat'){p.outSp.coi=1;p.outSp.nhin=1}if(it.ev==='v62_xg_ly_hon_ve')p.outSp.back=1}}
   switch(it.kind){
     case 'ev':{const ev=EVMAP[it.ev];if(!ev){skip();return}const d=it.data||{};
+      if(ev.job&&!d._force&&!jobMatch(ev,c)){skip();return} /* d9.12.68: nghề đổi giữa lúc xếp hàng và lúc hiện hộp */
       if(it.ev==='bat_linh'&&(c.away||c.job==='quan_ngu')){skip();return}
       if(/^tc_/.test(it.ev)&&!(S.dyn&&S.dyn.cr)){skip();return}
       /* v6.7.0-d5.1: sự kiện cố định do hệ thống khác gọi thẳng (nhà chật, thời thế, sứ giả...) cũng phải cách nhau mười năm; bước nối tiếp trong chuỗi (có dữ liệu kèm theo) thì không bị chặn */
