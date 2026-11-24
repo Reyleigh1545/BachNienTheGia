@@ -749,7 +749,7 @@ function bizCalc(b){
   let mkF=1;if(b.type==='yquan'&&S.epi)mkF=1.6;if(b.type==='quantra'&&season()==='dong')mkF=0.85;if(S.war&&b.type==='tieucuc')mkF=1.3;if(S.war&&['ganhhat','quantra'].includes(b.type))mkF*=0.8;
   if(S.disaster)mkF*=0.85;
   const rev=L[2]*(0.25+0.75*fill)*ownerF*mkF*(0.85+((S.t*7+b.id.length)%30)/100)*(1+(b.bonus||0))*(rule('trongthuong')?1.08:1)*(rule('trongnong')?0.95:1)*(0.9+S.on/500);
-  const rv=Math.min(rev,L[2]*capF)*0.92*(thanHas('thuongthanh')?1.08:1) /* v6.5.4 giảm 30% (0,7); d9.12 nâng lại 0,92: chủ dự án báo nhiều lần lợi ích phải tăng (đề xuất, chờ duyệt Q9) */*(b.type==='xuong'&&thanHas('thantuong')?1.1:1);
+  const rv=Math.min(rev,L[2]*capF)*1.104*(thanHas('thuongthanh')?1.08:1) /* v6.5.4 giảm 30% (0,7); d9.12 nâng lại 0,92; 24/11 chủ dự án trả lời câu 1: nâng cơ sở thêm 20% nữa (0,92 x 1,2 = 1,104) */*(b.type==='xuong'&&thanHas('thantuong')?1.1:1);
   const wages=b.staff.reduce((s,x)=>s+x.wage,0);const mat=rv*((BIZX[b.type]||{}).mat??0.25)*(1-0.4*(nL>1?b.lv/(nL-1):0));const rent=L[3];
   return {rev:Math.round(rv),wages,mat:Math.round(mat),rent,profit:Math.round(rv-wages-mat-rent),fill,ownerF,cap:Math.round(L[2]*capF)};
 }
@@ -911,7 +911,7 @@ function eligible(e,c){
   if(e.st!=null&&stg(c)<e.st)return false;
   if(e.stMax!=null&&stg(c)>e.stMax)return false;
   if(e.age&&(age(c)<e.age[0]||age(c)>e.age[1]))return false;
-  if(!e.age&&!e.baby&&!e.ky&&age(c)<14&&!(e.meta&&e.meta.who==='child'))return false; /* d9.12 R9: sự kiện không ghi tuổi và không phải việc của trẻ thì không ra cho người dưới 14 */
+  if(!e.age&&!e.baby&&!e.ky&&age(c)<16&&!(e.meta&&e.meta.who==='child'))return false; /* d9.12 R9: sự kiện không ghi tuổi và không phải việc của trẻ thì không ra cho người dưới 16 (24/11 chủ dự án chọn 16, câu 3) */
   if(e.sea&&!e.sea.includes(season()))return false;
   if(e.tier&&(tierIdx()<e.tier[0]||tierIdx()>e.tier[1]))return false;
   if(e.fame&&c.fame+S.fame*0.2<e.fame)return false;
@@ -1176,6 +1176,7 @@ function showPopup(it,c){
     case 'ruleprop':if(inClan(c))return rulepropPopup(c,it);skip();return;
     case 'ruleforce':return ruleforcePopup(c,it);
     case 'vuotsinh':return vuotsinhPopup(c,it);
+    case 'namekid':return namekidPopup(c,it);
     case 'mm':if(!['none','vua','huu'].includes(c.job))return mmPopup(c,it.t);skip();return;
     case 'promo':if(canPromote(c))return promoPopup(c);skip();return;
     case 'post':if(inPost(c)&&seatOfC(c)===it.key)return postPopup(c,it.key);skip();return;
@@ -2132,8 +2133,16 @@ function doBirth(m,risk,harmF,who){
 function adopt(parent,o){
   const kid=mkPerson(Object.assign({age:R(0,6),young:true,surname:parent.inLaw&&spouseOf(parent)?spouseOf(parent).surname:parent.surname,hh:parent.hh},o||{}));
   kid.parents=[parent.id].concat(married(parent)?[parent.spouse]:[]);kid.gen=(parent.gen||1)+1;kid.adopted=true;kid.focus='nghi';
-  S.people.push(kid);log(`${nameOf(parent)} nhận ${nameOf(kid)} làm con nuôi.`,'gd');ledAdd('nhan_con',[parent.id,kid.id],null,{keep:1});return kid;
+  S.people.push(kid);log(`${nameOf(parent)} nhận ${nameOf(kid)} làm con nuôi.`,'gd');ledAdd('nhan_con',[parent.id,kid.id],null,{keep:1});
+  if(isCtrl(parent)&&!S.over)enqueue('namekid',parent.id,{k:kid.id}); /* 24/11 chủ dự án trả lời câu 8: cho người chơi đặt tên con nuôi */
+  return kid;
 }
+function namekidPopup(c,it){const k=P(it.k);if(!k||k.dead!=null||!inClan(k)){setTimeout(nextPopup,0);return}
+  openModal(`${hdrEv(c)}<span class="eyebrow">Con nuôi · ${dateStr(S.t)}</span><h2>Đặt tên cho con</h2>
+   <p>${esc(c.given)} đón ${k.g==='nam'?'một bé trai':'một bé gái'} về nuôi (${age(k)<1?'mới sinh':age(k)+' tuổi'}). Bé sẽ mang họ ${esc(k.surname)}. Giữ tên bé đang có hoặc đặt tên mới.</p>
+   <div class="field"><label for="kn0">Tên ${k.g==='nam'?'bé trai':'bé gái'} (họ ${esc(k.surname)})</label><input id="kn0" maxlength="20" value="${esc(k.given)}"></div>
+   <div class="choices"><button class="btn primary" data-ok>Ghi vào gia phả</button></div>`);
+  M.querySelector('[data-ok]').onclick=()=>{const v=(M.querySelector('#kn0').value||'').trim().slice(0,20);if(v)k.given=v;closeModal()}}
 
 /* ================= tang lễ, kế nghiệp ================= */
 function deathPopup(...a){return ENGX.fn.deathPopup(...a)} /* d9.10: thân hàm ở engine-x.js */
@@ -2280,7 +2289,8 @@ function tradeReturn(c0,tr,probe){
   const sk=c?((c.eq+c.tri*0.5)/150+c.m/200+tsum(c,'trade')):tr.skill/120;
   const fameB=Math.min(0.15,((c?c.fame:0)+S.fame*0.1)/2000);
   let risk=r.risk*(c?(1.2-c.vo/200-Math.min(0.2,c.m/600)):1.1)*(S.war?1.4:1)*(season()==='dong'&&(r.sea||r.war)?1.3:1)*(S.epi?1.2:1);
-  const spoil=w_spoil(tr.good,r.mo);const val=tr.qty*(tr.pv||priceOf(tr.good))*(1+((tr.sv||r.sell[tr.good]||1)-1)*w_damp(tr.good)*(r.fr||1))*(1-spoil)*(rule('trongthuong')?1.08:1)*(rule('trongnong')?0.95:1)*(0.92+Math.random()*0.25+sk*0.32+fameB)*(S.epi&&tr.good==='duoc'?1.4:1)*(S.war&&['lua','sat','muoi'].includes(tr.good)?1.15:1);
+  const spoil=w_spoil(tr.good,r.mo);const val0=tr.qty*(tr.pv||priceOf(tr.good))*(1+((tr.sv||r.sell[tr.good]||1)-1)*w_damp(tr.good)*(r.fr||1))*(1-spoil)*(rule('trongthuong')?1.08:1)*(rule('trongnong')?0.95:1)*(0.92+Math.random()*0.25+sk*0.32+fameB)*(S.epi&&tr.good==='duoc'?1.4:1)*(S.war&&['lua','sat','muoi'].includes(tr.good)?1.15:1);
+  const val=val0+Math.max(0,val0-tr.cost)*0.5; /* 24/11 chủ dự án trả lời câu 1: lãi chuyến buôn tăng thêm 50% nữa (phần lãi gộp trên vốn nhân 1,5; không đụng phần lỗ) */
   const toll=Math.round(tr.cost*(0.01+0.02*r.mo+0.04*(r.cross||0))*tollOff());
   const fee=tr.hired?Math.max(0,(val-toll-tr.cost)*0.2):0;
   const got=Math.max(0,Math.round(val-fee-toll));
