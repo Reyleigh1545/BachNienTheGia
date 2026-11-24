@@ -255,6 +255,10 @@ button.chip{border:0;font:inherit;font-size:11.5px;cursor:help}
 .evtx small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .evcard{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:9px 14px 9px 10px;box-shadow:0 1px 3px rgba(0,0,0,.08);text-align:left;font:inherit;color:inherit;cursor:pointer;min-width:0}
 .evcard:hover{border-color:var(--seal)}
+/* 7.0.0-d.1.5.15 (chủ dự án 25/11: giao diện cũ, chỉ giữ nam xanh nữ hồng): viền trên thẻ người theo giới, người mất xám */
+.node.mal,.evcard.mal{border-top:4px solid #7fa8cf}
+.node.fem,.evcard.fem{border-top:4px solid #d99aa4}
+.node.dead{border-top-color:#b5b8b0}
 .evcard.solo{flex-direction:column;text-align:center;padding:12px 22px 10px;gap:4px}
 .evav{position:relative;flex:none;display:block}
 .evav svg{display:block;border-radius:50%}
@@ -467,7 +471,7 @@ ul.plain{margin:4px 0 0;padding-left:18px;font-size:12.5px;display:grid;gap:3px}
 <div class="wrap" id="app"></div>
 <div class="overlay sheet" id="sheetO" hidden><div class="modal sheetm" id="sheetM" role="dialog" aria-modal="true" aria-label="Hồ sơ nhân vật"></div></div>
 <div class="tip" id="tip" hidden></div>
-<div class="verlbl" aria-hidden="true">v7.0.0-d.1.5.13 · admin</div>
+<div class="verlbl" aria-hidden="true">v7.0.0-d.1.5.15 · admin</div>
 <div class="overlay" id="overlay" hidden><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
 
 <script src="data.js"></script>
@@ -611,7 +615,7 @@ ul.plain{margin:4px 0 0;padding-left:18px;font-size:12.5px;display:grid;gap:3px}
 <script src="engine-rg.js"></script>
 <script src="engine-npc.js"></script>
 <script src="engine-ill.js"></script>
-<script>window.BN_UI2=!/[?&]ui=old/.test(location.search);document.addEventListener('DOMContentLoaded',function(){if(!window.BN_ADMIN)document.body.classList.toggle('ui2',window.BN_UI2)})</script>
+<script>window.BN_UI2=/[?&]ui=new/.test(location.search); /* 7.0.0-d.1.5.15 (chủ dự án 25/11: "trả lại giao diện cũ, giao diện ui1"): mặc định giao diện cũ, thêm ?ui=new vào địa chỉ để xem giao diện mới */document.addEventListener('DOMContentLoaded',function(){if(!window.BN_ADMIN)document.body.classList.toggle('ui2',window.BN_UI2)})</script>
 <script src="ui2.js"></script>
 <script src="admin.js"></script>
 <script src="engine.js"></script>
