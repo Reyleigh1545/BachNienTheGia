@@ -44,17 +44,7 @@ J({id:'n633_su_do',t:'Học trò đỗ đạt về thăm',job:['su'],age:[35,70]
  o:c=>[
   {l:'Nhận lễ, dặn dò làm quan phải thanh liêm',f:c=>`Học trò cúi đầu nghe. Về sau anh trở thành một vị quan tử tế, vẫn gửi thư thăm thầy mỗi mùa.`+fx(c,{money:m(R(2,4)),fame:R(5,8),cfame:1,eq:1,tam:8})},
   {l:'Từ chối quà, chỉ nhận cái cúi đầu',f:c=>`Học trò ngập ngừng nhưng cúi đầu thật sâu. Cả làng nhìn thấy, hôm sau học trò mới đến xin học nhiều hơn hẳn.`+fx(c,{fame:R(6,9),liem:3,tam:7})}]}),
-K({id:'n633_su_sach',t:'Trang sách quý gói xôi',job:['su'],age:[22,70],c:c=>c.tri>=60,
- x:c=>`Mua gói xôi ở chợ, ${N(c)} thấy tờ giấy gói có chữ rất lạ, nét bút như người chép bản cổ. Hỏi bà bán xôi, bà bảo mua cả đống giấy cũ ở nhà một ông già vừa mất, giá rẻ như củi.`,
- o:c=>[
-  {l:'Mua hết số giấy còn lại',r:RR({tri:0.9,diem:0.4},0.55),y:c=>`Ngồi ghép từng tờ, ${N(c)} thấy đó là một bộ chú giải kinh điển chép tay đã mất. Một món quý bị suýt bỏ thành tro.`+fx(c,{money:-m(0.3),tri:R(2,4),m:R(5,8),fame:R(4,7),tam:9}),n:c=>`Phần lớn giấy đã bị gói hết, chỉ còn mấy tờ rời rạc. Vẫn có chút giá trị.`+fx(c,{money:-m(0.2),tri:1,tam:-2})},
-  {l:'Xin bà cho vài tờ về xem',f:c=>`Bà cho, ${N(c)} đọc từng tờ, thấy là bản quý. Lần sau lại đến thì giấy đã thành tro.`+fx(c,{tri:1,tam:-1})}]}),
 /* ===================== NGHỆ ===================== */
-K({id:'n633_nghe_chet',t:'Bài hát cho người sắp mất',job:['nghe'],age:[18,70],c:c=>c.lv>=1,
- x:c=>`Quản gia một phủ lớn đến tìm ${N(c)} lúc nửa đêm: "Lão tướng quân nằm liệt, không nói được, chỉ cứ lẩm bẩm một khúc ca xưa. Chúng tôi tìm khắp mà không ai biết. Ông có biết không?"`,
- o:c=>[
-  {l:'Đến bên giường hát khúc ấy từ ký ức',r:RR({mi:0.9,eq:0.8,khau:0.4},0.5),y:c=>`Giọng ${N(c)} vang lên chậm rãi. Lão tướng quân mở mắt, khóe mắt chảy nước, khẽ gật đầu rồi nhắm lại. Đêm đó ông mất, gương mặt thanh thản. Gia đình tặng một khoản lớn và lời tri ân.`+fx(c,{money:m(R(6,12)),fame:R(5,9),cfame:2,mi:1,eq:1,tam:9}),n:c=>`Hát sai điệu, lão tướng nhắm mắt quay đi. ${N(c)} xin lỗi mãi, gia đình nói không có chi.`+fx(c,{tam:-6})},
-  {l:'Từ chối, bảo không biết khúc ca nào như thế',f:c=>`Quản gia cúi đầu đi. ${N(c)} không ngủ được suốt đêm.`+fx(c,{tam:-4})}]}),
 J({id:'n633_nghe_doithu',t:'Gánh hát đối thủ',job:['nghe'],age:[18,60],cd:72,
  x:c=>`Gánh hát đối thủ cùng thị trấn trả gấp đôi để lôi kéo hai người giỏi nhất gánh nhà ${N(c)}, đồng thời rỉ tai khán giả rằng gánh này "diễn cũ, hết thời".`,
  o:c=>[
