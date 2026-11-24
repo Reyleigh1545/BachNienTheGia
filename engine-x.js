@@ -10,7 +10,14 @@ function ghYear(){const S=X.S;const W=S.wr;if(!W||!W.sects||W.sects.length<2)ret
   if(w){const a=W.sects.find(s=>s.id===w.a),b=W.sects.find(s=>s.id===w.b);if(!a||!b){W.gwar=null;return}
     w.yrs++;const pa=(a.pow||50)+w.da*4,pb=(b.pow||50)+w.db*4;const d=(pa-pb)/60;
     a.pow=clampP((a.pow||50)+R(-3,3)+Math.round(d*3)-1);b.pow=clampP((b.pow||50)+R(-3,3)-Math.round(d*3)-1);
+    /* d9.12.59 (mục 11.B, giang hồ ↔ thế lực tự phát ↔ người ngoài phái): chiến tranh giữa phái lan ra ngoài. (1) phái giao chiến ở điểm nóng thì độ nóng tăng; (2) có thế lực nổi dậy thì phái tà mạnh tiếp sức, phái chính mạnh giúp dẹp; (3) nhà chơi sống trong địa bàn một phái (tỉnh gốc hoặc tỉnh đã chiếm) có thể bị cuốn vào (sự kiện gh_chien_lan, ít nhất 3 năm một lần). */
+    [a,b].forEach(sc=>{if(W.hot&&W.heat&&W.hot.includes(sc.p))W.heat[sc.p]=Math.min(100,(W.heat[sc.p]||0)+2)});
+    {const nf=(W.tl||[]).filter(fc=>fc.st==='noi');if(nf.length)[a,b].forEach(sc=>{if((sc.pow||50)>=45&&chance(0.5)){const fc=nf.find(x=>x.p===sc.p)||pick(nf);if(sc.al==='ta')fc.pow=Math.min(100,fc.pow+2);else if(sc.al==='chinh')fc.pow=Math.max(0,fc.pow-2)}})}
+    {const dom=sc=>[sc.p].concat(sc.ter||[]);const hp=X.S.loc&&X.S.loc.p;if(hp&&head()&&S.t-(W.lanT||-999)>=36&&[a,b].some(sc=>dom(sc).includes(hp))&&chance(0.4)){const sc=[a,b].find(x=>dom(x).includes(hp));W.lanT=S.t;later(head(),'gh_chien_lan',R(1,8),{s:sc.id,o:(sc===a?b:a).id})}}
     if(w.yrs>=w.len){const win=pa>=pb?a:b,lose=win===a?b:a;win.pow=clampP(win.pow+6);lose.pow=clampP(lose.pow-6);W.gwar=null;W.gwarEnd=S.t;
+      /* d9.12.59: phái thắng chiếm thêm địa bàn của phái thua; nơi quyền lực bỏ trống (phái thua) nếu là điểm nóng thì nóng thêm, nơi phái thắng cai quản thì dịu bớt */
+      if(lose.p&&lose.p!==win.p&&!(win.ter||[]).includes(lose.p)){win.ter=(win.ter||[]).concat([lose.p]).concat(lose.ter||[]);lose.ter=[];if(W.heat&&W.hot&&W.hot.includes(lose.p))W.heat[lose.p]=Math.min(100,(W.heat[lose.p]||0)+3);if(W.heat&&W.hot&&W.hot.includes(win.p))W.heat[win.p]=Math.max(0,(W.heat[win.p]||0)-2);log(`${win.n} chiếm thêm địa bàn của ${lose.n} ở ${provN(lose.p)}.`,'hi')}
+
       log(`Cuộc chiến giữa ${win.n} và ${lose.n} kết thúc: ${win.n} thắng thế.`,'gd');
       if(lose.pow<=12){ /* d9.12: phái thua nặng thì tan; đệ tử mất phái và mất bí kíp của phái */
         alive().filter(p=>inClan(p)&&p.flags&&p.flags.ghs===lose.id).forEach(p=>{const bk=p.flags.bk;const keys=bk?Object.keys(bk).filter(k=>bk[k]):[];let lostTxt='';if(keys.length&&chance(0.7)){const k=pick(keys);bk[k]=0;lostTxt=' Bí kíp của phái thất lạc theo.'}p.flags.ghs=null;p.flags.gh=0;log(`${nameOf(p)} mất phái vì ${lose.n} tan rã.${lostTxt}`,'hi')});
