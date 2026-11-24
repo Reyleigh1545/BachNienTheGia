@@ -138,10 +138,10 @@ return [
     {l:'Để dành làm của riêng',ax:{tiet:2},f:c=>'Của ít lòng nhiều, phòng khi hoạn nạn.'+fx(c,{purse:m(R(2,4))})}]},
 /* ============ HIẾM MUỘN ============ */
 {id:'v61_hiem_muon',t:'Hiếm muộn',fixed:1,k:'Gia đình',
- x:c=>`Vợ chồng ${N(c)} mong con đã lâu mà mãi chưa có tin. Hàng xóm bắt đầu xì xào.`,
- o:[{l:'Đi chùa cầu tự',ax:{diem:2},f:c=>{G.kidAdj(c,15,36);if(chance(0.4)){c.fert=Math.min(1,(c.fert||0.5)+0.3)}return 'Thành tâm khấn vái.'+fx(c,{money:-m(1),tam:4})}},
+ x:(c,d)=>{const n=G.tie.kidOffer(c,d,{age:R(0,5),why:'mồ côi, hàng xóm mách cho nhà'});return `Vợ chồng ${N(c)} mong con đã lâu mà mãi chưa có tin. Hàng xóm bắt đầu xì xào, rồi nhắc tới ${esc(n.n)}, một ${d.kid.g==='nam'?'bé trai':'bé gái'} ${d.kid.a<=1?'mới sinh':d.kid.a+' tuổi'} mồ côi, chưa ai nhận. Tư chất của bé: ${d.pot}.`},
+ o:(c,d)=>[{l:'Đi chùa cầu tự',ax:{diem:2},f:c=>{G.kidAdj(c,15,36);if(chance(0.4)){c.fert=Math.min(1,(c.fert||0.5)+0.3)}return 'Thành tâm khấn vái.'+fx(c,{money:-m(1),tam:4})}},
     {l:'Tìm danh y bốc thuốc',c:()=>G.money()>=m(8),f:c=>{c.fert=Math.min(1.1,(c.fert||0.5)+0.4);const s=spouseOf(c);if(s)s.fert=Math.min(1.1,(s.fert||1)+0.1);return 'Uống thuốc đều đặn, người khỏe ra.'+fx(c,{money:-m(8),suc:4})}},
-    {l:'Nhận con nuôi',f:c=>{if(G.adopt){G.adopt(c);return 'Đón một đứa trẻ mồ côi về nuôi.'+fx(c,{tam:10})}return 'Tạm gác lại.'}},
+    {l:'Nhận con nuôi',f:c=>{const k=G.tie.kidTake(c,d);return `Đón ${esc(k.given)} về nuôi.`+fx(c,{tam:10})}},
     {l:'Thuận theo ý trời',ax:{diem:3},f:c=>'Không cưỡng cầu nữa.'+fx(c,{tam:-2})}]}
 ];
 });

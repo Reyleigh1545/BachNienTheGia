@@ -61,12 +61,6 @@ GH({id:'gj_02',t:'Kẻ say gây sự',age:[18,55],c:c=>c.g==='nam',w:0.7,
   {l:'Từ chối khéo, mời cơm',f:c=>'Gã hơi tiếc nhưng bằng lòng. Tình xã giao giữ được.'+fx(c,{fame:1,tam:1})}]:[
   {l:'Đối đầu, không lùi bước',r:[{vo:0.9,suc:0.5,gan:0.3},40],y:c=>'Mình đánh lui cả bọn, vết thương nhẹ. Tiếng tăm tăng nhanh.'+fx(c,{fame:R(8,14),vo:R(1,3),suc:-R(3,8),tam:3}),n:c=>'Bị đánh trọng thương, nằm dưỡng cả tháng.'+fx(c,{suc:-R(14,26),fame:-5,tam:-6})},
   pay('Xin lỗi, mời rượu, giải hòa',6,{f:c=>'Mấy người đó cười nhạt nhận rượu. Mình mất mặt nhưng giữ được thân.'+fx(c,{money:-m(6),fame:-2,tam:-3})})]},
-GH({id:'gj_05',t:'Tên ăn mày lạ',age:[16,70],w:0.6,
- x:c=>`Một tên ăn mày đến xin cơm trước cổng nhà ${N(c)}. Nhìn bàn tay hắn không phải tay người nghèo: ngón tay thon, chai ở đúng chỗ, và mắt hắn quét qua sân như người đã quen đánh giá.`,
- o:c=>{const miss=bkMiss(c);return [
-  {l:'Cho cơm, mời ngồi nói chuyện',r:[{eq:0.7,tri:0.5},55],y:c=>{if(miss.length&&chance(0.55)){const k=pick(miss);const nm=bkLearn(c,k);return `Hắn nói ít, nhưng lúc đi để lại vài chiêu chỉ điểm ${nm}: hóa ra là một cao nhân giả dạng thử lòng người. Từ nay mình có thêm một bản lĩnh thật.`+fx(c,{vo:R(2,4),eq:1,fame:3,tam:5})}return 'Hắn kể một chuyện khiến mình ngồi nghe tới tối, rồi để lại một dấu hiệu lạ khắc trên cửa: ai thấy sẽ biết nhà này là nơi có thể ghé.'+fx(c,{eq:1,fame:3,tam:3})},n:c=>'Hắn kể chuyện bịa và khi đi lấy theo một món đồ trong nhà.'+fx(c,{money:-m(3),tam:-2})},
-  {l:'Cho cơm rồi đi',f:c=>'Hắn ăn xong, chắp tay đi, ánh mắt thoáng tiếc.'+fx(c,{tam:1})},
-  {l:'Đuổi đi, nghi hắn là kẻ do thám',f:c=>'Hắn đi, nhìn lại một lần. Mấy hôm sau trong xóm có chuyện mất trộm, ai cũng ngờ.'+fx(c,{fame:-1,tam:-1})}]}}),
 GH({id:'gj_10',ms:1,t:'Gánh hát giang hồ',age:[16,70],w:0.7,
  x:c=>`Một gánh hát giang hồ dựng rạp ngoài bãi. Đêm diễn kể chuyện hiệp nghĩa, người xem đứng kín. Trưởng gánh mời ${N(c)} lên xem hàng đầu và thì thầm: gánh hát đi khắp nơi, nghe được nhiều chuyện đáng nghe.`,
  o:c=>[pay('Mua vé hàng đầu, mời trưởng gánh ngồi uống',4,{f:c=>{const gw=S().wr&&S().wr.gwar;const t=gw?'Gánh hát vừa đi qua nơi hai phái đang giao tranh, ông kể rành rọt tình hình từng bên; mình ghi nhớ.':'Ông kể chuyện giang hồ khắp vùng, nghe tới tận khuya.';if(S().wr&&S().wr.gwar)S().wr.gwar.da=(S().wr.gwar.da||0);return t+fx(c,{money:-m(4),tam:5,tri:1,eq:1})}}),

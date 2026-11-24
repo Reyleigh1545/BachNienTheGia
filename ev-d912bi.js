@@ -1,0 +1,32 @@
+/* Bách Niên Thế Gia · v7.0.0-d.1.5.4 · VIẾT LẠI BA SỰ KIỆN CÓ NGƯỜI VÔ DANH (luật R1) mà save họ Công Tôn có gặp: gj_05 (tên ăn mày lạ), n633_y_thaycu (thầy cũ đến thăm), gap_lai_ban_cu (bạn cũ).
+   Người xuất hiện là NPC thật (G.tie.ensure): có giới, tuổi, tính cách; kết quả mỗi lựa chọn theo tính cách và năng lực chính NPC ấy; ơn oán vào sổ nhớ. */
+window.EVF.push(G=>{
+const {R,pick,chance,fx,esc}=G;
+const S=()=>G.S();const m=v=>G.mm(v);const FM=v=>G.fmtMoney(v);const N=c=>esc(c.given);
+const T=d=>d&&d.npc?G.tie.get(d.npc):null;const nm=n=>esc(n?n.n:'người ấy');
+const ax=(n,k)=>G.npc.ax(n,k);
+const addVai=(n,v)=>{if(n&&!n.vai.includes(v)){n.vai.push(v);n.vaiTxt=n.vai.map(x=>G.tie.VAI[x]||x).join(', ')}};
+const pay=(l,v,o)=>Object.assign({l:`${l} (${FM(m(v))})`,c:()=>G.money()>=m(v)},o);
+const gone=()=>[{l:'Thôi',f:()=>''}];
+return [
+{id:'gj_05',t:'Tên ăn mày lạ',tags:{},k:'Giang hồ',cd:36,pcd:96,ms:1,age:[16,70],w:0.6,
+ x:(c,d)=>{d.kind=pick(['cao_nhan','cao_nhan','ke_gian','do_tham']);const n=G.tie.ensure(c,{key:'an_may_la_'+S().t,g:'nam',vai:['quen'],nghe:'kẻ ăn mày lạ, tay không phải tay người nghèo',age:R(32,58),tier:0,rel:0,why:'xin cơm trước cổng',main:d.kind==='cao_nhan'?'vo':'eq',st:d.kind==='cao_nhan'?{vo:R(80,96),tri:R(60,85)}:{eq:R(55,80)}});d.npc=n.id;return `${nm(n)}, ${esc(n.nghe)}, đến xin cơm trước cổng nhà ${N(c)}. Nhìn bàn tay ông không phải tay người nghèo: ngón tay thon, chai ở đúng chỗ, và mắt ông quét qua sân như người đã quen đánh giá.`},
+ o:(c,d)=>{const n=T(d);if(!n)return gone();const cao=d.kind==='cao_nhan';return [
+  {l:'Cho cơm, mời ngồi nói chuyện',r:[{eq:0.7,tri:0.5},55],y:c=>{if(cao){G.tie.rel(n,24,'cho cơm, mời ngồi nói chuyện');addVai(n,'cao_nhan');G.tie.later(n,c,'tie_ban_nho',R(36,96),{});return `${nm(n)} nói ít, nhưng lúc đi để lại vài chiêu chỉ điểm: hóa ra là một cao nhân giả dạng thử lòng người. Từ nay mình có thêm một bản lĩnh thật, và một người biết nhớ.`+fx(c,{vo:R(2,4),eq:1,fame:3,tam:5,qh:[n.n,24]})}if(d.kind==='do_tham'){G.tie.rel(n,6,'cho cơm');return `Ông kể một chuyện khiến mình ngồi nghe tới tối, hỏi nhiều về người trong nhà và ruộng vườn. Lúc đi, mình thấy ông đếm bước chân quanh sân.`+fx(c,{eq:1,tam:0,qh:[n.n,6]})}G.tie.rel(n,-6,'lừa lúc được cho cơm');return `${nm(n)} ăn xong, khi đi đã lấy theo một món đồ trong nhà.`+fx(c,{money:-m(3),tam:-2,qh:[n.n,-6]})},n:c=>{G.tie.rel(n,-4,'bị bắt bẻ lúc cho cơm');return `Ông kể chuyện bịa, bị hỏi vặn thì cáo từ ngay. Ngồi đồng không ra gì.`+fx(c,{tam:-2,qh:[n.n,-4]})}},
+  {l:'Cho cơm rồi tiễn đi',f:c=>{G.tie.rel(n,cao?8:2,'cho cơm');return `${nm(n)} ăn xong, chắp tay đi, ánh mắt thoáng tiếc.`+fx(c,{tam:1,qh:[n.n,cao?8:2]})}},
+  {l:'Đuổi đi, nghi ông là kẻ do thám',f:c=>{G.tie.rel(n,-14,'bị đuổi khỏi cổng');if(cao)G.tie.oan(n,4);return `${nm(n)} đi, nhìn lại một lần. ${cao?'Ánh mắt ấy khiến mình thấy mình vừa bỏ lỡ điều gì.':'Mấy hôm sau trong xóm có chuyện mất trộm, ai cũng ngờ.'}`+fx(c,{fame:-1,tam:-1,qh:[n.n,-14]})}}]}},
+{id:'n633_y_thaycu',t:'Thầy cũ đến thăm',tags:{},k:'Nghề nghiệp',job:['y'],age:[30,70],c:c=>c.lv>=1,cd:120,w:1,pcd:240,
+ x:(c,d)=>{const n=G.tie.ensure(c,{key:'thay_thuoc_cu_'+c.id,g:'nam',vai:['thay'],nghe:'thầy thuốc dạy mình thuở trước, nay đã tóc bạc',age:R(62,78),tier:2,main:'tri',st:{tri:R(82,96),eq:R(60,85)},rel:30,why:'thầy cũ ghé thăm'});d.npc=n.id;return `${nm(n)}, ${esc(n.nghe)}, ghé qua trong chuyến đi xa. Ông khám lại nhà thuốc của ${N(c)}, xem sổ bệnh, chỉ ra vài chỗ sai, rồi tặng một cuốn sách ông viết riêng.`},
+ o:(c,d)=>{const n=T(d);if(!n)return gone();return [
+  {l:'Giữ thầy ở lại một tháng, học thêm',f:c=>{G.tie.rel(n,20,'được giữ lại dạy một tháng');return `Một tháng bên thầy, ${N(c)} thấy kiến thức như được tháo gỡ từng mảng. Khi ông đi, mắt ${N(c)} đỏ hoe.`+fx(c,{tri:R(2,3),m:R(6,9),sk:{ky:3},tam:8,qh:[n.n,20]})}},
+  pay('Biếu thầy một món lễ xứng, nhờ ông xem cho vài ca khó',6,{f:c=>{G.tie.rel(n,14,'biếu lễ nhờ xem ca khó');return `Ông xem từng ca một, chỉ ra hai chỗ mình hay nhầm. Lễ nhận không từ chối, nhưng dặn: "Đừng để nghề làm mình quên người bệnh".`+fx(c,{money:-m(6),tri:1,m:R(4,6),sk:{ky:2},tam:5,qh:[n.n,14]})}}),
+  {l:'Tiếp đón chu đáo nhưng không giữ lâu',f:c=>{G.tie.rel(n,6,'được tiếp đón');return `Ông gật đầu hài lòng. Chép được vài trang sách của ông, và thế là đủ.`+fx(c,{tri:1,m:R(2,3),tam:3,qh:[n.n,6]})}},
+  {l:'Bận việc, cáo lỗi không tiếp được',f:c=>{G.tie.rel(n,-12,'bận không tiếp thầy');return `Thầy cười: "Học trò bận là phải". Nhưng cuốn sách để lại trước cửa, ông không ngồi lại. Mình thấy hổ thẹn mấy hôm.`+fx(c,{m:1,tam:-5,eq:-1,qh:[n.n,-12]})}}]}},
+{id:'gap_lai_ban_cu',t:'Bạn cũ',tags:{},k:'Người quen',age:[20,90],w:1,pcd:240,cd:60,
+ x:(c,d)=>{d.st=pick(['thất bại','đỗ đạt','giàu','tù']);const lab={'thất bại':'làm ăn thất bát','đỗ đạt':'đã đỗ đạt làm quan','giàu':'mở tiệm buôn lớn','tù':'vừa ra tù'}[d.st];const tier={'thất bại':0,'đỗ đạt':4,'giàu':3,'tù':0}[d.st];const g=chance(0.5)?c.g:(c.g==='nam'?'nữ':'nam');const n=G.tie.ensure(c,{key:'ban_cu_'+c.id+'_'+S().t,g,vai:['ban_than'],nghe:'bạn thuở nhỏ, nay '+lab,age:Math.max(18,G.age(c)+R(-3,3)),tier,rel:18,why:'gặp lại giữa đường'});d.npc=n.id;return `${N(c)} tình cờ gặp lại ${nm(n)}, bạn thuở nhỏ, nay ${lab}.`},
+ o:(c,d)=>{const n=T(d);if(!n)return gone();const d0=d.st;return [
+  {l:'Mời về nhà uống rượu, nhắc chuyện cũ',f:c=>{G.tie.rel(n,16,'mời về nhà uống rượu');return `${nm(n)} ngồi lại đến khuya, kể chuyện bao năm qua. Lúc về dặn "có việc cứ nhắn". ${d0==='đỗ đạt'||d0==='giàu'?'Một mối quen quý cho sau này.':''}`+fx(c,{money:-m(3),tam:6,eq:1,qh:[n.n,16]})}},
+  pay('Giúp bạn một tay',10,{f:c=>{if(d0==='thất bại'||d0==='tù'){if(chance(0.3+ax(n,'thanh')/200)){G.tie.rel(n,28,'được giúp lúc khó');G.tie.on(n,3);G.tie.later(n,c,'tie_an_nhan_tra',R(30,72),{});return `${nm(n)} nghẹn lời. Vài năm sau bạn gượng dậy được, không quên người đã giúp.`+fx(c,{money:-m(10),tam:4,cfame:1,qh:[n.n,28]})}G.tie.rel(n,8,'được cho vay nhưng không trả');return `Tiền cho vay không thấy trả, ${nm(n)} cũng không còn qua lại. Mình tự an ủi: coi như cho.`+fx(c,{money:-m(10),eq:1,tam:-2,qh:[n.n,8]})}G.tie.rel(n,10,'được hỏi han');return `${nm(n)} từ chối khéo tiền bạc: "Mình đủ rồi". Nhưng ơn lòng ấy ông ghi nhớ, sẽ có lúc báo đáp.`+fx(c,{money:-m(3),tam:2,qh:[n.n,10]})}}),
+  {l:'Chào hỏi qua loa rồi thôi',f:c=>{G.tie.rel(n,-6,'chào hỏi qua loa');return `${nm(n)} gật đầu, hiểu và không nói gì. Hai người tay bắt mặt mừng ngày nào nay thành xa lạ.`+fx(c,{tam:-2,qh:[n.n,-6]})}}]}}
+];
+});

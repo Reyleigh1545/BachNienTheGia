@@ -36,10 +36,10 @@ E({id:'hn_moi_xau',t:'Mối mai có tiếng xấu',k:'Hôn nhân',w:0.6,cd:60,ag
 /* ============ Cháu mồ côi: biết rõ trước khi nhận ============ */
 E({id:'nuoi_chau_mo_coi',t:'Cháu mồ côi',k:'Con nuôi',age:[22,70],w:0.6,cd:48,
  x:(c,d)=>{const g=chance(0.5)?'nam':'nữ';const a=R(3,8);const kid=G.mkPerson({g,age:a,young:true,surname:c.surname});d.kid={g,a,given:kid.given,gn:kid.gn,tg:kid.tg};const avg=k=>Math.round(((kid.gn&&kid.gn[k]?kid.gn[k][0]+kid.gn[k][1]:100)/2));
-  const n=G.tie.ensure(c,{vai:['quen'],name:kid.surname+' '+kid.given,g,age:a,st:{tri:avg('tri'),vo:avg('vo'),mi:avg('mi'),eq:avg('eq')},nghe:`mồ côi, ${a} tuổi (chỉ số hiện là tư chất bẩm sinh)`,tier:1,rel:0,why:'cha mẹ qua đời'});d.npc=n.id;return `Một người bà con xa qua đời, để lại ${nm(n)}, ${g==='nam'?'bé trai':'bé gái'} ${a} tuổi, không ai nuôi. Thẻ trên cho biết tuổi và tư chất của bé trước khi nhà quyết định.`},
+  const n=G.tie.ensure(c,{vai:['quen'],name:kid.surname+' '+kid.given,g,age:a,st:{tri:avg('tri'),vo:avg('vo'),mi:avg('mi'),eq:avg('eq')},nghe:`mồ côi, ${a} tuổi (chỉ số hiện là tư chất bẩm sinh)`,tier:1,rel:0,why:'cha mẹ qua đời'});d.npc=n.id;return `Một người bà con xa qua đời, để lại ${nm(n)}, ${g==='nam'?'bé trai':'bé gái'} ${a} tuổi, không ai nuôi. Tư chất của bé: ${G.potLine?G.potLine(kid):''}.`},
  o:(c,d)=>[
   {l:'Đón về nuôi, như con trong nhà',f:c=>{const k=G.adopt(c,{age:d.kid.a,g:d.kid.g,given:d.kid.given,gn:d.kid.gn,tg:d.kid.tg});return `${esc(k.given)} về ở cùng nhà, gọi nhà ${N(c)} bằng cha mẹ nuôi. Mình có thể đặt thêm chữ đệm khi làm lễ nhận con.`+fx(c,{tam:4,cfame:2,on:2,eq:1})}},
-  pay('Gửi tiền nhờ người khác nuôi',3,{f:c=>{addVai(T(d),'quen');G.tie.later(T(d),c,'tie_an_nhan_tra',R(60,180),{});return `Nhà gửi tiền cho một gia đình tử tế nuôi bé. Nhiều năm sau bé lớn, vẫn nhớ ơn nhà đã không bỏ rơi.`+fx(c,{money:-m(3),cfame:1,qh:[nm(T(d)),G.tie.rel(T(d),20,'được nhà giúp nuôi')[1]]})}}),
+  pay('Gửi tiền nhờ người khác nuôi',3,{f:c=>{addVai(T(d),'quen');G.tie.kidAway(c,d,'một gia đình tử tế',R(10,24));return `Nhà gửi tiền cho một gia đình tử tế nuôi bé. Bé còn nhỏ, chưa biết gì về chuyện này; thỉnh thoảng người nuôi sẽ gửi tin về.`+fx(c,{money:-m(3),cfame:1,qh:[nm(T(d)),G.tie.rel(T(d),12,'được nhà giúp nuôi')[1]]})}}),
   {l:'Từ chối, nhà không đủ sức',f:c=>`Bé được một người họ hàng xa nhận. Nhà áy náy một thời gian.`+fx(c,{tam:-2})}]}),
 /* ============ Khách lạ trong làng: vua vi hành thật ============ */
 E({id:'tt_vi_hanh',t:'Khách lạ trong làng',k:'Thời thế',fixed:1,
@@ -75,7 +75,7 @@ E({id:'lw_36',t:'Ruộng quan bán rẻ',c:c=>G.landOk(),tier:[2,6],ms:1,w:0.4,
   {l:'Không mua',f:c=>'Nhà khác mua hết.'}]}}),
 /* ============ Ghen tuông: có tác nhân thật và hệ quả hôn nhân ============ */
 E({id:'ghen_tuong',t:'Ghen tuông',age:[18,60],c:c=>G.married(c)&&c.mi>=60,
- x:(c,d)=>{const n=G.tie.ensure(c,{vai:['tinh_dich'],nghe:pick(['đồng nghiệp','khách quen','người bạn cũ']),age:R(22,40),main:'mi',rel:5,why:'bị ghen vì người này'});d.npc=n.id;return `${N(c)} có duyên, người ngoài để ý nhiều, nhất là ${nm(n)}. ${esc(G.spouseOf(c).given)} bắt đầu ghen bóng ghen gió.`},
+ x:(c,d)=>{const n=G.tie.ensure(c,{vai:['tinh_dich'],g:c.g==='nam'?'nữ':'nam',nghe:pick(['đồng nghiệp','khách quen','người bạn cũ']),age:R(22,40),main:'mi',rel:5,why:'bị ghen vì người này'});d.npc=n.id;return `${N(c)} có duyên, người ngoài để ý nhiều, nhất là ${nm(n)}. ${esc(G.spouseOf(c).given)} bắt đầu ghen bóng ghen gió.`},
  o:(c,d)=>{const sp=G.spouseOf(c);const n=T(d);return [
   {l:'Thề thốt chung thủy, thẳng thắn kể mọi chuyện',r:[{eq:1,thanh:0.5},50],y:c=>{G.addStat(sp,'tam',6);G.rg.set('p:'+c.id,'p:'+sp.id,'vo_chong',12,'giải tỏa ghen');return 'Người kia yên lòng, hai vợ chồng gần nhau hơn.'+fx(c,{tam:3,on:1})},n:c=>{G.addStat(sp,'tam',-6);G.rg.set('p:'+c.id,'p:'+sp.id,'vo_chong',-12,'giải thích không xuôi');return 'Càng giải thích càng nghi, cãi nhau mấy ngày.'+fx(c,{tam:-4,on:-2})}},
   {l:'Giữ khoảng cách với người ấy, ít ra ngoài',f:c=>{G.tie.rel(n,-10,'bị tránh mặt');return `Vợ chồng yên ổn, nhưng việc giao thiệp và thu nhập đều bị ảnh hưởng.`+fx(c,{tam:-3,fame:-1,bonus:-0.03})}},

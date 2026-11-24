@@ -67,7 +67,7 @@ Object.assign(X.fn,{gbBonus,gbApply});
 const BIGS=X.BIGS;BIGS.push(
  {id:'sach',n:'Soạn một bộ sách để đời',d:'Viết ra điều mình đúc kết cả đời nghề.',need:c=>(c.m||0)>=100&&c.tri>=80,jobs:null,cost:75,mo:[24,36],odds:c=>0.5+c.tri/400,win:'danh vọng +40, trí +3',lose:'mất công vô ích, tâm trạng -12, danh vọng -3',ok:c=>fx(c,{fame:40,tri:3,tam:6}),ko:c=>fx(c,{tam:-12,fame:-3})},
  {id:'lop',n:'Mở lớp truyền nghề rộng rãi',d:'Dạy hết những gì mình biết cho người trẻ trong họ và trong vùng.',need:c=>(c.m||0)>=100&&c.eq>=60,jobs:null,cost:125,mo:[18,30],odds:c=>0.55+c.eq/300,win:'người trẻ trong họ học nghề nhanh hơn, danh vọng +25, hưng thịnh +2',lose:'ít người theo học, danh vọng -6, tâm trạng -6',ok:c=>{alive().filter(p=>inClan(p)&&age(p)<18).forEach(p=>{p.pre=p.pre||{};p.pre[c.job]=(p.pre[c.job]||0)+8});return fx(c,{fame:25,hung:2,tam:5})},ko:c=>fx(c,{fame:-6,tam:-6})},
- {id:'kiettac',n:'Làm một kiệt tác',d:'Dốc hết tay nghề vào một tác phẩm để người sau nhắc tên.',need:c=>(c.m||0)>=100&&c.mi>=60,jobs:['tho','det','nghe','mo','diaky','chan'],cost:150,mo:[18,30],odds:c=>0.5+c.mi/400+c.tri/600,win:'danh vọng +50, bán được giá lớn',lose:'tác phẩm hỏng, mất thêm vật liệu, tâm trạng -14',ok:c=>fx(c,{fame:50,money:mm(600),tam:8}),ko:c=>fx(c,{tam:-14,money:-mm(30)})},
+ {id:'kiettac',n:'Làm một kiệt tác',d:'Dốc hết tay nghề vào một tác phẩm để người sau nhắc tên.',need:c=>(c.m||0)>=100&&c.mi>=60,jobs:['tho','tho_ren','det','nghe','mo','diaky','chan'],cost:150,mo:[18,30],odds:c=>0.5+c.mi/400+c.tri/600,win:'danh vọng +50, bán được giá lớn',lose:'tác phẩm hỏng, mất thêm vật liệu, tâm trạng -14',ok:c=>fx(c,{fame:50,money:mm(600),tam:8}),ko:c=>fx(c,{tam:-14,money:-mm(30)})},
  {id:'daibuon',n:'Chuyến buôn đường dài',d:'Gom vốn đi một chuyến buôn xa, lãi lớn nếu thông suốt.',need:c=>(c.m||0)>=100&&c.eq>=80,jobs:['chu','tieunhi','hangrong','tieu'],cost:600,mo:[6,12],odds:c=>0.5+c.eq/300,win:'lãi gấp năm lần vốn, danh vọng +8',lose:'mất vốn, thua thêm một phần, sức khỏe -10, tâm trạng -10',ok:c=>fx(c,{money:mm(3000),fame:8,tam:5}),ko:c=>fx(c,{suc:-10,tam:-10,money:-mm(120)})},
  {id:'phongchua',n:'Mở phòng chữa bệnh cho dân nghèo',d:'Chữa không lấy tiền cho người nghèo trong vùng.',need:c=>(c.m||0)>=100&&c.tri>=70,jobs:['y'],cost:150,mo:[12,24],odds:c=>0.55+c.tri/400,win:'danh vọng +45, hưng thịnh +3, ổn định +2',lose:'thuốc thiếu, tiếng không vang, tâm trạng -8, danh vọng -3',ok:c=>fx(c,{fame:45,hung:3,on:2,tam:6}),ko:c=>fx(c,{tam:-8,fame:-3})},
  {id:'bequan',n:'Bế quan luyện tuyệt học',d:'Rút khỏi mọi việc để luyện một môn tuyệt học.',need:c=>(c.vo>=100||c.tri>=100)&&(c.m||0)>=80,jobs:null,cost:25,mo:[12,24],odds:c=>0.5+c.suc/400,win:'chỉ số mạnh nhất +4',lose:'tẩu hỏa nhập ma: sức khỏe -25, tâm trạng -15, sức khỏe tối đa giảm',ok:c=>{const k=['tri','vo','mi','eq'].sort((a,b)=>c[b]-c[a])[0];return fx(c,{[k]:4,tam:6})},ko:c=>fx(c,{suc:-25,tam:-15,hpMax:-2})},
@@ -231,7 +231,10 @@ function usArmyInfo(U){const S=X.S;if(!alive().some(p=>inClan(p)&&p.job==='quan_
 
 function usNext(){const S=X.S;const U=usU();if(!U)return;U.st++;U.troops=(U.troops||0)+({quyen:1,vo:2,nghia:3}[U.path]||1); /* v6.7.0: mỗi bước chiêu thêm quân (đội 100 người), nuôi 60 bạc mỗi đội mỗi tháng */U.pending=false;U.next=S.t+R(3,7)}
 
-function usWin(kind){const S=X.S;const U=usU();if(!U)return 0;
+const US_NEED={quyen:['tri'],vo:['vo'],nghia:['vo','mi']},US_NEED_N={tri:'trí',vo:'võ',mi:'mị lực'};
+function usNeedOk(U){const a=P(U.who);const need=US_NEED[U.path];if(!a||!need)return true;return Math.max(...need.map(k=>a[k]||0))>140}
+/* d.1.5.4 (chủ dự án 24/11: "phải ít nhất là người có chỉ số trên 140 mới có thể qua"; chọn chỉ số hợp đường): người cầm đầu phải có chỉ số hợp đường trên 140 (Quyền thần: trí; Võ quan: võ; Khởi nghĩa: võ hoặc mị lực, lấy cái cao) thì quyết chiến mới có thể thắng; không đủ thì chắc chắn bại */
+function usWin(kind){const S=X.S;const U=usU();if(!U)return 0;if(!usNeedOk(U))return 0;
   let p=(kind==='thien'?U.danh*0.5+U.the*0.25+U.tai*0.1+(100-U.lo)*0.15:U.the*0.45+U.danh*0.15+U.tai*0.15+(100-U.lo)*0.25)/100;
   /* v6.5.4: nhánh đã chọn giữa đường hợp với cách ra tay cuối thì thuận hơn (sĩ phu hợp thiền nhượng, quân lực hợp binh biến, của cải giúp cả hai chút ít) */
   p+=U.br==='si'?(kind==='thien'?0.06:-0.02):U.br==='quan'?(kind==='thien'?-0.02:0.06):U.br==='tien'?0.03:0;
@@ -286,7 +289,7 @@ function usCard(){const S=X.S;const U=usU();if(!U)return '';const a=P(U.who);con
   const wd=(v,L)=>L[v>=75?3:v>=50?2:v>=25?1:0];const bar=(n,v,txt)=>`<dt>${n}</dt><dd><span class="num">${AD?Math.round(v)+' · ':''}${txt}</span></dd>`;
   return `<section class="card"><span class="eyebrow">Mưu đại sự</span><h2>${US_N[U.path]}</h2>
    <p class="kvline">Người cầm đầu: <b>${a?esc(nameOf(a)):'—'}</b> · bước ${Math.min(U.st+1,len)}/${len}${U.exposed?' · <b class="down">đã có nguy cơ bại lộ</b>':''}</p>
-   ${usArmyInfo(U)}
+   ${usArmyInfo(U)}${usNeedOk(U)?'':`<p class="kvline"><b class="down">${US_NEED[U.path].map(k=>US_NEED_N[k]).join(' hoặc ')} của người cầm đầu chưa tới mức 140: đại sự khó mà thành.</b></p>`}
    <dl class="kv">${bar('Thế lực',U.the,wd(U.the,['chưa có gì','còn mỏng','khá vững','rất mạnh']))}${bar('Danh nghĩa',U.danh,wd(U.danh,['chưa có','mơ hồ','khá thuyết phục','chính đáng']))}${bar('Tài lực',U.tai,wd(U.tai,['trống rỗng','eo hẹp','tạm đủ','dồi dào']))}${bar('Lộ',U.lo,wd(U.lo,['kín như bưng','thoáng có người nghi','nhiều người đã đoán ra','sắp bại lộ']))}</dl>
    <div class="acts"><button class="btn small ghost" data-tsbo>Từ bỏ</button></div></section>`}
 
