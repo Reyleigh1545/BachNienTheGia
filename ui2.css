@@ -355,3 +355,7 @@ body.ui2 .modal>.evtitle small{font:600 11.5px var(--body,sans-serif);letter-spa
   body.ui2 .modal .pcard .pav,body.ui2 .modal .pcard .pav svg{width:64px;height:64px}
   body.ui2 .modal .choices{max-height:268px}
 }
+
+/* d.1.5.13 (chủ dự án 24/11): tên sự kiện dài thì xuống dòng và căn giữa, không cắt bằng dấu ba chấm */
+body.ui2 .modal>.evtitle{text-align:center;justify-items:center}
+body.ui2 .modal>.evtitle b,body.ui2 .modal>.evtitle small{white-space:normal;overflow:visible;text-overflow:clip;text-align:center;text-wrap:balance;overflow-wrap:anywhere}

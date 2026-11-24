@@ -5318,8 +5318,7 @@ function mkMatch(c,o){
   return p}
 const famLine=p=>p.famT>0?`con nhà ${TIERS[p.famT][0].toLowerCase()}`:'nhà bình dân';
 /* d9.7: opts (dùng cho lính về phép, chủ dự án 23/11 "làm như hộp Mối"): free (miễn phí bà mối, vẫn trả sính lễ), noOut (không hiện nút gả), pt (người trong lòng, hiện làm ứng viên đầu), after(vợ hoặc chồng mới) trả chuỗi HTML hiện sau khi chọn, eyebrow, title. */
-/* 7.0.0-d.1.5.10 (chủ dự án 24/11: hộp mai mối không nhìn được, mất hết chỉ số; "chọn việc mai mối chỉ 1 người duy nhất, để thẻ avatar người đó ở bên cạnh, làm quen tìm hiểu để xây dựng tình cảm trước, thuận buồm thì mới mở thẻ cưới, hoặc cưới luôn thì tình cảm thấp vì cưới do mai mối, hoặc bỏ đi tìm mối khác"):
-   bà mối đưa MỘT người mỗi lần (tối đa ba người một lần trả công), thẻ chân dung người ấy nằm cạnh thẻ mình, chỉ số hiện thành ô riêng; ba cách: làm quen tìm hiểu (mỗi lần tốn một ít, tình cảm hai bên tăng dần, đủ 60 thì mở lễ cưới với tình cảm tốt), cưới luôn (tình cảm thấp vì do mai mối), hoặc bỏ để bà mối tìm mối khác. */
+/* 7.0.0-d.1.5.13 (chủ dự án 24/11): bà mối đưa MỘT người mỗi lần (tối đa ba người một lần trả công), thẻ chân dung người ấy nằm cạnh thẻ mình; "Làm quen, tìm hiểu thêm" CHỈ BẤM MỘT LẦN: thành thì vào lễ cưới với tình cảm tốt, không thành thì thôi (mối ấy mất, trừ một chút tâm trạng, bà mối nói mối khác); hoặc cưới luôn (tình cảm thấp vì do mai mối); hoặc bỏ đi tìm mối khác. Không còn thanh tình cảm. */
 function matchmaker(c,opts){
   opts=opts||{};
   if(married(c))return;
@@ -5332,49 +5331,51 @@ function matchmaker(c,opts){
     p.needT=clamp(p.famT+(i===2?1:0),0,6);p.needF=Math.max(0,Math.round((q-48)*3+p.famT*6));
     p.fee=Math.round(mm(q/5+p.famT*0.5)*(1-Math.min(c.mi,100)/250)*(clanLv()>=3?0.6:1));
     return p});
-  let idx=0,msg='';const rap=list.map(p=>p._pt?70:0),steps=list.map(()=>0);
+  let idx=0,msg='';const gone=list.map(()=>false);
   const ok=p=>tierIdx()>=p.needT&&(c.fame+S.fame*0.2)>=p.needF&&S.money>=p.fee;
   const why=p=>{const w=[];if(tierIdx()<p.needT)w.push(`nhà bên kia đòi gia thế từ ${TIERS[p.needT][0]}`);if((c.fame+S.fame*0.2)<p.needF)w.push(`đòi danh vọng ${p.needF}`);if(S.money<p.fee)w.push(`chưa đủ sính lễ ${money(p.fee)}`);return w.join(', ')};
   const outOk=!opts.noOut&&c.g==='nữ'&&!isHead(c)&&!c.inLaw&&!married(c);
   const talent=p=>traitsOf(p).filter(t=>!TRAITS[t].ct).slice(0,3).map(t=>TRAITS[t].n);
   const knowCost=()=>mm(0.4);
-  const GOOD=60,MAXSTEP=4;
   function finish(p,mode){let sp=null;if(!married(c)){S.money-=p.fee;
       if(p._pt){romMarry(c,p._pt);sp=spouseOf(c)}
-      else{sp=mkSpouse(c,false,p);if(sp){const r=rap[idx];
-        if(mode==='good')c.love=sp.love=clamp(Math.round(52+r*0.42+(compat(c,sp)||0)*0.6),50,92);
+      else{sp=mkSpouse(c,false,p);if(sp){
+        if(mode==='good')c.love=sp.love=clamp(Math.round(52+R(60,80)*0.42+(compat(c,sp)||0)*0.6),50,92);
         else c.love=sp.love=clamp(Math.round((c.love||30)*0.7),5,42)}}}
     closeModal();if(opts.after){let h='';try{h=opts.after(sp)||''}catch(e){}infoPopup(c,opts.eyebrow2||'Hôn sự',opts.title2||'Đã chọn người',h)}}
-  function know(p){const cost=knowCost();if(S.money<cost||steps[idx]>=MAXSTEP)return;S.money-=cost;steps[idx]++;
-    const cp=compat(c,p)||0;let g=R(6,15)+Math.round(cp*0.8)+Math.round((c.eq-50)/10)+Math.round((c.mi-50)/12);
-    if(chance(0.12))g=-R(3,8);g=clamp(g,-8,26);rap[idx]=clamp(rap[idx]+g,0,100);
-    const n=esc(p.given);
-    msg=g<0?`Lỡ một câu khiến ${n} phật ý, tình cảm tụt đi.`:g>=18?`Hai người trò chuyện rất hợp, ${n} cười nhiều và hẹn gặp lại.`:g>=10?`Nói chuyện được, còn khách sáo nhưng ${n} có thiện cảm.`:`${n} ngượng ngùng, ít lời; chưa nhìn ra được điều gì.`;
-    if(rap[idx]>=GOOD)msg+=' Hai bên đã hợp ý, có thể xin mở lễ cưới.';else if(steps[idx]>=MAXSTEP)msg+=' Đã gặp nhiều lần mà tình cảm vẫn chưa đầy; nên cưới luôn hoặc tìm mối khác.';
-    render()}
+  /* làm quen một lần: thành thì cưới (tình cảm tốt), không thành thì thôi và trừ chút tâm trạng */
+  function know(p){const cost=knowCost();if(S.money<cost||!ok(p))return;S.money-=cost;
+    const cp=compat(c,p)||0;const pr=clamp(0.34+cp*0.022+(c.eq-50)/220+(c.mi-50)/260,0.15,0.85);
+    if(chance(pr)){finish(p,'good');return}
+    gone[idx]=true;addStat(c,'tam',-R(2,5));msg=`${esc(p.given)} gặp mình một buổi rồi nhẹ nhàng từ chối, chưa có ý. Mối này không thành, mình buồn mất mấy hôm.`;render()}
   function render(){
-    const p=list[idx],r=rap[idx],can=ok(p),w=why(p),cost=knowCost();
+    const p=list[idx],can=ok(p),w=why(p),cost=knowCost();
     const lastOne=idx>=list.length-1;
     const btn=(a,label,small,dis)=>`<button class="btn" ${a} ${dis?'disabled':''}><strong>${label}</strong>${small?`<small>${small}</small>`:''}</button>`;
+    const bind=()=>{const q=s=>M.querySelector(s);
+      if(q('[data-wed]'))q('[data-wed]').onclick=()=>finish(p,'good');
+      if(q('[data-now]'))q('[data-now]').onclick=()=>finish(p,'now');
+      if(q('[data-know]'))q('[data-know]').onclick=()=>know(p);
+      if(q('[data-next]'))q('[data-next]').onclick=()=>{idx++;msg='';render()};
+      if(q('[data-o]'))q('[data-o]').onclick=()=>{marryOut(c,p);closeModal()};
+      q('[data-x]').onclick=()=>{closeModal();if(opts.after&&opts.none){let h='';try{h=opts.none()||''}catch(e){}infoPopup(c,opts.eyebrow2||'Hôn sự','Chưa ưng ai',h)}}};
+    if(gone[idx]){
+      openModal(`${hdrEv(c,p)}<span class="eyebrow">${opts.eyebrow||('Bà mối · đã trả '+money(fee))}</span><h2>Mối không thành</h2>
+       <div class="mmbody"><p>${msg}</p></div>
+       <div class="choices">${!lastOne?btn('data-next','Nghe bà mối nói mối khác','',false):''}<button class="btn ghost" data-x>Thôi, chưa ưng ai</button></div>`,false,'mm');
+      bind();return}
     openModal(`${hdrEv(c,p)}<span class="eyebrow">${opts.eyebrow||('Bà mối · đã trả '+money(fee))}</span><h2>${opts.title||'Mối lương duyên'} ${idx+1}/${list.length}</h2>
      <div class="mmbody"><p>${st>=7?'Nhà mình danh giá nên bà mối đem đến mối cao.':st>=4?'Nhà mình có tiếng nên mối khá hơn người thường.':'Nhà mình bình dân nên mối vừa sức.'} Bà mối nói về <b>${esc(nameOf(p))}</b>: ${age(p)} tuổi, ${esc(jobName(p).toLowerCase())}, ${famLine(p)}${p._pt?', người trong lòng của mình':''}${talent(p).length?'. Nét nổi bật: '+talent(p).join(', '):''}.</p>
      <div class="mmstats">${STATS.map(([k,n])=>`<span><small>${n}</small><b>${p[k]}</b></span>`).join('')}</div>
-     <div class="mmbar"><span>Tình cảm hai bên</span><i><em style="width:${r}%"></em></i><b>${r}</b></div>
-     <p class="muted">Sính lễ ${money(p.fee)}${p.needT?` · đòi gia thế từ ${TIERS[p.needT][0]}`:''}${p.needF?` · đòi danh vọng ${p.needF}`:''}. Hiện có ${money(S.money)}.${w?' <span class="warn">('+w+')</span>':''}${msg?' '+msg:''}</p></div>
+     <p class="muted">Sính lễ ${money(p.fee)}${p.needT?` · đòi gia thế từ ${TIERS[p.needT][0]}`:''}${p.needF?` · đòi danh vọng ${p.needF}`:''}. Hiện có ${money(S.money)}.${w?' <span class="warn">('+w+')</span>':''}</p></div>
      <div class="choices">
-      ${r>=GOOD?btn('data-wed','Mở lễ cưới: hai bên đã có tình cảm',`Sính lễ ${money(p.fee)}`,!can):''}
-      ${r<GOOD&&steps[idx]<MAXSTEP?btn('data-know','Làm quen, tìm hiểu thêm',money(cost),S.money<cost):''}
-      ${r<GOOD?btn('data-now','Cưới luôn (do mai mối nên tình cảm thấp)',`Sính lễ ${money(p.fee)}`,!can):''}
+      ${p._pt?btn('data-wed','Mở lễ cưới: người trong lòng',`Sính lễ ${money(p.fee)}`,!can):''}
+      ${!p._pt?btn('data-know','Làm quen, tìm hiểu thêm (thành thì cưới)',money(cost),!can||S.money<cost):''}
+      ${!p._pt?btn('data-now','Cưới luôn (do mai mối nên tình cảm thấp)',`Sính lễ ${money(p.fee)}`,!can):''}
       ${!lastOne?btn('data-next','Bỏ, tìm mối khác','',false):''}
       ${outOk?btn('data-o',`Gả ${esc(c.given)} về nhà họ ${esc(p.surname)}`,`nhận lại khoảng ${money(Math.round(p.fee*0.6))} sính lễ`,tierIdx()+1<p.needT):''}
       <button class="btn ghost" data-x>Chưa ưng ai</button></div>`,false,'mm');
-    const q=s=>M.querySelector(s);
-    if(q('[data-wed]'))q('[data-wed]').onclick=()=>finish(p,'good');
-    if(q('[data-now]'))q('[data-now]').onclick=()=>finish(p,'now');
-    if(q('[data-know]'))q('[data-know]').onclick=()=>know(p);
-    if(q('[data-next]'))q('[data-next]').onclick=()=>{idx++;msg='';render()};
-    if(q('[data-o]'))q('[data-o]').onclick=()=>{marryOut(c,p);closeModal()};
-    q('[data-x]').onclick=()=>{closeModal();if(opts.after&&opts.none){let h='';try{h=opts.none()||''}catch(e){}infoPopup(c,opts.eyebrow2||'Hôn sự','Chưa ưng ai',h)}}}
+    bind()}
   render();
 }
 
