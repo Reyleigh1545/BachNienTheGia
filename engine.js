@@ -6459,7 +6459,7 @@ const WP=[
 ];
 /* d9.5: thế lực tự phát. Ba điểm nóng của hạt giống thế giới tăng độ nóng dần; từ 60 thì loạn thiên hạ tăng theo, từ 85 thỉnh thoảng giặc nổi. */
 function tlYear(){const w=S.wr;if(!w||!w.hot||!S.dyn)return;w.heat=w.heat||{};const ky=(S.dyn.k&&S.dyn.k.uy)||60;
-  w.hot.forEach(p=>{w.heat[p]=clamp((w.heat[p]==null?R(5,20):w.heat[p])+R(-2,3)-(ky>75?1:0)+(S.dyn.loan>60?1:0),0,100)});
+  w.hot.forEach(p=>{w.heat[p]=clamp((w.heat[p]==null?R(5,20):w.heat[p])+R(-1,3)-(ky>75?1:0)+(S.dyn.loan>60?1:0),0,100) /* d9.12.60: -2..3 thành -1..3: đo bằng bot 60 năm thì độ nóng chỉ lên 5 đến 33 và thế lực tự phát không bao giờ nổi dậy; thử -1..4 thì lên 48 đến 92, loạn thiên hạ chạm 100 ở 2 trên 6 ván (quá nóng) */});
   const top=w.hot.slice().sort((a,b)=>w.heat[b]-w.heat[a])[0];const mx=w.heat[top];
   if(mx>=60)S.dyn.loan=clamp((S.dyn.loan||0)+1,0,100);
   if(mx>=85&&chance(0.2)){S.dyn.loan=clamp((S.dyn.loan||0)+3,0,100);w.heat[top]-=10;log('Giặc cỏ nổi lên ở '+provN(top)+', thiên hạ thêm xáo động.','hi');qtLog('Giặc nổi',provN(top)+': thế lực tự phát nổi dậy, triều đình chưa dẹp nổi.')}}
