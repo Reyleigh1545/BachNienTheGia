@@ -281,3 +281,81 @@ body.ui2 .pcard{min-width:0}
 :root[data-theme="dark"] body.ui2 .gbbtn:hover{background:#3a3118}
 :root[data-theme="dark"] body.ui2 .modal.menu .choices .btn small{color:var(--muted)}
 :root[data-theme="dark"] body.ui2 .modal.menu .choices .btn.primary small{color:rgba(255,248,239,.9)}
+
+/* ===== 7.0.0-d.1.5.10 (chủ dự án 24/11, ảnh điện thoại: ô Nghề dài bị kéo thành cột hẹp tám dòng, thanh trang bị cắt "Tâm tư"): trên điện thoại bốn ô thông tin nhanh xếp hai hàng hai ô, thanh trang hồ sơ xuống hàng thay vì cuộn ngang ===== */
+@media (max-width:560px){
+  body.ui2 .sfacts{grid-template-columns:1fr 1fr}
+  body.ui2 .sf b{font-size:15px;overflow-wrap:anywhere}
+  body.ui2 .spnav{flex-wrap:wrap;overflow-x:visible;padding:10px 16px;gap:6px}
+  body.ui2 .spnav button{padding:6px 12px;font-size:12.5px}
+  body.ui2 .sheetpages{padding:14px 16px 20px}
+  body.ui2 .spage .bars{grid-template-columns:1fr 1fr;gap:10px 16px}
+}
+@media (max-width:560px){body.ui2 .spage .bars .bar.mdb{grid-column:1/-1}}
+
+/* ===== 7.0.0-d.1.5.10: hộp mai mối một người một lần (chỉ số thành ô riêng, thanh tình cảm) ===== */
+body.ui2 .mmstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(64px,1fr));gap:6px;margin:8px 0 0}
+body.ui2 .mmstats span{background:rgba(127,127,127,.12);border-radius:10px;padding:6px 8px;text-align:center;display:grid;gap:1px}
+body.ui2 .mmstats small{font:700 10.5px var(--body,sans-serif);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+body.ui2 .mmstats b{font:700 17px var(--display,serif)}
+body.ui2 .mmbar{display:flex;align-items:center;gap:10px;margin:10px 0 0;font-size:13px;color:var(--muted)}
+body.ui2 .mmbar i{flex:1;height:10px;border-radius:5px;background:rgba(127,127,127,.2);overflow:hidden}
+body.ui2 .mmbar em{display:block;height:100%;background:linear-gradient(90deg,#d99aa4,#cf6f63);border-radius:5px}
+body.ui2 .mmbar b{min-width:24px;text-align:right;color:var(--ink)}
+body.ui2 .modal .warn{color:var(--bad)}
+body.ui2 .modal>.mmbody{flex:1 1 auto;min-height:0;overflow-y:auto;padding-inline:30px}
+body.ui2 .mmbody p{margin:8px 0 0;font-size:15.5px;line-height:1.6;color:var(--ui-ink)}
+body.ui2 .mmbody p.muted{font-size:13.5px;color:var(--muted)}
+@media (max-width:560px){body.ui2 .modal>.mmbody{padding-inline:18px}body.ui2 .mmbody p{font-size:14.5px}body.ui2 .modal.mmwide .choices .btn{font-size:14px}}
+@media (max-width:560px){body.ui2 .overlay .modal.mm{height:min(760px,95vh)}body.ui2 .modal.mm .choices{max-height:none;overflow-y:visible}}
+
+/* ===== 7.0.0-d.1.5.10 · BỐ CỤC ĐIỆN THOẠI theo ảnh tham khảo (Ảnh tham khảo/, 20/11; chủ dự án 24/11: "giao diện trên điện thoại rất khó nhìn, xem lại bố cục trong ảnh tham khảo"):
+   hộp gần kín màn hình; thẻ người ở đầu hộp; LỜI KỂ nằm trong một khung riêng nền sáng nhạt, chữ lớn; LỰA CHỌN là nút rộng xếp dọc dưới khung lời kể, giá nằm bên phải nút, không bị nhốt trong ô cuộn nhỏ; khoảng cách rộng hơn. ===== */
+@media (max-width:560px){
+  body.ui2 .overlay:not(.sheet) .modal,body.ui2 .overlay .modal:not(.sheetm){width:calc(100vw - 14px);height:auto;max-height:calc(100dvh - 18px);min-height:min(520px,86dvh)}
+  body.ui2 .overlay .modal.menu{min-height:0}
+  body.ui2 .modal>*:not(.pbanner):not(.choices):not(.xclose){padding-inline:14px}
+  body.ui2 .modal .eyebrow{margin:12px 14px 0}
+  body.ui2 .modal h2{font-size:23px;margin:6px 0 0}
+  body.ui2 .modal>p,body.ui2 .modal .evbody>p{background:rgba(127,127,127,.11);border:1px solid rgba(127,127,127,.2);border-radius:14px;padding:13px 15px;margin:10px 14px 0;font-size:16px;line-height:1.62;flex:1 1 auto}
+  body.ui2 .modal .evbody{padding-inline:14px}
+  body.ui2 .modal .choices{max-height:none;overflow:visible;padding:12px 14px 16px;gap:10px}
+  body.ui2 .modal .choices .btn{padding:14px 14px 14px 46px;font-size:15px;min-height:50px}
+  body.ui2 .modal .choices .btn::before{left:11px}
+  body.ui2 .modal .result{margin:10px 14px 0;padding:13px 15px}
+  body.ui2 .modal.sheetm{width:calc(100vw - 14px);height:calc(100dvh - 18px)}
+  body.ui2 .pbanner{padding:12px 10px 10px}
+}
+
+/* ===== 7.0.0-d.1.5.11 · điện thoại: thanh trang xuống hàng thay vì cuộn ngang bị cắt (chủ dự án 24/11: "dài quá thì có thể làm nó thành 2 hàng, chứ kéo dài như thế kia xấu đau đớn"; ảnh tham khảo: các mục chính là ô lớn xếp ngay ngắn) ===== */
+@media (max-width:560px){
+  body.ui2 .tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;overflow:visible;padding-bottom:10px}
+  body.ui2 .tabs button{padding:10px 2px;text-align:center;font-size:13px;line-height:1.15;white-space:normal;background:var(--panel);border:1px solid var(--line);border-radius:10px}
+  body.ui2 .tabs button[aria-pressed="true"]{border-color:var(--seal);box-shadow:inset 0 -3px 0 var(--seal)}
+  body.ui2 .tabs .dot{top:3px;right:6px}
+}
+
+/* ===== 7.0.0-d.1.5.12 · THẺ SỰ KIỆN: tên sự kiện và ngày tháng ở dải trên cùng (như ảnh tham khảo), tên một dòng; hộp gọn, không tràn màn hình ===== */
+body.ui2 .modal>.evtitle{flex:none;display:grid;gap:1px;justify-items:center;text-align:center;padding:11px 20px 9px!important;background:linear-gradient(180deg,#3f8a6e,#2f7258);color:#fff;border-bottom:1px solid rgba(0,0,0,.14)}
+body.ui2 .modal>.evtitle b{font:700 19px/1.25 var(--display,serif);max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.ui2 .modal>.evtitle small{font:600 11.5px var(--body,sans-serif);letter-spacing:.06em;opacity:.9;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:560px){
+  body.ui2 .overlay:not(.sheet) .modal,body.ui2 .overlay .modal:not(.sheetm){min-height:0}
+  body.ui2 .modal>.evtitle{padding:9px 14px 7px!important}
+  body.ui2 .modal>.evtitle b{font-size:17px}
+  body.ui2 .modal .choices{max-height:40dvh;overflow-y:auto}
+  body.ui2 .pcard .pav,body.ui2 .pcard .pav svg{width:50px;height:50px}
+  body.ui2 .pcard{padding:8px 4px 6px}
+  body.ui2 .modal>p,body.ui2 .modal .evbody>p{margin-top:8px;padding:11px 13px}
+}
+/* d.1.5.12: máy tính, dải thẻ người gọn hơn để lời kể và lựa chọn có chỗ (hộp 560 px không còn bị cắt lựa chọn thứ tư) */
+@media (min-width:561px){
+  body.ui2 .modal .pbanner{padding:12px 30px 10px}
+  body.ui2 .modal .pcard{padding:9px 8px 8px}
+  body.ui2 .modal .pcard .pav,body.ui2 .modal .pcard .pav svg{width:64px;height:64px}
+  body.ui2 .modal .choices{max-height:268px}
+}
+
+/* d.1.5.13 (chủ dự án 24/11): tên sự kiện dài thì xuống dòng và căn giữa, không cắt bằng dấu ba chấm */
+body.ui2 .modal>.evtitle{text-align:center;justify-items:center}
+body.ui2 .modal>.evtitle b,body.ui2 .modal>.evtitle small{white-space:normal;overflow:visible;text-overflow:clip;text-align:center;text-wrap:balance;overflow-wrap:anywhere}

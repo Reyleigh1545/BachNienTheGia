@@ -35,6 +35,17 @@ rep('R25 người thương, tình địch, người gây ghen được tạo mà
 const LONGRE=/^(cv_nuoi|cv_dom_ngo|yl_|tpha_|hd_|bd_|kt_|hc_|tdt_|kiem_|ky_o_|ky_lua_|ky_tranh_|dan_|cau_|bg_|cp_|ky_hd_)/;
 rep('R24 hẹn việc quá 12 tháng cho id không thuộc LONGRE hay arc (người giữ mất thì mất việc, engine.js passLong)',defs.filter(b=>{const m=b.t.match(/(?:G\.)?later\(c,'([a-z0-9_]+)',(?:R\()?(\d+)(?:,\s*(\d+))?/);return m&&(+m[2]>=13||(m[3]&&+m[3]>=13))&&!LONGRE.test(m[1])&&!LONGRE.test(b.id)&&!/arc\s*:\s*1/.test(b.t)}));
 rep('R26 NPC tạo với chữ chỉ tuổi (già, lão, cụ) mà age: dưới 50',defs.filter(b=>/tie\.ensure\([^)]*nghe\s*:\s*['"`][^'"`]*\b(già|lão|cụ)\b[^)]*age\s*:\s*R\((\d+)/.test(b.t.replace(/\n/g,' '))&&+((b.t.replace(/\n/g,' ').match(/tie\.ensure\([^)]*nghe\s*:\s*['"`][^'"`]*\b(già|lão|cụ)\b[^)]*age\s*:\s*R\((\d+)/)||[])[2]||99)<50));
+/* R27 (7.0.0-d.1.5.9, bài học 38): lời kể khẳng định một trạng thái (đang có tang, người nhà đã nhập ngũ) mà khối không có phép kiểm trạng thái đó. Chỉ là thông tin, xếp hàng duyệt. */
+rep('R27a lời kể "để tang, đang có tang" mà không kiểm người đã mất (.dead, mournFor)',defs.filter(b=>/đang có tang|để tang|trong tang|có tang chưa/.test(b.t)&&!/\.dead|dead\s*!=|mournFor|\bdeath/.test(b.t)));
+rep('R27b lời kể "đã/đang nhập ngũ, đi lính, nhập ngũ theo quân hộ" mà không kiểm người đang ở doanh (quan_ngu, army, SOLDIERS, enlist)',defs.filter(b=>/(đã|đang)\s+(nhập ngũ|đi lính|ở doanh)|nhập ngũ theo quân hộ/.test(b.t)&&!/quan_ngu|army|SOLDIERS|enlist|qh\.who/.test(b.t)));
+/* R28 (7.0.0-d.1.5.10, chủ dự án 24/11: "tất cả các sự kiện đều phải gắn với người cụ thể, người có liên quan"): lời kể nhắc con cái mà khối không kiểm nhà có con (hoặc không chọn một đứa cụ thể) */
+const KIDW=/bọn trẻ|đứa trẻ nhà|đứa con|con trai nhà|con gái nhà|người con|các con|đàn con|cậu con|cô con|con cái nhà/i;
+const KIDCHK=/kidsOf|kidsOk|hasKid|\bkid\(|childOf|kinList|pickKin|hwho|\.parents|\bkids\b|pickWho|G\.tie\.kid|\bson\b|\bkid\b|babyOk|G\.kids|kinOf|famOf|childrenOf|sib\(/;
+rep('R28a lời kể nhắc con cái nhà mà không kiểm có con (kidsOf, hasKid, kinList, pickKin…)',defs.filter(b=>KIDW.test(b.t)&&!KIDCHK.test(b.t)));
+const SPW=/người vợ|vợ nhà|người chồng|chồng nhà|vợ của|chồng của|bà xã|ông xã/i;
+rep('R28b lời kể nhắc vợ chồng của nhân vật mà không kiểm có vợ chồng (spouseOf, married, spouse)',defs.filter(b=>SPW.test(b.t)&&!/spouseOf|married|\.spouse|G\.sp|vợ chồng:|hwho|pickKin/.test(b.t)));
+/* R29 (7.0.0-d.1.5.11): lời kể dùng "hắn", "gã" cho một NPC; từ d.1.5.11 proFix (engine.js) tự đổi thành "bà ta", "ả" khi NPC là nữ, nhưng sự kiện viết mới nên dùng tên hoặc đại từ đúng giới. Chỉ là thông tin. */
+rep('R29 (thông tin) lời kể dùng "hắn/gã" cho NPC, proFix đổi theo giới lúc chạy',defs.filter(b=>/(?<![\p{L}])(hắn|gã)(?![\p{L}])/iu.test(b.t)&&/tie\.ensure|\.npc|d\.npc/.test(b.t)));
 out.push('khối quét: '+blocks.length+' (định nghĩa sự kiện: '+defs.length+'), file: '+files.length+', RETIRED: '+RETIRED.size);
 if(RT){
   const tmp=path.join(process.env.TEMP||process.env.TMPDIR||'.','evlint_'+Date.now()+'.js');

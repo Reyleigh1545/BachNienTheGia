@@ -23,7 +23,8 @@ function deepen(n,o){if(!n||n.sub)return n;o=o||{};
   const sub={};AXK.forEach(k=>{let v=R(25,75);(n.vai||[]).forEach(vv=>{const b=BIAS[vv];if(b&&b[k])v+=b[k]});KW.forEach(([re,b])=>{if(re.test(n.nghe||'')&&b[k])v+=b[k]});sub[k]=clamp(Math.round(v),5,98)});
   n.sub=sub;const st=n.st||{tri:50,vo:50,mi:50,eq:50};const ti=n.tier!=null?n.tier:2;
   n.sk={muu:clamp(Math.round((st.tri+st.eq)/2+R(-15,15)),5,98),khau:clamp(Math.round(st.eq+R(-15,15)+((n.vai||[]).includes('thuong_nhan')?10:0)),5,98),ql:clamp(Math.round(28+ti*8+R(-10,15)),5,98),ky:clamp(Math.round(R(25,70)+(/thợ|rèn|thầy thuốc|đóng|khắc/.test(n.nghe||'')?20:0)),5,98)};
-  n.hp=n.hp||R(70,100);const a=nage(n);n.fam={spouse:a>=24?chance(0.75):false,kids:a>=28?(chance(0.7)?R(1,3):0):0};
+  n.hp=n.hp||R(70,100);const a=nage(n);if(a>=18&&!n.adult){n.adult=1;n.stage='lon'} /* 7.0.0-d.1.5.11: NPC tạo ra đã là người lớn giữ nguyên vai và mô tả gốc, không bị becomeAdult bốc nghề lính, thợ… ghi đè (chủ dự án 24/11: hào cường 52 tuổi bị ghi "nay là lính, đã tự lập") */
+  n.fam={spouse:a>=24?chance(0.75):false,kids:a>=28?(chance(0.7)?R(1,3):0):0};
   n.past=n.past||[];if(!n.past.length)pastAdd(n,o.why?('Quen nhà vì '+o.why):'Quen biết nhà từ trước');
   n.goal=pickGoal(n);return n}
 const GW={
