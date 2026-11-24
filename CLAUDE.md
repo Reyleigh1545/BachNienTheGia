@@ -337,6 +337,11 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 *Kết quả kiểm (24/11, bản `7.0.0-d.1.5.6`):* dòng Tiềm năng **vẫn được dựng** (`engine.js` dòng `kvline` có `I('pot','Tiềm năng:')`) nhưng từ khi giao diện `ui2` vào bản chính (7.0.0-d.1.5.4) hồ sơ chia trang bằng `UI2.sheet` (`ui2.js` dòng 31) và **luật phân trang của ui2 đẩy dòng Tiềm năng sang trang "Tính cách và kỹ năng" (`tc`) chứ không để ở "Tổng quan" (`tq`)**, trái với luật mục 7 ("giữ lại dòng Tiềm năng ở trang Tổng quan", chủ dự án 23/11 báo mất lần một). Cách sửa gọn: bỏ nhánh `else if(/Tiềm năng/.test(t))g='tc'` ở `ui2.js` để dòng rơi về `tq` (mặc định). **Đã sửa ở 7.0.0-d.1.5.7** (chủ dự án: "sửa nó về trang tổng quát đi, rồi push lại thành bản 1.5.7"): bỏ nhánh đó ở `ui2.js`; kiểm bằng cách mở hồ sơ ở `index.html` (giao diện mới): `Tiềm năng` nằm ở trang Tổng quan, không còn ở Tính cách và kỹ năng.
 
+**Bản điện thoại chói mắt (chủ dự án, 24/11), chép nguyên văn:**
+> "bản điện thoại bị chói mắt quá"
+
+*Kết quả kiểm (24/11, chụp khung 390 × 800 bằng `tools/shot-page.js`, thêm biến `DARK=1` giả lập điện thoại đang bật chế độ tối; ảnh ở `Mockup giao dien/d7.0.0-d.1.5.7/dien-thoai-che-do-toi-hien-trang.png` và `...sang...`):* `index.html` có sẵn bảng màu tối (`prefers-color-scheme: dark`) nhưng **`ui2.css` (giao diện mới, mặc định từ 7.0.0-d.1.5.4) viết cứng 23 màu trắng, kem, gradient sáng và không có nhánh chế độ tối**. Kết quả khi máy bật chế độ tối: nền trang tối nhưng **hộp sự kiện, thẻ chân dung, hồ sơ vẫn nền kem sáng** (chói), còn chữ tiêu đề lấy màu sáng của chế độ tối nên **gần như vô hình trên nền kem** (tiêu đề "Tư Mã Kim Lân" mờ hẳn). Ở chế độ sáng thì hộp cũng khá sáng nhưng đồng nhất. Chưa biết điện thoại mày đang ở chế độ nào. Cách sửa gọn: cho `ui2.css` dùng biến màu của chủ đề (`--panel`, `--ink`, `--line`…) và thêm nhánh `@media (prefers-color-scheme: dark)` cho thẻ chân dung, hộp, hồ sơ, thanh kết quả; cân nhắc giảm độ sáng nền kem ở chế độ sáng cho điện thoại. Chưa sửa, chờ chủ dự án bảo "làm" và trả lời máy mày bật chế độ nào (mục 0.13).
+
 (không có ý nào đang chờ khác. Các ý 23/11 đã làm ở d9.8 và d9.9 và chuyển thành luật: giao diện hộp sự kiện và hồ sơ ở mục 7, giang hồ ở mục 6, Thiên cơ ở mục 3, việc lớn ở mục 3, gia bảo ở mục 6, hệ số kỳ ngộ ở mục 5, cưới nhân phép của lính ở mục 3.)
 
 ---
