@@ -21,11 +21,6 @@ K({id:'n633_y_caitu',t:'Cây thuốc cải tử hoàn sinh',job:['y'],age:[28,80
   {l:'Mang về, dùng cứu người sắp chết trong vùng',r:RR({tri:0.8,ky:0.8,m:0.5},0.55),y:c=>`Một đứa bé tắt thở được kéo về sau ba chén nước sắc. Cả vùng đồn là phép lạ. ${N(c)} từ chối nhận công, chỉ ghi chép kỹ phương pháp.`+fx(c,{fame:R(8,12),cfame:2,m:R(5,8),sk:{ky:4},tam:10}),n:c=>`Sắc không đúng lửa, thuốc mất công hiệu. Đứa bé không qua khỏi. ${N(c)} thấy đau.`+fx(c,{fame:-2,tam:-9})},
   {l:'Giữ lại nghiên cứu, ghi chép lại sắc thái từng thời kỳ',f:c=>`Một năm đọc sách, thử nghiệm, ghi chép. Cây tàn nhưng bí quyết còn.`+fx(c,{tri:2,m:R(6,9),sk:{ky:3},tam:5})},
   {l:'Bán cho thương nhân cao giá',f:c=>`Thương nhân trả gấp hai mươi lần thường. Khỏi lo tiền một thời gian, nhưng nghe người ta nói thứ ấy bị dùng làm thuốc ép cho kẻ giàu.`+fx(c,{money:m(R(12,22)),liem:-8,tam:-4})}]}),
-J({id:'n633_y_thaycu',t:'Thầy cũ đến thăm',job:['y'],age:[30,70],c:c=>c.lv>=1,cd:120,
- x:c=>`Vị thầy dạy ${N(c)} ngày xưa, nay đã tóc bạc, ghé qua trong chuyến đi xa. Ông khám lại nhà thuốc, xem sổ bệnh, chỉ ra vài chỗ sai, rồi tặng một cuốn sách ông viết riêng.`,
- o:c=>[
-  {l:'Giữ thầy ở lại một tháng, học thêm',f:c=>`Một tháng bên thầy, ${N(c)} thấy kiến thức như được tháo gỡ từng mảng. Khi ông đi, mắt ${N(c)} đỏ hoe.`+fx(c,{tri:R(2,3),m:R(6,9),sk:{ky:3},tam:8})},
-  {l:'Tiếp đón chu đáo nhưng không giữ lâu',f:c=>`Ông gật đầu hài lòng. Chép được vài trang sách của ông, và thế là đủ.`+fx(c,{tri:1,m:R(2,3),tam:3})}]}),
 /* ===================== SƯ (thầy đồ) ===================== */
 K({id:'n633_su_dieu',t:'Đứa bé đứng ngoài cửa lớp',job:['su'],age:[25,70],
  x:c=>`Mỗi buổi dạy, ${N(c)} thấy một đứa bé gầy gò đứng ngoài cửa sổ, nghe giảng từ sáng đến chiều, tay cầm que vạch chữ xuống đất. Hỏi ra mới biết nhà nó nghèo, cha mất, mẹ gánh nước thuê, không có tiền học.`,

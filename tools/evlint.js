@@ -28,7 +28,7 @@ const nameWords=/(bạn thân|khách quý|người ấy|ân nhân|quý nhân|cao
 rep('R1/G9 người vô danh, không gọi sổ nhân vật',defs.filter(b=>nameWords.test(b.t)&&!/npc\.|mkMatch|G\.npc|npFam|npHouse|adopt|mkSpouse|pickKin|G\.fam|G\.tie/.test(b.t)));
 rep('R7 thưởng danh vọng lớn (>=10 hoặc R())',defs.filter(b=>/fame:\s*(R\(\d+\s*,\s*\d+\)|\d{2,})/.test(b.t)));
 rep('R9 thiếu giới hạn tuổi (không fixed/arc/baby)',defs.filter(b=>!/age\s*:\s*\[/.test(b.t)&&!/fixed\s*:\s*1|arc\s*:|baby\s*:/.test(b.t)));
-rep('R3 đổi quan hệ mà không có dòng quan hệ',defs.filter(b=>/(rel0|addRel|\.rel\s*[+-]=|cl\.rel)/.test(b.t)&&!/rg\.set|G\.rg|relLine/.test(b.t)));
+rep('R3 đổi quan hệ mà không có dòng quan hệ (7.0.0-d.1.5.4: engine đã tự thêm dòng "Quan hệ với" cho họ khác qua RELTR; số này chỉ còn là thông tin)',defs.filter(b=>/(rel0|addRel|\.rel\s*[+-]=|cl\.rel)/.test(b.t)&&!/rg\.set|G\.rg|relLine/.test(b.t)));
 /* d.1.5.4 (7.0.0): các luật rút từ phản hồi 24/11 */
 rep('R23 sự kiện "Mục tiêu đời người" mở chuỗi mà điều kiện không đọc nghề, tính cách hay kỹ năng',defs.filter(b=>/k\s*:\s*['"]Mục tiêu đời người['"]/.test(b.t)&&/\bage\s*:\s*\[/.test(b.t)&&/\bc\s*:\s*c\s*=>/.test(b.t)&&!/\bjob\b|subOf|axv|\.sk\b|skv|\.flags\./.test((b.t.match(/\bc\s*:\s*c\s*=>[^\n]{0,260}/)||[''])[0])));
 rep('R25 người thương, tình địch, người gây ghen được tạo mà không truyền giới g:',defs.filter(b=>/tie\.ensure\([^)]*vai\s*:\s*\[[^\]]*['"](nguoi_thuong|tinh_dich)['"]/.test(b.t.replace(/\n/g,' '))&&!/tie\.ensure\([^)]*\bg\s*:/.test(b.t.replace(/\n/g,' '))));

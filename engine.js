@@ -213,7 +213,8 @@ function wrapPro(){EVENTS.forEach(e=>{if(e._pw)return;e._pw=1;const npcOf=d=>d&&
 function wrapEvMoney(){
   EVENTS.forEach(e=>{if(e._mw)return;e._mw=1;if(e.ms===undefined)e.ms=!e.ky&&!MS_NO.has(e.id)&&(MS_YES.has(e.id)||/^(ts_|rv_|wl_)/.test(e.id)||MS_RE.test(typeof e.t==='string'?e.t:''));
     const wf=f=>typeof f==='function'?function(){const p=MMCTX;MMCTX=e;try{return f.apply(this,arguments)}finally{MMCTX=p}}:f;
-    const wo=arr=>Array.isArray(arr)?arr.map(o=>{if(!o||typeof o!=='object')return o;const q=Object.assign({},o);['f','y','n','yy','nn','c'].forEach(k=>{if(q[k])q[k]=wf(q[k])});return q}):arr;
+    const wr=f=>typeof f==='function'?function(){const pt=RELTR;RELTR=[];try{let r=f.apply(this,arguments);if(typeof r==='string'&&RELTR.length&&!/Quan hệ với/.test(r)){const ag={};RELTR.forEach(([n,v])=>{ag[n]=(ag[n]||0)+v});const ls=Object.entries(ag).filter(([n,v])=>Math.round(v)).map(([n,v])=>`<span class="${v>0?'up':'down'}">Quan hệ với ${esc(n)} ${v>0?'+':''}${Math.round(v)}</span>`).join('');if(ls)r+=`<span class="fx">${ls}</span>`}return r}finally{RELTR=pt}}:f;
+    const wo=arr=>Array.isArray(arr)?arr.map(o=>{if(!o||typeof o!=='object')return o;const q=Object.assign({},o);['f','y','n','yy','nn','c'].forEach(k=>{if(q[k])q[k]=['f','y','n','yy','nn'].includes(k)?wr(wf(q[k])):wf(q[k])});return q}):arr;
     if(typeof e.o==='function'){const o0=e.o;e.o=function(){const p=MMCTX;MMCTX=e;try{return wo(o0.apply(this,arguments))}finally{MMCTX=p}}}else e.o=wo(e.o);
     if(typeof e.x==='function')e.x=wf(e.x);if(typeof e.c==='function')e.c=wf(e.c)})}
 const famLuck=()=>{const a=alive();return a.length?a.reduce((s,p)=>s+p.duyen,0)/a.length:50};
@@ -1037,7 +1038,7 @@ function nextPopup(){
   }
 }
 /* v6.7.0-d9.2: giao diện mới (chỉ admin, BN_ADMIN.ui2). Thẻ chân dung bấm được; hồ sơ nhiều trang; kết quả có thanh; ô đất. */
-const U2=()=>window.BN_ADMIN&&window.BN_ADMIN.ui2&&window.UI2?window.UI2:null;
+const U2=()=>window.UI2&&(window.BN_ADMIN?window.BN_ADMIN.ui2:window.BN_UI2!==false)?window.UI2:null; /* 7.0.0-d.1.5.4: giao diện mới vào bản chính (không kèm avatar mới); ?ui=old để dùng giao diện cũ */
 function cardInfo(p){const a=age(p);const ok=p.dead==null&&inClan(p)&&a>=16;const inc=ok?Math.round(earnOf(p,true)||0):null;
   return {id:p.id,g:p.g,age:a,dead:p.dead!=null||!!p.left,name:nameOf(p),tuoc:p.tuoc?TUOC[p.tuoc]:'',sub:`${relation(p)} · ${jobName(p)}${p.away?' · '+awayText(p):''}`,job:jobName(p),rel:relation(p),purse:ok&&inMain(p)?money(p.purse||0,1):'',inc,incTxt:inc==null?'':(inc>=0?'+':'')+money(inc,1)+'/tháng',av:avatarSVG(p,76)}}
 function npCardInfo(n){const p=npPseudo(n);return {id:n.id,np:1,g:n.g,age:age(p),dead:n.ok===0,name:n.n,tuoc:'',sub:(n.vaiTxt||'người quen'),inc:null,incTxt:'',av:avatarSVG(p,76),title:n.nghe||''}}
@@ -3898,7 +3899,7 @@ const ctierC=c=>c.house?c.house.tier:c.fame>=120?3:c.fame>=60?2:c.fame>=20?1:0;
 const ctierOf=(I)=>I.t==='H'?(I.tier||5):I.obj.house?I.obj.house.tier:I.fame>=120?3:I.fame>=60?2:I.fame>=20?1:0;
 function rinfo(r){const I=hinfo(r);if(!I)return null;const o=relEns(I.obj);I.gp=o.gp;I.gpN=GP[o.gp].n;I.gpD=GP[o.gp].d;I.tier=ctierOf(I);I.oan=o.oan;I.hon=o.hon;I.canh=o.canh;I.nhg=o.nhg;I.book=o.book;
   I.diff=I.tier-tierIdx();I.dir=I.diff>=1?'up':I.diff<=-1?'down':'eq';I.band=relBandK(I.rel);I.bandN=relBandN(I.rel);I.ref=r;
-  I.rel0=v=>{o.rel=clamp(o.rel+v,-100,100);o.last=S.t;I.rel=o.rel;return v};I.addOan=v=>{o.oan=clamp(o.oan+v,0,100);I.oan=o.oan};I.log=t=>relBook(o,t);return I}
+  I.rel0=v=>{const b0=o.rel;o.rel=clamp(o.rel+v,-100,100);o.last=S.t;I.rel=o.rel;if(RELTR&&o.rel!==b0)RELTR.push([I.name,o.rel-b0]);return v};I.addOan=v=>{o.oan=clamp(o.oan+v,0,100);I.oan=o.oan};I.log=t=>relBook(o,t);return I}
 /* nhường nhịn: thành bại theo EQ người ra mặt, chênh lệch địa vị, gia phong bên kia, hảo cảm hiện tại, số lần đã nhường, lễ vật */
 function yieldT(I,gift){const G0=GP[I.gp]||GP.thucuu;return clamp(55-(tierIdx()-I.tier)*8-G0.y-I.rel/4+(I.nhg||0)*6-(gift?12*(G0.gift||1):0),15,95)}
 function yieldOpts(I,c){const cost=mm(30+I.tier*20);const ok=(gift)=>x=>{if(gift)S.money-=cost;I.rel0(gift?14:10);I.addOan(-6);I.obj.nhg=Math.max(0,(I.obj.nhg||0)-1);return 'Bên kia nguôi giận, chuyện tạm êm.'+fx(x,{tam:-2})};
@@ -6004,7 +6005,8 @@ function houseEnsure(st){const W=st.w;if(!W||W.houses)return;W.houses={};
   HOUSE_DEF.forEach(d=>{W.houses[d.id]={head:{given:d.given,age:d.age,tr:d.tr},kids:d.kids.map(k=>({id:'k'+(W.cid++),given:k[0],g:k[1],age:k[2]})),fame:d.fame,wealth:d.wealth,rel:0,last:-99,gen:0,gT:-99,lT:-99,end:(st.t||0)+12*termYears(d.age)}})}
 const house=id=>S.w&&S.w.houses?S.w.houses[id]:null;
 const houseName=id=>{const d=hdef(id),h=house(id);return `${d.sur} ${h?h.head.given:d.given}`};
-function houseRel(id,dv){const h=house(id);if(!h)return 0;h.rel=clamp(h.rel+dv,-100,100);h.last=S.t;return h.rel}
+let RELTR=null; /* 7.0.0-d.1.5.4 (luật R3 áp tự động): mọi đổi quan hệ với họ khác trong một lựa chọn được gom và hiện thành dòng "Quan hệ với …" nếu kết quả chưa có */
+function houseRel(id,dv){const h=house(id);if(!h)return 0;const b0=h.rel;h.rel=clamp(h.rel+dv,-100,100);h.last=S.t;if(RELTR&&h.rel!==b0){const d0=hdef(id);RELTR.push([d0?d0.sur+' Gia':'nhà ấy',h.rel-b0])}return h.rel}
 const houseAlly=(id,n)=>{const h=house(id);return !!h&&h.rel>=(n||50)};
 const houseRelTxt=r=>r>=70?'tri kỷ':r>=50?'đồng minh':r>=25?'mến':r>-15?'xa lạ':r>-45?'bất hòa':'thù oán';
 const houseKid=(id,pred)=>{const h=house(id);return h?h.kids.find(pred):null};
