@@ -183,6 +183,8 @@ const tierNow=()=>{if(!S)return 0;if(TC.s===S&&TC.t===S.t)return TC.v;let v=0;tr
 /* v6.7.0-d2: trong sự kiện: theo cờ của sự kiện (ms = CHI, th = THU, còn lại NHẸ); ngoài sự kiện (hộp của engine: tang lễ, khen thưởng, đỡ đầu, hôn lễ…) mặc định thang CHI.
    mmn: thang nhẹ (ngưỡng túi riêng, lộ phí, lương chức trong tộc); mmt: khoản nhận. */
 const mmTier=()=>Math.max(0,Math.min(6,tierNow()));
+/* 7.0.0-d.1.5.4 phần A4 (chủ dự án 24/11: sinh con, tang lễ, cưới xin dùng một mức chung cho mọi cấp bậc): mmF không nhân hệ số bậc gia thế, hằng FLAT_CHI = 3 (giữa Thường dân 2 và Tiểu hộ 4) */
+const FLAT_CHI=3;const mmF=v=>Math.round(v*60*FLAT_CHI);
 const mm=v=>{const tb=MMCTX?(MMCTX.ms?MM_CHI:MMCTX.th?MM_THU:MM_NHE):MM_CHI;return Math.round(v*60*tb[mmTier()])};
 const mmn=v=>Math.round(v*60*MM_NHE[mmTier()]);
 const mmt=v=>Math.round(v*60*MM_THU[mmTier()]);
@@ -621,8 +623,11 @@ const LONGRE=/^(cv_nuoi|cv_dom_ngo|yl_|tpha_|hd_|bd_|kt_|hc_|tdt_|kiem_|ky_o_|ky
 function longHeir(c){const kids=kidsOf(c).filter(k=>inClan(k)&&!k.inLaw).sort((a,b)=>a.born-b.born);const ad=kids.filter(k=>age(k)>=18);if(ad.length)return ad[0];
   const gk=[];kids.forEach(k=>kidsOf(k).forEach(g=>{if(inClan(g)&&age(g)>=18)gk.push(g)}));if(gk.length)return gk.sort((a,b)=>a.born-b.born)[0];
   const sp=spouseOf(c);if(sp&&inClan(sp))return sp;return kids.filter(k=>age(k)>=8)[0]||null}
-function passLong(c){const arcs=S.sched.filter(x=>x.cid===c.id&&EVMAP[x.ev]&&(EVMAP[x.ev].arc||LONGRE.test(x.ev)));const kv=(c.flags.ccv||0)>0&&!c.flags.ccv_x;if(!arcs.length&&!kv)return;
-  const heir=longHeir(c);
+const DEBTRE=/(^|_)tra_no/; /* khoản vay của gia tộc (công quỹ) đang hẹn trả: truyền cho gia chủ hiện tại (7.0.0-d.1.5.4 phần A2) */
+function hasLong(c){return ((c.flags.ccv||0)>0&&!c.flags.ccv_x)||S.sched.some(x=>x.cid===c.id&&EVMAP[x.ev]&&(EVMAP[x.ev].arc||LONGRE.test(x.ev)))}
+function passLong(c){const debts=S.sched.filter(x=>x.cid===c.id&&DEBTRE.test(x.ev));if(debts.length){const dh=head();const nd=dh&&dh.id!==c.id&&inClan(dh)?dh:longHeir(c);if(nd)debts.forEach(x=>{x.cid=nd.id});else S.sched=S.sched.filter(x=>!debts.includes(x))}
+  const arcs=S.sched.filter(x=>x.cid===c.id&&EVMAP[x.ev]&&(EVMAP[x.ev].arc||LONGRE.test(x.ev)));const kv=(c.flags.ccv||0)>0&&!c.flags.ccv_x;if(!arcs.length&&!kv)return;
+  const wl=c.will&&c.will.long?P(c.will.long):null;const heir=wl&&inClan(wl)&&wl.dead==null?wl:longHeir(c); /* người được dặn trong di chúc ưu tiên */
   if(!heir){if(kv){c.flags.ccv_x=1;c.flags.ccv=0;log(`Không còn ai trong nhà nối nghiệp, kỳ vật của ${nameOf(c)} thất lạc.`,'gd')}arcs.forEach(x=>{x.t=-1});S.sched=S.sched.filter(x=>x.t!==-1);return}
   const wait=Math.max(0,18-age(heir))*12;arcs.forEach(x=>{x.cid=heir.id;x.t=Math.max(x.t,S.t+R(6,24)+wait)});
   if(kv){heir.flags.ccv=c.flags.ccv;heir.flags.ccvT=c.flags.ccvT||0;heir.flags.ccvFrom=c.id;c.flags.ccv=0;if(!arcs.some(x=>/^cv_(nuoi|dom_ngo)/.test(x.ev)))later(heir,'cv_nuoi',R(12,24)+wait);
@@ -2167,8 +2172,8 @@ function birthPopup(m){
   const MW=mw?[[`${mw.given} trong nhà đỡ`,0,Math.max(0.03,0.13-mw.lv*0.03-mw.m/2000),Math.max(0.5,1-mw.lv*0.15)],...MIDWIFE]:MIDWIFE;
   openModal(`${hdrEv(m,m.preg&&P(m.preg.father))}<span class="eyebrow">Chuyển dạ · ${dateStr(S.t)}</span><h2>Mời ai đỡ đẻ?</h2>
    <p>${esc(m.given)} trở dạ.${m.preg.twins?' Song thai, ca sinh nguy hiểm hơn.':''} Người đỡ đẻ quyết định nhiều đến sống chết của cả mẹ và con.</p>
-   <div class="choices">${MW.map(([n,c,r],i)=>`<button class="btn" data-w="${i}" ${S.money<mm(c/10)*1&&c?'disabled':''}><strong>${n}${c?` · ${money(mm(c/10))}`:''}</strong><small>Rủi ro sinh khó ${(x=>x<0.06?'rất thấp':x<0.12?'thấp':x<0.2?'khá cao':'cao')(r+(age(m)>35?0.08:0)+(m.preg.twins?0.12:0)-(m.preg.care*0.03))}</small></button>`).join('')}</div>`);
-  M.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const [n,cost,risk,harmF]=MW[+b.dataset.w];S.money-=cost?mm(cost/10):0;doBirth(m,risk,harmF,n)});
+   <div class="choices">${MW.map(([n,c,r],i)=>`<button class="btn" data-w="${i}" ${S.money<mmF(c/10)*1&&c?'disabled':''}><strong>${n}${c?` · ${money(mmF(c/10))}`:''}</strong><small>Rủi ro sinh khó ${(x=>x<0.06?'rất thấp':x<0.12?'thấp':x<0.2?'khá cao':'cao')(r+(age(m)>35?0.08:0)+(m.preg.twins?0.12:0)-(m.preg.care*0.03))}</small></button>`).join('')}</div>`);
+  M.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const [n,cost,risk,harmF]=MW[+b.dataset.w];S.money-=cost?mmF(cost/10):0;doBirth(m,risk,harmF,n)});
 }
 function childOf(m,f,g){
   const blood=m.inLaw&&f?f:m;
@@ -3642,7 +3647,7 @@ function v62Drift(c,a){if(a<16)return;const d={};const add=(k,v)=>d[k]=(d[k]||0)
 const WILLN={auto:'Chưa lập, theo lệ: chia đều cho con',kids:'Chia đều cho các con',spouse:'Để hết cho vợ hoặc chồng',split:'Một phần cho gia tộc, còn lại cho gia đình',fav:'Dồn phần lớn cho một người con',clan:'Hiến hết cho gia tộc'};
 function willTxt(c){const W=c.will||{to:'auto'};let t=WILLN[W.to]||WILLN.auto;if(W.to==='split')t=`${Math.round((W.clan||0.3)*100)}% cho gia tộc, còn lại cho gia đình`;if(W.to==='fav'&&P(W.fav))t=`Dồn phần lớn cho ${P(W.fav).given}`;return t}
 function willPopup(c){const kids=kidsOf(c).filter(k=>inClan(k)&&k.dead==null);const sp=spouseOf(c);const spOk=sp&&inClan(sp);const pct=inMain(c)?30:10;
-  const set=(W,txt)=>()=>{c.will=W;log(`${nameOf(c)} lập di chúc: ${willTxt(c).toLowerCase()}.`);return txt};
+  const set=(W,txt)=>()=>{c.will=W;log(`${nameOf(c)} lập di chúc: ${willTxt(c).toLowerCase()}.`);if(hasLong(c))enqueue('ev',c.id,{ev:'di_chuc_viec_dai',data:{}},true);return txt}; /* A3: có việc dở dang thì hỏi giao cho ai */
   const opts=[];
   if(kids.length)opts.push({l:'Chia đều cho các con',f:set({to:'kids'},'Các con mỗi người một phần như nhau.')});
   if(spOk)opts.push({l:`Để hết cho ${sp.given}`,f:set({to:'spouse'},'Người bạn đời sẽ giữ toàn bộ.')});
@@ -3656,7 +3661,11 @@ function willPopup(c){const kids=kidsOf(c).filter(k=>inClan(k)&&k.dead==null);co
   choicePopup(c,'Di chúc',`${c.given} lập di chúc`,`Hiện ${esc(c.given)} có ${money(c.purse)} tiền riêng. Khi mất, gia tộc luôn giữ lại ${pct}%${inMain(c)?'':' (người ở chi phái, gia tộc chính chỉ lấy 10%)'}, phần còn lại chia theo di chúc. Hiện tại: ${esc(willTxt(c).toLowerCase())}.${isHead(c)&&c.will&&P(c.will.heir)?` Người được chọn nối nghiệp: ${esc(P(c.will.heir).given)}.`:''}`,opts)}
 /* chia tiền riêng khi người đó mất */
 function settleEstate(c){let v=Math.round(c.purse||0);c.purse=0;if(!v)return '';
-  if(v<0){fundAdd(inMain(c)?'clan':c.hh,v);return ` Món nợ riêng ${money(-v)} gia đình phải gánh.`}
+  if(v<0){const D=-v;const sp0=spouseOf(c);const ks=kidsOf(c).filter(k=>inClan(k)&&k.dead==null&&age(k)>=16).sort((a,b)=>a.born-b.born);const heir=(sp0&&inClan(sp0)&&sp0.dead==null?sp0:null)||ks[0]||null; /* A2: nợ riêng truyền riêng cho người thừa kế (vợ chồng, rồi con lớn nhất) */
+    if(!heir){fundAdd(inMain(c)?'clan':c.hh,v);return ` Món nợ riêng ${money(D)} không ai thừa kế, gia đình phải gánh.`}
+    heir.purse=(heir.purse||0)-D;
+    if(!inMain(heir)){const fund=(S.hh[heir.hh]&&S.hh[heir.hh].money)||0;const short=-(heir.purse)-Math.max(0,fund);if(short>mm(1))enqueue('ev',head().id,{ev:'no_chi_cau_cuu',data:{who:heir.id,amt:Math.round(short)}},true)} /* chi không trả nổi thì cầu cứu gia tộc */
+    return ` Món nợ riêng ${money(D)} chuyển sang ${esc(heir.given)} gánh.`}
   const tax=Math.round(v*(inMain(c)?0.3:0.1));fundAdd(inMain(c)?'clan':c.hh,tax);v-=tax;
   const W=c.will||{to:'auto'};const sp=spouseOf(c);const spOk=sp&&inClan(sp)&&sp.dead==null;
   const shares=[];kidsOf(c).forEach(k=>{if(k.dead==null&&inClan(k))shares.push([k,1]);else if(k.dead!=null){const g=kidsOf(k).filter(x=>x.dead==null&&inClan(x));g.forEach(x=>shares.push([x,1/g.length]))}});
@@ -6618,7 +6627,7 @@ const G={totalIncome:()=>totalIncome(),romOk:c=>romOk(c),romP:c=>romP(c),ROM_OPE
 G.brief=personBrief;Object.assign(G,{npTakeSeat,npFreeSeat,npSeatLost,potLine,placeOf,houseFor,houseSur,localOfficer,officerDepose,houseRel:(id,d)=>houseRel(id,d),provName:p=>provN(p)});G._adm={brief:personBrief,xYear,xfn:ENGX.fn,tradeProbe:(c,tr)=>tradeReturn(c,tr,true),tradeRoutes:()=>routes(),tradePrice:g=>priceOf(g),wishPick,meets,setJob,JH_G,bigAvail:c=>bigAvail(c),bigDone:c=>bigDone(c),bigStart:(c,id)=>{const b=BIGS.find(x=>x.id===id);c.viec={id:b.id,start:S.t,end:S.t};},gbApply,avatarSVG,deathPopup,clanSupport,metaImport,phamSeats,letterLv,letterAdd,letterDue,letterLines,startScreen,historyMenu,personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
   getSel:()=>sel,setSel:v=>{sel=v},running:()=>running,speed:()=>speed,setRun:(r,sp)=>{running=!!r;if(sp)speed=sp;renderTop()},
   setS:st=>{S=st;sel=P(sel)?sel:S.head;O.hidden=true;M.innerHTML='';render();nextPopup()},page:()=>page,ensurePersona};
-{const X={get S(){return S},R,chance,log,alive,inClan,P,head,later,enqueue,mm,nameOf,shuf,pick,clamp,provN,qtLog,age,fx,esc,money,dateStr,openModal,closeModal,infoPopup,inKinh,BIGS,get M(){return M},get EVENTS(){return EVENTS},get EVMAP(){return EVMAP},EC:{mainHH,alive,inClan,isCtrl,esc,HH,P,RULES,chance,nextPopup,money,mm,enqueue,head,G,addRel,leaveSeat,setJob,addStat,log,nameOf,choicePopup,dOf,tuocCheck,cf,landDelta,age,WP,openModal,metaEnd,qtLog,infoPopup,gbLine,finishGame,tierNow,clamp,memSet,hdrEv,TIERS,famLine,closeModal,projOn,inheritTitle,inMain,fmt,fundAdd,spouseOf,gameOver,usU,usSteps,bar,US_N,shuf,usActors,R,clanSupport,court,US_COST,qtOf,qtSentence,qtAdd,kType,tmOf,home,homeP,PROV,US_START,usTarget,pmOpen,ARMY,thanHolder},yearly:ENGX.yearly,fn:ENGX.fn};(window.ENGX||[]).forEach(f=>{try{f(X)}catch(e){console.error(e)}});Object.assign(G._adm,ENGX.fn)} /* d9.10: nạp engine-x.js */
+{const X={get S(){return S},R,chance,log,alive,inClan,P,head,later,enqueue,mm,mmF,nameOf,shuf,pick,clamp,provN,qtLog,age,fx,esc,money,dateStr,openModal,closeModal,infoPopup,inKinh,BIGS,get M(){return M},get EVENTS(){return EVENTS},get EVMAP(){return EVMAP},EC:{mainHH,alive,inClan,isCtrl,esc,HH,P,RULES,chance,nextPopup,money,mm,enqueue,head,G,addRel,leaveSeat,setJob,addStat,log,nameOf,choicePopup,dOf,tuocCheck,cf,landDelta,age,WP,openModal,metaEnd,qtLog,infoPopup,gbLine,finishGame,tierNow,clamp,memSet,hdrEv,TIERS,famLine,closeModal,projOn,inheritTitle,inMain,fmt,fundAdd,spouseOf,gameOver,usU,usSteps,bar,US_N,shuf,usActors,R,clanSupport,court,US_COST,qtOf,qtSentence,qtAdd,kType,tmOf,home,homeP,PROV,US_START,usTarget,pmOpen,ARMY,thanHolder},yearly:ENGX.yearly,fn:ENGX.fn};(window.ENGX||[]).forEach(f=>{try{f(X)}catch(e){console.error(e)}});Object.assign(G._adm,ENGX.fn)} /* d9.10: nạp engine-x.js */
 window.BNTG=G;
 buildEvents();
 
