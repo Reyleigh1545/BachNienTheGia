@@ -15,24 +15,12 @@ const J=o=>Object.assign({k:'Việc nghề',w:1,cd:48,age:[16,70]},o);
 const K=o=>Object.assign({k:'Kỳ ngộ',ky:1,good:1,u:'person',pcd:200,w:0.6,age:[16,70]},o);
 return [
 /* ===================== Y ===================== */
-J({id:'n633_y_ngheo',t:'Người bệnh không có tiền',job:['y'],age:[20,70],cd:60,
- x:c=>`Một người đàn bà gánh đứa con sốt cao đến cửa nhà ${N(c)} lúc nửa đêm, chỉ có hai đồng trong tay. Thang thuốc cần ít nhất bảy đồng. Đêm khuya, trời mưa, chủ hiệu thuốc đã đóng cửa.`,
- o:c=>[
-  {l:'Chữa không lấy tiền, lấy thuốc nhà mình ra dùng',f:c=>`Sáng ra đứa bé hạ sốt. Người đàn bà quỳ lạy, ${N(c)} vội đỡ dậy. Chuyện lan khắp xóm, nhiều người nhờ đến, nhiều người nhớ.`+fx(c,{money:-m(0.3),fame:4,eq:1,m:R(2,4),tam:7})},
-  {l:'Chữa, hẹn trả công bằng ngày làm',f:c=>`Người đàn bà đến giã thuốc ba ngày để trả công. Vừa lòng cả hai.`+fx(c,{m:R(2,3),tam:3})},
-  {l:'Chỉ đường đến hiệu thuốc, bảo mai quay lại',f:c=>`Sáng hôm sau đứa bé đã nặng hơn nhiều. ${N(c)} thấy mình có lỗi.`+fx(c,{tam:-6,liem:-2})}]}),
 K({id:'n633_y_caitu',t:'Cây thuốc cải tử hoàn sinh',job:['y'],age:[28,80],c:c=>c.lv>=2,
  x:c=>`Hái thuốc ở triền núi, ${N(c)} thấy một cây lá xanh bạc, rễ đỏ như máu, bên cạnh có xác con chim chết đã lâu mà thân không rữa. Sách cổ nhắc đến loài cây này có tên "hoàn hồn thảo", sống được ba mùa rồi tàn.`,
  o:c=>[
   {l:'Mang về, dùng cứu người sắp chết trong vùng',r:RR({tri:0.8,ky:0.8,m:0.5},0.55),y:c=>`Một đứa bé tắt thở được kéo về sau ba chén nước sắc. Cả vùng đồn là phép lạ. ${N(c)} từ chối nhận công, chỉ ghi chép kỹ phương pháp.`+fx(c,{fame:R(8,12),cfame:2,m:R(5,8),sk:{ky:4},tam:10}),n:c=>`Sắc không đúng lửa, thuốc mất công hiệu. Đứa bé không qua khỏi. ${N(c)} thấy đau.`+fx(c,{fame:-2,tam:-9})},
   {l:'Giữ lại nghiên cứu, ghi chép lại sắc thái từng thời kỳ',f:c=>`Một năm đọc sách, thử nghiệm, ghi chép. Cây tàn nhưng bí quyết còn.`+fx(c,{tri:2,m:R(6,9),sk:{ky:3},tam:5})},
   {l:'Bán cho thương nhân cao giá',f:c=>`Thương nhân trả gấp hai mươi lần thường. Khỏi lo tiền một thời gian, nhưng nghe người ta nói thứ ấy bị dùng làm thuốc ép cho kẻ giàu.`+fx(c,{money:m(R(12,22)),liem:-8,tam:-4})}]}),
-J({id:'n633_y_oan',t:'Bệnh nhân qua đời, nhà đòi lẽ',job:['y'],age:[24,70],c:c=>c.lv>=1,cd:96,
- x:c=>`Một cụ ông được ${N(c)} chữa suốt mùa đông, đến đầu xuân thì mất vì tuổi già. Người nhà cụ, trong lúc đau, quay sang đòi tiền đền: "Uống thuốc của thầy mới chết." Cả xóm đứng quanh xem.`,
- o:c=>[
-  {l:'Bình tĩnh trình bày bệnh án, chia sẻ nỗi đau',r:RR({eq:1,khau:0.6,tri:0.4},0.55),y:c=>`Nhìn cuốn sổ ghi từng ngày bệnh, người nhà nguôi dần. Họ khóc, xin lỗi. ${N(c)} giúp lo cả lễ tang.`+fx(c,{money:-m(0.5),fame:3,eq:1,tam:3}),n:c=>`Lời nói không đúng lúc làm họ giận thêm. ${N(c)} đành đền một khoản để yên chuyện.`+fx(c,{money:-m(2),fame:-2,tam:-5})},
-  {l:'Đền ngay để dập tiếng',f:c=>`Số tiền đền khá lớn nhưng không còn ai nhắc chuyện này. Cái giá của yên ổn.`+fx(c,{money:-m(3),tam:-2})},
-  {l:'Kiên quyết từ chối, báo quan phân xử',f:c=>`Quan xét theo sổ ghi, thầy không có lỗi. Nhà họ phải xin lỗi, nhưng tiếng đồn vẫn còn một thời gian.`+fx(c,{fame:-1,tam:-3,eq:-1})}]}),
 J({id:'n633_y_thaycu',t:'Thầy cũ đến thăm',job:['y'],age:[30,70],c:c=>c.lv>=1,cd:120,
  x:c=>`Vị thầy dạy ${N(c)} ngày xưa, nay đã tóc bạc, ghé qua trong chuyến đi xa. Ông khám lại nhà thuốc, xem sổ bệnh, chỉ ra vài chỗ sai, rồi tặng một cuốn sách ông viết riêng.`,
  o:c=>[
@@ -93,12 +81,6 @@ K({id:'n633_tieu_thung',t:'Cô dâu trong thùng hàng',job:['tieu'],age:[20,55]
   {l:'Đưa cô trở về, thuyết phục cha cô nghe lại',r:RR({khau:0.9,eq:0.8},0.4),y:c=>`${N(c)} nói chuyện với người cha ba canh giờ. Cuối cùng ông chịu hoãn hôn lễ, hỏi lại ý con.`+fx(c,{fame:4,eq:2,tam:7}),n:c=>`Người cha nổi giận, cho là tiêu cục bắt cóc con gái. Tiêu cục phải xin lỗi và nộp phạt.`+fx(c,{money:-m(3),fame:-3,tam:-6})},
   {l:'Báo cho chủ hàng, giao cô lại',f:c=>`Chủ hàng đưa cô về. ${N(c)} quay đi không dám nhìn mặt cô.`+fx(c,{tam:-5,eq:-1})}]}),
 /* ===================== THƯ LẠI / NHA DỊCH ===================== */
-J({id:'n633_tl_trong',t:'Trống kêu oan',job:['thulai','nhadich'],age:[20,65],cd:96,
- x:c=>`Chiều ấy có tiếng trống vang trước cổng huyện: một người nông dân cụt tay, đầu tóc bù xù, đánh trống kêu oan vì bị chiếm ruộng. Lệ ngàn đời, người đánh trống phải bị đánh ba chục roi nếu kiện sai. Ông huyện không có mặt. ${N(c)} đứng gần nhất.`,
- o:c=>[
-  {l:'Ghi đơn, trình lên huyện đường cho đúng lệ',f:c=>`Đơn đã lên. Mấy ngày sau, quan xét thấy người nông dân nói đúng. Ruộng được trả. Người ấy dập đầu tạ ơn người ghi đơn.`+fx(c,{liem:4,fame:3,m:R(3,5),tam:6})},
-  {l:'Giữ đơn, bảo chờ ông huyện về, mong chuyện tự nguội',f:c=>`Người ấy ngồi chờ ba ngày ngoài cổng. Cuối cùng bỏ về. Ruộng vẫn mất.`+fx(c,{liem:-3,tam:-6})},
-  {l:'Bí mật báo cho người đang chiếm ruộng để họ xử lý',f:c=>`Nhận được một túi bạc, ${N(c)} thấy lòng nặng như đeo đá. Người nông dân không bao giờ quay lại.`+fx(c,{money:m(R(2,4)),liem:-12,tam:-8})}]}),
 J({id:'n633_tl_ho',t:'Hồ sơ bị xóa dòng',job:['thulai'],age:[20,65],cd:72,
  x:c=>`Khi kiểm hồ sơ cuối năm, ${N(c)} phát hiện một dòng quan trọng trong sổ đất bị xóa, thay bằng nét chữ khác. Có kẻ xóa để người này mất ruộng. Cấp trên là người ký sổ.`,
  o:c=>[
@@ -112,26 +94,11 @@ J({id:'n633_nd_vu',t:'Bắt oan người hiền',job:['nhadich'],age:[20,60],cd:
   {l:'Xin cấp trên xem lại lệnh',r:RR({khau:0.8,eq:0.6,gan:0.4},0.4),y:c=>`Cấp trên miễn cưỡng xem lại, rút lệnh. Thầy đồ vô can, ${N(c)} thở phào.`+fx(c,{fame:3,liem:5,tam:6}),n:c=>`Cấp trên quát: "Ngươi dạy ta đấy à?" ${N(c)} bị trừ nửa tháng công.`+fx(c,{money:-m(1),tam:-5})},
   {l:'Thi hành nguyên vẹn',f:c=>`Thầy đồ bị giam ba tháng. ${N(c)} mất ngủ nhiều đêm.`+fx(c,{liem:-5,tam:-6})}]}),
 /* ===================== DỆT / BÀ MỤ / BẾP / ĐỊA LÝ ===================== */
-K({id:'n633_det_gam',t:'Mảnh gấm cháy dở',job:['det'],age:[20,65],c:c=>c.lv>=1,
- x:c=>`Một vị phu nhân gửi cho ${N(c)} một mảnh gấm thêu rồng phượng cháy dở, kèm lời dặn: "Của mẹ ta để lại, bị cháy trong biến loạn. Có thể vá lại được không?" Mảnh gấm xưa, kim chỉ đã hóa đen.`,
- o:c=>[
-  {l:'Nhận vá, thêu lại cả phần cháy từ ký ức của họa tiết',r:RR({ky:1,mi:0.6,cc:0.5},0.45),y:c=>`Ba tháng, ${N(c)} thêu từng sợi chỉ mảnh như tơ. Khi trả, vị phu nhân khóc, không phân biệt được chỗ vá và chỗ gốc. Bà gửi một khoản lớn và lời giới thiệu cho cung nữ.`+fx(c,{money:m(R(8,14)),m:R(6,9),sk:{ky:4},fame:R(6,10),cfame:1,tam:10}),n:c=>`Mảnh vải quá mục, kim đâm vào là rách thêm. ${N(c)} đành trả lại kèm lời xin lỗi.`+fx(c,{m:2,tam:-5})},
-  {l:'Nhận vá phần còn tốt, giữ nguyên chỗ cháy',f:c=>`Chỗ cháy để nguyên, viền mới được thêu quanh. Phu nhân bảo: "Có vết thương mới là kỷ niệm."`+fx(c,{money:m(R(4,6)),m:R(3,5),eq:1,tam:6})}]}),
 J({id:'n633_mo_dem',t:'Ca đẻ khó giữa đêm',job:['mo'],age:[22,70],cd:60,
  x:c=>`Đêm mưa gió, người nhà gõ cửa ${N(c)}: sản phụ chuyển dạ đã hai ngày, thai ngôi ngược, thầy lang không dám làm. Cả nhà khóc. ${N(c)} nhớ lời thầy dạy: ca này chín phần chết, một phần sống.`,
  o:c=>[
   {l:'Nhận đỡ, lật thai bằng tay',r:RR({ky:0.9,eq:0.8,suc:0.4},0.5),y:c=>`Hai canh giờ không thở, mồ hôi chảy ròng. Tiếng khóc đầu tiên vang lên lúc gà gáy. Cả hai mẹ con cùng sống. Cả làng đồn thổi, nhiều nhà từ đó chỉ gọi ${N(c)}.`+fx(c,{money:m(R(2,4)),fame:R(6,10),m:R(5,8),sk:{ky:3},tam:10}),n:c=>`Thai không xoay được, mẹ sức cạn. Một mạng qua đi. ${N(c)} ngồi thẫn thờ đến sáng.`+fx(c,{fame:-2,tam:-12,suc:-3})},
   {l:'Bảo họ đưa đến thầy thuốc ở thị trấn',f:c=>`Không kịp. Người nhà nhìn ${N(c)} bằng ánh mắt khó tả.`+fx(c,{fame:-1,tam:-8})}]}),
-K({id:'n633_bep_vi',t:'Món ăn tìm lại hương vị',job:['bep'],age:[20,70],c:c=>c.lv>=1,
- x:c=>`Một cụ già ngồi hàng tiếng trong quán của ${N(c)}, chỉ gọi nước canh rau, nếm một thìa rồi đặt xuống. "Chưa phải. Món mẹ tôi nấu có vị thế này", cụ nói rồi tả lại: chua nhẹ, ngọt hậu, có mùi thơm như lá bưởi.`,
- o:c=>[
-  {l:'Thử nấu theo lời tả, từng tuần một',r:RR({ky:0.7,tri:0.5,diem:0.4},0.5),y:c=>`Lần thứ chín, cụ nếm, nước mắt chảy dài. "Đúng rồi." Cụ để lại số tiền và lời dặn truyền lại món ăn này cho khách nhớ mẹ. Món ấy trở thành chiêu bài quán.`+fx(c,{money:m(R(3,6)),m:R(5,8),sk:{ky:3},fame:R(5,8),tam:10}),n:c=>`Chín lần thử không ra vị. Cụ mất sau ít tháng. ${N(c)} vẫn tiếc.`+fx(c,{m:R(2,3),tam:-4})},
-  {l:'Mời cụ vào bếp cùng nấu',f:c=>`Cụ chỉ từng cách, ${N(c)} làm theo. Một món mới ra đời. Cụ ăn xong ngủ gục ngay trên ghế, như đứa trẻ.`+fx(c,{m:R(4,6),eq:1,tam:7})}]}),
-J({id:'n633_bep_doc',t:'Nghi hạ độc trong bữa tiệc',job:['bep'],age:[20,65],c:c=>c.lv>=1,cd:96,
- x:c=>`Một vị khách ngã vật sau tiệc, miệng sùi bọt. Cả sảnh hỗn loạn, mọi ánh mắt dồn về bếp. Chủ quán trắng bệch. Mọi nghi ngờ đổ lên ${N(c)}, vì chính tay nấu món ấy.`,
- o:c=>[
-  {l:'Xin được nếm lại toàn bộ món trước mặt mọi người',r:RR({gan:0.8,tri:0.6,eq:0.4},0.55),y:c=>`${N(c)} ăn hết từng món, ngồi giữa sảnh, không việc gì. Sau đó thầy thuốc chỉ ra vị khách bị chứng cũ phát tác. Tiếng tăm quán hồi lại, ${N(c)} thêm nể.`+fx(c,{fame:R(4,7),m:R(3,5),tam:6}),n:c=>`${N(c)} bị đau bụng sau đó vì ăn quá nhiều. Cũng không có gì xảy ra nhưng danh tiếng đã dính vết.`+fx(c,{suc:-4,fame:-2,tam:-5})},
-  {l:'Đề nghị mời thầy thuốc khám cả bữa tiệc',f:c=>`Kết luận: bệnh cũ, không phải ngộ độc. Quán thoát nạn, nhưng khách thưa dần một thời gian.`+fx(c,{money:-m(1),fame:-1,tam:-2})}]}),
 J({id:'n633_dk_dat',t:'Chọn đất cho người mất',job:['diaky'],age:[25,70],c:c=>c.lv>=1,cd:72,
  x:c=>`Hai nhà tranh nhau một mảnh đất làm mộ, cả hai đều mời ${N(c)} xem. Nhà thứ nhất giàu, hứa hậu. Nhà thứ hai nghèo, mới mất người thân, chỉ mong có chỗ yên nghỉ.`,
  o:c=>[

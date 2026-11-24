@@ -106,12 +106,6 @@ J({id:'n633_hau_rac',t:'Việc không ai biết',job:['hau'],cd:72,age:[16,60],
   {l:'Cất lại, đề phòng khi cần',r:RR({muu:0.7,eq:0.6,tri:0.4},0.55),y:c=>`Mãi về sau tờ giấy ấy cứu ${N(c)} khỏi một vụ vu oan. Biết giữ là biết sống.`+fx(c,{sk:{muu:2},tam:3}),n:c=>`Chủ phát hiện mất tờ giấy, nghi ngờ. ${N(c)} phải giải thích mãi.`+fx(c,{fame:-1,tam:-5})},
   {l:'Báo cho đối thủ của chủ',f:c=>`Một phần thưởng nhỏ, một bài học lớn: kẻ phản chủ cuối cùng cũng không được ai tin.`+fx(c,{money:m(R(2,4)),liem:-12,fame:-3,tam:-5})}]}),
 /* ===================== THỢ ===================== */
-J({id:'n633_tho_no',t:'Khách lạ xin xem cơ nỏ',job:['tho'],age:[22,65],c:c=>c.lv>=2,cd:96,
- x:c=>`Một người lạ mặc áo thương nhân ghé xưởng ${N(c)}, ngắm bản vẽ cơ nỏ liên châu treo trên tường: "Thế này mà làm được thật à? Tôi muốn mua mười bộ, trả gấp ba." Người ấy nói giọng lơ lớ, có thể là người nước ngoài.`,
- o:c=>[
-  {l:'Từ chối, bảo là hàng của quan',r:RR({muu:0.8,eq:0.5,tri:0.4},0.55),y:c=>`Người ấy nhìn thật lâu rồi cười, đổi chủ đề. Sau này có lệnh thu bản vẽ về kho phủ, xưởng được ghi công vì biết giữ.`+fx(c,{fame:3,liem:3,tam:4}),n:c=>`Người ấy không bỏ cuộc, quay lại bằng cách khác. ${N(c)} phải báo quan huyện để ngăn.`+fx(c,{tam:-4})},
-  {l:'Bán mười bộ, thu tiền',f:c=>`Tiền vào túi, bản vẽ ra khỏi xưởng. Sau này nghe tin có giặc dùng thứ vũ khí giống hệt, ${N(c)} nhìn xuống đôi tay mình mà nghẹn.`+fx(c,{money:m(R(15,25)),liem:-10,fame:-3,tam:-8})},
-  {l:'Bán một bộ giản lược, bỏ bớt chi tiết then chốt',r:RR({ky:1,muu:0.6,tri:0.4},0.45),y:c=>`Bộ giản lược nhìn thì giống, bắn thì lệch. Người ấy mừng, không biết đã bị qua mặt.`+fx(c,{money:m(R(5,9)),sk:{ky:2},tam:4}),n:c=>`Người ấy nhận ra điểm thiếu, giận dữ bỏ đi, kèm lời đe dọa.`+fx(c,{money:m(1),tam:-4})}]}),
 J({id:'n633_tho_nhan',t:'Học trò quá giỏi',job:['tho'],age:[30,65],c:c=>c.lv>=2,cd:72,
  x:c=>`Đứa học trò nhỏ ${N(c)} nhận về dạy chưa đầy hai năm đã làm được những đường chạm tinh hơn thầy. Các thợ khác bàn ra tán vào. Có người bảo ${N(c)} nên hãm bớt kẻo mất chỗ.`,
  o:c=>[

@@ -82,11 +82,6 @@ J({id:'n633_hiep_quan',t:'Quán trọ ven đường',job:['hiep'],age:[18,55],cd
   {l:'Xông vào bếp, đánh đám côn đồ',r:RR({vo:1,gan:0.9},0.45),y:c=>`Ba tên côn đồ gục xuống. Chủ quán xin tha, chịu trả tự do cho cô gái và đền bù. ${N(c)} đưa cô đến nơi an toàn.`+fx(c,{vo:1,fame:R(5,9),eq:1,tam:8,liem:3}),n:c=>`Đám côn đồ đông hơn ước tính. ${N(c)} thoát được, cô gái bị bắt lại.`+fx(c,{suc:-8,fame:-1,tam:-8})},
   {l:'Trả nợ giúp cô, nói chuyện phải trái với chủ quán',c:()=>G.money()>=m(5),f:c=>`Chủ quán nhận tiền, ký giấy thả người. Cô gái khóc, không nói thành lời. ${N(c)} đi, lòng nhẹ.`+fx(c,{money:-m(5),fame:3,eq:1,tam:7})},
   {l:'Bỏ đi, không phải việc của mình',f:c=>`Sáng sớm lên đường, ${N(c)} nghe tiếng van xin vang theo. Cả ngày ấy không nói được lời nào.`+fx(c,{liem:-3,tam:-8})}]}),
-K({id:'n633_hiep_no',t:'Món nợ ân tình',job:['hiep'],age:[22,60],
- x:c=>`Qua một thị trấn xa, một người đàn ông trung niên chạy ra chặn ${N(c)} giữa đường, quỳ xuống: "Mười năm trước ngài cứu mạng cha tôi ở đèo Ma, tôi tìm khắp thiên hạ để tạ ơn." ${N(c)} chỉ nhớ mơ hồ, như đã làm chuyện đó giữa muôn việc.`,
- o:c=>[
-  {l:'Nhận lời mời, ở lại ba hôm',f:c=>`Cả nhà người ấy chăm sóc chu đáo. ${N(c)} nhận ra mình đã gieo hạt mà quên, hạt ấy đã thành cây. Khi đi, họ tặng ngựa tốt và ít bạc.`+fx(c,{money:m(R(3,6)),fame:4,eq:1,tam:9})},
-  {l:'Nói đã quên, đừng bận tâm',f:c=>`Người ấy khăng khăng đưa một túi bạc nhỏ. ${N(c)} chỉ nhận một bình rượu.`+fx(c,{eq:1,tam:5,fame:2})}]}),
 J({id:'n633_hiep_no2',t:'Lời mời làm hộ vệ',job:['hiep'],age:[20,55],cd:96,
  x:c=>`Một quan lớn trong vùng ngỏ lời mời ${N(c)} làm hộ vệ cho phủ, lương gấp mười lần thợ giỏi. Điều kiện: không hỏi, không nói, không rời khỏi phủ trong ba năm.`,
  o:c=>[
@@ -105,12 +100,6 @@ K({id:'n633_nguy_thuoc',t:'Đơn thuốc cho vị hoàng tử nhỏ',job:['nguy'
   {l:'Dâng phương thuốc ấy, lập giấy tình nguyện chịu tội nếu sai',r:RR({tri:0.9,ky:0.8,gan:0.5},0.5),y:c=>`Ba ngày sau, cơn sốt hạ. Hoàng tử mở mắt, đòi ăn cháo. Triều đình ban thưởng hậu hĩnh, ${N(c)} được ghi tên vào sổ vàng.`+fx(c,{money:m(R(30,60)),fame:R(10,16),cfame:3,m:R(6,10),sk:{ky:4},tam:10}),n:c=>`Phương thuốc không hiệu nghiệm. Hoàng tử không qua khỏi. ${N(c)} bị giam nửa năm rồi mới được thả vì chứng cứ đã dùng thuốc đúng phép.`+fx(c,{fame:-6,suc:-5,tam:-12})},
   {l:'Chỉ dùng các phương thuốc thông thường, tránh rủi ro',f:c=>`Hoàng tử qua khỏi hay không, trời quyết. Lần này may mắn, bệnh tự lui. ${N(c)} được thưởng nhẹ.`+fx(c,{money:m(R(3,6)),fame:2,tam:2})}]}),
 /* ===================== CHỦ NHÀ / THƯƠNG ===================== */
-J({id:'n633_chu_hun',t:'Thương nhân xin hùn vốn',job:['chu'],age:[24,65],c:c=>G.money()>=m(10),cd:72,
- x:c=>`Một thương nhân trẻ, ăn nói rành rọt, đến xin hùn vốn đưa một chuyến hàng xa. Anh ta kể chi tiết đường đi, thị trường, lợi nhuận. Nghe thì hợp lý. Tên anh ta chưa nghe ai nhắc.`,
- o:c=>{const cap=m(R(8,14));return [
-  {l:`Hùn vốn đầy đủ (${fm(cap)})`,c:()=>G.money()>=cap,r:RR({ql:0.7,muu:0.7,tri:0.5},0.5),y:c=>`Chuyến hàng đến nơi, lãi gấp ba. Người thương nhân trả đúng hạn, hẹn mối làm ăn lâu dài.`+fx(c,{money:cap*2,sk:{ql:2},fame:2,tam:6}),n:c=>`Chuyến hàng gặp trộm giữa đường, mất một nửa. Người thương nhân thề trả dần, nhưng chưa bao giờ trả đủ.`+fx(c,{money:-Math.round(cap*0.7),tam:-6})},
-  {l:'Hùn một phần nhỏ để thử',c:()=>G.money()>=m(3),f:c=>`Thử trước với số vốn nhỏ. Chuyến này lãi vừa phải, và nhà mình có chỗ để rút khi cần.`+fx(c,{money:m(R(1,3)),sk:{ql:1},tam:2})},
-  {l:'Từ chối, nói không hùn với người chưa quen',f:c=>`Thương nhân cúi chào, đi tìm nhà khác. Nghe nói anh ta thành công lớn sau này.`+fx(c,{tam:-1})}]}}),
 J({id:'n633_chu_nha',t:'Con cháu tranh tài sản',job:['chu'],age:[40,80],cd:120,
  x:c=>`Tuổi cao, ${N(c)} nghe người nhà thì thầm: đứa này muốn phần đất tốt, đứa kia muốn hồi môn, đứa nọ muốn tách nhà. Chưa ai nói thẳng nhưng bữa cơm nào cũng nặng nề. Giữ im hay dàn xếp trước khi mọi chuyện nổ tung?`,
  o:c=>[
@@ -122,12 +111,6 @@ K({id:'f633_gioong',t:'Đứa trẻ ba tuổi cất tiếng',age:[2,5],c:c=>tens
  o:c=>[
   {l:'Cho đứa trẻ cái gậy tre, ôm nó vào lòng',f:c=>`Cả nhà bật khóc, nửa vì mừng, nửa vì sợ. Đứa trẻ lớn lên với ánh mắt rất sáng, thích nghe chuyện tướng quân.`+fx(c,{vo:R(3,5),suc:2,tam:8,fame:1})},
   {l:'Tạ ơn trời, dắt đứa trẻ đến đình làng',f:c=>`Dân làng kéo nhau đến xem, cụ già sờ đầu nó, lẩm nhẩm đọc câu chúc. Từ đó bọn trẻ trong làng nghe lời nó.`+fx(c,{eq:2,tam:6,fame:2})}]}),
-K({id:'f633_khachla',t:'Ba người khách lạ đêm giao thừa',age:[16,80],sea:['dong'],
- x:c=>`Đêm giao thừa, ba người lạ mặt gõ cửa nhà ${N(c)}: một ông lão, một người đàn bà bế con, một chàng trai gầy. Họ xin một chỗ ngủ nhờ. Nhà đã đủ chật, cơm tất niên cũng chỉ vừa.`,
- o:c=>[
-  {l:'Mời vào, chia cơm tất niên',f:c=>`Cả nhà ăn chung một mâm. Sáng mùng một, ba người cúi chào đi, nhưng trên bàn có ba món lạ: một thỏi bạc, một bó thuốc quý, một cuốn sổ ghi kinh nghiệm làm ruộng.`+fx(c,{money:m(R(4,6)),tri:1,m:R(3,5),tam:10,fame:2})},
-  {l:'Mời vào nhưng dặn giữ yên lặng, đừng làm ồn',f:c=>`Họ ngủ yên, sáng đi sớm, chỉ để lại lời cảm ơn khẽ. Không có phép lạ nào xảy ra.`+fx(c,{tam:2})},
-  {l:'Chỉ đường đến chùa gần',f:c=>`Họ cúi đầu rồi đi. Cả nhà ăn tất niên mà thấy thiếu thiếu.`+fx(c,{tam:-4,eq:-1})}]}),
 K({id:'f633_gieng',t:'Giếng làng cạn nước',age:[18,70],sea:['ha','thu'],
  x:c=>`Năm hạn, giếng làng chỉ còn một vũng nước đục. Các nhà tranh nhau từng gáo. Nhà ${N(c)} có một giếng riêng vẫn đầy. Hàng xóm ngập ngừng đứng ngoài cổng, không dám xin.`,
  o:c=>[
