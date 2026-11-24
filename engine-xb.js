@@ -363,6 +363,7 @@ function releaseSeat(c,noVac){const S=X.S;
   if(old&&S.off&&S.off[old]&&S.off[old].holder===c.id){const o=S.off[old];o.holder=null;if(!noVac){o.vac=true;o.vacT=S.t;o.why='chuyển sang chức khác'}}
 }
 function relation(c){const S=X.S;
+  if(c._cand)return 'Người được mai mối'; /* 7.0.0-d.1.5.17: người bà mối đưa */
   if(c.left)return ({vaocung:'Đã vào cung',xuatgia:'Đã xuất giá',expelled:'Bị trục xuất',lyhon:'Đã ly hôn, rời đi',ban:'Đã bị bán đi',botron:'Bỏ nhà ra đi',tumat:'Bị từ mặt',theome:'Theo mẹ',theochong:'Theo chồng rời đi',luuvong:'Lưu vong'})[c.left]||'Đã rời gia tộc';
   if(c.ngoai)return 'Cháu ngoại';
   if(c.id===S.head)return 'Gia chủ';
