@@ -305,10 +305,6 @@ return [
  o:[{l:'Cấm tiệt',f:c=>fx(c,{tam:-6})},
     {l:'Mặc kệ',f:c=>chance(0.4)?'Bị rủ rê vào sòng bạc.'+fx(c,{habit:'bac'}):fx(c,{eq:1})},
     {l:'Tìm việc có ích cho con làm',f:c=>fx(c,{m:1,eq:1})}]},
-{id:'tai_gia',t:'Duyên muộn',age:[24,55],c:c=>c.spouse!=null&&!married(c),w:1.2,pcd:24,
- x:c=>`Đã qua những ngày tang tóc. Có người quen ngỏ ý mai mối cho ${N(c)} một người cũng góa bụa.`,
- o:[{l:'Đồng ý tục huyền',f:c=>{G.mkSpouse(c,true);return 'Bắt đầu lại.'}},
-    {l:'Ở vậy thờ người cũ',f:c=>'Người đời khen là thủy chung.'+fx(c,{fame:4,tam:-2})}]},
 /* ============ VỢ CHỒNG ============ */
 {id:'cai_nhau',t:'Vợ chồng xích mích',age:[18,90],c:c=>married(c),
  x:c=>`${N(c)} và ${esc(spouseOf(c).given)} to tiếng vì ${pick(['chuyện tiền nong','chuyện dạy con','chuyện nhà nội nhà ngoại','một lời nói vô tình'])}.`,
