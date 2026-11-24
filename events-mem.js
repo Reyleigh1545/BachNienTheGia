@@ -4,6 +4,9 @@
 window.EVMEM=Object.assign(window.EVMEM||{},{
  /* ghi: đã dạy */
  su_hoc_tro_ngheo:{led:{k:'day_hoc',lab:/Dạy/}},
+ /* d9.12.60: ghi: đã bái sư (người học trò nhớ thầy) */
+ sm_nhan_thay:{led:{k:'co_thay',lab:/Bái sư/,keep:1}},
+ tt_thay_cu_den:{mem:{need:['co_thay']}},
  qh_tro_gioi:{led:{k:'day_hoc',lab:/môn sinh|học bổng/i}},
  /* ghi: đã cứu giúp */
  n_kho_cuu_doi:{led:{k:'cuu',lab:/phát chẩn|giá rẻ/i}},

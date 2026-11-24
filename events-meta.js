@@ -85,3 +85,7 @@ Object.assign(window.EVMETA,{"kn_cu_ao_mat":["life","encounter","random","common
 Object.assign(window.EVMETA,{"gh_chien_lan":["society","jianghu","random","common","any","any"]});
 /* thêm tự động bởi tools/addmeta.js */
 Object.assign(window.EVMETA,{"gt_nguoi_nha_gap_kho":["family","kin_support","random","common","head","any"],"gt_anh_em_bat_hoa":["family","kin_support","random","common","head","any"],"gt_nguoi_nha_thanh_dat_giup":["family","kin_support","random","common","head","any"]});
+/* thêm tự động bởi tools/addmeta.js */
+Object.assign(window.EVMETA,{"gh_phai_cau_cuu":["society","jianghu","random","common","any","any"],"gh_phai_doi_no":["society","jianghu","random","common","any","any"]});
+/* thêm tự động bởi tools/addmeta.js */
+Object.assign(window.EVMETA,{"tt_thay_cu_den":["life","mentorship","random","common","any","any"],"tt_ung_nghiem":["life","mentorship","random","common","any","any"],"tt_vi_hanh_b":["life","mentorship","random","common","any","any"]});
