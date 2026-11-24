@@ -28,7 +28,7 @@ const U={
    if(k.classList.contains('dsec')){const t=(k.querySelector('h3')||{textContent:''}).textContent;
     if(/Tính cách/.test(t))g='tc';else if(/Tâm tư/.test(t))g='tt';else if(/Hôn nhân|Quan hệ/.test(t))g='gd';else if(/Việc nhà/.test(t))g='vn';else g='vl'}
    else if(k.classList.contains('subs'))g='tc';
-   else if(k.classList.contains('kvline')){const t=k.textContent;if(/Tiền riêng|Di chúc|với gia chủ|kiếm/.test(t))g='vl';else if(/Tiềm năng/.test(t))g='tc'}
+   else if(k.classList.contains('kvline')){const t=k.textContent;if(/Tiền riêng|Di chúc|với gia chủ|kiếm/.test(t))g='vl'} /* dòng Tiềm năng ở lại Tổng quan (luật mục 7, chủ dự án 23 và 24/11) */
    grp[g].push(k)});
   if(info&&!SM.querySelector('.sfacts')){const fa=document.createElement('div');fa.className='sfacts';
    const T=(k,v)=>`<div class="sf"><small>${k}</small><b>${esc(v)}</b></div>`;
