@@ -30,6 +30,8 @@ function ensure(c,o){o=o||{};const s=root();
   /* d9.12.65: nơi ở thật (nơi người gặp đang đứng), người hay đi lại, và họ thật (danh gia gần đó) */
   n.loc=o.loc||(G.placeOf?G.placeOf(c):n.loc);n.wander=!!o.wander||n.vai.some(v=>['thuong_nhan','cao_nhan','an_si'].includes(v))||/lái buôn|thương nhân|đi dạo|lưu lạc|khách lạ|đạo sĩ|kiếm khách|thầy tướng|hát rong|người chạy thư|ngư phủ già|lão nhân|ẩn sĩ/.test(n.nghe||'');
   if(!o.noHouse&&G.houseFor&&((n.tier||0)>=3||(['quy_nhan','thuong_nhan'].some(v=>n.vai.includes(v))&&(n.tier||0)>=2))&&chance(0.55)){const hid=G.houseFor(n);if(hid){n.house=hid;n.hn=G.houseSur(hid)+' Gia';try{const H=S().w.houses[hid];if(H){H.np=H.np||[];H.np.push(n.id)}}catch(e){}n.nghe=(n.nghe?n.nghe+', ':'')+'người của '+n.hn}}
+  /* d9.12.67: sổ họ NPC: danh gia thật (h:…) hoặc họ cùng tên, cùng tỉnh, từ bậc 2 (f:…); thành viên và con cái cùng một họ */
+  try{const sur=String(n.n).split(' ')[0];const fid=n.house?('h:'+n.house):((n.tier||0)>=2?('f:'+sur+':'+(n.loc||'')):null);if(fid){n.fid=fid;const R0=(s.np.hs=s.np.hs||{});const F=R0[fid]||(R0[fid]={sur,loc:n.loc,mem:[]});F.mem.push(n.id)}}catch(e){}
   return n}
 /* người đã có sẵn trong sổ (như quan giữ ghế thật) nhận vai và tính cách */
 function adopt(n,o){o=o||{};if(!n||n.sub)return n;n.vai=[].concat(o.vai||'quan');n.vaiTxt=n.vai.map(v=>VAI[v]||v).join(', ');n.nghe=o.nghe||n.nghe||'';n.tier=o.tier!=null?o.tier:4;n.rel=o.rel!=null?o.rel:0;n.on=0;n.oan=0;n.ky=n.ky||[];n.st=n.st||{tri:R(55,80),vo:R(30,50),mi:R(40,60),eq:R(50,75)};n.loc=o.loc||n.loc;n.key=o.key||n.key;if(G.npc)G.npc.deepen(n,o);if(o.liem!=null&&n.sub){n.sub.thanh=clamp(Math.round(o.liem),5,98);n.sub.rong=clamp(Math.round(o.liem*0.7+10),5,98)}return n}

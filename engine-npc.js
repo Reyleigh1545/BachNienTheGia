@@ -45,6 +45,7 @@ function reach(n){const h=alive().filter(p=>inClan(p)&&!p.away&&age(p)>=16);if(!
   if(L.length)return L.find(p=>p.id===S().head)||pick(L);
   if(n.wander&&chance(0.5)){n.loc=G.placeOf(hd||h[0]);return hd||pick(h)}return null}
 /* d9.12.66 (chủ dự án 24/11: "nhớ ơn nhưng mới 13 tuổi thì lấy gì ra báo ơn; NPC chưa có cuộc sống thật"): NPC có giai đoạn đời theo tuổi: dưới 12 sống với người nuôi, 12 đến 17 học (chữ, võ, nghề) và lớn lên theo tư chất cùng sự nâng đỡ của nhà (n.sup), đủ 18 mới có nghề, địa vị, mục tiêu lớn (becomeAdult). Trẻ không nhận việc của người lớn (báo ơn, báo thù, thăng tiến…). */
+const addV=(k,v)=>{if(!k.vai.includes(v))k.vai.push(v);k.vaiTxt=k.vai.map(x=>G.tie.VAI[x]||x).join(', ')};
 const KIDBLOCK=['np_thanh_dat','np_sa_co','np_bao_an','np_bao_thu','np_cuoi_hoi'];
 function kidLife(n,a){const g=n.guard||'người nuôi';n.st=n.st||{tri:50,vo:50,mi:50,eq:50};
   if(a<12){n.cond='còn nhỏ, sống với '+g;n.stage='tre';return}
@@ -55,7 +56,17 @@ function becomeAdult(n,a){n.adult=1;n.stage='lon';const st=n.st||{tri:50,vo:50,m
   if(path==='chu'){const sc=st.tri+sup*6+R(-15,15);if(sc>=88){job='quan nhỏ';dt=2}else if(sc>=66){job='thầy đồ';dt=1}else job='thư lại'}
   else if(path==='vo'){const sc=st.vo+sup*6+R(-15,15);if(sc>=85){job='võ sư đã có tiếng';dt=1}else job='lính'}
   else{const sc=st.eq+sup*6+R(-15,15);if(sc>=80){job='chủ một tiệm nhỏ';dt=1}else job='thợ làm thuê'}
-  n.job=job;n.tier=Math.max(0,Math.min(6,(n.tier||1)+dt));pastAdd(n,'Trưởng thành, nay là '+job);setNghe(n,'nay là '+job+', đã tự lập');n.fam={spouse:false,kids:0};n.goal=pickGoal(n)}
+  n.job=job;n.tier=Math.max(0,Math.min(6,(n.tier||1)+dt));if(job==='quan nhỏ')n.wantSeat=1;pastAdd(n,'Trưởng thành, nay là '+job);setNghe(n,'nay là '+job+', đã tự lập');n.fam={spouse:false,kids:0};n.goal=pickGoal(n)}
+/* d9.12.67: NPC lập gia đình, sinh con thật (người con là NPC, mang họ cha, cùng sổ họ), làm quan nhỏ thì ngồi ghế thật */
+const GIVEN_M=['Quang','Văn','Đức','Minh','Thành','Hữu','Bảo','Nhật'],GIVEN_N=['Anh','Bình','Cường','Dũng','Hải','Khải','Long','Nam','Phúc','Sơn'],GIVEN_F=['Thu','Lan','Hoa','Mai','Ngọc','Liên','Hạnh','Thảo'];
+function lifeFam(n,a){n.fam=n.fam||{spouse:false,kids:0};
+  if(!n.fam.spouse&&a>=20&&a<=40&&chance(0.14)){n.fam.spouse=true;pastAdd(n,'Lập gia đình')}
+  if(n.fam.spouse&&a>=22&&a<=44&&(n.fam.kl||[]).length<4&&chance(0.14)){const sur=String(n.n).split(' ')[0];const g=chance(0.5)?'nam':'nữ';const nm=sur+' '+(g==='nam'?pick(GIVEN_M)+' '+pick(GIVEN_N):pick(GIVEN_F)+' '+pick(['Hương','Lụa','Nhi','Yến','Chi','Vy']));
+    const kid=G.np.new({n:nm,g,age:0,role:'quen'});const st=n.st||{};const mix=k=>clamp(Math.round((st[k]||50)+R(-14,14)),10,98);kid.st={tri:mix('tri'),vo:mix('vo'),mi:mix('mi'),eq:mix('eq')};
+    kid.vai=['quen'];kid.vaiTxt=kid.vai.map(v=>G.tie.VAI[v]||v).join(', ');kid.nghe='con của '+n.n;kid.tier=n.tier;kid.loc=n.loc;kid.parent=n.id;kid.guard='cha mẹ';kid.key='con_'+kid.id;kid.rel=Math.round((n.rel||0)*0.4);kid.on=0;kid.oan=0;kid.ky=[];kid.src=n.src;
+    if(n.fid){kid.fid=n.fid;const F=S().np.hs&&S().np.hs[n.fid];if(F)F.mem.push(kid.id)}deepen(kid,{why:'con của '+n.n});n.fam.kl=(n.fam.kl||[]).concat(kid.id);n.fam.kids=n.fam.kl.length;pastAdd(n,'Có thêm con')}}
+function seatYear(n,a){if(n.seat&&G.npSeatLost(n)){n.seat=null;n.cond='vừa mất ghế quan nhỏ';pastAdd(n,'Mất ghế quan nhỏ');n.wantSeat=0}
+  if(n.job==='quan nhỏ'&&!n.seat&&n.wantSeat&&G.npTakeSeat(n)){n.wantSeat=0;pastAdd(n,'Nhậm một ghế quan nhỏ ở '+G.provName(n.loc))}}
 function hook(n,ev,extra,opt){const s=S();opt=opt||{};if(nage(n)<18&&KIDBLOCK.includes(ev))return false;s.np.nc=s.np.nc||{y:-1,c:0};const y=Math.floor(s.t/12);if(s.np.nc.y!==y){s.np.nc={y,c:0}}
   if(((s.evLast&&s.evLast[ev])||-999)>s.t-6&&!opt.force)return false; /* d9.12.63: cùng id không ra hai lần trong 6 tháng */
   if(s.np.nc.c>=1&&!opt.force)return false; /* một việc của NPC mỗi năm là đủ: bot 60 năm với tối đa 2 cho 20 đến 29 sự kiện mỗi loại, quá dày */if(!X.EVMAP[ev])return false;if((n.hookT||-999)>s.t-24&&!opt.force)return false;
@@ -63,7 +74,10 @@ function hook(n,ev,extra,opt){const s=S();opt=opt||{};if(nage(n)<18&&KIDBLOCK.in
   enqueue('ev',tgt.id,{ev,data:Object.assign({npc:n.id},extra||{})});n.hookT=s.t;s.np.nc.c++;return true}
 /* ---------- một năm sống của NPC ---------- */
 function setNghe(n,t){n.cond=t} /* tình cảnh hiện tại; n.nghe giữ nguyên lai lịch gốc */
-function die(n){const s=S();n.ok=0;n.dead=s.t;pastAdd(n,'Qua đời');
+function die(n){const s=S();n.ok=0;n.dead=s.t;pastAdd(n,'Qua đời');if(n.seat)G.npFreeSeat(n,'qua đời');
+  /* d9.12.67: có con thật (NPC) đủ lớn thì con ấy kế thừa quan hệ, không tạo người con mới */
+  const real=(n.fam&&n.fam.kl||[]).map(i=>s.np.l[i]).find(k=>k&&k.ok!==0&&nage(k)>=16);
+  if(real&&((n.rel||0)>=20||(n.on||0)>=5||(n.oan||0)>=15)){real.rel=Math.max(real.rel||0,Math.round((n.rel||0)*0.6));real.on=Math.max(real.on||0,Math.round((n.on||0)*0.6));real.oan=Math.max(real.oan||0,Math.round((n.oan||0)*0.6));const par=n.vai||[];if((n.oan||0)>=15||par.includes('doi_thu'))addV(real,'doi_thu');if((n.on||0)>=5||par.includes('an_nhan'))addV(real,'an_nhan');if(par.includes('ban_than')||par.includes('ket_nghia'))addV(real,'ban_than');pastAdd(real,'Cha là '+n.n+' (đã mất)');if(real.oan>=15)real.goal={k:'bao_thu',p:0,t:s.t};else if(real.on>=5)real.goal={k:'bao_an',p:0,t:s.t};n.heir=real.id;return n}
   /* người con kế thừa quan hệ: ơn thành ơn, oán thành oán truyền đời */
   if(n.fam&&n.fam.kids>0&&((n.rel||0)>=20||(n.on||0)>=5||(n.oan||0)>=15)&&chance(0.7)){
     const sur=String(n.n).split(' ')[0];const nm=sur+' '+(n.g==='nam'?pick(['Quang','Văn','Đức','Minh','Thành','Hữu']):pick(['Quang','Văn','Đức','Minh','Thành','Hữu']))+' '+pick(['Anh','Bình','Cường','Dũng','Hải','Khải','Long','Nam','Phúc','Sơn']);
@@ -77,7 +91,7 @@ function die(n){const s=S();n.ok=0;n.dead=s.t;pastAdd(n,'Qua đời');
   return n}
 function npcYear(){const s=S();if(!s||!s.np||!s.np.l)return;
   const L=Object.values(s.np.l).filter(n=>n.ok!==0&&n.vai&&n.vai.length);
-  for(const n of L){if(!n.sub)deepen(n);const a=nage(n);if(a<18){kidLife(n,a);continue}if(!n.adult)becomeAdult(n,a);
+  for(const n of L){if(!n.sub)deepen(n);const a=nage(n);if(a<18){kidLife(n,a);continue}if(!n.adult)becomeAdult(n,a);lifeFam(n,a);seatYear(n,a);
     /* sống và chết */
     n.hp=Math.max(0,(n.hp||80)-(a>55?R(0,4):R(-1,1)));
     if(n.wander&&chance(0.3))n.loc=pick(Object.keys(window.D.PROV));else if((n.vai||[]).includes('quan')&&chance(0.1))n.loc=pick(Object.keys(window.D.PROV)); /* d9.12.65: người hay đi lại đổi chỗ, quan thuyên chuyển */
