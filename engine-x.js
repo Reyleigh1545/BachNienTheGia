@@ -163,9 +163,10 @@ Object.assign(X.fn,{wpPopup,wpWin,wpCard});
 
 /* ===== deathPopup, weddingPopup (chuyển từ engine.js, d9.10) ===== */
 {const {tierNow,mm,cf,clamp,memSet,addStat,log,nameOf,isCtrl,money,nextPopup,openModal,hdrEv,esc,TIERS,famLine,closeModal,head,projOn,inheritTitle,inMain,age,fmt,fundAdd,spouseOf,alive,gameOver,enqueue}=X.EC;
+const mmF=v=>X.mmF(v); /* chi phí chung cho mọi bậc (A4) */
 function deathPopup(c,cause){const S=X.S;
   const wasHead=c.id===S.head;const f=c.fame;const tn=tierNow();const exp=Math.max(f>=150?2:f>=25?1:0,tn>=4?2:tn>=2?1:0);
-  const dk=projOn('nghiatrang')?0.5:1;const costs=[mm(3),mm(30),mm(100)].map(x=>Math.round(x*dk)); /* nghĩa trang gia tộc giảm nửa tiền tang lễ */
+  const dk=projOn('nghiatrang')?0.5:1;const costs=[mmF(3),mmF(30),mmF(100)].map(x=>Math.round(x*dk)); /* nghĩa trang gia tộc giảm nửa tiền tang lễ */
   const inh=inheritTitle(c);const fk=inMain(c)?'clan':c.hh;const fmny=()=>fk==='clan'||!S.hh[fk]?S.money:S.hh[fk].money; /* d9.6 Q14: người ở chi họ thì lo tang bằng quỹ chi của mình */
   openModal(`${hdrEv(c,(()=>{const sp=c.spouse!=null?P(c.spouse):null;return sp&&sp.dead==null&&!sp.left?sp:null})())}<span class="eyebrow">Tang sự</span><h2>${esc(nameOf(c))} qua đời</h2>
    <p>${esc(nameOf(c))} ${esc(cause)} ở tuổi ${age(c)}.${inh} ${wasHead?'Gia tộc cần người kế nghiệp.':''}</p>
@@ -185,7 +186,7 @@ function deathPopup(c,cause){const S=X.S;
 
 function weddingPopup(c,p,free){const S=X.S;
   const tn=tierNow();const fam=p.famT!=null?p.famT:tn;const a=(tn+fam)/2;const exp=a<1.5?0:a<3.5?1:2;
-  const costs=[mm(3),mm(20),mm(60)];const names=['Giản dị','Vừa phải','Linh đình'];
+  const costs=[mmF(3),mmF(20),mmF(60)];const names=['Giản dị','Vừa phải','Linh đình'];
   const fin=i=>{const diff=i-exp;let d=0,tam=0;
     if(diff<0){d=-(2+Math.abs(diff)*2+(tn>=3?2:0));tam=-4*Math.abs(diff)}
     else if(diff===0){d=2+i*2;tam=4}
@@ -242,7 +243,7 @@ function usWin(kind){const S=X.S;const U=usU();if(!U)return 0;if(!usNeedOk(U))re
   if(d){const t=kType(d.k);p+=({hon:0.05,bao:0.06,au:0.08,thu:0,minh:-0.1}[t]||0)+(d.loan>=50?0.04:0)+(d.dt<35?0.04:0)+(d.cr?0.05:0)-(d.k.uy>=75?0.05:0)-(d.dt>=70?0.04:0)}
   const a=P(U.who);if(a){const T=tmOf(a);if(T&&T.tm==='devuong')p+=0.03}
   p+=({quyen:0.1,vo:-0.06}[U.path]||0); /* d9.6 cân bằng theo đo bot (15 ván mỗi đường, nhân vật mạnh): Võ quan 67%, Khởi nghĩa 40%, Quyền thần 20%; mục tiêu người mạnh 40 đến 55% */
-  return clamp(p-0.16,0.04,0.8)}
+  return clamp(p-0.26,0.03,0.8)} /* A1 (7.0.0-d.1.5.4): hạ 10 điểm để người vừa đủ 140 còn khoảng 40 đến 55% */
 
 function usAbandon(){const S=X.S;const U=usU();if(!U)return '';const a=P(U.who);const lo=U.lo;const leak=chance(lo/160);
   S.usurp=null;(S.usNoP=S.usNoP||{})[U.path]=S.t+120;

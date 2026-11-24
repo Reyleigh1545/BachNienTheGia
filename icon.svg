@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Bách Niên Thế Gia">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#bf4636"/>
+      <stop offset="1" stop-color="#8f2a22"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="120" height="120" rx="22" fill="url(#g)"/>
+  <rect x="11" y="11" width="106" height="106" rx="16" fill="none" stroke="#fff8ef" stroke-opacity=".55" stroke-width="2"/>
+  <g fill="#fff8ef" font-family="'Noto Serif TC','Noto Serif CJK TC','Source Han Serif TC','Songti TC','PMingLiU','MingLiU','SimSun','Microsoft JhengHei','Microsoft YaHei',serif" font-size="46" font-weight="700" text-anchor="middle">
+    <text x="39" y="58">百</text>
+    <text x="89" y="58">年</text>
+    <text x="39" y="106">世</text>
+    <text x="89" y="106">家</text>
+  </g>
+</svg>
