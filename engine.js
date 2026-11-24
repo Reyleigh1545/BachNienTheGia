@@ -4445,7 +4445,6 @@ const isOfficialFamily=()=>alive().some(p=>['quan','nguy'].includes(p.job));
 /* ================= chân dung sinh từ tên ================= */
 function hashStr(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
 function avatarSVG(c,size){
-  {const u=U2();if(u&&window.AVA2)return window.AVA2.svg(c,size,tierNow())}
   const h=hashStr(c.surname+c.given+c.id);const a=c._age!=null?c._age:age(c);const f=c.g==='nữ';
   const r=k=>(h>>>(k*3))%7;
   const skins=['#f1d3b3','#e8c29c','#d9ab83','#c99370'];const skin=skins[h%4];
