@@ -1895,10 +1895,16 @@ function termPopup(c){
 }
 
 /* ================= nghề ================= */
-const jobName=c=>{if(c.job==='quan'){const k=seatOfC(c);return (k&&seatTm(k)?seatName(k)+' · ':'')+rankTxt(c)};if(c.job==='chu'){const b=bizOf(c);return b?`Chủ ${BIZ[b.type].lv[b.lv][0].toLowerCase()}`:'Chủ cơ sở'}
+const jobName=c=>{if(c.job==='quan'){const k=seatOfC(c);return (k&&seatTm(k)?seatName(k).replace(/ \(\d+\)$/,'')+' · ':'')+rankTxt(c)};if(c.job==='chu'){const b=bizOf(c);return b?`Chủ ${BIZ[b.type].lv[b.lv][0].toLowerCase()}`:'Chủ cơ sở'}
   if(c.job==='quan_ngu'){const k=c.seat;return k&&seatTm(k)?`${ARMY[c.lv][0]} · ${seatName(k)}`:ARMY[c.lv][0]}
   if(c.job==='nguy'&&c.seat&&seatTm(c.seat))return seatName(c.seat).replace(/ \(\d+\)$/,'')+' · '+phTxt(seatTm(c.seat));
   const J=JOBS[c.job];return J.lv[Math.min(c.lv,J.lv.length-1)].n+(['none','huu','noi','vua','hiep'].includes(c.job)||J.lv[0].n===J.n?'':` · ${J.n}`)};
+/* 7.0.0-d.1.5.10 (chủ dự án 24/11): dòng nghề trên thẻ Gia phả ngắn để hiện đủ: quan chỉ hiện phẩm vị; nghề khác chỉ hiện tên bậc hiện tại (không kèm tên nghề); lính hiện cấp bậc; chủ cơ sở hiện như jobName */
+const cardJob=c=>{if(c.job==='quan')return rankTxt(c);
+  if(c.job==='nguy'&&c.seat&&seatTm(c.seat))return phTxt(seatTm(c.seat));
+  if(c.job==='quan_ngu')return ARMY[c.lv][0];
+  if(c.job==='chu')return jobName(c);
+  const J=JOBS[c.job];return J?J.lv[Math.min(c.lv,J.lv.length-1)].n:jobName(c)};
 function relation(...a){return ENGX.fn.relation(...a)}
 function meets(c,id){const J=JOBS[id];if(J.gen&&(c.gen||1)<J.gen)return false; /* d9.10: nghề chỉ mở từ đời J.gen */
   if(!J.req)return true;return Object.entries(J.req).every(([k,v])=>c[k]>=v)}
@@ -4283,7 +4289,7 @@ function nodeHTML(p,old){
   if(U2()){ /* 7.0.0-d.1.5.5 phần C: thẻ gia phả cùng kiểu thẻ chân dung ở hộp sự kiện: cùng bề rộng, tuổi, ảnh, tên, nghề, thu nhập mỗi tháng */
     const ci=cardInfo(p);const showInc=p.dead==null&&inClan(p)&&a>=16;
     const incH=showInc?`<span class="pinc ${ci.inc>0?'up':ci.inc<0?'dn':'nl'}">${ci.inc===0?'0/tháng':ci.incTxt}</span>`:'<span class="pinc ph">&nbsp;</span>';
-    const sub=p.dead!=null?`† ${dOf(p.dead).y} · thọ ${a}`:p.left?relation(p):(a<16?(a>=6&&p.school!=='nha'?'đang đi học':'còn nhỏ'):jobName(p));
+    const sub=p.dead!=null?`† ${dOf(p.dead).y} · thọ ${a}`:p.left?relation(p):(a<16?(a>=6&&p.school!=='nha'?'đang đi học':'còn nhỏ'):cardJob(p));
     const hpv=Math.round(clamp(p.suc/1.5,0,100)),mdv=Math.round(clamp(p.tam,0,100));const bars=p.dead==null&&inClan(p)?`<span class="bars"><span class="bar hpb" title="Sức khỏe ${hpv}"><i style="width:${hpv}%"></i></span><span class="bar mdb" title="Tâm trạng ${mdv}"><i style="width:${mdv}%"></i></span></span>`:'<span class="bars ph"><span class="bar"></span><span class="bar"></span></span>'; /* thanh sức khỏe (đỏ) và tâm trạng (xanh) dưới ảnh, cùng màu với chú thích cuối trang */
     return `<button class="${cls.join(' ')}" data-sel="${p.id}" aria-pressed="${sel===p.id}">${badge}<span class="pa">${p.dead!=null?'†':a}</span><span class="pav">${avatarSVG(p,76)}</span><b>${esc(nameOf(p))}</b><small>${esc(sub)}</small>${bars}${incH}</button>`}
   return `<button class="${cls.join(' ')}" data-sel="${p.id}" aria-pressed="${sel===p.id}">${badge}<span class="nrow">${avatarSVG(p,30)}<span><b>${esc(nameOf(p))}</b>
@@ -5309,6 +5315,8 @@ function mkMatch(c,o){
   return p}
 const famLine=p=>p.famT>0?`con nhà ${TIERS[p.famT][0].toLowerCase()}`:'nhà bình dân';
 /* d9.7: opts (dùng cho lính về phép, chủ dự án 23/11 "làm như hộp Mối"): free (miễn phí bà mối, vẫn trả sính lễ), noOut (không hiện nút gả), pt (người trong lòng, hiện làm ứng viên đầu), after(vợ hoặc chồng mới) trả chuỗi HTML hiện sau khi chọn, eyebrow, title. */
+/* 7.0.0-d.1.5.10 (chủ dự án 24/11: hộp mai mối không nhìn được, mất hết chỉ số; "chọn việc mai mối chỉ 1 người duy nhất, để thẻ avatar người đó ở bên cạnh, làm quen tìm hiểu để xây dựng tình cảm trước, thuận buồm thì mới mở thẻ cưới, hoặc cưới luôn thì tình cảm thấp vì cưới do mai mối, hoặc bỏ đi tìm mối khác"):
+   bà mối đưa MỘT người mỗi lần (tối đa ba người một lần trả công), thẻ chân dung người ấy nằm cạnh thẻ mình, chỉ số hiện thành ô riêng; ba cách: làm quen tìm hiểu (mỗi lần tốn một ít, tình cảm hai bên tăng dần, đủ 60 thì mở lễ cưới với tình cảm tốt), cưới luôn (tình cảm thấp vì do mai mối), hoặc bỏ để bà mối tìm mối khác. */
 function matchmaker(c,opts){
   opts=opts||{};
   if(married(c))return;
@@ -5321,19 +5329,50 @@ function matchmaker(c,opts){
     p.needT=clamp(p.famT+(i===2?1:0),0,6);p.needF=Math.max(0,Math.round((q-48)*3+p.famT*6));
     p.fee=Math.round(mm(q/5+p.famT*0.5)*(1-Math.min(c.mi,100)/250)*(clanLv()>=3?0.6:1));
     return p});
+  let idx=0,msg='';const rap=list.map(p=>p._pt?70:0),steps=list.map(()=>0);
   const ok=p=>tierIdx()>=p.needT&&(c.fame+S.fame*0.2)>=p.needF&&S.money>=p.fee;
+  const why=p=>{const w=[];if(tierIdx()<p.needT)w.push(`nhà bên kia đòi gia thế từ ${TIERS[p.needT][0]}`);if((c.fame+S.fame*0.2)<p.needF)w.push(`đòi danh vọng ${p.needF}`);if(S.money<p.fee)w.push(`chưa đủ sính lễ ${money(p.fee)}`);return w.join(', ')};
   const outOk=!opts.noOut&&c.g==='nữ'&&!isHead(c)&&!c.inLaw&&!married(c);
   const talent=p=>traitsOf(p).filter(t=>!TRAITS[t].ct).slice(0,3).map(t=>TRAITS[t].n);
-  openModal(`${hdrEv(c)}<span class="eyebrow">${opts.eyebrow||('Bà mối · đã trả '+money(fee))}</span><h2>${opts.title||'Ba mối lương duyên'}</h2>
-   <p class="muted">Nhà mình ${st>=7?'danh giá, bà mối đem đến toàn mối cao':st>=4?'có tiếng, mối đem đến khá hơn người thường':'bình thường, mối đem đến vừa sức'}. Người càng giỏi thì nhà bên kia càng kén: đòi gia thế, danh vọng và sính lễ cao. Mị lực của mình cao được giảm sính lễ. Hiện có ${money(S.money)}.</p>
-   <div class="choices">${list.map((p,i)=>`<button class="btn" data-i="${i}" ${ok(p)?'':'disabled'}><strong>${esc(nameOf(p))} · ${age(p)} tuổi · ${esc(jobName(p))}${p._pt?' · người trong lòng':''}</strong>
-   <small>${famLine(p)}${talent(p).length?' · '+talent(p).join(', '):''}</small>
-   <small class="num">${STATS.map(([k,n])=>`${n} ${p[k]}`).join(' · ')}</small><small>Sính lễ ${money(p.fee)}${p.needT?` · đòi gia thế từ ${TIERS[p.needT][0]}`:''}${p.needF?` · đòi danh vọng ${p.needF}`:''}</small></button>`).join('')}
-   ${outOk?list.map((p,i)=>`<button class="btn" data-o="${i}" ${tierIdx()+1>=p.needT?'':'disabled'}><strong>Gả ${esc(c.given)} về nhà họ ${esc(p.surname)}</strong><small>${esc(p.given)} ${age(p)} tuổi, ${esc(jobName(p).toLowerCase())}, ${famLine(p)}. Gia tộc nhận lại khoảng ${money(Math.round(p.fee*0.6))} sính lễ</small></button>`).join(''):''}
-   <button class="btn ghost" data-x>Chưa ưng ai</button></div>`);
-  M.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{const p=list[+b.dataset.i];let sp=null;if(!married(c)){S.money-=p.fee;if(p._pt){romMarry(c,p._pt);sp=spouseOf(c)}else sp=mkSpouse(c,false,p)}closeModal();if(opts.after){let h='';try{h=opts.after(sp)||''}catch(e){}infoPopup(c,opts.eyebrow2||'Hôn sự',opts.title2||'Đã chọn người',h)}});
-  M.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{const p=list[+b.dataset.o];marryOut(c,p);closeModal()});
-  M.querySelector('[data-x]').onclick=()=>{closeModal();if(opts.after&&opts.none){let h='';try{h=opts.none()||''}catch(e){}infoPopup(c,opts.eyebrow2||'Hôn sự','Chưa ưng ai',h)}};
+  const knowCost=()=>mm(0.4);
+  const GOOD=60,MAXSTEP=4;
+  function finish(p,mode){let sp=null;if(!married(c)){S.money-=p.fee;
+      if(p._pt){romMarry(c,p._pt);sp=spouseOf(c)}
+      else{sp=mkSpouse(c,false,p);if(sp){const r=rap[idx];
+        if(mode==='good')c.love=sp.love=clamp(Math.round(52+r*0.42+(compat(c,sp)||0)*0.6),50,92);
+        else c.love=sp.love=clamp(Math.round((c.love||30)*0.7),5,42)}}}
+    closeModal();if(opts.after){let h='';try{h=opts.after(sp)||''}catch(e){}infoPopup(c,opts.eyebrow2||'Hôn sự',opts.title2||'Đã chọn người',h)}}
+  function know(p){const cost=knowCost();if(S.money<cost||steps[idx]>=MAXSTEP)return;S.money-=cost;steps[idx]++;
+    const cp=compat(c,p)||0;let g=R(6,15)+Math.round(cp*0.8)+Math.round((c.eq-50)/10)+Math.round((c.mi-50)/12);
+    if(chance(0.12))g=-R(3,8);g=clamp(g,-8,26);rap[idx]=clamp(rap[idx]+g,0,100);
+    const n=esc(p.given);
+    msg=g<0?`Lỡ một câu khiến ${n} phật ý, tình cảm tụt đi.`:g>=18?`Hai người trò chuyện rất hợp, ${n} cười nhiều và hẹn gặp lại.`:g>=10?`Nói chuyện được, còn khách sáo nhưng ${n} có thiện cảm.`:`${n} ngượng ngùng, ít lời; chưa nhìn ra được điều gì.`;
+    if(rap[idx]>=GOOD)msg+=' Hai bên đã hợp ý, có thể xin mở lễ cưới.';else if(steps[idx]>=MAXSTEP)msg+=' Đã gặp nhiều lần mà tình cảm vẫn chưa đầy; nên cưới luôn hoặc tìm mối khác.';
+    render()}
+  function render(){
+    const p=list[idx],r=rap[idx],can=ok(p),w=why(p),cost=knowCost();
+    const lastOne=idx>=list.length-1;
+    const btn=(a,label,small,dis)=>`<button class="btn" ${a} ${dis?'disabled':''}><strong>${label}</strong>${small?`<small>${small}</small>`:''}</button>`;
+    openModal(`${hdrEv(c,p)}<span class="eyebrow">${opts.eyebrow||('Bà mối · đã trả '+money(fee))}</span><h2>${opts.title||'Mối lương duyên'} ${idx+1}/${list.length}</h2>
+     <div class="mmbody"><p>${st>=7?'Nhà mình danh giá nên bà mối đem đến mối cao.':st>=4?'Nhà mình có tiếng nên mối khá hơn người thường.':'Nhà mình bình dân nên mối vừa sức.'} Bà mối nói về <b>${esc(nameOf(p))}</b>: ${age(p)} tuổi, ${esc(jobName(p).toLowerCase())}, ${famLine(p)}${p._pt?', người trong lòng của mình':''}${talent(p).length?'. Nét nổi bật: '+talent(p).join(', '):''}.</p>
+     <div class="mmstats">${STATS.map(([k,n])=>`<span><small>${n}</small><b>${p[k]}</b></span>`).join('')}</div>
+     <div class="mmbar"><span>Tình cảm hai bên</span><i><em style="width:${r}%"></em></i><b>${r}</b></div>
+     <p class="muted">Sính lễ ${money(p.fee)}${p.needT?` · đòi gia thế từ ${TIERS[p.needT][0]}`:''}${p.needF?` · đòi danh vọng ${p.needF}`:''}. Hiện có ${money(S.money)}.${w?' <span class="warn">('+w+')</span>':''}${msg?' '+msg:''}</p></div>
+     <div class="choices">
+      ${r>=GOOD?btn('data-wed','Mở lễ cưới: hai bên đã có tình cảm',`Sính lễ ${money(p.fee)}`,!can):''}
+      ${r<GOOD&&steps[idx]<MAXSTEP?btn('data-know','Làm quen, tìm hiểu thêm',money(cost),S.money<cost):''}
+      ${r<GOOD?btn('data-now','Cưới luôn (do mai mối nên tình cảm thấp)',`Sính lễ ${money(p.fee)}`,!can):''}
+      ${!lastOne?btn('data-next','Bỏ, tìm mối khác','',false):''}
+      ${outOk?btn('data-o',`Gả ${esc(c.given)} về nhà họ ${esc(p.surname)}`,`nhận lại khoảng ${money(Math.round(p.fee*0.6))} sính lễ`,tierIdx()+1<p.needT):''}
+      <button class="btn ghost" data-x>Chưa ưng ai</button></div>`,false,'mm');
+    const q=s=>M.querySelector(s);
+    if(q('[data-wed]'))q('[data-wed]').onclick=()=>finish(p,'good');
+    if(q('[data-now]'))q('[data-now]').onclick=()=>finish(p,'now');
+    if(q('[data-know]'))q('[data-know]').onclick=()=>know(p);
+    if(q('[data-next]'))q('[data-next]').onclick=()=>{idx++;msg='';render()};
+    if(q('[data-o]'))q('[data-o]').onclick=()=>{marryOut(c,p);closeModal()};
+    q('[data-x]').onclick=()=>{closeModal();if(opts.after&&opts.none){let h='';try{h=opts.none()||''}catch(e){}infoPopup(c,opts.eyebrow2||'Hôn sự','Chưa ưng ai',h)}}}
+  render();
 }
 
 /* ================= v6.3.3 · nhân viên là người thật · bảng sản nghiệp gọn ================= */
