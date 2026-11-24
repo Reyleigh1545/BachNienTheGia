@@ -17,11 +17,6 @@ const emp=()=>(S().dyn&&S().dyn.emp)||'Hoàng đế';
 const spOf=c=>{const s=G.P(c.spouse);return s&&s.dead==null?s:null};
 const ev=[
 /* ================= QUAN VĂN THEO CHỨC ================= */
-{id:'v64_dan_kien_quan_tren',t:'Dân kiện quan trên',job:Q,ptag:['dan','an'],k:'Quan trường',
- x:c=>`Một lão nông ôm đơn đến nha môn ${esc(seat(c))}, kêu quan trên cho thu thuế quá tay. ${N(c)} đọc đơn thấy có lý, nhưng người bị kiện lại là thượng quan trực tiếp.`,
- o:c=>[{l:'Nhận đơn, bí mật dò xét',r:[{tri:1,eq:0.6},58],y:c=>'Có đủ bằng chứng, thượng quan phải sửa lại sổ thuế.'+fx(c,{fame:R(10,18),liem:3}),n:c=>'Thượng quan biết chuyện, ghét ra mặt.'+fx(c,{tam:-6,fame:-4})},
-  {l:'Khuyên lão về, hứa lo liệu',f:c=>'Lão nông thất vọng, nhưng không ai trách được ngài.'+fx(c,{liem:-2,tam:-2})},
-  {l:'Chuyển đơn lên Đô sát viện',f:c=>chance(0.5)?'Đô sát viện cử người về xem xét, tiếng ngài nổi lên.'+fx(c,{fame:12,eq:1}):'Đơn chìm vào đống hồ sơ.'+fx(c,{fame:2})}]},
 {id:'v64_thu_lai_boi_gia',t:'Thư lại đội giá thuế',job:Q,ptag:['thue','dan'],k:'Quan trường',
  x:c=>`Sổ thuế ở ${esc(seat(c))} có chỗ lạ: vài thư lại cùng ghi số thu thấp đi, chênh lệch rơi vào túi riêng. ${N(c)} nhìn là hiểu.`,
  o:c=>[{l:'Cho điều tra, trị tội',r:[{tri:1,eq:0.7},55],y:c=>'Bắt được cả đường dây, ngân khố thu về một khoản.'+fx(c,{fame:R(8,15),liem:4,money:m(R(3,10))}),n:c=>'Thư lại cùng nhau cáo bệnh nghỉ việc, công việc đình trệ.'+fx(c,{tam:-6,fame:-4})},
@@ -87,11 +82,6 @@ const ev=[
  x:c=>`Con của ${N(c)} theo cha lên ${esc(place(c))}, chẳng có trường làng. Ban ngày ngồi nghe cha xử kiện, tối học chữ cạnh bàn viết.`,
  o:c=>[{l:'Tự dạy kinh sử mỗi tối',r:[{tri:1,eq:0.3},50],y:c=>{G.alive().filter(p=>p.away&&p.away.type==='follow'&&p.away.of===c.id&&age(p)<16).forEach(p=>fx(p,{tri:R(1,3)}));return 'Đứa nhỏ tiến bộ thấy rõ.'+fx(c,{tam:4})},n:c=>'Việc quan bận, bài vở bỏ dở.'+fx(c,{tam:-2})},
   {l:'Mời thầy đồ trong thành dạy',c:()=>G.money()>=m(4),f:c=>{G.S().money-=m(4);G.alive().filter(p=>p.away&&p.away.type==='follow'&&p.away.of===c.id&&age(p)<16).forEach(p=>fx(p,{tri:R(1,4)}));return 'Con được học bài bản, thầy đồ khen sáng dạ.'+fx(c,{fame:2})}}]},
-{id:'v64_ho_hang_len_nho',t:'Họ hàng lên nhờ vả',job:Q,k:'Quan trường',
- x:c=>`Một người họ xa từ quê lên ${esc(place(c))}, xin ngài xin cho con cháu chân thư lại, hoặc nhờ nói giúp một vụ kiện ruộng. "Làm quan rồi, giúp người trong họ là phải".`,
- o:c=>[{l:'Nhận lời, xin cho một chân thư lại',f:c=>'Họ hàng mừng, lễ vật gửi về đầy.'+fx(c,{money:m(R(3,8)),liem:-6,cfame:1})+(chance(0.25)?' Có kẻ làm đơn tố cáo thiên vị người nhà.'+fx(c,{fame:-12}):'')},
-  {l:'Từ chối, nói đã có luật',f:c=>'Người họ hàng giận, nhưng ngoài kia khen ngài công bằng.'+fx(c,{liem:4,fame:R(3,8),cfame:-1})},
-  {l:'Giúp bằng tiền nhà, không dùng quyền',c:()=>G.money()>=m(3),f:c=>{G.S().money-=m(3);return 'Cả hai đều giữ được thể diện.'+fx(c,{liem:2,fame:2})}}]},
 {id:'v64_to_cao_hoi_ti',t:'Có kẻ tố trái lệ hồi tị',job:Q,k:'Quan trường',
  x:c=>`Một đơn nặc danh gửi lên bộ Lại: ${N(c)} làm quan ở ${esc(place(c))} mà có họ hàng thân thích cũng ngồi một nha môn gần đó, trái lệ hồi tị. Thật hay giả, ngài biết rõ nhất.`,
  o:c=>[{l:'Tự trình bày, nhờ người làm chứng',r:[{tri:1,eq:0.6},58],y:c=>'Bộ Lại xét thấy không phạm lệ, đơn bị bác.'+fx(c,{fame:3,tam:2}),n:c=>'Bộ Lại ghi chú, phạt cảnh cáo.'+fx(c,{fame:-8,tam:-5})},

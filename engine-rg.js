@@ -51,7 +51,7 @@ function tieYear(){const s=root();s.rg.yc=0;
   for(const n of L){const a=G.np.age(n);if(a<14)continue;
     for(const v of n.vai){const T=TIEACT[v];if(!T)continue;if(s.rg.yc>=2)break;
       if(v==='doi_thu'?(n.rel>-10&&(n.oan||0)<10):(n.rel||0)<T[2])continue;
-      if(chance(T[0])){const h=alive().filter(p=>inClan(p)&&!p.away&&age(p)>=16);const tgt=h.length?pick(h):null;if(!tgt)continue;
+      if(chance(T[0]*0.6)){const h=alive().filter(p=>inClan(p)&&!p.away&&age(p)>=16);const tgt=h.length?pick(h):null;if(!tgt)continue;
         if(!X.EVMAP[T[1]])continue;
         if((s.cool&&(s.cool[T[1]]||-1e9)>s.t&&false))continue;
         enqueue('ev',tgt.id,{ev:T[1],data:{npc:n.id}});s.rg.yc++}}}

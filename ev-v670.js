@@ -186,19 +186,10 @@ TG({id:'tg_26',t:'Tiền giả lưu hành',job:['tieunhi','tieuphu','hangrong','
   {l:'Chỉ nhận bạc nén',f:c=>'Khách than phiền. Một vài khách bỏ đi.'+fx(c,{money:-m(3)})},
   {l:'Báo quan',f:c=>'Quan cử người kiểm tra chợ. Tin nhà tốt.'+fx(c,{fame:2})}]}),
 /* ===================== TRIỀU ĐÌNH ===================== */
-CD({id:'cd_01',ms:1,t:'Người lạ theo dõi',job:['quan'],c:c=>c.lv>=3,age:[28,70],w:0.6,
- x:c=>`Đã ba hôm, ${N(c)} thấy cùng một người đàn ông áo xám đứng ở đầu ngõ, lúc nào cũng nhìn về phía cổng nhà. Hắn không giống kẻ bán hàng rong.`,
- o:c=>[{l:'Cho người theo dõi lại',r:[{muu:0.7,tri:0.4},50],y:c=>'Biết hắn là người của một quan lớn trong phe khác, chỉ dò xét. Mình ghi nhớ.'+fx(c,{tam:1,risk:-5}),n:c=>'Bị phát hiện. Từ đó người ta càng nghi.'+fx(c,{risk:8,tam:-2})},
-  {l:'Giữ nếp sống bình thường',f:c=>'Vài ngày sau người đó biến mất. Chưa biết là gì.'+fx(c,{risk:2})},
-  pay('Mời người đó vào nhà, hỏi thẳng',10,{r:[{eq:0.8,khau:0.5},45],y:c=>'Hắn lúng túng rồi thú thật. Mình biết ai sai hắn đến.'+fx(c,{money:-m(10),risk:-3,fame:1}),n:c=>'Hắn bỏ chạy ngay trong đêm.'+fx(c,{money:-m(10),risk:6})})]}),
 CD({id:'cd_31',ms:1,t:'Xin tập ấm cho con',job:['quan'],c:c=>c.lv>=5&&kidsOf(c).some(k=>G.age(k)>=8&&G.age(k)<=22),age:[30,75],
  x:c=>{const k=kidsOf(c).find(k=>G.age(k)>=8&&G.age(k)<=22);return `Lệ triều cho con quan từ Tứ phẩm được tập ấm, vào Giám sinh hoặc nhận chức nhỏ không qua thi. ${N(c)} đang nhìn ${k?esc(k.given):'đứa con'} và nghĩ ngợi.`},
  o:c=>{const k=kidsOf(c).find(k=>G.age(k)>=8&&G.age(k)<=22);return [
   pay('Xin tập ấm cho con',50,{f:c=>{if(k)k.flags.am=1;return 'Con được vào Giám sinh. Thanh lưu hơi nhìn nghiêng, nhưng đường đi nhẹ nhàng hơn.'+fx(c,{money:-m(50),fame:-2,cfame:2})+(k?fx(k,{tam:3}):'')}}),
   {l:'Để con tự thi',f:c=>'Con phải học nhiều năm. Thanh lưu nể mình.'+fx(c,{fame:3,liem:3})+(k?fx(k,{tri:1}):'')}]}}),
-CD({id:'cd_42',t:'Chuyện mua hàm Giám sinh',head:1,age:[28,70],tier:[3,6],ms:1,w:0.6,
- x:c=>`Một người môi giới nhắc ${N(c)}: triều đình đang cho "quyên nạp", bỏ bạc ra là được hàm Giám sinh cho con cháu, miễn lao dịch cho cả nhà. Người ta bàn tán không ít.`,
- o:c=>[pay('Quyên nạp một hàm',150,{r:[{muu:0.5,eq:0.5},70],y:c=>'Giấy tờ đàng hoàng. Cả nhà được miễn dịch, con cháu có đường vào học.'+fx(c,{money:-m(150),cfame:4,fame:-2}),n:c=>'Người môi giới ăn chặn một nửa rồi biến mất.'+fx(c,{money:-m(150),fame:-3})}),
-  {l:'Từ chối, giữ phép tắc',f:c=>'Thanh lưu khen. Nhà vẫn chịu lao dịch.'+fx(c,{fame:2,liem:2})}]})
 ];
 });
