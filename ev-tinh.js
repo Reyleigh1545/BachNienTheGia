@@ -142,14 +142,14 @@ A({id:'lnh_c',t:'Lạc gia phục hồi',k:'Lạc Nhạn',
 
 /* ================= CON NUÔI ================= */
 {id:'nuoi_tre_bo_roi',t:'Đứa trẻ trước cổng',k:'Con nuôi',age:[20,65],w:0.7,cd:36,
- x:c=>`Sáng sớm, ${N(c)} mở cổng thấy một đứa bé quấn tã đặt trong giỏ tre, khóc oe oe. Kèm theo là mảnh giấy: "Xin người nhân đức nuôi giùm".`,
- o:[{l:'Nhận làm con nuôi',f:c=>{const k=G.adopt(c,{age:0});return `Đặt tên là ${esc(k.given)}.`+fx(c,{tam:8,fame:4})}},
-    {l:'Đem gửi chùa',f:c=>fx(c,{fame:2})},
-    {l:'Báo lý trưởng',f:c=>''}]},
+ x:(c,d)=>{const n=G.tie.kidOffer(c,d,{age:0,why:'bị bỏ trước cổng nhà'});return `Sáng sớm, ${N(c)} mở cổng thấy ${esc(n.n)}, một ${d.kid.g==='nam'?'bé trai':'bé gái'} quấn tã đặt trong giỏ tre, khóc oe oe. Kèm theo là mảnh giấy: "Xin người nhân đức nuôi giùm". Tư chất của bé: ${d.pot}.`},
+ o:(c,d)=>[{l:'Nhận làm con nuôi',f:c=>{const k=G.tie.kidTake(c,d);return `Đặt tên là ${esc(k.given)}.`+fx(c,{tam:8,fame:4})}},
+    {l:'Đem gửi chùa',f:c=>{G.tie.kidAway(c,d,'các sư thầy trong chùa',R(30,60));return 'Sư thầy nhận bé, hứa nuôi nấng. Mình ghé thăm khi có dịp.'+fx(c,{fame:2})}},
+    {l:'Báo lý trưởng',f:c=>{G.tie.kidAway(c,d,'một nhà trong làng do lý trưởng thu xếp',R(36,72));return 'Lý trưởng nhận lời tìm nhà nuôi bé.'}}]},
 {id:'nuoi_hiem_muon',t:'Hiếm muộn',k:'Con nuôi',age:[30,55],c:c=>married(c)&&!kidsOf(c).some(k=>G.inClan(k)),
- x:c=>`Vợ chồng ${N(c)} lấy nhau đã lâu mà chưa có con. Họ hàng xì xào.`,
- o:[{l:'Đi chùa cầu tự',f:c=>{G.kidAdj(c,20,36);return 'Thành tâm khấn vái.'+fx(c,{money:-m(1),tam:3})}},
-    {l:'Nhận con nuôi',f:c=>{const k=G.adopt(c,{age:R(0,3)});return `Nhận ${esc(k.given)} làm con.`+fx(c,{tam:8})}},
+ x:(c,d)=>{const n=G.tie.kidOffer(c,d,{age:R(0,3),why:'cha mẹ mất sớm, họ hàng mách cho nhà'});return `Vợ chồng ${N(c)} lấy nhau đã lâu mà chưa có con. Họ hàng xì xào, rồi mách một ${d.kid.g==='nam'?'bé trai':'bé gái'} tên ${esc(n.n)}, ${d.kid.a<=1?'mới sinh':d.kid.a+' tuổi'}, cha mẹ mất sớm. Tư chất của bé: ${d.pot}.`},
+ o:(c,d)=>[{l:'Đi chùa cầu tự',f:c=>{G.kidAdj(c,20,36);return 'Thành tâm khấn vái.'+fx(c,{money:-m(1),tam:3})}},
+    {l:'Nhận con nuôi',f:c=>{const k=G.tie.kidTake(c,d);return `Nhận ${esc(k.given)} làm con.`+fx(c,{tam:8})}},
     {l:'Mời thầy thuốc giỏi',c:()=>G.money()>=m(10),f:c=>{G.kidAdj(c,20,36);const s=spouseOf(c);if(s){c.fert=Math.min(1.1,(c.fert||1)+0.2);s.wantChild=true;G.addStat(s,'suc',5)}return 'Uống thuốc đều đặn.'+fx(c,{money:-m(10),suc:5})}}]},
 
 /* ================= MANG THAI ================= */

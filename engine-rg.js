@@ -12,11 +12,13 @@ const VAI={ban_than:'bạn thân',an_nhan:'ân nhân',quy_nhan:'quý nhân',ket_
 const NG={ban_than:'bạn từ thuở nhỏ',an_nhan:'người từng nhận ơn nhà',quy_nhan:'người có thế',ket_nghia:'kết nghĩa',thay:'thầy',cao_nhan:'cao nhân ẩn mình',an_si:'ẩn sĩ',thay_thuoc:'thầy thuốc',doi_thu:'kẻ có hiềm khích'};
 /* ---------- sổ người quen ---------- */
 function ensure(c,o){o=o||{};const s=root();
+  /* d9.12.66: sự kiện nhắc "quan huyện/tri huyện/tri phủ" thì lấy chính người đang ngồi ghế thật ở tỉnh nhà, không tạo bản sao vô danh */
+  if(!/^off:/.test(o.key||'')){const nn=String(o.nghe||'');const sid=/tri huyện|quan huyện/i.test(nn)?'trihuyen':/tri phủ|quan phủ/i.test(nn)?'triphu':null;if(sid&&G.localOfficer){const lo=G.localOfficer(sid);if(lo&&lo.np)return adopt(lo.np,{vai:o.vai||['quan'],nghe:nn,tier:4,rel:o.rel,liem:lo.st.liem,key:'off:'+lo.key,why:o.why})}}
   if(o.key){const ex=Object.values(s.np.l).find(n=>n.key===o.key&&n.ok!==0);if(ex){if(o.vai&&!ex.vai.includes(o.vai)){ex.vai.push(o.vai);ex.vaiTxt=ex.vai.map(v=>VAI[v]||v).join(', ')}return ex}}
   /* d9.12: suy giới tính từ lời mô tả để tên không lệch với lời kể ("ông già" mà tên nữ) */
   const gInfer=t=>{t=' '+String(t||'').toLowerCase()+' ';if(/ (bà|cô gái|nàng|đàn bà|phụ nữ|sư tỷ|bà mối|phi tần|công chúa|vương phi|hoàng hậu|nữ )/.test(t))return 'nữ';if(/ (ông|lão|chàng|thầy|sư huynh|sư phụ|sư trụ trì|kiếm khách|kiếm sĩ|võ quan|hoạn quan|thái giám|nội thị|đạo sĩ|ngư phủ|thợ rèn|lý trưởng|chủ tướng|thân vương|quốc công|hoàng tử|người con trai|ông già|cậu )/.test(t))return 'nam';return null};
   const g=o.g||gInfer(o.nghe)||(chance(0.5)?'nam':'nữ');
-  const n=G.np.new({n:o.name,g,age:o.age||R(24,60),role:o.role||'quen'});
+  const n=G.np.new({n:o.name,g,age:o.age!=null?o.age:R(24,60),role:o.role||'quen'});
   const ti=o.tier!=null?o.tier:Math.max(0,Math.min(6,G.tierIdx()+R(-1,1)));
   const base=35+ti*4;const rs=()=>clamp(Math.round(base+R(-12,28)),20,100);
   n.st=Object.assign({tri:rs(),vo:rs(),mi:rs(),eq:rs()},o.st||{});
@@ -27,7 +29,7 @@ function ensure(c,o){o=o||{};const s=root();
   if(G.npc)G.npc.deepen(n,o); /* d9.13: NPC có quan hệ thì có tính cách, kỹ năng, mục tiêu ẩn, quá khứ (engine-npc.js) */
   /* d9.12.65: nơi ở thật (nơi người gặp đang đứng), người hay đi lại, và họ thật (danh gia gần đó) */
   n.loc=o.loc||(G.placeOf?G.placeOf(c):n.loc);n.wander=!!o.wander||n.vai.some(v=>['thuong_nhan','cao_nhan','an_si'].includes(v))||/lái buôn|thương nhân|đi dạo|lưu lạc|khách lạ|đạo sĩ|kiếm khách|thầy tướng|hát rong|người chạy thư|ngư phủ già|lão nhân|ẩn sĩ/.test(n.nghe||'');
-  if(!o.noHouse&&G.houseFor&&((n.tier||0)>=3||(['quy_nhan','thuong_nhan'].some(v=>n.vai.includes(v))&&(n.tier||0)>=2))&&chance(0.55)){const hid=G.houseFor(n);if(hid){n.house=hid;n.hn=G.houseSur(hid)+' Gia';n.nghe=(n.nghe?n.nghe+', ':'')+'người của '+n.hn}}
+  if(!o.noHouse&&G.houseFor&&((n.tier||0)>=3||(['quy_nhan','thuong_nhan'].some(v=>n.vai.includes(v))&&(n.tier||0)>=2))&&chance(0.55)){const hid=G.houseFor(n);if(hid){n.house=hid;n.hn=G.houseSur(hid)+' Gia';try{const H=S().w.houses[hid];if(H){H.np=H.np||[];H.np.push(n.id)}}catch(e){}n.nghe=(n.nghe?n.nghe+', ':'')+'người của '+n.hn}}
   return n}
 /* người đã có sẵn trong sổ (như quan giữ ghế thật) nhận vai và tính cách */
 function adopt(n,o){o=o||{};if(!n||n.sub)return n;n.vai=[].concat(o.vai||'quan');n.vaiTxt=n.vai.map(v=>VAI[v]||v).join(', ');n.nghe=o.nghe||n.nghe||'';n.tier=o.tier!=null?o.tier:4;n.rel=o.rel!=null?o.rel:0;n.on=0;n.oan=0;n.ky=n.ky||[];n.st=n.st||{tri:R(55,80),vo:R(30,50),mi:R(40,60),eq:R(50,75)};n.loc=o.loc||n.loc;n.key=o.key||n.key;if(G.npc)G.npc.deepen(n,o);if(o.liem!=null&&n.sub){n.sub.thanh=clamp(Math.round(o.liem),5,98);n.sub.rong=clamp(Math.round(o.liem*0.7+10),5,98)}return n}
@@ -41,7 +43,15 @@ const act=vai=>Object.values(root().np.l).filter(n=>n.ok!==0&&n.vai&&n.vai.inclu
 /* tác dụng cơ học của vai trò: số người ở vai có rel từ mức min trở lên */
 const bonus=(vai,min)=>act(vai).filter(n=>(n.rel||0)>=(min==null?30:min)).length;
 /* hậu sự gắn người: sau months tháng gọi sự kiện evId cho người c, kèm npc để hiện thẻ */
-function laterNpc(n,c,evId,months,extra){later(c,evId,months,Object.assign({npc:n.id},extra||{}))}
+/* d9.12.66: việc hẹn cho NPC chưa đủ 18 tuổi (báo ơn, tạ lễ, nhờ việc…) lùi tới khi bé trưởng thành; chỉ sự kiện của trẻ (np_tre_*) mới ra khi còn nhỏ */
+function laterNpc(n,c,evId,months,extra){const a=n&&n.born!=null?Math.floor((S().t-n.born)/12):99;if(a<18&&!/^np_tre_/.test(evId))months=Math.max(months,(18-a)*12+R(0,18));later(c,evId,months,Object.assign({npc:n.id},extra||{}))}
+/* d9.12.66 (chủ dự án 24/11: "con nuôi không hiện avatar, không biết tiềm năng"): đứa bé được tạo ngay lúc kể chuyện để hiện thẻ và tư chất TRƯỚC khi chọn; kidOffer tạo bé (người chưa vào gia phả) kèm NPC để hiện thẻ; kidTake đưa đúng bé đó vào nhà; kidAway để bé sống nơi khác và hẹn chuỗi lớn lên (np_tre_*) */
+function kidOffer(c,d,o){o=o||{};const g=o.g||(chance(0.5)?'nam':'nữ');const a=o.age!=null?o.age:R(3,8);const kid=G.mkPerson({g,age:a,young:true,surname:c.surname});
+  const avg=k=>Math.round(((kid.gn&&kid.gn[k]?kid.gn[k][0]+kid.gn[k][1]:100)/2));d.kid={g,a,given:kid.given,gn:kid.gn,tg:kid.tg};
+  const n=ensure(c,{vai:['quen'],name:kid.surname+' '+kid.given,g,age:a,st:{tri:avg('tri'),vo:avg('vo'),mi:avg('mi'),eq:avg('eq')},nghe:o.nghe||(a<=1?'trẻ sơ sinh, chưa nơi nương tựa':'trẻ '+a+' tuổi, chưa nơi nương tựa'),tier:1,rel:0,why:o.why||'cần người nuôi',noHouse:true});
+  d.npc=n.id;d.pot=G.potLine?G.potLine(kid):'';return n}
+function kidTake(c,d){const k=G.adopt(c,{age:d.kid.a,g:d.kid.g,given:d.kid.given,gn:d.kid.gn,tg:d.kid.tg});const n=d.npc?get(d.npc):null;if(n){n.ok=0}return k}
+function kidAway(c,d,how,months){const n=d.npc?get(d.npc):null;if(!n)return null;n.guard=how||'người nuôi';n.gt=1;n.rel=Math.max(n.rel||0,5);const a=Math.floor((S().t-n.born)/12);laterNpc(n,c,'np_tre_thu',a<5?(6-a)*12+R(0,12):(months||R(10,24)),{how:n.guard});return n}
 /* ---------- đồ thị quan hệ (cạnh có kiểu) ---------- */
 const K=(a,b,k)=>a+'|'+b+'|'+k;
 function rgSet(a,b,k,d,why){const s=root();const key=K(a,b,k);const e=s.rg.e[key]||(s.rg.e[key]={w:0,t:S().t,why:[]});e.w=clamp(e.w+d,-100,100);e.t=S().t;if(why){e.why.push(String(why).slice(0,60));if(e.why.length>4)e.why.shift()}return e.w}
@@ -107,6 +117,6 @@ G.tax={base:taxBase,ex:taxEx,state:taxS,pol:taxSetPol,POLN};
 /* thu nhập của chức võ sư dân binh và chủ võ đường (v641_vo_do) */
 function statusYear(){alive().filter(p=>inClan(p)&&p.dead==null&&p.flags).forEach(p=>{if(p.flags.vosinh){p.purse=(p.purse||0)+mm(1.5)*3}if(p.flags.vodduong){p.purse=(p.purse||0)+mm(4);if(chance(0.1))G.addStat(p,'vo',1)}})}
 X.yearly.push(tieYear,romYear,taxYear,statusYear);Object.assign(X.fn,{taxCollect});
-Object.assign(G,{tie:{ensure,adopt,get,rel,on,oan,act,bonus,later:laterNpc,note,VAI,trouble,stable:npStable},rg:{set:rgSet,get:rgGet,of:rgOf}});
+Object.assign(G,{tie:{ensure,adopt,kidOffer,kidTake,kidAway,get,rel,on,oan,act,bonus,later:laterNpc,note,VAI,trouble,stable:npStable},rg:{set:rgSet,get:rgGet,of:rgOf}});
 Object.assign(X.fn,{tieYear,rgFamilyYear});
 });

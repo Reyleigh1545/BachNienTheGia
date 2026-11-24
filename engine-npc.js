@@ -44,7 +44,19 @@ function desc(n){if(!n||!n.sub)return 'người khó đoán';const L=AXK.map(k=>
 function reach(n){const h=alive().filter(p=>inClan(p)&&!p.away&&age(p)>=16);if(!h.length)return null;const hd=h.find(p=>p.id===S().head);const L=h.filter(p=>!n.loc||G.placeOf(p)===n.loc);
   if(L.length)return L.find(p=>p.id===S().head)||pick(L);
   if(n.wander&&chance(0.5)){n.loc=G.placeOf(hd||h[0]);return hd||pick(h)}return null}
-function hook(n,ev,extra,opt){const s=S();opt=opt||{};s.np.nc=s.np.nc||{y:-1,c:0};const y=Math.floor(s.t/12);if(s.np.nc.y!==y){s.np.nc={y,c:0}}
+/* d9.12.66 (chủ dự án 24/11: "nhớ ơn nhưng mới 13 tuổi thì lấy gì ra báo ơn; NPC chưa có cuộc sống thật"): NPC có giai đoạn đời theo tuổi: dưới 12 sống với người nuôi, 12 đến 17 học (chữ, võ, nghề) và lớn lên theo tư chất cùng sự nâng đỡ của nhà (n.sup), đủ 18 mới có nghề, địa vị, mục tiêu lớn (becomeAdult). Trẻ không nhận việc của người lớn (báo ơn, báo thù, thăng tiến…). */
+const KIDBLOCK=['np_thanh_dat','np_sa_co','np_bao_an','np_bao_thu','np_cuoi_hoi'];
+function kidLife(n,a){const g=n.guard||'người nuôi';n.st=n.st||{tri:50,vo:50,mi:50,eq:50};
+  if(a<12){n.cond='còn nhỏ, sống với '+g;n.stage='tre';return}
+  n.stage='hoc';if(!n.path){const st=n.st;n.path=(st.tri>=62&&st.tri>=st.vo)?'chu':(st.vo>=62?'vo':'nghe')}
+  n.cond=({chu:'đang học chữ',vo:'đang học võ',nghe:'đang học nghề'})[n.path]+', ở với '+g;
+  const k={chu:'tri',vo:'vo',nghe:'eq'}[n.path];n.st[k]=Math.min(100,(n.st[k]||50)+R(1,4)+((n.sup||0)>0?1:0))}
+function becomeAdult(n,a){n.adult=1;n.stage='lon';const st=n.st||{tri:50,vo:50,mi:50,eq:50};const sup=n.sup||0;const path=n.path||(st.tri>=62?'chu':st.vo>=62?'vo':'nghe');let job,dt=0;
+  if(path==='chu'){const sc=st.tri+sup*6+R(-15,15);if(sc>=88){job='quan nhỏ';dt=2}else if(sc>=66){job='thầy đồ';dt=1}else job='thư lại'}
+  else if(path==='vo'){const sc=st.vo+sup*6+R(-15,15);if(sc>=85){job='võ sư đã có tiếng';dt=1}else job='lính'}
+  else{const sc=st.eq+sup*6+R(-15,15);if(sc>=80){job='chủ một tiệm nhỏ';dt=1}else job='thợ làm thuê'}
+  n.job=job;n.tier=Math.max(0,Math.min(6,(n.tier||1)+dt));pastAdd(n,'Trưởng thành, nay là '+job);setNghe(n,'nay là '+job+', đã tự lập');n.fam={spouse:false,kids:0};n.goal=pickGoal(n)}
+function hook(n,ev,extra,opt){const s=S();opt=opt||{};if(nage(n)<18&&KIDBLOCK.includes(ev))return false;s.np.nc=s.np.nc||{y:-1,c:0};const y=Math.floor(s.t/12);if(s.np.nc.y!==y){s.np.nc={y,c:0}}
   if(((s.evLast&&s.evLast[ev])||-999)>s.t-6&&!opt.force)return false; /* d9.12.63: cùng id không ra hai lần trong 6 tháng */
   if(s.np.nc.c>=1&&!opt.force)return false; /* một việc của NPC mỗi năm là đủ: bot 60 năm với tối đa 2 cho 20 đến 29 sự kiện mỗi loại, quá dày */if(!X.EVMAP[ev])return false;if((n.hookT||-999)>s.t-24&&!opt.force)return false;
   const h=alive().filter(p=>inClan(p)&&!p.away&&age(p)>=16);const head=h.find(p=>p.id===s.head);const tgt=reach(n)||(opt.force?(head||h[0]||null):null);if(!tgt)return false;
@@ -65,7 +77,7 @@ function die(n){const s=S();n.ok=0;n.dead=s.t;pastAdd(n,'Qua đời');
   return n}
 function npcYear(){const s=S();if(!s||!s.np||!s.np.l)return;
   const L=Object.values(s.np.l).filter(n=>n.ok!==0&&n.vai&&n.vai.length);
-  for(const n of L){if(!n.sub)deepen(n);const a=nage(n);if(a<14)continue;
+  for(const n of L){if(!n.sub)deepen(n);const a=nage(n);if(a<18){kidLife(n,a);continue}if(!n.adult)becomeAdult(n,a);
     /* sống và chết */
     n.hp=Math.max(0,(n.hp||80)-(a>55?R(0,4):R(-1,1)));
     if(n.wander&&chance(0.3))n.loc=pick(Object.keys(window.D.PROV));else if((n.vai||[]).includes('quan')&&chance(0.1))n.loc=pick(Object.keys(window.D.PROV)); /* d9.12.65: người hay đi lại đổi chỗ, quan thuyên chuyển */
@@ -111,6 +123,6 @@ function famGoalYear(){const s=S();let req=0;alive().filter(c=>inClan(c)&&!c.inL
   if(g.y>=2&&!g.asked&&chance(0.05)&&req<1&&X.EVMAP.gd_y_nguyen&&!c.away){g.asked=1;req++;const hd=alive().find(p=>p.id===s.head);if(hd&&hd.id!==c.id)enqueue('ev',hd.id,{ev:'gd_y_nguyen',data:{who:c.id,gk:g.k}})}})}
 function pastAddFam(c,x){c.pastX=c.pastX||[];c.pastX.push({t:S().t,x});if(c.pastX.length>6)c.pastX.shift()}
 function goalAff(c,l){try{if(!c||!c.goal||!l)return 0;const f=FG[c.goal.k];return f&&f.aff.test(String(l).replace(/<[^>]*>/g,''))?0.6:0}catch(e){return 0}}
-G.npc={deepen,ax,desc,pickGoal,hook,reach,die,AXL,FG,goalTxt:k=>FG[k]?FG[k].n:k};
+G.npc={deepen,ax,desc,pickGoal,hook,reach,adult:n=>{if(!n.adult&&nage(n)>=18)becomeAdult(n,nage(n))},die,AXL,FG,goalTxt:k=>FG[k]?FG[k].n:k};
 X.yearly.push(npcYear);Object.assign(X.fn,{npcYear,deepen,goalAff,famGoalYear});
 });
