@@ -146,7 +146,7 @@ const TRAITS={
   thongminh:{n:'Sáng dạ',c:'g',gene:'D',p:.08,d:'Trí tuệ tăng nhanh hơn 30%',grow:{tri:.3}},
   khoemanh:{n:'Thân thể cường tráng',c:'g',gene:'D',p:.08,d:'Hồi sức nhanh, già chậm hơn 5 năm',hp:.3,decl:5},
   duyendang:{n:'Duyên dáng',c:'g',gene:'D',p:.08,d:'Mị lực tăng nhanh hơn 30%',grow:{mi:.3}},
-  khoeo:{n:'Khéo tay',c:'g',gene:'r',p:.25,d:'Thông thạo nghề thợ, y, nghệ tăng thêm 0,5/năm',mmJobs:['tho','y','nghe'],mm:.5},
+  khoeo:{n:'Khéo tay',c:'g',gene:'r',p:.25,d:'Thông thạo nghề thợ, y, nghệ tăng thêm 0,5/năm',mmJobs:['tho','tho_ren','y','nghe'],mm:.5},
   lacquan:{n:'Lạc quan',c:'g',gene:'D',p:.1,d:'Tâm trạng +6',tam:6},
   tietkiem:{n:'Tằn tiện',c:'g',d:'Chi tiêu của bản thân giảm 30%',spend:-.3},
   khieubuon:{n:'Có khiếu buôn bán',c:'g',gene:'r',p:.2,d:'Đi buôn và kinh doanh lãi thêm 10%',trade:.1},
@@ -157,7 +157,7 @@ const TRAITS={
   hoangphi:{n:'Hoang phí',c:'r',d:'Chi tiêu của bản thân tăng 50%',spend:.5},
   danghi:{n:'Đa nghi',c:'r',d:'Tâm trạng -4, khó hòa thuận',tam:-4,on:-1},
   doanmenh:{n:'Đoản mệnh',c:'r',gene:'r',p:.15,d:'Già sớm 8 năm',decl:-8},
-  vungve:{n:'Vụng về',c:'r',d:'Thông thạo nghề thợ, y, nghệ tăng chậm 0,5/năm',mmJobs:['tho','y','nghe'],mm:-.5},
+  vungve:{n:'Vụng về',c:'r',d:'Thông thạo nghề thợ, y, nghệ tăng chậm 0,5/năm',mmJobs:['tho','tho_ren','y','nghe'],mm:-.5},
   xauxa:{n:'Ăn nói khó nghe',c:'r',d:'EQ tăng chậm, dễ mất lòng',grow:{eq:-.3}},
   thientai:{n:'Thiên tài',c:'p',gene:'r',p:.06,d:'Mọi chỉ số tăng nhanh 40%, dễ phá giới hạn',growAll:.4,brk:10},
   phuctinh:{n:'Phúc tinh',c:'p',d:'Cơ duyên +30, gặp nhiều kỳ ngộ tốt',duyen:30},
@@ -206,6 +206,7 @@ const ROLES={
 const BIZ={
   quantra:{n:'Quán trà',owner:[['tieunhi',1],['hangrong',1]],st:'eq',lv:[['Quán cóc ven đường',5000,1300,80,['banhang']],['Quán trà',30000,6000,500,['bep','banhang']],['Trà lâu',150000,24000,2000,['thungan','banhang','bep']],['Đại tửu lâu',700000,80000,7000,['quanly','bep','banhang','banhang']]],d:'Bán trà, rượu, đồ ăn. Doanh thu theo người qua lại.'},
   tiem:{n:'Hiệu buôn',owner:[['tieunhi',2]],st:'eq',lv:[['Sạp hàng',15000,3000,200,['banhang']],['Cửa hiệu',80000,12000,900,['thungan','phu']],['Hiệu buôn lớn',400000,50000,4000,['laibuon','banhang','phu']],['Thương hội',2000000,200000,15000,['quanly','laibuon','laibuon','thungan']]],d:'Mua đi bán lại. Chủ hiệu được đi buôn chuyến lớn.'},
+  loren:{n:'Lò rèn',owner:[['tho_ren',2]],st:'vo',lv:[['Lò rèn nhỏ',10000,2400,140,['tho']],['Lò rèn',60000,10000,720,['tho','phu']],['Lò rèn lớn',300000,40000,3000,['thoca','tho','tho']],['Danh lò',1500000,140000,10000,['thoca','thoca','tho','quanly']]],d:'Rèn nông cụ, dao, móng ngựa theo đơn; lò lớn nhận cả đơn khí giới.'},
   xuong:{n:'Xưởng thủ công',owner:[['tho',2]],st:'vo',lv:[['Xưởng nhỏ',12000,2600,150,['tho']],['Xưởng',70000,11000,800,['tho','phu']],['Công xưởng',350000,45000,3500,['thoca','tho','tho']],['Danh xưởng',1800000,160000,12000,['thoca','thoca','tho','quanly']]],d:'Nhận đơn đặt hàng, làm hàng bán.'},
   yquan:{n:'Y quán',owner:[['y',2]],st:'tri',lv:[['Y quán nhỏ',15000,3200,200,['boc']],['Y quán',80000,13000,900,['boc','phu']],['Đại y quán',400000,50000,4000,['boc','boc','thungan']],['Y viện',2000000,170000,14000,['quanly','boc','boc','boc']]],d:'Khám bệnh bốc thuốc. Năm dịch đông khách.'},
   truong:{n:'Trường tư',owner:[['su',2,{tri:75}],['su',3]],st:'tri',lv:[['Trường làng',8000,2000,100,[]],['Tư thục',50000,8000,600,['thay']],['Thư viện',300000,30000,2500,['thay','thay','thungan']],['Đại thư viện',1500000,110000,9000,['quanly','thay','thay','thay']]],d:'Dạy học lấy học phí. Học trò đỗ đạt thì danh tiếng lên.'},
@@ -443,8 +444,10 @@ STARTJOBS.push('det','mo','bep','diaky');
 /* d9.10 (mục 12, nghề mới cho đời sau): hai nghề chỉ mở từ đời thứ ba trở đi (khóa gen, kiểm ở meets), không làm nghề khởi đầu. Thợ săn (võ) và Lái đò (sức). */
 JOBS.thosan={n:'Thợ săn',inc:360,st:'vo',stress:6,gen:3,req:{vo:45},lv:[L('Người đi săn cùng',1),L('Thợ săn',2,{m:28,vo:55}),L('Thợ săn lão luyện',3.6,{m:62,vo:65,suc:60}),L('Thủ lĩnh đội săn',6,{m:95,vo:80,fame:120})],d:'Săn thú rừng, bán da và thịt cho thương nhân và nhà giàu. Tự làm, thu theo từng chuyến. Cần võ nghệ, sức bền và quen núi rừng. Chỉ có ở những đời sau, khi gia tộc đã có người biết đường rừng.'};
 JOBS.laido={n:'Lái đò',inc:340,st:'suc',stress:4,gen:3,req:{suc:50},lv:[L('Phụ chèo',1),L('Lái đò',1.9,{m:25,suc:55}),L('Lái đò có tiếng',3.2,{m:60,suc:65,eq:45}),L('Chủ bến đò',5.5,{m:92,eq:60,fame:100})],d:'Chở khách và hàng qua sông, qua bến. Làm công hoặc tự chèo, thu theo chuyến. Thạo nước, thạo người. Chỉ có ở những đời sau.'};
-PATHS.vo.jobs.push('thosan');PATHS.thuong.jobs.push('laido');STARTJOBS.push('thosan','laido'); /* chọn nghề lấy từ STARTJOBS; khóa gen ở meets nên đời một không chọn được */
-Object.assign(JOBX,{thosan:{ax:{gan:1,cc:.5},sk:{muu:1,ky:1}},laido:{ax:{cc:.5,rong:.3},sk:{khau:1,ql:.5}}});
+/* d.1.5.4 (7.0.0, chủ dự án 24/11: "chưa có nghề thợ rèn nên làm thêm nghề này"): Thợ rèn là nghề khởi đầu được (start:1), nặng nhọc, rèn nông cụ, dao, móng ngựa, tay nghề cao thì rèn khí giới; lên Thợ rèn cả thì mở được Lò rèn (BIZ loren). */
+JOBS.tho_ren={n:'Thợ rèn',inc:400,st:'vo',stress:5,phys:66,start:1,req:{suc:50},gift:'Búa, đe nhỏ và 6 lạng bạc',lv:[L('Phụ lò',1),L('Thợ rèn',1.9,{m:25,suc:55}),L('Thợ rèn cả',3.4,{m:55,suc:62,vo:45}),L('Chủ lò rèn',5.5,{m:85,suc:68,fame:80}),L('Danh tượng rèn đúc',8,{m:100,fame:180})],d:'Rèn nông cụ, dao rựa, móng ngựa, lưỡi cày; tay nghề cao thì rèn đao kiếm cho quân và nhà quan. Nặng nhọc, nóng bức, nguy hiểm vì lửa. Lên Thợ rèn cả thì mở được lò rèn.'};
+PATHS.vo.jobs.push('thosan','tho_ren');PATHS.thuong.jobs.push('laido');STARTJOBS.push('thosan','laido','tho_ren'); /* chọn nghề lấy từ STARTJOBS; khóa gen ở meets nên đời một không chọn được */
+Object.assign(JOBX,{tho_ren:{ax:{cc:1,diem:.5,gan:.3},sk:{ky:4}},thosan:{ax:{gan:1,cc:.5},sk:{muu:1,ky:1}},laido:{ax:{cc:.5,rong:.3},sk:{khau:1,ql:.5}}});
 PATHS.van.jobs.push('diaky','mo');PATHS.thuong.jobs.push('bep','det');
 Object.assign(JOBX,{det:{ax:{cc:1,diem:.5},sk:{ky:3}},mo:{ax:{rong:1,gan:.5},sk:{ky:2,khau:1}},bep:{ax:{cc:1},sk:{ky:2,ql:1}},diaky:{ax:{diem:.5,tv:.3},sk:{khau:2,muu:1}}});
 /* đặc điểm nghề: self = từ bậc này trở đi là nghề tự thân, không chủ, không cấp trên; piece = thu theo năng suất (từ bậc này);
@@ -459,6 +462,7 @@ const JOBMETA={
   hangrong:{self:0,piece:0,dig:[1,2],g:{eq:1}},
   hau:{dig:[0,2,3],g:{eq:.9}},
   tho:{self:2,piece:2,dig:[1,2,3,4,6],hand:1,g:{vo:.6,tri:.3}},
+  tho_ren:{self:2,piece:2,dig:[1,2,3,4,6],hand:1,g:{vo:.8,suc:.4,tri:.2}},
   chan:{self:1,piece:1,dig:[1,1,3],hand:1,g:{suc:.8}},
   y:{self:2,piece:2,dig:[3,4,5,6],light:1,g:{tri:1.1,eq:.5}},
   su:{self:2,dig:[3,4,5,7,8],light:1,g:{tri:1.3,eq:.5}},
@@ -474,10 +478,10 @@ const JOBMETA={
   thosan:{self:0,piece:0,dig:[1,3,5,7],g:{vo:1.1,suc:.4}},
   laido:{self:0,piece:0,dig:[1,2,4,6],g:{suc:.9,eq:.4}}};
 /* nghề có ông chủ để tả trong phỏng vấn */
-const EMPLOYER62={det:'bà chủ phường dệt',mo:'bà đỡ già trong vùng',bep:'bếp trưởng tửu lâu',diaky:'lão thầy địa lý',thosan:'thợ săn già đầu núi',laido:'ông chủ bến đò'};
+const EMPLOYER62={tho_ren:'thợ rèn cả ở phố nghề',det:'bà chủ phường dệt',mo:'bà đỡ già trong vùng',bep:'bếp trưởng tửu lâu',diaky:'lão thầy địa lý',thosan:'thợ săn già đầu núi',laido:'ông chủ bến đò'};
 
 /* kinh doanh: hệ số lương theo ngành, tỉ lệ nguyên liệu, phần lương người trông */
-const BIZX={quantra:{w:.9,mat:.3,mgr:.15},tiem:{w:1.1,mat:.32,mgr:.12},xuong:{w:1,mat:.3,mgr:.15},yquan:{w:1.2,mat:.25,mgr:.2},truong:{w:1.1,mat:.08,mgr:.25},
+const BIZX={loren:{w:1.05,mat:.34,mgr:.15},quantra:{w:.9,mat:.3,mgr:.15},tiem:{w:1.1,mat:.32,mgr:.12},xuong:{w:1,mat:.3,mgr:.15},yquan:{w:1.2,mat:.25,mgr:.2},truong:{w:1.1,mat:.08,mgr:.25},
   voquan:{w:1,mat:.1,mgr:.2},tieucuc:{w:1.25,mat:.18,mgr:.12},ganhhat:{w:.85,mat:.15,mgr:.2},thuyen:{w:1.15,mat:.22,mgr:.1},trai:{w:.8,mat:.28,mgr:.15}};
 
 /* trẻ không đến trường: các đường khác */
@@ -624,9 +628,9 @@ const CTFX={
   tri:{exam:[5,7,9,12,15,18,22,26,32],mm:[.3,.35,.4,.5,.6,.7,.85,1,1.3],fame:[1,1.5,2,3,4,5,6,8,10],inc:[.04,.05,.06,.08,.1,.12,.15,.18,.22],
     mmJobs:['y','su','thulai','diaky','nguy','quan']},
   vo:{merit:[.1,.15,.2,.3,.4,.5,.65,.8,1],cond:[.008,.012,.016,.02,.026,.034,.044,.055,.07],mm:[.3,.35,.4,.5,.6,.7,.85,1,1.3],fame:[1,1.5,2,3,4,5,6,8,10],inc:[.04,.05,.06,.08,.1,.12,.15,.18,.22],
-    mmJobs:['tieu','quan_ngu','hiep','khuanvac','nhadich','tho']},
+    mmJobs:['tieu','quan_ngu','hiep','khuanvac','nhadich','tho','tho_ren']},
   suc:{hp:[.2,.25,.3,.4,.5,.6,.7,.8,1],sick:[.85,.75,.65,.55,.45,.35,.25,.15,.05],decl:[2,3,4,5,7,9,11,14,17],tam:[1,1.5,2,2.5,3,3.5,4,4.5,5.5],inc:[.04,.05,.06,.08,.1,.12,.15,.18,.22],
-    mmJobs:['khuanvac','tho','ngu','tieuphu','nhadich','tieu','quan_ngu']},
+    mmJobs:['khuanvac','tho','tho_ren','ngu','tieuphu','nhadich','tieu','quan_ngu']},
   mi:{duyen:[3,5,7,9,12,15,18,22,27],fame:[1,1.5,2,3,4,5,6,8,10],match:[.5,.7,1,1.3,1.7,2.2,2.7,3.2,3.8],mm:[.3,.35,.4,.5,.6,.7,.85,1,1.3],inc:[.04,.05,.06,.08,.1,.12,.15,.18,.22],
     mmJobs:['nghe','det','tieunhi','hangrong','bep']},
   eq:{tam:[1,1.5,2,2.5,3,3.5,4,4.5,5.5],cond:[.008,.012,.016,.02,.026,.034,.044,.055,.07],match:[.4,.5,.7,.9,1.2,1.5,1.8,2.2,2.7],

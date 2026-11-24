@@ -7,9 +7,9 @@ const P=(h,k,n)=>{let x=Math.imul(h^(k*2654435761),2246822519)>>>0;x^=x>>>13;x=M
 const SKIN=['#fbe3cc','#f6d5b6','#ebbf97','#d9a37a','#c28862','#a56f4d'];
 const HAIR=['#2a211d','#3a2b22','#4d3426','#6a4a30','#27273a'];
 const O='#4a3228';
-const BGH={nong:95,ngu:195,tieunhi:40,hangrong:35,khuanvac:28,tieuphu:110,tho:22,det:320,bep:18,mo:340,chan:75,y:150,nguy:160,su:228,nghe:285,diaky:260,tieu:355,hiep:12,thulai:205,nhadich:0,quan:6,quan_ngu:212,vua:46,chu:52,hau:218,noi:330,huu:30,none:60};
+const BGH={nong:95,ngu:195,tieunhi:40,hangrong:35,khuanvac:28,tieuphu:110,tho:22,tho_ren:22,det:320,bep:18,mo:340,chan:75,y:150,nguy:160,su:228,nghe:285,diaky:260,tieu:355,hiep:12,thulai:205,nhadich:0,quan:6,quan_ngu:212,vua:46,chu:52,hau:218,noi:330,huu:30,none:60};
 const CL={nong:['#9a7a4a','#6f5632'],ngu:['#4a8a98','#2f5f6b'],tieunhi:['#c4a97c','#8d7650'],hangrong:['#b9844f','#7e5834'],khuanvac:['#8a7966','#5f503f'],tieuphu:['#6f8e55','#4a6736'],
- tho:['#8a7765','#5a4838'],det:['#c76a98','#8f3f68'],bep:['#f0ece2','#cfc8b6'],mo:['#ece8dc','#bdb6a4'],chan:['#8d9a60','#66723f'],y:['#5a9468','#386447'],nguy:['#36896f','#c9a227'],
+ tho:['#8a7765','#5a4838'],tho_ren:['#6b5a52','#40322c'],det:['#c76a98','#8f3f68'],bep:['#f0ece2','#cfc8b6'],mo:['#ece8dc','#bdb6a4'],chan:['#8d9a60','#66723f'],y:['#5a9468','#386447'],nguy:['#36896f','#c9a227'],
  su:['#3f5fa3','#2a427a'],nghe:['#8d5a93','#62386a'],diaky:['#38465e','#c9a227'],tieu:['#8f3535','#561d1d'],hiep:['#38495a','#b03a2e'],thulai:['#3a7a98','#245068'],nhadich:['#34343c','#b03a2e'],
  chu:['#a06a24','#d4b13a'],hau:['#5a6068','#efe8d8'],noi:['#b8747d','#8a4f58'],huu:['#7d7a6d','#56544a'],none:['#7f8aa0','#5a6478'],vua:['#e0b02a','#b03a2e']};
 const QUANC=lv=>lv>=7?['#7d1a1a','#e0b83a']:lv>=5?['#a83428','#e0b83a']:lv>=3?['#bb5230','#e6cf85']:lv>=1?['#3a7a98','#a8cadb']:['#4a8068','#a8cdb6'];
@@ -42,7 +42,7 @@ function F(c,size,tier){
  add(`<path d="M9 66 Q9 ${52+kb} 24 ${50+kb} L40 ${50+kb} Q55 ${52+kb} 55 66Z" fill="${robe}" ${ol}/>`);
  if(job==='quan'){add(`<path d="M25 ${50.5+kb} L32 59 L39 ${50.5+kb}" fill="#f6ecd8" ${ol}/><rect x="21" y="57" width="22" height="9" rx="1.5" fill="${trim}" ${ol}/><circle cx="32" cy="61.5" r="2.6" fill="${robe}" ${ol}/>`)}
  else if(job==='quan_ngu'){add(`<path d="M9 66 Q9 56 15 52 L23 55 L20 66z M55 66 Q55 56 49 52 L41 55 L44 66z" fill="${trim}" ${ol}/><rect x="26" y="56" width="12" height="10" rx="2" fill="#555b62" ${ol}/><circle cx="32" cy="61" r="2" fill="${trim}"/>`)}
- else if(job==='bep'||job==='tho'||job==='det'||job==='noi'){add(`<path d="M25 ${50.5+kb} L32 58 L39 ${50.5+kb}" fill="#f6ecd8" ${ol}/><path d="M20 66 v-8 q12 4 24 0 v8z" fill="${job==='tho'?'#6a5645':'#fbf8f0'}" ${ol}/>`)}
+ else if(job==='bep'||job==='tho'||job==='tho_ren'||job==='det'||job==='noi'){add(`<path d="M25 ${50.5+kb} L32 58 L39 ${50.5+kb}" fill="#f6ecd8" ${ol}/><path d="M20 66 v-8 q12 4 24 0 v8z" fill="${job==='tho'?'#6a5645':'#fbf8f0'}" ${ol}/>`)}
  else if(job==='vua'){add(`<path d="M25 ${50.5+kb} L32 58 L39 ${50.5+kb}" fill="#f6ecd8" ${ol}/><circle cx="32" cy="60.5" r="4.4" fill="${trim}" ${ol}/>`)}
  else if(['nong','ngu','khuanvac','tieuphu','chan'].includes(job)){add(`<path d="M25 ${50.5+kb} L32 58 L39 ${50.5+kb}" fill="${skin}" ${ol}/>`)}
  else{add(`<path d="M25 ${50.5+kb} L32 59 L39 ${50.5+kb}" fill="#f6ecd8" ${ol}/><path d="M32 59 v7" stroke="${trim}" stroke-width="1.2"/>`)}
