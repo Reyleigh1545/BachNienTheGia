@@ -41,6 +41,7 @@ function pickGoal(n){const L=Object.keys(GW).map(k=>[k,Math.max(0,GW[k](n))]).fi
 function desc(n){if(!n||!n.sub)return 'người khó đoán';const L=AXK.map(k=>[k,ax(n,k)-50]).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1])).slice(0,2);return L.map(([k,v])=>AXL[k][v>=0?0:1]).join(', ')}
 /* ---------- hẹn sự kiện cho nhà chơi (không làm tin) ---------- */
 function hook(n,ev,extra,opt){const s=S();opt=opt||{};s.np.nc=s.np.nc||{y:-1,c:0};const y=Math.floor(s.t/12);if(s.np.nc.y!==y){s.np.nc={y,c:0}}
+  if(((s.evLast&&s.evLast[ev])||-999)>s.t-6&&!opt.force)return false; /* d9.12.63: cùng id không ra hai lần trong 6 tháng */
   if(s.np.nc.c>=1&&!opt.force)return false; /* một việc của NPC mỗi năm là đủ: bot 60 năm với tối đa 2 cho 20 đến 29 sự kiện mỗi loại, quá dày */if(!X.EVMAP[ev])return false;if((n.hookT||-999)>s.t-24&&!opt.force)return false;
   const h=alive().filter(p=>inClan(p)&&!p.away&&age(p)>=16);const head=h.find(p=>p.id===s.head);const tgt=head||(h.length?pick(h):null);if(!tgt)return false;
   enqueue('ev',tgt.id,{ev,data:Object.assign({npc:n.id},extra||{})});n.hookT=s.t;s.np.nc.c++;return true}

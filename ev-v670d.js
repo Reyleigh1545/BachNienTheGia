@@ -49,20 +49,24 @@ const kids=()=>G.alive().filter(p=>G.inClan(p));
 /* ---------- khung ARC.pm ---------- */
 const CH2_MIN=['pm_b1','pm_b2','pm_b3','pm_b4','pm_b5','pm_b6','pm_b7','pm_b8','pm_b9','pm_b10','pm_b11','pm_b12','pm_b13','pm_b14'];
 /* sự kiện thường đang xảy ra giữa cốt truyện: theo dõi nối vào cốt truyện bằng một câu và một dấu rất nhỏ (xem arcTouch trong engine) */
+/* d9.12.63 (chủ dự án: "dòng họ Phạm hiện ở nhiều sự kiện không liên quan, và khi có liên quan cũng không thấy tác dụng"): mỗi câu nối có re (từ khóa trong tên hoặc lời kể của sự kiện); không khớp thì không hiện. Khi hiện thì kèm một dòng tác dụng (lab) để người chơi thấy chuyện này có đổi gì. */
 const TOUCH={
- government:[['Một viên thư lại quen nói nhỏ: sổ sách của họ Phạm có chỗ không khớp.',{pf:1}],['Người của họ Phạm có mặt trong buổi việc ấy, và ghi nhớ nhà mình.',{ky:2}]],
- society:[['Chuyện nhà mình được truyền miệng. Có người nhắc rằng mối oán với họ Phạm vẫn chưa ai quên.',{dt:1}],['Một người trong vùng kín đáo hỏi thăm chuyện cũ với họ Phạm.',{wit:1}]],
- life:[['Dân trong vùng chuyện trò rồi lại nhắc tới họ Phạm, giọng nhỏ dần.',{dt:1}]],
- economy:[['Người làm ăn cùng nghề thở dài về cách họ Phạm chèn ép, và hứa sẽ giúp khi cần.',{all:1}],['Hiệu buôn thân họ Phạm để ý đến khoản tiền nhà mình vừa động tới.',{ky:1}]],
- family:[['Nhà thêm việc, thêm người, và thêm sức khi cần đối phó với họ Phạm.',{pw:1}]],
- education:[['Học trò của nhà mình bắt đầu được người ta để ý. Có người nói đời sau sẽ có người dám nói thẳng.',{all:1}]]};
+ government:[['Một viên thư lại quen nói nhỏ: sổ sách của họ Phạm có chỗ không khớp.',{pf:1},/sổ|thuế|hồ sơ|án|kiện|công đường|thanh tra|hặc|đơn|giấy tờ/i],['Người của họ Phạm có mặt trong buổi việc ấy, và ghi nhớ nhà mình.',{ky:2},/yến|triều|thượng quan|đồng liêu|thăng|chức|duyệt|nhậm/i]],
+ society:[['Chuyện nhà mình được truyền miệng. Có người nhắc rằng mối oán với họ Phạm vẫn chưa ai quên.',{dt:1},/làng|xóm|họ hàng|danh|tiếng|giỗ|hội|lễ|dư luận|đình|nhà thờ/i],['Một người trong vùng kín đáo hỏi thăm chuyện cũ với họ Phạm.',{wit:1},/người già|cụ |kể|ký ức|gia phả|từ đường|chuyện cũ|đời trước|tổ/i]],
+ life:[['Dân trong vùng chuyện trò rồi lại nhắc tới họ Phạm, giọng nhỏ dần.',{dt:1},/làng|xóm|chợ|hội|lễ|giỗ|đình/i]],
+ economy:[['Người làm ăn cùng nghề thở dài về cách họ Phạm chèn ép, và hứa sẽ giúp khi cần.',{all:1},/buôn|hàng|vốn|cơ sở|khách|hùn|thương|lãi|chợ|tiệm|xưởng/i],['Hiệu buôn thân họ Phạm để ý đến khoản tiền nhà mình vừa động tới.',{ky:1},/tiền|vốn|hàng|buôn|bán|đất|mua|thuê|lãi/i]],
+ family:[['Nhà thêm việc, thêm người, và thêm sức khi cần đối phó với họ Phạm.',{pw:1},/cưới|sinh|con|nuôi|phân gia|thừa kế|dâu|rể|hộ/i]],
+ education:[['Học trò của nhà mình bắt đầu được người ta để ý. Có người nói đời sau sẽ có người dám nói thẳng.',{all:1},/học|thi|thầy|trò|sách|trường|khoa/i]]};
+const TOUCHLAB={pf:['Chứng cứ về họ Phạm','up'],wit:['Nhân chứng về họ Phạm','up'],all:['Người sẵn lòng đứng về phía nhà','up'],pw:['Thế lực nhà','up'],dt:['Dư luận về mối oán với họ Phạm','up'],ky:['Họ Phạm để ý nhà mình','down']};
 G.arc.def('pm',{name:'Ân oán họ Phạm',gap:[16,34], /* d9.12: 4-9 tháng -> 16-34 tháng giữa hai bước chính (chủ dự án: tốc độ đi nhanh, không có chiều sâu; 10 bước chạy hết trong 6 năm) */
  theme:a=>{if(a.ch<2||a.ch>5)return null;return {dom:['government','society','economy'],boost:1.25,quiet:a.ch>=4?0.5:0.8}},
  touch:(a,e,c)=>{if(a.ch<2||a.ch>5||!chance(0.35))return '';const dm=(e.meta&&e.meta.d)||'';const L=TOUCH[dm];if(!L)return '';
   if(dm==='government'&&!(c.job==='quan'||c.job==='quan_ngu'))return '';
   if(dm==='economy'&&!['chu','tieunhi','tieuphu','hangrong','tieu','tho','ngu'].includes(c.job))return '';
   if(dm==='education'&&G.age(c)>=26)return '';
-  if(dm==='family'&&!(e.meta&&e.meta.s&&/(marriage|birth|child|wed|inherit|household)/i.test(e.meta.s)))return '';const [txt,up2]=pick(L);for(const k in up2)G.arc.add('pm',k,up2[k]);return txt},
+  if(dm==='family'&&!(e.meta&&e.meta.s&&/(marriage|birth|child|wed|inherit|household)/i.test(e.meta.s)))return '';
+  const hay=String(e.t||'')+' '+String(e.id||'');const okL=L.filter(x=>x[2]&&x[2].test(hay));if(!okL.length)return ''; /* không khớp chủ đề thì không nối */
+  const [txt,up2]=pick(okL);let fxh='';for(const k in up2){G.arc.add('pm',k,up2[k]);const lb=TOUCHLAB[k];if(lb)fxh+=`<span class="${lb[1]}">${lb[0]} ${lb[1]==='up'?'+':'-'}${up2[k]}</span>`}return {t:txt,fx:fxh?`<span class="fx">${fxh}</span>`:''}},
  start:()=>{const s=S();return (s.t>=96&&hasQuan()&&chance(s.t>=120?0.06:0.04))||(s.t>=300&&G.tierIdx()>=3&&chance(0.04))}, /* d9.12: thêm đường mở thứ hai: nhà từ Hương thân trở lên sau năm 25 dù chưa có quan văn, để ván nào cũng gặp họ Phạm (save 84 năm mở năm 77) */
  onStart:a=>{const w=(S().wr&&S().wr.pm)||{};a.fl.org=w.org||pick(['ruong','so','hon','buon']);a.fl.kind=w.kind||pick(['nguy','manh','muu']);
   const gy=Math.floor(S().t/12);  a.K={n:'Phạm Trung Kiên',g:'Kiên',age:24+gy,rank:0,pow:R(18,24),life:R(70,88),ok:1,sched:[72,192,312,408,504],lag:0};

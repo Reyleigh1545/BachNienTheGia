@@ -7,6 +7,7 @@ const T=d=>d&&d.npc?G.tie.get(d.npc):null;
 const nm=n=>esc(n?n.n:'người ấy');
 const TI=o=>Object.assign({tags:{},k:'Người quen',fixed:1,head:0,ms:1},o);
 const gone=()=>[{l:'Thôi',f:()=>''}];
+const pay=(l,v,o)=>Object.assign({l:`${l} (${FM(m(v))})`,c:()=>G.money()>=m(v)},o);
 const best=n=>n?['tri','vo','mi','eq'].sort((a,b)=>n.st[b]-n.st[a])[0]:'eq';
 return [
 /* ===== bạn thân tìm đến ===== */
@@ -26,8 +27,12 @@ TI({id:'tie_an_nhan_tra',t:'Người nhớ ơn đến tạ',
   {l:'Nhờ một việc đáng giá',f:c=>{G.tie.on(n,-1);if(n.tier>=3||n.st.eq>=65){if(!n.vai.includes('quy_nhan')){n.vai.push('quy_nhan');n.vaiTxt=n.vai.map(v=>G.tie.VAI[v]||v).join(', ')}return `${nm(n)} nhận lời ngay: ông có chỗ đứng nên chỉ một lời là xong. Việc ấy mở thêm một cánh cửa.`+fx(c,{bonus:0.06,qh:G.tie.rel(n,6,'nhờ việc'),eq:1})}return `${nm(n)} cố hết sức nhưng thân phận có hạn, chỉ giúp được chút ít.`+fx(c,{money:big,qh:G.tie.rel(n,4,'nhờ việc')})}}]}}),
 /* ===== quý nhân ===== */
 TI({id:'tie_quy_nhan_giup',t:'Quý nhân ngỏ lời',
- x:(c,d)=>{const n=T(d);return n?`${nm(n)}, ${n.nghe||'người có thế'}, nhớ tới nhà ${esc(c.given)} và cho người nhắn: ông sẵn lòng giúp một việc, nhà cần gì thì nói.`:'Có quý nhân nhắn gửi.'},
- o:(c,d)=>{const n=T(d);if(!n)return gone();return [
+ x:(c,d)=>{const n=T(d);if(!n)return 'Có quý nhân nhắn gửi.';d.down=!G.tie.stable(n,2);if(d.down)return `${nm(n)}, ${n.nghe||'người từng hứa giúp nhà'}, đang gặp lúc khó khăn, bị người ta làm khó, không còn thế như trước. Ông cho người nhắn lời xin lỗi ${esc(c.given)}: chưa thể giữ lời hứa giúp nhà lúc này.`;const why=d.why||G.tie.trouble();d.why=why;const lead=why?`Nghe tin nhà ${esc(c.given)} ${why}, ${nm(n)}, ${n.nghe||'người có thế'}, cho người nhắn: ông sẵn lòng giúp một việc, nhà cần gì thì nói.`:`${nm(n)}, ${n.nghe||'người có thế'}, nhân dịp ghé vùng này, ghé thăm ${esc(c.given)} và hỏi nhà có việc gì cần không. ${(n.on||0)>0?'Ông vẫn nhớ ơn cũ của nhà.':'Ông bảo cứ coi như hỏi thăm người quen.'}`;return lead},
+ o:(c,d)=>{const n=T(d);if(!n)return gone();if(d.down)return [
+  pay('Gửi quà và lời hỏi thăm, xin ông đừng bận lòng chuyện hứa',3,{f:c=>{const q=G.tie.rel(n,22,'hỏi thăm lúc ông gặp khó');G.tie.on(n,3);return `${nm(n)} nghe mà nghẹn lời. Lúc người khác tránh xa, nhà mình vẫn nhớ.`+fx(c,{money:-m(3),eq:2,tam:3,qh:q})}}),
+  pay('Giúp ông một khoản qua cơn khó, không đòi lại',10,{f:c=>{const q=G.tie.rel(n,34,'giúp ông lúc bị làm khó');G.tie.on(n,6);n.goal={k:'bao_an',p:30,t:S().t};G.tie.later(n,c,'tie_an_nhan_tra',R(30,96),{});return `${nm(n)} nhận mà tay run. Ông không nói nhiều, chỉ cúi đầu: mối ơn này nối ngược lại, nhà mình thành người cho ông chỗ dựa.`+fx(c,{money:-m(10),eq:2,cfame:2,tam:4,qh:q})}}),
+  {l:'Nhắn rằng nhà không có việc gì cần, ông cứ lo thân ông',f:c=>{const q=G.tie.rel(n,10,'không vòi vĩnh khi ông gặp khó');return `${nm(n)} thở ra nhẹ nhõm: ít ra nhà mình không làm ông thêm gánh nặng.`+fx(c,{eq:1,tam:1,qh:q})}},
+  {l:'Giữ khoảng cách, tránh bị vạ lây',f:c=>{const q=G.tie.rel(n,-14,'tránh mặt khi ông gặp khó');return `Tin nhà mình lảng đi tới tai ${nm(n)}. Ông chỉ im lặng, nhưng người ngoài nhìn nhà bằng con mắt khác.`+fx(c,{liem:-1,cfame:-2,tam:-2,qh:q})}}];return [
   {l:'Xin tiến cử một người nhà',c:c=>G.kinList(c,p=>G.age(p)>=17&&G.age(p)<=45&&!p.away).length>0,go:(c,d2)=>G.pickKin(c,{eyebrow:'Quý nhân',title:'Tiến cử ai',text:`${n.n} nhận tiến cử một người nhà vào việc có thế. Người ấy sẽ gặp nhiều cơ hội, nhưng ơn này phải trả. Chọn người nào?`,filter:p=>G.age(p)>=17&&G.age(p)<=45&&!p.away,cb:w=>{const q=G.tie.rel(n,-8,'nhận tiến cử (ơn phải trả)');G.tie.later(n,c,'tie_quy_nhan_giup',R(48,120),{});return `${esc(w.given)} được ${nm(n)} tiến cử, gặp được người đáng gặp, học việc nhanh hơn hẳn.`+fx(w,{[best(n)]:3,eq:2,m:3})+fx(c,{qh:q,cfame:2})}})},
   {l:'Xin giấy phép và lối làm ăn',f:c=>{const q=G.tie.rel(n,-6,'xin giấy phép');return `${nm(n)} giúp một lá thư gửi quan sở tại. Việc buôn bán suôn sẻ hơn, thuế lệ nhẹ hơn trong mấy năm.`+fx(c,{bonus:0.1,qh:q,money:m(8)})}},
   {l:'Xin bảo lãnh cho lúc hoạn nạn (giữ lời)',f:c=>{const q=G.tie.rel(n,12,'giữ lời hứa bảo lãnh');c.flags.baoLanh=(S().t||0)+120;return `${nm(n)} gật đầu: sau này nhà gặp rắc rối với quan sở tại thì cứ cầm thiếp của ông đến.`+fx(c,{qh:q,fav:3,tam:3})}},

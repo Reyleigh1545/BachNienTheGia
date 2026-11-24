@@ -8,7 +8,7 @@ window.ENGX.push(X=>{
 const {R,chance,log,alive,inClan,P,pick,clamp,later,enqueue,age,esc,mm}=X;
 const G=X.EC.G;const S=()=>X.S;
 const root=()=>{const s=S();s.np=s.np||{n:0,l:{}};s.rg=s.rg||{e:{},yc:0,yt:-1};return s};
-const VAI={ban_than:'bạn thân',an_nhan:'ân nhân',quy_nhan:'quý nhân',ket_nghia:'anh em kết nghĩa',thay:'thầy',mon_sinh:'môn sinh',doi_thu:'đối thủ',nguoi_thuong:'người thương',khach:'khách quen',cao_nhan:'cao nhân',an_si:'ẩn sĩ',lang_gieng:'láng giềng',huong_truong:'hương trưởng',quen:'người quen',tinh_dich:'tình địch',thuong_nhan:'thương nhân',thay_thuoc:'thầy thuốc',tuong:'tướng',thuoc_ha:'thuộc hạ',phe_chu:'người đứng đầu phe',nguoi_lam:'người làm'};
+const VAI={ban_than:'bạn thân',an_nhan:'ân nhân',quy_nhan:'quý nhân',ket_nghia:'anh em kết nghĩa',thay:'thầy',mon_sinh:'môn sinh',doi_thu:'đối thủ',nguoi_thuong:'người thương',khach:'khách quen',cao_nhan:'cao nhân',an_si:'ẩn sĩ',lang_gieng:'láng giềng',huong_truong:'hương trưởng',quen:'người quen',tinh_dich:'tình địch',thuong_nhan:'thương nhân',thay_thuoc:'thầy thuốc',tuong:'tướng',thuoc_ha:'thuộc hạ',phe_chu:'người đứng đầu phe',nguoi_lam:'người làm',quan:'quan lại',quyen_the:'kẻ có thế'};
 const NG={ban_than:'bạn từ thuở nhỏ',an_nhan:'người từng nhận ơn nhà',quy_nhan:'người có thế',ket_nghia:'kết nghĩa',thay:'thầy',cao_nhan:'cao nhân ẩn mình',an_si:'ẩn sĩ',thay_thuoc:'thầy thuốc',doi_thu:'kẻ có hiềm khích'};
 /* ---------- sổ người quen ---------- */
 function ensure(c,o){o=o||{};const s=root();
@@ -46,15 +46,26 @@ const rgOf=node=>Object.entries(root().rg.e).filter(([k])=>k.startsWith(node+'|'
 const TIEACT={ /* vai: [xác suất mỗi năm, sự kiện, điều kiện rel] */
  ban_than:[0.10,'tie_ban_nho',-100],an_nhan:[0.09,'tie_an_nhan_tra',10],quy_nhan:[0.10,'tie_quy_nhan_giup',20],ket_nghia:[0.11,'tie_ket_nghia_giup',10],
  thay:[0.07,'tie_thay_tham',10],thuoc_ha:[0.10,'tie_thuoc_ha',-100],an_si:[0.04,'tie_cao_nhan_ve',5],doi_thu:[0.12,'tie_doi_thu_hai',-100],cao_nhan:[0.04,'tie_cao_nhan_ve',10],lang_gieng:[0.05,'tie_lang_gieng',-100]};
+/* d9.12.63 (chủ dự án: "quý nhân ngỏ lời vô lí, người ta đang bị làm khó mà tự dưng tới giúp nhà mình"): quý nhân và anh em kết nghĩa chỉ ra tay khi (a) nhà đang gặp khó thật (trouble) hoặc người ấy mang ơn nhà (on>0), và (b) bản thân người ấy đang ổn (không sa sút trong 6 năm, từ bậc có thế trở lên với quý nhân, không mang oán). Lời kể hiện lý do. */
+function trouble(){const s=S();const R_=[];try{if(s.money<mm(12))R_.push('đang túng thiếu');}catch(e){}
+  const t=s.tax;if(t&&t.owed>0)R_.push('còn nợ thuế');
+  if(alive().some(p=>inClan(p)&&(p.ill||[]).some(i=>i.sev>=3)))R_.push('có người ốm nặng');
+  if((s.cases||[]).some(x=>s.t-x.t<24))R_.push('đang vướng việc kiện tụng');
+  if(s.war)R_.push('chịu cảnh chiến sự');
+  if(s.people.some(p=>p.dead!=null&&s.t-p.dead<12&&(p.gen||1)>=1&&!p.left))R_.push('vừa có tang');
+  return R_.length?R_[Math.floor(Math.random()*R_.length)]:null}
+const npStable=(n,minTier)=>!((n.sa!=null&&S().t-n.sa<72)||((n.tier!=null?n.tier:2)<minTier)||(n.oan||0)>=15);
 function tieYear(){const s=root();s.rg.yc=0;
   const L=Object.values(s.np.l).filter(n=>n.ok!==0&&n.vai&&n.vai.length);
   for(const n of L){const a=G.np.age(n);if(a<14)continue;
     for(const v of n.vai){const T=TIEACT[v];if(!T)continue;if(s.rg.yc>=2)break;
       if(v==='doi_thu'?(n.rel>-10&&(n.oan||0)<10):(n.rel||0)<T[2])continue;
-      if(chance(T[0]*0.6)){const h=alive().filter(p=>inClan(p)&&!p.away&&age(p)>=16);const tgt=h.length?pick(h):null;if(!tgt)continue;
+      let why=null;if(v==='quy_nhan'||v==='ket_nghia'){why=trouble();if(!why&&!((n.on||0)>0))continue;if(!npStable(n,v==='quy_nhan'?2:1))continue}
+      if(chance(T[0]*0.4)){const h=alive().filter(p=>inClan(p)&&!p.away&&age(p)>=16);const tgt=h.length?pick(h):null;if(!tgt)continue;
         if(!X.EVMAP[T[1]])continue;
+        if(((s.evLast&&s.evLast[T[1]])||-999)>s.t-12)continue; /* d9.12.63: cùng một sự kiện người quen không ra hai lần trong 12 tháng */
         if((s.cool&&(s.cool[T[1]]||-1e9)>s.t&&false))continue;
-        enqueue('ev',tgt.id,{ev:T[1],data:{npc:n.id}});s.rg.yc++}}}
+        enqueue('ev',tgt.id,{ev:T[1],data:{npc:n.id,why}});s.rg.yc++}}}
   rgFamilyYear()}
 /* anh chị em giúp nhau: người khó khăn, người khác trong nhà dư dả và có tình thì giúp; không tình thì làm ngơ và sinh oán */
 function rgFamilyYear(){const L=alive().filter(p=>inClan(p)&&!p.inLaw);const done={};
@@ -91,6 +102,6 @@ G.tax={base:taxBase,ex:taxEx,state:taxS,pol:taxSetPol,POLN};
 /* thu nhập của chức võ sư dân binh và chủ võ đường (v641_vo_do) */
 function statusYear(){alive().filter(p=>inClan(p)&&p.dead==null&&p.flags).forEach(p=>{if(p.flags.vosinh){p.purse=(p.purse||0)+mm(1.5)*3}if(p.flags.vodduong){p.purse=(p.purse||0)+mm(4);if(chance(0.1))G.addStat(p,'vo',1)}})}
 X.yearly.push(tieYear,romYear,taxYear,statusYear);Object.assign(X.fn,{taxCollect});
-Object.assign(G,{tie:{ensure,get,rel,on,oan,act,bonus,later:laterNpc,note,VAI},rg:{set:rgSet,get:rgGet,of:rgOf}});
+Object.assign(G,{tie:{ensure,get,rel,on,oan,act,bonus,later:laterNpc,note,VAI,trouble,stable:npStable},rg:{set:rgSet,get:rgGet,of:rgOf}});
 Object.assign(X.fn,{tieYear,rgFamilyYear});
 });
