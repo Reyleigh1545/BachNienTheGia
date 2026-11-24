@@ -472,9 +472,5 @@ DN({id:'dn_31',t:'Công trình bỏ dở',c:()=>HU(),w:2,
  o:c=>[{l:'Tu sửa khi có điều kiện (qua mục dự án)',f:c=>'Gia chủ ghi nhớ.'+fx(c,{tam:-1})},
   {l:'Thừa nhận đã vượt sức, xin cả họ thông cảm',f:c=>'Cả họ gật đầu. Tiếng nhà ít bị tổn hại.'+fx(c,{on:1,cfame:-1})}]}),
 /* ===================== KỲ NGỘ NỐI VỚI DỰ ÁN VÀ ÁN CŨ ===================== */
-KN({id:'kn_92',t:'Sách quý đến tay',c:()=>PR('tangthu'),
- x:c=>`Một thương nhân qua đời, di chúc để lại cho tàng thư lầu nhà ${N(c)} một hòm sách cổ mà ông cất giữ cả đời.`,
- o:c=>[{l:'Nhận và ghi tên người tặng lên bia',f:c=>'Hòm sách là bộ chú giải hiếm. Cả tàng thư thêm giá trị.'+fx(c,{cfame:5,tri:2,fame:3})},
-  {l:'Nhận, mời các học giả đến xem',f:c=>'Học giả khắp nơi kéo đến. Tên nhà nổi trong giới sĩ phu.'+fx(c,{cfame:6,tri:1,money:-m(8)})}]}),
 ];
 });
