@@ -1,0 +1,45 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Avatar mới · bản mẫu để duyệt</title>
+<style>
+:root{--paper:#e7ece2;--panel:#f5f7f0;--ink:#1c2621;--muted:#5b6a61}
+body{margin:0;padding:22px 26px 40px;background:var(--paper);color:var(--ink);font-family:system-ui,'Segoe UI',sans-serif}
+h1{font:700 24px/1.2 Georgia,serif;margin:0 0 4px}.sub{color:var(--muted);margin:0 0 18px;font-size:13px}
+h2{font:700 15px/1.2 Georgia,serif;margin:26px 0 10px;color:#33483c}
+.row{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start}
+.big{width:300px;height:300px;border-radius:26px;display:grid;place-items:center;box-shadow:0 8px 24px rgba(30,60,45,.16)}
+.big.m{background:linear-gradient(160deg,#cfe6f3,#a9cfe3)}.big.f{background:linear-gradient(160deg,#fbdfe4,#f1bcc7)}
+.big svg{width:270px;height:270px}
+.pc{position:relative;width:150px;padding:12px 8px 10px;border:0;border-top:5px solid #7fa8cf;border-radius:14px;background:#fff;display:flex;flex-direction:column;align-items:center;gap:3px;box-shadow:0 2px 0 rgba(0,0,0,.05),0 6px 16px rgba(30,60,45,.14);text-align:center}
+.pc.f{border-top-color:#d99aa4}
+.pc .pa{position:absolute;right:8px;top:9px;min-width:24px;height:24px;border-radius:12px;background:#eef3ee;color:#3a4a55;font:700 12px/24px system-ui}
+.pc .pav{display:block;width:84px;height:84px;margin-top:6px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 3px #fff,0 0 0 4px #d5ddd2}
+.pc.m .pav{background:#d6e9f4}.pc.f .pav{background:#f9e1e6}
+.pc .pav svg{width:84px;height:84px;display:block}
+.pc b{font:700 14px/1.25 Georgia,serif;margin-top:5px}.pc small{font-size:11.5px;color:var(--muted)}
+.pc .inc{margin-top:2px;font:700 11.5px system-ui;border-radius:8px;padding:2px 8px;color:#2f7258;background:#e3f1e9}
+.sq{width:150px;border-radius:18px;padding:10px 6px 8px;text-align:center;font-size:12px;color:var(--muted)}
+.sq .fr{width:110px;height:110px;margin:0 auto 6px;border-radius:20px;border:3px solid;display:grid;place-items:center;overflow:hidden}
+.sq.m .fr{background:#d6e9f4;border-color:#8fb6d3}.sq.f .fr{background:#f9e1e6;border-color:#dba3ad}
+.sq svg{width:104px;height:104px}
+.lad{display:flex;gap:14px;flex-wrap:wrap}.lad .it{text-align:center;font-size:12px;color:var(--muted)}
+.lad .fr{width:104px;height:104px;border-radius:50%;overflow:hidden;margin:0 auto 4px;box-shadow:0 0 0 3px #fff,0 0 0 4px #d5ddd2}
+.lad .fr.m{background:#d6e9f4}.lad .fr.f{background:#f9e1e6}.lad svg{width:104px;height:104px;display:block}
+</style></head><body>
+<h1>Avatar mới: bản mẫu một nam, một nữ</h1>
+<p class="sub">Vẽ theo ảnh tham khảo (hoạt hình đầu to, mắt to đen bóng có điểm sáng, nét mảnh, màu nhạt, nền thẻ xanh nhạt cho nam, hồng nhạt cho nữ). Chưa nối vào game, chỉ để duyệt kiểu.</p>
+<div class="row" id="big"></div>
+<h2>Đặt trong thẻ người (như Gia phả, hộp sự kiện) và khung vuông như ảnh tham khảo</h2>
+<div class="row" id="cards"></div>
+<h2>Mị lực càng cao càng đẹp: cùng một người ở mị lực 30, 60, 90, 130, 160</h2>
+<div class="lad" id="ladm"></div><div class="lad" id="ladf" style="margin-top:14px"></div>
+<script src="avatar3.js"></script>
+<script>
+const M={id:'nam1',surname:'Công Tôn',given:'Phúc An',g:'nam',mi:85,job:'quan',lv:4,tuoc:0};
+const F={id:'nu1',surname:'Công Tôn',given:'Lệ Hằng',g:'nữ',mi:115,job:'noi',lv:0,tuoc:0};
+const q=s=>document.getElementById(s);
+q('big').innerHTML=`<div class="big m">${AVA3.svg(M,270,3,38)}</div><div class="big f">${AVA3.svg(F,270,3,24)}</div>`;
+q('cards').innerHTML=`<div class="pc m"><span class="pa">38</span><span class="pav">${AVA3.svg(M,84,3,38)}</span><b>Công Tôn Phúc An</b><small>Chánh thất phẩm</small><span class="inc">+8 bạc/tháng</span></div>
+<div class="pc f"><span class="pa">24</span><span class="pav">${AVA3.svg(F,84,3,24)}</span><b>Công Tôn Lệ Hằng</b><small>Nội trợ</small><span class="inc" style="color:var(--muted);background:#eef1ea">0/tháng</span></div>
+<div class="sq m"><div class="fr">${AVA3.svg(M,104,3,38)}</div>khung vuông, nam</div><div class="sq f"><div class="fr">${AVA3.svg(F,104,3,24)}</div>khung vuông, nữ</div>`;
+const lad=(P,id,age)=>[30,60,90,130,160].map(mi=>`<div class="it"><div class="fr ${P.g==='nam'?'m':'f'}">${AVA3.svg(Object.assign({},P,{mi}),104,3,age)}</div>mị lực ${mi}</div>`).join('');
+q('ladm').innerHTML=lad(M,'m',38);q('ladf').innerHTML=lad(F,'f',24);
+</script></body></html>

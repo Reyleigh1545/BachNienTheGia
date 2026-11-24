@@ -4613,7 +4613,8 @@ function nodeHTML(p,old){
     const ci=cardInfo(p);const showInc=p.dead==null&&inClan(p)&&a>=16;
     const incH=showInc?`<span class="pinc ${ci.inc>0?'up':ci.inc<0?'dn':'nl'}">${ci.inc===0?'0/tháng':ci.incTxt}</span>`:'<span class="pinc ph">&nbsp;</span>';
     const sub=p.dead!=null?`† ${dOf(p.dead).y} · thọ ${a}`:p.left?relation(p):(a<16?(a>=6&&p.school!=='nha'?'đang đi học':'còn nhỏ'):jobName(p));
-    return `<button class="${cls.join(' ')}" data-sel="${p.id}" aria-pressed="${sel===p.id}">${badge}<span class="pa">${p.dead!=null?'†':a}</span><span class="pav">${avatarSVG(p,76)}</span><b>${esc(nameOf(p))}</b><small>${esc(sub)}</small>${incH}</button>`}
+    const hpv=Math.round(clamp(p.suc/1.5,0,100)),mdv=Math.round(clamp(p.tam,0,100));const bars=p.dead==null&&inClan(p)?`<span class="bars"><span class="bar hpb" title="Sức khỏe ${hpv}"><i style="width:${hpv}%"></i></span><span class="bar mdb" title="Tâm trạng ${mdv}"><i style="width:${mdv}%"></i></span></span>`:'<span class="bars ph"><span class="bar"></span><span class="bar"></span></span>'; /* thanh sức khỏe (đỏ) và tâm trạng (xanh) dưới ảnh, cùng màu với chú thích cuối trang */
+    return `<button class="${cls.join(' ')}" data-sel="${p.id}" aria-pressed="${sel===p.id}">${badge}<span class="pa">${p.dead!=null?'†':a}</span><span class="pav">${avatarSVG(p,76)}</span><b>${esc(nameOf(p))}</b><small>${esc(sub)}</small>${bars}${incH}</button>`}
   return `<button class="${cls.join(' ')}" data-sel="${p.id}" aria-pressed="${sel===p.id}">${badge}<span class="nrow">${avatarSVG(p,30)}<span><b>${esc(nameOf(p))}</b>
    <small>${p.dead!=null?`† ${dOf(p.dead).y} · thọ ${a}`:p.left?relation(p):`${a} · ${a<16?(a>=6&&p.school!=='nha'?'đi học':'nhỏ'):esc(jobName(p))}`}</small></span></span>
    ${inClan(p)?`<span class="hp"><i style="width:${clamp(p.suc/1.5,0,100)}%"></i></span><span class="md"><i style="width:${p.tam}%"></i></span>`:''}</button>`;
@@ -4654,7 +4655,7 @@ const habChips=c=>c.habits.filter(k=>!isVice(k)).map(x=>`<button class="chip blu
 function statBlock(c,compact){
   ensurePersona(c);
   return `<div class="bars ${compact?'tight':''}">${STATS.map(([k,n])=>bar(n,c[k],k==='suc'?c.cap.suc:Math.max(capOf(c,k),c.cap[k]),k==='suc'?'hp':'',k)).join('')}
-   <div class="bar md">${I('tam','Tâm trạng')}<i><em style="width:${c.tam}%"></em></i><b class="num">${Math.round(c.tam)}<small> ${compact?'':moodWord(c.tam)}</small></b></div>
+   <div class="bar mdb">${I('tam','Tâm trạng')}<i><em style="width:${c.tam}%"></em></i><b class="num">${Math.round(c.tam)}<small> ${compact?'':moodWord(c.tam)}</small></b></div>
    <div class="bar dy">${I('duyen','Cơ duyên')}<i><em style="width:${c.duyen}%"></em></i><b class="num">${Math.round(c.duyen)}</b></div></div>
    ${compact?'':`<div class="subs ax">${AXES.map(([k,n])=>{const v=Math.round(axv(c,k));return `<button class="sub ${v>=75?'hi':v<=25?'lo':''}" data-info="${k}"><b class="num">${v}</b><small>${n}</small></button>`}).join('')}</div>`}
    <div class="subs sk">${SKILLS.map(([k,n])=>`<button class="sub" data-info="${k}"><b class="num">${Math.round(skv(c,k))}</b><small>${n}</small></button>`).join('')}</div>`;
