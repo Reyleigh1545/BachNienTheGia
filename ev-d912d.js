@@ -83,12 +83,6 @@ E({id:'tet_nguyen_dan',t:'Tết đến xuân về',sea:['xuan'],age:[6,90],cd:11
   pay('Vừa phải, đủ lễ là được',8,{f:c=>'Một cái Tết ấm cúng, đủ đầy.'+fx(c,{money:-m(8),on:1,tam:5})}),
   {l:'Tiết kiệm, cúng đơn sơ',f:c=>'Đỡ tốn, bớt được ít tiền để dành, nhưng có người xì xào.'+fx(c,{money:m(1),tam:-2,cfame:-1})}]}),
 /* ============ Khách đông bất ngờ (chủ cơ sở) ============ */
-E({id:'cs_khai_truong',t:'Khách đông bất ngờ',job:['chu'],
- x:'Một vị quan lớn ghé qua, khen ngợi. Từ hôm sau khách kéo đến đông, cơ sở nhận không xuể.',
- o:c=>[
-  pay('Mở rộng ngay, thuê thêm người',20,{r:[{ql:0.8,eq:0.3},60],y:c=>{const b=G.bizOf(c);if(b)b.bonus=(b.bonus||0)+0.1;return 'Mở rộng kịp thời, khách đông thành khách quen. Thu nhập tăng rõ.'+fx(c,{money:-m(20),sk:{ql:3},fame:3})},n:c=>'Mở rộng vội, chất lượng giảm, khách bỏ đi.'+fx(c,{money:-m(20),tam:-4,fame:-2})}),
-  {l:'Giữ chất lượng như cũ, chỉ nhận vừa sức',f:c=>{const b=G.bizOf(c);if(b)b.bonus=(b.bonus||0)+0.04;return 'Danh tiếng cơ sở vững dần, khách quen trung thành.'+fx(c,{sk:{ql:2},eq:1,tam:3})}},
-  {l:'Biếu quan một món quà, xin giấy phép mở thêm quầy',c:()=>G.money()>=m(8),r:[{khau:0.7,eq:0.5},50],y:c=>{const b=G.bizOf(c);if(b)b.bonus=(b.bonus||0)+0.07;return 'Quan nhận quà, cấp giấy tờ thuận lợi.'+fx(c,{money:-m(8),fame:2,liem:-1})},n:c=>'Quan nhận quà mà không giúp gì.'+fx(c,{money:-m(8),tam:-3})}]}),
 /* ============ Hội làng mùa xuân: ba cuộc thi ============ */
 E({id:'c631_hoi_lang_xuan',t:'Hội làng mùa xuân',sea:['xuan'],age:[15,60],pcd:60,cd:11,
  x:(c,d)=>{const L=[['vo','đấu vật','vo'],['tri','thi đối đáp thơ','tri'],['mi','thi hát đối','mi']];const k=pick(L);d.k=k[0];d.a=k[2];return `Hội làng đầu xuân rộn ràng cờ quạt, chiêng trống. ${N(c)} được cử đi dự cùng mọi người trong xóm. Năm nay có cuộc ${k[1]}, giải thưởng do các nhà giàu góp.`},
