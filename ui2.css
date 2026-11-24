@@ -102,3 +102,22 @@ body.ui2 .lt.wild,body.ui2 .landleg i.wild{background:#d9cfb4}
 body.ui2 .landleg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--muted);margin-bottom:10px}
 body.ui2 .landleg i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:5px}
 body.ui2 .modal:has(.result)>p{flex:none}
+
+/* d9.12.63: thẻ NPC trong hộp sự kiện: dòng phụ không tràn, tối đa hai dòng */
+body.ui2 .pcard small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-width:140px;line-height:1.3}
+body.ui2 .pcard.np .pav{box-shadow:0 0 0 3px #fff,0 0 0 4px #c9b98a}
+body.ui2 .pcard.np{border-top:5px solid #c9b98a}
+body.ui2 .pcards{flex-wrap:nowrap;gap:12px}
+body.ui2 .pcards.many{flex-wrap:wrap}
+body.ui2 .pcard{flex:0 1 150px;min-width:84px}
+body.ui2 .pcards.cmp .pcard{padding:10px 6px 8px}
+body.ui2 .pcards.cmp .pcard small{display:none}
+body.ui2 .pcards.cmp .pcard .pav,body.ui2 .pcards.cmp .pcard .pav svg{width:64px;height:64px}
+body.ui2 .pcard b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+/* d9.12.63: lệch lề tiêu đề hộp sự kiện: nhãn loại việc và tiêu đề nằm trong .evbody (đã có padding 30) nhưng còn mang thêm margin hoặc padding 30 nên thụt vào 30px so với đoạn kể và lựa chọn */
+body.ui2 .modal .evbody>.eyebrow{margin:14px 0 0 0!important}
+body.ui2 .modal .evbody>h2{padding-inline:0!important}
+/* d9.12.63: băng thẻ người co lại vừa khung (điện thoại: ba thẻ trong một hàng, chỉ ảnh, tuổi và tên) */
+body.ui2 .pcards{width:100%;min-width:0}
+body.ui2 .pcard{min-width:0}
+@media (max-width:560px){body.ui2 .pbanner{padding:14px 12px 12px}body.ui2 .pcards{gap:8px}body.ui2 .pcard{flex:1 1 0;max-width:150px;padding:10px 4px 8px}body.ui2 .pcard small{display:none}body.ui2 .pcard .pav,body.ui2 .pcard .pav svg{width:60px;height:60px}body.ui2 .pcard b{font-size:12.5px}body.ui2 .pcard .pa{right:4px;top:4px;min-width:22px;height:22px;line-height:22px;font-size:11px}}

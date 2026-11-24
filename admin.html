@@ -240,8 +240,15 @@ button.chip{border:0;font:inherit;font-size:11.5px;cursor:help}
 /* d9.7: hộp sự kiện một cột (ảnh mẫu Mockup giao dien/d9.7) */
 .overlay.sheet.top{z-index:60}
 .modal.ev1{max-width:720px;padding:0;gap:0;overflow-y:auto}
-.ev1 .evband{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;padding:18px 20px 14px;background:linear-gradient(180deg,var(--jade-soft),var(--panel))}
-.evband .evcard:not(.solo){flex:1 1 0;max-width:333px}
+.ev1 .evband{display:flex;justify-content:center;gap:12px;flex-wrap:nowrap;padding:18px 20px 14px;background:linear-gradient(180deg,var(--jade-soft),var(--panel))}
+.evband .evcard:not(.solo){flex:1 1 0;max-width:230px}
+.ev1 .evband.many{flex-wrap:wrap}
+.evband.cmp .evcard:not(.solo){padding:7px 9px;gap:7px}
+.evband.cmp .evtx b{font-size:14px}
+.evband.cmp .evtx small{display:none}
+@media (max-width:560px){.evband .evcard:not(.solo){flex-direction:column;text-align:center;padding:8px 4px;gap:4px}.evband .evtx small{display:none}.evband .evtx{justify-items:center;max-width:100%}.evband .evtx b{font-size:13px;max-width:100%}}
+.evband .evtx b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.npfull{margin-top:12px;display:flex;justify-content:center}
 .evtx small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .evcard{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:9px 14px 9px 10px;box-shadow:0 1px 3px rgba(0,0,0,.08);text-align:left;font:inherit;color:inherit;cursor:pointer;min-width:0}
 .evcard:hover{border-color:var(--seal)}
@@ -255,6 +262,19 @@ button.chip{border:0;font:inherit;font-size:11.5px;cursor:help}
 .evinc{justify-self:start;margin-top:3px;font-size:11.5px;font-weight:700;color:var(--good);background:var(--jade-soft);border-radius:999px;padding:1px 9px}
 .evinc.neg{color:var(--bad)}
 .evcard.solo .evinc{justify-self:center}
+.evtx small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px}
+.evcard.solo .evtx small{max-width:240px}
+.npov{position:fixed;inset:0;z-index:300;background:rgba(20,30,25,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+.npbox{background:var(--panel,#fff);border-radius:16px;max-width:400px;width:100%;padding:18px 20px 16px;box-shadow:0 12px 40px rgba(0,0,0,.3);position:relative;max-height:86vh;overflow:auto}
+.npx{position:absolute;right:10px;top:8px;border:0;background:transparent;font-size:24px;cursor:pointer;line-height:1;color:inherit}
+.nphead{display:flex;gap:12px;align-items:center;margin-bottom:8px;padding-right:22px}
+.npav svg{display:block;border-radius:50%}
+.nphead b{font-family:var(--display);font-size:19px;display:block}
+.nphead small{color:var(--muted);font-size:12px}
+.npdesc{font-size:13px;color:var(--muted);margin:6px 0 10px;line-height:1.45}
+.nprow{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:6px 0;font-size:13px}
+.nprow span{color:var(--muted);flex:none}
+.nprow b{text-align:right;font-weight:600}
 .modal.ev1{gap:10px}
 .modal.ev1>*:not(.evband){margin-left:26px;margin-right:26px}
 .modal.ev1>:last-child{margin-bottom:22px}
@@ -561,9 +581,11 @@ ul.plain{margin:4px 0 0;padding-left:18px;font-size:12.5px;display:grid;gap:3px}
 <script src="ev-d912bb.js"></script>
 <script src="ev-d912bc.js"></script>
 <script src="ev-d912bd.js"></script>
+<script src="ev-d912be.js"></script>
 <script src="ev-cotran.js"></script>
 <script src="events-meta.js"></script>
 <script src="events-mem.js"></script>
+<script src="events-theme.js"></script>
 <script src="events-lv.js"></script>
 <script src="engine-x.js"></script>
 <script src="engine-rg.js"></script>

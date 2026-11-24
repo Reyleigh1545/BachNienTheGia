@@ -100,7 +100,7 @@ function tsum2(c,key){const o={};traitsOf(c).forEach(t=>{const T=TRAITS[t];if(T[
 function mkPerson(o){
   const isYoungMk=!!o.young;
   const g=o.g||(chance(0.5)?'nam':'nữ');const a=o.age||0;
-  const on=o.surname?null:outsiderName(g);
+  const on=o.surname?null:(()=>{let x=outsiderName(g),i=0;while(npTaken(x.surname+' '+x.given)&&i++<30)x=outsiderName(g);return x})(); /* d9.12.63: người mới sinh ra từ ngoài không trùng tên một NPC có sẵn */
   const c={id:uid(),g,surname:o.surname||on.surname,given:o.given||(on?on.given:mkGiven(g)),
     born:S.t-a*12-R(0,11),cap:{tri:100,vo:100,suc:100,mi:100,eq:100},decl:R(32,42),
     job:'none',lv:0,m:0,bonus:0,liem:R(35,75),focus:'nghi',tam:R(45,70),spouse:null,parents:[],inLaw:false,dead:null,left:null,
@@ -430,11 +430,11 @@ function advance(){
   const nHome=home().length;const crowd=Math.sqrt(15/Math.max(15,nHome));const evCap=Math.round(12+Math.min(12,nHome*0.3));
   for(const p of alive()){
     const a=age(p);const baby=a<5;if(baby&&S.t-p.born<2)continue;if(p.away&&['trade','odo','sep','luuday'].includes(p.away.type))continue;if((p.busyUntil||0)>S.t)continue;
-    let pr=(baby?0.052:0.075+p.duyen/100*0.05)*crowd;if(a<16&&!baby)pr*=0.55;if(isHead(p))pr*=1.3;if(p.away&&p.away.type!=='army')pr*=1.3;
+    let pr=(baby?0.052:0.075+p.duyen/100*0.05)*crowd*(a>=16?1.1:1); /* d9.12.63: bù phần sự kiện không ghi tuổi đã bị chặn với người dưới 16 */if(a<16&&!baby)pr*=0.55;if(isHead(p))pr*=1.3;if(p.away&&p.away.type!=='army')pr*=1.3;
     if(S.evY.n>=evCap)pr*=isHead(p)?0.3:0;
     if(chance(pr)){const ev=pickEvent(p,false,baby);if(ev){enqueue('ev',p.id,ev);S.evY.n++}}
     if(baby)continue;
-    let pk=(0.006+p.duyen/100*0.014)*(a<16?0.5:1)*(p.focus==='du'?1.6:1)*(isHead(p)?1.2:1);
+    let pk=(0.006+p.duyen/100*0.014)*(a<16?0.5:1)*(p.focus==='du'?1.6:1)*(isHead(p)?1.2:1)*0.85; /* d9.12.63: chủ dự án 24/11 báo kỳ ngộ ra liên tục, sự kiện thường ít hơn: số kỳ ngộ đủ điều kiện tăng nhiều (thêm hơn 60 cái) nên cùng một xác suất bốc lại ra nhiều hơn; hạ 15% (đo: 0,7 xuống còn khoảng 64 kỳ ngộ mỗi 60 năm, bản main 108, nên chọn 0,85) */
     if(chance(pk)){const ev=pickEvent(p,true);if(ev)enqueue('ev',p.id,ev)}
   }
   viceTick();
@@ -868,7 +868,8 @@ function buildEvents(){EVENTS=[];window.EVMEM=window.EVMEM||{};(window.EVF||[]).
 /* d9.6 Q5: mức sự kiện và kỳ ngộ (chủ dự án 22/11): 0 vặt, 1 thường, 2 quan trọng, 3 lớn. Khóa e.lv ghi đè; mặc định suy từ loại (cốt truyện 3, kỳ ngộ và việc cố định 2) và độ hiếm (rare trở lên 3, uncommon 2). */
 function evLvOf(e){if(e.lv!=null)return e.lv;if(window.EVLV&&window.EVLV[e.id]!=null)return window.EVLV[e.id]; /* d9.10: events-lv.js (tools/lvgen.js) */const M=e.meta||{};if(e.arc||M.tr==='arc')return 3;if(['rare','very_rare','unique'].includes(M.ra))return 3;if(M.ra==='uncommon'||e.ky||M.tr==='encounter'||e.fixed||M.tr==='fixed')return 2;return 1}
 function attachMeta(){const M=window.EVMETA||{};EVENTS.forEach(e=>{const m=M[e.id];e.meta=m?{d:m[0],s:m[1],tr:m[2],ra:m[3],who:m[4],sit:m[5]}:{d:'unclassified',s:'unclassified',tr:e.arc?'arc':e.fixed?'fixed':e.ky?'encounter':'random',ra:'na',who:'any',sit:'any'};e.lv=evLvOf(e)})}
-function attachMem(){const M=window.EVMEM||{};EVENTS.forEach(e=>{const m=M[e.id];if(!m)return;if(m.mem&&!e.mem)e.mem=m.mem;if(m.led&&!e.led)e.led=m.led})}
+let EVTH={};function buildTheme(){EVTH={};const T=window.EVTHEME||{};for(const k in T)T[k].forEach(id=>{EVTH[id]=k})} /* d9.12.63: chủ đề sự kiện (events-theme.js) */
+function attachMem(){buildTheme();const M=window.EVMEM||{};EVENTS.forEach(e=>{const m=M[e.id];if(!m)return;if(m.mem&&!e.mem)e.mem=m.mem;if(m.led&&!e.led)e.led=m.led})}
 /* v6.5.3: gắn cấp (lvr) cho các sự kiện quân ngũ có từ trước, để cấp cao không gặp chuyện của lính mới */
 function guard653(){const T={qn_tan_binh:[0,1],qn_luyen_quan:[0,4],qn_tuan_tra:[0,3],qn_thieu_luong:[0,4],qn_tran_lon:[3,7],qn_tuong_quan:[5,7],d631_chi_huy_nhan_tai:[0,3],d631_lao_tuong_truyen_phap:[0,4],d631_cuu_tuong_bi_thuong:[0,4],n633_qn_linh:[0,2],n633_qn_ngua:[0,5],n633_qn_luong:[0,4],n633_qn_lui:[3,7],qt4_giao_binh_quyen:[5,7]};
   for(const id in T){const e=EVMAP[id];if(e&&!e.lvr)e.lvr=T[id]}}
@@ -896,6 +897,7 @@ function eligible(e,c){
   if(e.mem&&!ledOk(e,c))return false;
   if(!kyOk(e,c))return false;
   if((S.cool[e.id]||-1e9)>S.t)return false;
+  {const th=EVTH[e.id];if(th&&c.th&&(c.th[th]||-1e9)>S.t-(window.EVTHEME_CD||30))return false} /* d9.12.63: cùng chủ đề (thao luyện, thư nhà…) không ra liền nhau trên một người */
   if((c.seen[e.id]||-1e9)>S.t-(e.fixed||e.arc||e.ky?(e.pcd||60):Math.max(e.pcd||0,120)))return false; /* v6.7.0-d5: sự kiện ngẫu nhiên ít nhất mười năm mới gặp lại trên cùng một người */
   if(!jobMatch(e,c))return false;
   if(!ctxOk(e,c))return false;
@@ -964,6 +966,7 @@ function pickEvent(c,ky,baby){
   return {ev:ev.id,data,rnd:1};
 }
 function commitEv(c,ev){S.evn=S.evn||{};if(ev.fixed||ev.arc){S.pace=(S.pace||[]).filter(t=>t>S.t-12);S.pace.push(S.t)} /* d9.12 ARC.budget: ghi nhịp bước chuỗi */
+  {const th=EVTH[ev.id];if(th){c.th=c.th||{};c.th[th]=S.t}}
   S.evLast=S.evLast||{};c.seen[ev.id]=S.t;S.evLast[ev.id]=S.t;S.cool[ev.id]=S.t+(ev.fixed||ev.arc||ev.ky?(ev.cd??(ev.ky?24:10)):Math.max(36,ev.cd??36));S.evn[ev.id]=(S.evn[ev.id]||0)+1;kyMark(ev)}
 /* v6.4.1.3 (admin): đếm số hộp theo năm, giữ 12 năm gần nhất */
 function stt(k,v){if(DRY||!S)return;const y=Math.floor(S.t/12);S.stat=S.stat||[];let o=S.stat[S.stat.length-1];
@@ -991,8 +994,9 @@ function nextPopup(){
 const U2=()=>window.BN_ADMIN&&window.BN_ADMIN.ui2&&window.UI2?window.UI2:null;
 function cardInfo(p){const a=age(p);const ok=p.dead==null&&inClan(p)&&a>=16;const inc=ok?Math.round(earnOf(p,true)||0):null;
   return {id:p.id,g:p.g,age:a,dead:p.dead!=null||!!p.left,name:nameOf(p),tuoc:p.tuoc?TUOC[p.tuoc]:'',sub:`${relation(p)} · ${jobName(p)}${p.away?' · '+awayText(p):''}`,job:jobName(p),rel:relation(p),purse:ok&&inMain(p)?money(p.purse||0,1):'',inc,incTxt:inc==null?'':(inc>=0?'+':'')+money(inc,1)+'/tháng',av:avatarSVG(p,76)}}
+function npCardInfo(n){const p=npPseudo(n);return {id:n.id,np:1,g:n.g,age:age(p),dead:n.ok===0,name:n.n,tuoc:'',sub:(n.vaiTxt||'người quen'),inc:null,incTxt:'',av:avatarSVG(p,76),title:n.nghe||''}}
 function headerFor(c,other){
-  {const u=U2();if(u)return u.header(cardInfo(c),other?cardInfo(other):null)}
+  {const u=U2();if(u){const arr=[].concat(other||[]).filter(Boolean);return u.header(cardInfo(c),arr.map(o=>o&&o.__npc?npCardInfo(o.n):cardInfo(o)))}}
   return `<aside class="mside"><div class="mhead">${avatarSVG(c,48)}<div><b>${esc(nameOf(c))}</b>${c.tuoc?` <span class="chip gold">${TUOC[c.tuoc]}</span>`:''}<div class="mini">${relation(c)} · ${age(c)} tuổi · ${esc(jobName(c))}${c.away?' · '+awayText(c):''}</div></div></div>
   <div class="chips">${ctChips(c)}${axChips(c)}${realTraits(c).map(traitChip).join('')}${viceChips(c)}</div>${statBlock(c,true)}</aside><!--/side-->`;
 }
@@ -1009,13 +1013,41 @@ function relLine(d,c){const id=d&&(d.who||d.oid||d.xg||d.oth);const o=id&&P(id);
   return `<p class="kvline"><b>Liên quan:</b> ${esc(nameOf(o))}, ${age(o)} tuổi, ${esc(jobName(o))}; ${st}.</p>`}
 /* d9.7 (chủ dự án 23/11, ảnh mẫu Mockup giao dien/d9.7): hộp sự kiện một cột, thẻ chân dung mọi người liên quan cạnh nhau ở đầu hộp, lựa chọn đánh số, giá bên phải; bỏ cột trái (hồ sơ nhỏ, bảy thanh chỉ số). Chỉ dùng ở bản chính; giao diện admin (ui2) giữ như cũ. */
 /* d9.10: hdrEv dùng cho mọi hộp có người (infoPopup, Mối, tang lễ, hôn lễ, chuyển dạ…): ở bản chính là dải thẻ chân dung một cột, ở admin ui2 là hồ sơ cũ */
-const hdrEv=(c,other)=>U2()?headerFor(c,other):(c?evBand(c,null):'');
-function evCard(p,solo){const ci=cardInfo(p);return `<button type="button" class="evcard${solo?' solo':''}" data-pcard="${p.id}" title="Bấm để xem hồ sơ"><span class="evav">${avatarSVG(p,solo?72:56)}<span class="evage">${ci.age}</span></span><span class="evtx"><b>${esc(ci.name)}</b><small>${esc(ci.sub)}</small>${ci.incTxt?`<span class="evinc ${ci.inc<0?'neg':''}">${esc(ci.incTxt)}</span>`:''}</span></button>`}
+const hdrEv=(c,other)=>U2()?headerFor(c,other):(c?evBand(c,other?{who:other.id}:null):'');
+function evCard(p,solo){const ci=cardInfo(p);return `<button type="button" class="evcard${solo?' solo':''}" data-pcard="${p.id}" title="Bấm để xem thông tin"><span class="evav">${avatarSVG(p,solo?72:52)}<span class="evage">${ci.age}</span></span><span class="evtx"><b>${esc(ci.name)}</b><small>${esc(ci.rel)}</small></span></button>`}
 /* d9.12: người ngoài gia tộc (sổ nhân vật S.np) hiện bằng thẻ chân dung trong hộp: data.npc là id hoặc mảng id */
 function npPseudo(n){const w=String(n.n).split(' ');return {id:n.id,surname:w[0],given:w.slice(1).join(' ')||w[0],g:n.g,born:n.born,job:n.job||'none',lv:n.lv||0,tam:50,tuoc:0,dead:n.ok===0?(n.dead==null?S.t:n.dead):null,flags:{},_np:1}}
 function npSum(n){const t=n.st;return t?[['trí',t.tri],['võ',t.vo],['mị',t.mi],['EQ',t.eq]].filter(x=>x[1]!=null).map(x=>x[0]+' '+Math.round(x[1])).join(', '):''}
-function npCard(n){const p=npPseudo(n);const a=age(p);return `<div class="evcard solo npcard" title="Người ngoài gia tộc"><span class="evav">${avatarSVG(p,56)}<span class="evage">${a}</span></span><span class="evtx"><b>${esc(n.n)}</b><small>${esc([n.vaiTxt||'',n.nghe||''].filter(Boolean).join(' · '))}</small>${npSum(n)?`<span class="evinc">${esc(npSum(n))}</span>`:''}</span></div>`}
-function evBand(c,data){const ids=[c&&c.id,data&&data.who,data&&data.oid,data&&data.xg,data&&data.oth,data&&data.kid,data&&data.w,data&&data.hp].filter(Boolean);const L=[...new Set(ids)].map(P).filter(p=>p&&(p.dead==null||p.id===(c&&c.id)));const NL=[].concat((data&&data.npc)||[]).map(npGet).filter(Boolean);if(!L.length&&!NL.length)return '';const tot=L.length+NL.length;return `<div class="evband">${L.map(p=>evCard(p,tot===1)).join('')}${NL.map(npCard).join('')}</div>`}
+function npCard(n,solo){const p=npPseudo(n);const a=age(p);const sub=(n.vaiTxt||'người quen');return `<button type="button" class="evcard npcard${solo?' solo':''}" data-ncard="${n.id}" title="Bấm để xem người này${n.nghe?': '+esc(n.nghe):''}"><span class="evav">${avatarSVG(p,solo?72:52)}<span class="evage">${a}</span></span><span class="evtx"><b>${esc(n.n)}</b><small>${esc(sub)}</small></span></button>`}
+/* d9.12.63: MỘT hàm gom mọi người liên quan tới hộp sự kiện (người nhà và NPC), quét cả các khóa dữ liệu chứa id người (who, oid, xg, oth, kid, w, hp, npc, và mọi giá trị là id người hoặc id NPC); tối đa 3 thẻ. Sửa lỗi "hai người mà chỉ hiện một". */
+const ID_P=/^p[0-9a-z]{8,}$/,ID_N=/^n\d+$/;
+function evPeople(c,data,text){const L=[],NL=[],sp=new Set(),sn=new Set();
+  const addP=id=>{if(id==null||sp.has(id))return;const p=P(id);if(p&&(p.dead==null||(c&&p.id===c.id))){sp.add(id);L.push(p)}};
+  const addN=id=>{if(id==null||sn.has(id))return;const n=npGet(id);if(n&&!S.people.some(p=>nameOf(p)===n.n)){sn.add(id);NL.push(n)}}; /* d9.12.63: NPC trùng tên một người trong gia phả (người đã vào nhà) không hiện thành thẻ thứ hai */
+  const any=v=>{if(typeof v!=='string')return;if(ID_N.test(v))addN(v);else if(ID_P.test(v))addP(v)};
+  if(c)addP(c.id);
+  if(data){['who','oid','xg','oth','kid','w','hp'].forEach(k=>addP(data[k]));[].concat(data.npc||[]).forEach(addN);
+    Object.keys(data).forEach(k=>{const v=data[k];if(Array.isArray(v)){if(v.length<=3)v.forEach(any)}else any(v)})}
+  if(text&&typeof text==='string'){const tx=text.replace(/<[^>]*>/g,'');try{alive().forEach(p=>{if(p.id!==(c&&c.id)&&p.given&&p.given.length>=2&&tx.includes(esc(p.given))&&!sp.has(p.id)&&L.length<5)addP(p.id)});if(S.np&&S.np.l)Object.values(S.np.l).forEach(n=>{if(n.n&&n.n.length>=4&&tx.includes(esc(n.n))&&!sn.has(n.id)&&NL.length<5)addN(n.id)})}catch(er){}} /* d9.12.63: người nhắc tên trong lời kể mà không nằm trong dữ liệu vẫn có thẻ */
+  const L4=L.slice(0,5),N4=NL.slice(0,Math.max(0,6-L4.length));return {L:L4,NL:N4}}
+function evBand(c,data,text){const ev=evPeople(c,data,text);const tot=ev.L.length+ev.NL.length;if(!tot)return '';return `<div class="evband${tot>=6?' many':tot>=4?' cmp':''}">${ev.L.map(p=>evCard(p,tot===1)).join('')}${ev.NL.map(n=>npCard(n,tot===1)).join('')}</div>`}
+/* d9.12.63: hồ sơ người ngoài gia tộc (bấm vào thẻ NPC). Không hiện mục tiêu ẩn. */
+function personBrief(id){const p=P(id);if(!p||typeof document==='undefined')return;const old=document.getElementById('npov');if(old)old.remove();const a=age(p);
+  const L=AXES.map(x=>[x,axv(p,x[0])-50]).sort((u,v)=>Math.abs(v[1])-Math.abs(u[1])).slice(0,2).map(([x,dv])=>dv>=0?x[2]:x[3]);
+  const ci=cardInfo(p);const rows=[['Nét nổi bật',L.join(', ').toLowerCase()],['Tài',`trí ${Math.round(p.tri)}, võ ${Math.round(p.vo)}, mị ${Math.round(p.mi)}, EQ ${Math.round(p.eq)}`],['Sức khỏe',Math.round(p.suc)+'/100'],['Tâm trạng',p.tam>=70?'vui vẻ':p.tam>=45?'bình thường':p.tam>=25?'buồn phiền':'chán nản'],ci.incTxt?['Thu nhập',ci.incTxt]:null,p.tuoc?['Tước',TUOC[p.tuoc]]:null,p.away?['Hiện',awayText(p)]:null].filter(Boolean);
+  const d=document.createElement('div');d.id='npov';d.className='npov';
+  d.innerHTML=`<div class="npbox" role="dialog" aria-label="Thông tin sơ bộ"><button type="button" class="npx" aria-label="Đóng">×</button><div class="nphead"><span class="npav">${avatarSVG(p,84)}</span><div><b>${esc(nameOf(p))}</b><small>${a} tuổi · ${esc(relation(p))} · ${esc(jobName(p))}</small></div></div>${rows.map(r=>`<div class="nprow"><span>${esc(r[0])}</span><b>${esc(r[1])}</b></div>`).join('')}<div class="npfull"><button type="button" class="btn" data-npfull="${p.id}">Xem hồ sơ đầy đủ</button></div></div>`;
+  document.body.appendChild(d);const close=()=>{const x=document.getElementById('npov');if(x)x.remove()};
+  d.addEventListener('click',e=>{if(e.target===d||(e.target.closest&&e.target.closest('.npx')))return close();const f=e.target.closest&&e.target.closest('[data-npfull]');if(f){close();try{openSheet(f.dataset.npfull);SH().classList.add('top')}catch(er){console.error(er)}}})}
+function npSheet(id){const n=npGet(id);if(!n||typeof document==='undefined')return;const old=document.getElementById('npov');if(old)old.remove();
+  const p=npPseudo(n);const a=age(p);const rel=n.rel||0;const rt=rel>=45?'thân thiết':rel>=20?'có tình':rel>=0?'bình thường':rel>=-25?'lạnh nhạt':'có hiềm khích';
+  const traits=(typeof G!=='undefined'&&G.npc&&n.sub)?G.npc.desc(n):'';const st=n.st||{};const past=(n.past||[]).slice(-3).map(x=>x.x).filter(Boolean);
+  const rows=[traits?['Nét nổi bật',traits]:null,npSum(n)?['Tài',npSum(n)]:null,['Với nhà mình',rt],n.cond?['Tình cảnh',n.cond]:null,past.length?['Từng trải',past.join('; ')]:null].filter(Boolean);
+  const d=document.createElement('div');d.id='npov';d.className='npov';
+  d.innerHTML=`<div class="npbox" role="dialog" aria-label="Hồ sơ người quen"><button type="button" class="npx" aria-label="Đóng">×</button><div class="nphead"><span class="npav">${avatarSVG(p,84)}</span><div><b>${esc(n.n)}</b><small>${a} tuổi${n.ok===0?' · đã mất':''} · ${esc(n.vaiTxt||'người quen')}</small></div></div>${n.nghe?`<p class="npdesc">${esc(n.nghe)}</p>`:''}${rows.map(r=>`<div class="nprow"><span>${esc(r[0])}</span><b>${esc(r[1])}</b></div>`).join('')}</div>`;
+  document.body.appendChild(d);const close=()=>{const x=document.getElementById('npov');if(x)x.remove()};d.addEventListener('click',e=>{if(e.target===d||(e.target.closest&&e.target.closest('.npx')))close()});}
+if(typeof document!=='undefined')document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-ncard]');if(!b||!S)return;e.preventDefault();e.stopPropagation();try{npSheet(b.dataset.ncard)}catch(er){console.error(er)}},true);
+
 /* d9.12 (luật R3): mọi kết quả làm đổi quan hệ với họ khác/danh gia đều hiện dòng "Quan hệ với X ±n", kể cả sự kiện cũ gọi rel0/rel+= trực tiếp: chụp trước, so sau */
 function relSnap(){try{return relRefs().map(r=>{const I=hinfo(r);return I&&I.obj?[r.key,I.name||'',I.obj.rel||0]:null}).filter(Boolean)}catch(e){return []}}
 function relDiffTxt(a,rtxt){try{if(!a||!a.length)return '';const b=relSnap();const A=new Map(a.map(x=>[x[0],x[2]]));const L=[];b.forEach(x=>{if(!A.has(x[0]))return;const d=Math.round(x[2]-A.get(x[0]));if(d&&x[1]&&!String(rtxt).includes('Quan hệ với '+x[1]))L.push([x[1],d])});return L.length?`<span class="fx">${L.map(([n,d])=>`<span class="${d>0?'up':'down'}">Quan hệ với ${esc(n)} ${d>0?'+':''}${d}</span>`).join('')}</span>`:''}catch(e){return ''}}
@@ -1041,7 +1073,7 @@ function choicePopup(c,eyebrow,title,text,opts,arc,data,evId){
   const pv=false?ok.map((o,i)=>{if(o.go)return null;try{return previewOpt(evId,c.id,data,opts.filter(x=>{try{return !x.c||x.c(c,data)}catch(e){return false}}).indexOf(o))}catch(e){return null}}):[];
   const pvTxt=p=>!p?'':p.f!=null?`<small class="pv">→ ${esc(p.f)}</small>`:`<small class="pv"><span class="up">Thành:</span> ${esc(p.y||'?')}${p.n?` · <span class="down">Bại:</span> ${esc(p.n)}`:''}</small>`;
   const ky=evId&&EVMAP[evId]&&EVMAP[evId].ky;
-  openModal(`${U2()?headerFor(c,(()=>{const id=data&&(data.who||data.oid||data.xg||data.oth);const o=id&&P(id);return o&&o.id!==c.id?o:null})())+kinStrip(c,data):evBand(c,data)}<div class="evbody"><span class="eyebrow">${eyebrow} · ${dateStr(S.t)}</span><h2>${esc(title)}</h2><p>${text}</p>${U2()?relLine(data,c):''}</div>
+  openModal(`${U2()?headerFor(c,(()=>{const ev=evPeople(c,data,text);return ev.L.filter(p=>p.id!==c.id).concat(ev.NL.map(n=>({__npc:1,n})))})())+kinStrip(c,data):evBand(c,data,text)}<div class="evbody"><span class="eyebrow">${eyebrow} · ${dateStr(S.t)}</span><h2>${esc(title)}</h2><p>${text}</p>${U2()?relLine(data,c):''}</div>
    ${kidCase&&helpers.length>1?`<div class="helper"><span>Người ra mặt</span><div class="seg">${helpers.map(p=>`<button class="btn" data-hp="${p.id}" aria-pressed="${p.id===data.hp}">${esc(p.given)} <small>${KIN_N[kin(c,p)]||''}</small></button>`).join('')}</div></div>`:kidCase&&hp&&hp.id!==c.id?`<div class="helper"><span>Người ra mặt: <b>${esc(hp.given)}</b></span></div>`:''}
    <div class="choices">${ok.map((o,i)=>`<button class="btn${U2()?'':' evch'}" data-ch="${i}">${U2()?'':`<span class="chno">${i+1}</span>`}<span class="chl"><strong>${esc(o.l)}${o.h&&hp&&hp.id!==c.id?` <small class="muted">(${esc(hp.given)})</small>`:''}</strong></span>${o.price?(U2()?`<small>${esc(o.price)}</small>`:`<span class="chpr">${esc(o.price)}</span>`):''}${evId&&!isHead(c)&&vioOf(o)?`<small class="down">Phạm gia quy: ${esc(RULES[vioOf(o)].n)}</small>`:''}${pvTxt(pv[i])}${AD&&AD.odds?`<small class="adodds">${probs[i]!=null?`Tỉ lệ thành ${Math.round(probs[i]*100)}%`:'Không gieo xúc xắc'}</small>`:''}</button>`).join('')}</div>
 `,arc,(U2()?'':'ev1 ')+(ky?'ky':''));
@@ -1076,8 +1108,8 @@ function choicePopup(c,eyebrow,title,text,opts,arc,data,evId){
 /* v6.1: kết quả luôn có một câu dẫn trước phần cộng trừ */
 /* v6.7.0-d6: cốt truyện đang chạy có thể nhận một dấu nhỏ từ sự kiện thường vừa xảy ra (ARC.<id>.touch), tối đa mỗi sáu tháng một lần */
 function arcTouch(c,evId){if(!evId||!S.arcs||DRY)return '';const e=EVMAP[evId];if(!e||e.arc||(e.fixed&&!/^(c\d+_|[a-z0-9_]+_[bc]$)/.test(evId)))return '';let out=''; /* d9.10: câu nối cốt truyện cũng đến các bước của chuỗi cũ (c7_b, c14_b...) */
-  for(const id in S.arcs){const a=S.arcs[id],d=ARC[id];if(!a||!a.on||a.end||!d||!d.touch)continue;if(S.t-(a.touchT||-99)<6)continue;
-    let t='';try{t=d.touch(a,e,c)||''}catch(er){}if(t){a.touchT=S.t;out+=`<p class="muted"><i>${t}</i></p>`}}
+  for(const id in S.arcs){const a=S.arcs[id],d=ARC[id];if(!a||!a.on||a.end||!d||!d.touch)continue;if(S.t-(a.touchT||-99)<12)continue; /* d9.12.63: câu nối cách nhau 12 tháng (trước 6), chỉ khi sự kiện liên quan thật, và kèm dòng tác dụng nhìn thấy được */
+    let t='';try{t=d.touch(a,e,c)||''}catch(er){}if(t){a.touchT=S.t;const tt=typeof t==='object'?t.t:t;const fxh=typeof t==='object'&&t.fx?t.fx:'';if(tt)out+=`<p class="muted"><i>${tt}</i></p>${fxh}`}}
   return out}
 function withLead(c,o,r){
   r=r||'';const plain=r.replace(/<span class="fx">[\s\S]*$/,'').replace(/<[^>]+>/g,'').trim();
@@ -1094,7 +1126,7 @@ function pickKin(c,cfg){const L=cfg.list||kinList(c,cfg.filter);
   const row=p=>`<button class="btn pkrow" data-pk="${p.id}">${pview(p,44)}<span><strong>${esc(nameOf(p))} · ${age(p)} tuổi · ${esc(jobName(p))}</strong><small>${esc(relation(p))} · Trí ${Math.floor(p.tri)} · Võ ${Math.floor(p.vo)} · Sức khỏe ${Math.floor(p.suc)} · Mị lực ${Math.floor(p.mi)} · EQ ${Math.floor(p.eq)} · Tâm trạng ${Math.floor(p.tam)}${traitsOf(p).length?' · '+esc(traitsOf(p).slice(0,3).map(x=>TRAITS[x]?TRAITS[x].n:x).join(', ')):''}${p.spouse&&spouseOf(p)&&inClan(spouseOf(p))?' · đã có vợ chồng':''}</small></span></button>`;
   openModal(`${hdrEv(c)}<span class="eyebrow">${cfg.eyebrow||'Việc nhà'} · ${dateStr(S.t)}</span><h2>${esc(cfg.title)}</h2><p>${cfg.text||'Chọn một người trong nhà. Người ấy sẽ thật sự đảm nhận việc này và chịu hậu quả của nó.'}</p><div class="choices">${L.map(row).join('')}<button class="btn ghost" data-pk="">Thôi, không làm</button></div>`);
   M.querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>{const id=b.dataset.pk;if(!id){closeModal();return}const w=P(id);if(!w)return;let r='';try{r=cfg.cb(w)||''}catch(e){console.error(e);r='Mọi chuyện trôi qua.'}
-    if(S.over)return;log(`${nameOf(c)} · ${cfg.title}: ${nameOf(w)}. ${String(r).replace(/<[^>]+>/g,' ').slice(0,160)}`,'gd');infoPopup(c,cfg.eyebrow||'Việc nhà',cfg.title,r,null)})}
+    if(S.over)return;log(`${nameOf(c)} · ${cfg.title}: ${nameOf(w)}. ${String(r).replace(/<[^>]+>/g,' ').slice(0,160)}`,'gd');infoPopup(c,cfg.eyebrow||'Việc nhà',cfg.title,r,null,w)})}
 /* d9.10: việc lớn (BIGS, bigP, bigWait, bigAvail, bigMenu, bigDone) nay ở engine-x.js; engine giữ mảng BIGS dùng chung và các hàm gọi chuyển. */
 const BIGS=[];
 function bigAvail(c){return ENGX.fn.bigAvail(c)}
@@ -1104,10 +1136,10 @@ function bigDone(c){return ENGX.fn.bigDone(c)}
 const pview=(p,sz)=>`<span class="pview" role="button" tabindex="0" data-pcard="${p.id}" title="Bấm để xem đặc điểm">${avatarSVG(p,sz||44)}</span>`;
 function kinStrip(c,data){if(DRY||!data||U2())return '';const ids=[c&&c.id,data.who,data.oid,data.xg,data.oth,data.kid,data.w,data.hp].filter(Boolean);const seen=[...new Set(ids)];const L=seen.map(P).filter(p=>p&&p.dead==null||p&&p.id===(c&&c.id));if(L.length<2)return '';
   return `<div class="kinstrip" aria-label="Người liên quan">${L.map(p=>`<button type="button" class="kincard" data-pcard="${p.id}" title="Bấm để xem đặc điểm">${avatarSVG(p,48)}<span><b>${esc(nameOf(p))}</b><small>${age(p)} tuổi · ${esc(jobName(p))}${p.id!==(c&&c.id)?' · '+esc(relation(p)):''}</small></span></button>`).join('')}</div>`}
-if(typeof document!=='undefined')document.addEventListener('click',e=>{if(U2())return;const b=e.target.closest&&e.target.closest('[data-pcard]');if(!b||!S)return;e.preventDefault();e.stopPropagation();try{openSheet(b.dataset.pcard);SH().classList.add('top')}catch(er){}},true); /* d9.7: hồ sơ mở từ thẻ nổi lên trên hộp sự kiện (trước nằm sau, không xem không tắt được) */
-function infoPopup(c,eyebrow,title,text,after){
+if(typeof document!=='undefined')document.addEventListener('click',e=>{if(U2())return;const b=e.target.closest&&e.target.closest('[data-pcard]');if(!b||!S)return;e.preventDefault();e.stopPropagation();try{if(b.closest('.evband')){personBrief(b.dataset.pcard)}else{openSheet(b.dataset.pcard);SH().classList.add('top')}}catch(er){console.error(er)}},true); /* d9.7: hồ sơ mở từ thẻ nổi lên trên hộp sự kiện (trước nằm sau, không xem không tắt được) */
+function infoPopup(c,eyebrow,title,text,after,other){
   if(DRY)return;
-  openModal(`${c?hdrEv(c):''}<span class="eyebrow">${eyebrow}</span><h2>${esc(title)}</h2><p>${text}</p><div class="choices"><button class="btn primary" data-ok>Tiếp tục</button></div>`);
+  openModal(`${c?hdrEv(c,other):''}<span class="eyebrow">${eyebrow}</span><h2>${esc(title)}</h2><p>${text}</p><div class="choices"><button class="btn primary" data-ok>Tiếp tục</button></div>`);
   M.querySelector('[data-ok]').onclick=()=>{if(after)after();if(S&&!S.over)closeModal()};
 }
 /* v6.7.0-d7.5: nhật ký popup cho kiểm thử: mỗi popup được gọi ra ghi [tháng, id người, loại, id sự kiện, lựa chọn, tuổi, nghề, giới, tự quyết, id người thứ hai]; lựa chọn điền sau khi chọn. Người chơi không thấy. */
@@ -2081,7 +2113,7 @@ const MIDWIFE=[['Tự đỡ ở nhà',0,0.22,1.3],['Bà mụ trong làng',3,0.12
 function birthPopup(m){
   const mw=home().filter(p=>p.job==='mo'&&p.id!==m.id&&!p.away).sort((a,b)=>b.lv-a.lv||b.m-a.m)[0];
   const MW=mw?[[`${mw.given} trong nhà đỡ`,0,Math.max(0.03,0.13-mw.lv*0.03-mw.m/2000),Math.max(0.5,1-mw.lv*0.15)],...MIDWIFE]:MIDWIFE;
-  openModal(`${hdrEv(m)}<span class="eyebrow">Chuyển dạ · ${dateStr(S.t)}</span><h2>Mời ai đỡ đẻ?</h2>
+  openModal(`${hdrEv(m,m.preg&&P(m.preg.father))}<span class="eyebrow">Chuyển dạ · ${dateStr(S.t)}</span><h2>Mời ai đỡ đẻ?</h2>
    <p>${esc(m.given)} trở dạ.${m.preg.twins?' Song thai, ca sinh nguy hiểm hơn.':''} Người đỡ đẻ quyết định nhiều đến sống chết của cả mẹ và con.</p>
    <div class="choices">${MW.map(([n,c,r],i)=>`<button class="btn" data-w="${i}" ${S.money<mm(c/10)*1&&c?'disabled':''}><strong>${n}${c?` · ${money(mm(c/10))}`:''}</strong><small>Rủi ro sinh khó ${(x=>x<0.06?'rất thấp':x<0.12?'thấp':x<0.2?'khá cao':'cao')(r+(age(m)>35?0.08:0)+(m.preg.twins?0.12:0)-(m.preg.care*0.03))}</small></button>`).join('')}</div>`);
   M.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const [n,cost,risk,harmF]=MW[+b.dataset.w];S.money-=cost?mm(cost/10):0;doBirth(m,risk,harmF,n)});
@@ -2123,7 +2155,7 @@ function doBirth(m,risk,harmF,who){
   log(`${nameOf(m)} hạ sinh ${live.map(k=>nameOf(k)).join(' và ')||'nhưng con không qua khỏi'}.${comp?' Ca sinh khó.':''}`,lost.length?'hi':'gd');
   m.preg=null;m.flags.ppUntil=S.t+R(24,36)+(comp?R(4,8):0); /* v6.5.4: cách nhau lâu hơn (trước 10 đến 16 tháng) */if(live.length)overBirth(m);
   if(AUTO_B){AUTO_B=false;if(m.suc<=0)die(m,'mất sau khi sinh');letterAdd(m,`${esc(m.given)} hạ sinh ${live.map(k=>esc(k.given)).join(' và ')||'nhưng con không qua khỏi'}${comp?', ca sinh khó':''}.`,2);setTimeout(nextPopup,0);return}
-  openModal(`${hdrEv(m)}<span class="eyebrow">${comp?'Sinh khó':'Mẹ tròn con vuông'} · ${dateStr(S.t)}</span><h2>Chào đời</h2>
+  openModal(`${hdrEv(m,f)}<span class="eyebrow">${comp?'Sinh khó':'Mẹ tròn con vuông'} · ${dateStr(S.t)}</span><h2>Chào đời</h2>
    <p>${txt} Sức khỏe người mẹ giảm ${harm}, sức khỏe tối đa giảm ${lossHp}.</p>
    ${live.map((k,i)=>`<div class="field"><label for="kn${i}">Tên ${k.g==='nam'?'bé trai':'bé gái'} (họ ${esc(k.surname)})${traitsOf(k).length?` · bẩm sinh: ${traitsOf(k).map(t=>TRAITS[t].n).join(', ')}`:''}</label><input id="kn${i}" maxlength="20" value="${esc(k.given)}"></div>`).join('')}
    <p class="note">Vợ chồng vẫn giữ ý định có thêm con. Muốn dừng thì bấm trong hồ sơ.</p>
@@ -3703,7 +3735,7 @@ function divorcePopup(hd,a,b){const out=b.inLaw?b:a.inLaw?a:b;const stay=out===a
   if(wife&&!G0.length&&!mutual)opts.push({l:'Cứ bỏ vợ dù không có lý do',s:'Trái lệ, cả họ chê trách',f:x=>divorce(out,stay,'trai',false)});
   if(!wife)opts.push({l:`Để ${out.given} rời khỏi gia tộc`,s:'Con rể ra đi, con cái ở lại',f:x=>divorce(out,stay,mutual?'hoaly':'trai',false)});
   opts.push({l:'Thôi, để nghĩ lại',f:x=>'Chưa quyết.'});
-  choicePopup(hd,'Ly hôn',`Ly hôn: ${a.given} và ${b.given}`,`${gtx}${btx}${mutual?' Cả hai đều đã cạn tình, có thể hòa ly.':''} Người rời đi là ${esc(nameOf(out))}, mang theo tiền riêng của mình.`,opts)}
+  choicePopup(hd,'Ly hôn',`Ly hôn: ${a.given} và ${b.given}`,`${gtx}${btx}${mutual?' Cả hai đều đã cạn tình, có thể hòa ly.':''} Người rời đi là ${esc(nameOf(out))}, mang theo tiền riêng của mình.`,opts,null,{who:a.id,oid:b.id})}
 function divorce(out,stay,mode,takeKids){
   sphEnd(out,stay.id,'ly');sphEnd(stay,out.id,'ly');
   out.left='lyhon';out.leftT=S.t;out.spouse=null;stay.spouse=null;stay.love=out.love=null;stay.flags.divorced=S.t;out.flags.divorced=S.t;
@@ -6517,7 +6549,7 @@ const G={totalIncome:()=>totalIncome(),romOk:c=>romOk(c),romP:c=>romP(c),ROM_OPE
   _v633:{HOUSE_DEF,hdef,house,houseName,houseRel,houseAlly,houseKid,vil,vilLog,vd,vAdd,kPow,vFlag,vStance,vilRoutes,vilReady,vilEnd,vilStart,vilQuan,vilFighters,vilYears,vPick,pickWho,KIEN,DUY,KRANK,achieve,cf,vBranch,vFi,VBR,hinfo,hnear,houseRefs,giftNorm,w_wed,w_mo,NEAR_MO,HOUSE_TIER},
   _v62:{willPopup,chunoPopup,debtTick,expelPopup2,doExpel,tumatPopup,oanPopup,tranhviPopup,ruleSlots,ruleWhy,addRule,dropRule,keugoiPopup,thiencoPopup,gateCheck,ttlPopup,wishPick,wishScore,obey,ctxOk,CTX,v62Month,v62Year,loveTick,outsTick,divorcePopup,vuotsinhPopup,rulepropPopup,ruleforcePopup,rulechgPopup,pieceF,jobDig,minDig}};
 /* v6.4.1.1: cổng riêng cho trang admin (admin.js). Bản thường không dùng tới */
-G._adm={xYear,xfn:ENGX.fn,tradeProbe:(c,tr)=>tradeReturn(c,tr,true),tradeRoutes:()=>routes(),tradePrice:g=>priceOf(g),wishPick,meets,setJob,JH_G,bigAvail:c=>bigAvail(c),bigDone:c=>bigDone(c),bigStart:(c,id)=>{const b=BIGS.find(x=>x.id===id);c.viec={id:b.id,start:S.t,end:S.t};},gbApply,avatarSVG,deathPopup,clanSupport,metaImport,phamSeats,letterLv,letterAdd,letterDue,letterLines,startScreen,historyMenu,personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
+G.brief=personBrief;G._adm={brief:personBrief,xYear,xfn:ENGX.fn,tradeProbe:(c,tr)=>tradeReturn(c,tr,true),tradeRoutes:()=>routes(),tradePrice:g=>priceOf(g),wishPick,meets,setJob,JH_G,bigAvail:c=>bigAvail(c),bigDone:c=>bigDone(c),bigStart:(c,id)=>{const b=BIGS.find(x=>x.id===id);c.viec={id:b.id,start:S.t,end:S.t};},gbApply,avatarSVG,deathPopup,clanSupport,metaImport,phamSeats,letterLv,letterAdd,letterDue,letterLines,startScreen,historyMenu,personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
   getSel:()=>sel,setSel:v=>{sel=v},running:()=>running,speed:()=>speed,setRun:(r,sp)=>{running=!!r;if(sp)speed=sp;renderTop()},
   setS:st=>{S=st;sel=P(sel)?sel:S.head;O.hidden=true;M.innerHTML='';render();nextPopup()},page:()=>page,ensurePersona};
 {const X={get S(){return S},R,chance,log,alive,inClan,P,head,later,enqueue,mm,nameOf,shuf,pick,clamp,provN,qtLog,age,fx,esc,money,dateStr,openModal,closeModal,infoPopup,inKinh,BIGS,get M(){return M},get EVENTS(){return EVENTS},get EVMAP(){return EVMAP},EC:{mainHH,alive,inClan,isCtrl,esc,HH,P,RULES,chance,nextPopup,money,mm,enqueue,head,G,addRel,leaveSeat,setJob,addStat,log,nameOf,choicePopup,dOf,tuocCheck,cf,landDelta,age,WP,openModal,metaEnd,qtLog,infoPopup,gbLine,finishGame,tierNow,clamp,memSet,hdrEv,TIERS,famLine,closeModal,projOn,inheritTitle,inMain,fmt,fundAdd,spouseOf,gameOver,usU,usSteps,bar,US_N,shuf,usActors,R,clanSupport,court,US_COST,qtOf,qtSentence,qtAdd,kType,tmOf,home,homeP,PROV,US_START,usTarget,pmOpen,ARMY,thanHolder},yearly:ENGX.yearly,fn:ENGX.fn};(window.ENGX||[]).forEach(f=>{try{f(X)}catch(e){console.error(e)}});Object.assign(G._adm,ENGX.fn)} /* d9.10: nạp engine-x.js */

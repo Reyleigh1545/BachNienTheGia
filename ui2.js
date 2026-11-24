@@ -7,9 +7,9 @@
 (function(){
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function card(i){if(!i)return '';
-  return `<button type="button" class="pcard ${i.g==='nữ'?'f':'m'}${i.dead?' x':''}" data-pcard="${i.id}" title="Bấm để xem hồ sơ"><span class="pa">${i.dead?'†':i.age}</span><span class="pav">${i.av}</span><b>${esc(i.name)}</b>${i.tuoc?`<em class="ptuoc">${esc(i.tuoc)}</em>`:''}<small>${esc(i.sub)}</small>${i.inc!=null?`<span class="pinc ${i.inc<0?'dn':'up'}">${esc(i.incTxt)}</span>`:''}</button>`}
+  return `<button type="button" class="pcard ${i.g==='nữ'?'f':'m'}${i.dead?' x':''}${i.np?' np':''}" ${i.np?'data-ncard':'data-pcard'}="${i.id}" title="${i.np?('Bấm để xem người này'+(i.title?': '+esc(i.title):'')):'Bấm để xem hồ sơ'}"><span class="pa">${i.dead?'†':i.age}</span><span class="pav">${i.av}</span><b>${esc(i.name)}</b><small>${esc(i.np?i.sub:(i.rel||i.sub))}</small></button>`}
 const U={
- header(me,other){return `<div class="pbanner"><div class="pcards">${card(me)}${other?card(other):''}</div></div>`},
+ header(me,others){const L=[].concat(others||[]).filter(Boolean);const n=L.length+1;return `<div class="pbanner"><div class="pcards${n>=6?' many':n>=4?' cmp':''}">${card(me)}${L.map(card).join('')}</div></div>`},
  /* kết quả: đổi các dòng chỉ số thành thanh */
  result(M,id){const G=window.BNTG;if(!G||!M)return;const c=G.P&&G.P(id);const fxs=[...M.querySelectorAll('.result .fx')];if(!fxs.length||!c)return;fxs.forEach(fx=>{
   const KEY={'Trí tuệ':'tri','Võ lực':'vo','Sức khỏe':'suc','Mị lực':'mi','EQ':'eq','Tâm trạng':'tam'};const COL={tri:'#2f7258',vo:'#946f1f',suc:'#a5342a',mi:'#7a4bb0',eq:'#2f6a86',tam:'#3e6a9a'};
@@ -52,5 +52,5 @@ const U={
 window.UI2=U;
 /* bấm thẻ chân dung: mở hồ sơ nhân vật */
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-pcard]');if(!b)return;e.preventDefault();e.stopPropagation();
-  const A=window.BNTG&&window.BNTG._adm;if(A&&A.openSheet)A.openSheet(b.dataset.pcard)},true);
+  const A=window.BNTG&&window.BNTG._adm;if(b.closest('.pcards')&&A&&A.brief)return A.brief(b.dataset.pcard);if(A&&A.openSheet)A.openSheet(b.dataset.pcard)},true);
 })();
