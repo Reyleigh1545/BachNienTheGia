@@ -434,7 +434,7 @@ function advance(){
   v61Month();
   v62Month();
   // tước vị: kỳ ngộ cực hiếm, chỉ tăng nhờ cơ duyên gia tộc
-  const fl=famLuck();if(!((S.kyT&&S.kyT.tuoc_ky_ngo)>S.t)&&chance(0.0001*(1+Math.max(0,fl-50)/8))){const cand=alive().filter(p=>age(p)>=20&&!p.away);if(cand.length)enqueue('ev',pick(cand).id,{ev:'tuoc_ky_ngo'})}
+  const fl=famLuck();if(!((S.kyT&&S.kyT.tuoc_ky_ngo)>S.t)&&chance(0.0001*(1+Math.max(0,fl-50)/8))){const cand=alive().filter(p=>age(p)>=20&&!p.away);if(cand.length){enqueue('ev',pick(cand).id,{ev:'tuoc_ky_ngo'});{const te=EVMAP.tuoc_ky_ngo;if(te)kyMark(te)}}} /* d.1.5.35: ghi chu kỳ 100 đến 1000 năm ngay khi xếp hàng (save năm 47: kỳ ngộ ngàn năm ra hai lần trong 5 năm vì việc xếp hàng thẳng không qua commitEv nên không ghi kyT) */
   // quan lại
   alive().forEach(c=>{if(c.job==='quan'&&!c.away&&chance((100-c.liem)/100*0.006*(1+c.lv*0.1)))enqueue('ev',c.id,{ev:'q_hactoi'})});
   // thăng tiến khi đủ điều kiện
