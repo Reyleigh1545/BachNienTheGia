@@ -1120,6 +1120,7 @@ function showPopup(it,c){
   if(it.kind==='ev'&&it.data&&it.data.xg){const p=P(it.data.xg);if(p&&p.outSp){if(it.ev==='v62_xg_bi_bat_nat'){p.outSp.coi=1;p.outSp.nhin=1}if(it.ev==='v62_xg_ly_hon_ve')p.outSp.back=1}}
   switch(it.kind){
     case 'ev':{const ev=EVMAP[it.ev];if(!ev){skip();return}const d=it.data||{};
+      if(d.npc&&!d._force&&!/^np_(qua_doi|bao_an|bao_thu)|nho_on|gio|tang/.test(it.ev)){try{const nn=G.tie.get(d.npc);if(nn&&(nn.ok===0||nn.dead!=null)){skip();return}}catch(er){}} /* d.1.5.22 (chủ dự án 25/11: người đã mất vẫn tham gia sự kiện): NPC chết giữa lúc xếp hàng và lúc hiện hộp thì bỏ sự kiện */
       if(ev.job&&!d._force&&!jobMatch(ev,c)){skip();return} /* d9.12.68: nghề đổi giữa lúc xếp hàng và lúc hiện hộp */
       {const rc=FIXCD[it.ev];if(rc&&!d._force){const k1='fcd|'+it.ev,k2=k1+'|'+c.id;if((S.cool[k1]||-1e9)>S.t||(S.cool[k2]||-1e9)>S.t){if(d.npc&&(d._dly||0)<4)later(c,it.ev,12,Object.assign({},d,{_dly:(d._dly||0)+1}));skip();return}S.cool[k1]=S.t+rc[0];S.cool[k2]=S.t+rc[1]}} /* d9.12.69: chống lặp cho việc cố định hay lặp (save họ Công Tôn: tie_an_nhan_tra 10 lần, 2 lần cùng tháng; w63_duong_xa cách 3 tháng; tc_cuop_duong cách 4 tháng): [tháng giữa hai lần trong cả nhà, tháng trên cùng một người] */
       if(it.ev==='bat_linh'&&(c.away||c.job==='quan_ngu')){skip();return}
