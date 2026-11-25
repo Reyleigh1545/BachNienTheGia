@@ -23,14 +23,14 @@ function ensure(c,o){o=o||{};const s=root();
   const ti=o.tier!=null?o.tier:Math.max(0,Math.min(6,G.tierIdx()+R(-1,1)));
   const base=35+ti*4;const rs=()=>clamp(Math.round(base+R(-12,28)),20,100);
   n.st=Object.assign({tri:rs(),vo:rs(),mi:rs(),eq:rs()},o.st||{});
-  if(o.main)n.st[o.main]=Math.max(n.st[o.main],R(70,92));
+  if(o.main)n.st[o.main]=Math.max(n.st[o.main]||0,R(70,92)); /* d.1.5.24: kỹ năng chưa có (khau, muu…) không thành NaN */
   n.vai=[].concat(o.vai||'quen');n.vaiTxt=o.vaiTxt||n.vai.map(v=>VAI[v]||v).join(', ');n.nghe=o.nghe||NG[n.vai[0]]||'';n.job=o.job||null;n.tier=ti;n.key=o.key||null;
   n.rel=o.rel!=null?o.rel:10;n.on=0;n.oan=0;n.ky=[];n.loc=(s.loc&&s.loc.p)||null;n.src=c?c.id:null;
   if(o.why)note(n,o.why);
   if(G.npc)G.npc.deepen(n,o); /* d9.13: NPC có quan hệ thì có tính cách, kỹ năng, mục tiêu ẩn, quá khứ (engine-npc.js) */
   /* d9.12.65: nơi ở thật (nơi người gặp đang đứng), người hay đi lại, và họ thật (danh gia gần đó) */
   n.loc=o.loc||(G.placeOf?G.placeOf(c):n.loc);n.wander=!!o.wander||n.vai.some(v=>['thuong_nhan','cao_nhan','an_si'].includes(v))||/lái buôn|thương nhân|đi dạo|lưu lạc|khách lạ|đạo sĩ|kiếm khách|thầy tướng|hát rong|người chạy thư|ngư phủ già|lão nhân|ẩn sĩ/.test(n.nghe||'');
-  if(!o.noHouse&&G.houseFor&&((n.tier||0)>=3||(['quy_nhan','thuong_nhan'].some(v=>n.vai.includes(v))&&(n.tier||0)>=2))&&chance(0.55)){const hid=G.houseFor(n);if(hid){n.house=hid;n.hn=G.houseSur(hid)+' Gia';try{const H=S().w.houses[hid];if(H){H.np=H.np||[];H.np.push(n.id)}}catch(e){}n.nghe=(n.nghe?n.nghe+', ':'')+'người của '+n.hn}}
+  if(!o.noHouse&&G.houseFor&&((n.tier||0)>=3||(['quy_nhan','thuong_nhan'].some(v=>n.vai.includes(v))&&(n.tier||0)>=2))&&chance(0.55)){const hid=G.houseFor(n);if(hid){n.house=hid;n.hn=G.houseSur(hid)+' Gia';{const hs=G.houseSur(hid);const mt=String(n.n||'').match(/^(Âu Dương|Gia Cát|Tư Mã|Thượng Quan|Công Tôn|Nam Cung|Hoàng Phủ|Uất Trì|\S+) (.+)$/);if(mt&&mt[1]!==hs)n.n=hs+' '+mt[2]} /* d.1.5.23: người của họ nào thì mang họ ấy (ảnh 25/11: Công Tôn Thế Hãn, người của Nguyễn Gia) */try{const H=S().w.houses[hid];if(H){H.np=H.np||[];H.np.push(n.id)}}catch(e){}n.nghe=(n.nghe?n.nghe+', ':'')+'người của '+n.hn}}
   /* d9.12.67: sổ họ NPC: danh gia thật (h:…) hoặc họ cùng tên, cùng tỉnh, từ bậc 2 (f:…); thành viên và con cái cùng một họ */
   try{const sur=String(n.n).split(' ')[0];const fid=n.house?('h:'+n.house):((n.tier||0)>=2?('f:'+sur+':'+(n.loc||'')):null);if(fid){n.fid=fid;const R0=(s.np.hs=s.np.hs||{});const F=R0[fid]||(R0[fid]={sur,loc:n.loc,mem:[]});F.mem.push(n.id)}}catch(e){}
   return n}
@@ -76,13 +76,13 @@ const npStable=(n,minTier)=>!((n.sa!=null&&S().t-n.sa<72)||((n.tier!=null?n.tier
 function tieYear(){const s=root();s.rg.yc=0;
   const L=Object.values(s.np.l).filter(n=>n.ok!==0&&n.vai&&n.vai.length);
   for(const n of L){const a=G.np.age(n);if(a<14)continue;
-    for(const v of n.vai){const T=TIEACT[v];if(!T)continue;if(s.rg.yc>=2)break;
+    for(const v of n.vai){const T=TIEACT[v];if(!T)continue;if(s.rg.yc>=1)break;
       if(v==='doi_thu'?(n.rel>-10&&(n.oan||0)<10):(n.rel||0)<T[2])continue;
       let why=null;if(v==='quy_nhan'||v==='ket_nghia'){why=trouble();if(!why&&!((n.on||0)>0))continue;if(!npStable(n,v==='quy_nhan'?2:1))continue}
       if(chance(T[0]*0.4)){const tgt=G.npc&&G.npc.reach?G.npc.reach(n):null;if(!tgt)continue; /* d9.12.65: chỉ tìm tới người đang ở cùng nơi */
         if(!X.EVMAP[T[1]])continue;
         if(((s.evLast&&s.evLast[T[1]])||-999)>s.t-12)continue; /* d9.12.63: cùng một sự kiện người quen không ra hai lần trong 12 tháng */
-        if((s.cool&&(s.cool[T[1]]||-1e9)>s.t&&false))continue;
+        if((s.cool&&(s.cool['fcd|'+T[1]]||-1e9)>s.t)||(s.cool&&(s.cool['fcd|'+T[1]+'|'+tgt.id]||-1e9)>s.t))continue; /* d.1.5.24: việc đang trong thời gian chờ thì không xếp hàng nữa (trước đó xếp rồi bị chặn, 88 lần trong 72 năm) */
         enqueue('ev',tgt.id,{ev:T[1],data:{npc:n.id,why}});s.rg.yc++}}}
   rgFamilyYear()}
 /* anh chị em giúp nhau: người khó khăn, người khác trong nhà dư dả và có tình thì giúp; không tình thì làm ngơ và sinh oán */

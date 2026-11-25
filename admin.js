@@ -73,10 +73,10 @@ function restore(i){const s=snaps[i];if(!s)return;stopPlay();AD().setS(structure
 
 /* ---------- save ---------- */
 function exportSave(){const S=G().S();if(!S)return;const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:'application/json'}));a.download=`bntg-${S.surname||'save'}-thang${S.t}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
-function importSave(file){const r=new FileReader();r.onload=()=>{try{const st=AD().migrate(JSON.parse(r.result));st.slot=st.slot||1;stopPlay();AD().setS(st);AD().save();msg('Đã nạp save.')}catch(e){msg('Không đọc được tệp: '+e.message)}};r.readAsText(file)}
+  a.href=URL.createObjectURL(new Blob([BNSER.enc(S)],{type:'application/json'}));a.download=`bntg-${S.surname||'save'}-thang${S.t}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function importSave(file){const r=new FileReader();r.onload=()=>{try{const st=AD().migrate(BNSER.dec(r.result));st.slot=st.slot||1;stopPlay();AD().setS(st);AD().save();msg('Đã nạp save.')}catch(e){msg('Không đọc được tệp: '+e.message)}};r.readAsText(file)}
 function normalSlots(){const out=[];for(let n=1;n<=9;n++){const t=localStorage.getItem('bnthegia.v6.slot'+n);if(t)out.push(n)}return out}
-function loadNormal(n){try{const st=AD().migrate(JSON.parse(localStorage.getItem('bnthegia.v6.slot'+n)));st.slot=n;stopPlay();AD().setS(st);AD().save();msg(`Đã chép save ô ${n} của bản thường sang admin. Save gốc không bị đụng tới.`)}catch(e){msg('Không nạp được: '+e.message)}}
+function loadNormal(n){try{const st=AD().migrate(BNSER.dec(localStorage.getItem('bnthegia.v6.slot'+n)));st.slot=n;stopPlay();AD().setS(st);AD().save();msg(`Đã chép save ô ${n} của bản thường sang admin. Save gốc không bị đụng tới.`)}catch(e){msg('Không nạp được: '+e.message)}}
 
 /* ---------- kiểm tra bất biến ---------- */
 function audit(){const g=G(),S=g.S();if(!S)return [];const out=[];const P=g.P;const ST=['tri','vo','suc','mi','eq','tam','duyen','fame','purse','m'];

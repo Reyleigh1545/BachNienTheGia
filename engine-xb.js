@@ -363,7 +363,7 @@ function releaseSeat(c,noVac){const S=X.S;
   if(old&&S.off&&S.off[old]&&S.off[old].holder===c.id){const o=S.off[old];o.holder=null;if(!noVac){o.vac=true;o.vacT=S.t;o.why='chuyển sang chức khác'}}
 }
 function relation(c){const S=X.S;
-  if(c._cand&&!S.people.some(p=>p.id===c.id))return 'Người được mai mối'; /* 7.0.0-d.1.5.17: người bà mối đưa */
+  if(c._cand&&!S.people.some(p=>p.id===c.id))return c._relTxt||'Người được mai mối'; /* 7.0.0-d.1.5.17: người bà mối đưa */
   if(c.left)return ({vaocung:'Đã vào cung',xuatgia:'Đã xuất giá',expelled:'Bị trục xuất',lyhon:'Đã ly hôn, rời đi',ban:'Đã bị bán đi',botron:'Bỏ nhà ra đi',tumat:'Bị từ mặt',theome:'Theo mẹ',theochong:'Theo chồng rời đi',luuvong:'Lưu vong'})[c.left]||'Đã rời gia tộc';
   if(c.ngoai)return 'Cháu ngoại';
   if(c.id===S.head)return 'Gia chủ';
@@ -581,6 +581,9 @@ function vilCard(){const S=X.S;
    ${v.hist.length?`<p class="note" style="margin-top:8px"><b>Diễn biến gần đây:</b> ${v.hist.slice(0,4).map(h=>esc(h.m)).join(' · ')}</p>`:''}`}</section>`}
 function evLvOf(e){if(e.lv!=null)return e.lv;if(window.EVLV&&window.EVLV[e.id]!=null)return window.EVLV[e.id]; /* d9.10: events-lv.js (tools/lvgen.js) */const M=e.meta||{};if(e.arc||M.tr==='arc')return 3;if(['rare','very_rare','unique'].includes(M.ra))return 3;if(M.ra==='uncommon'||e.ky||M.tr==='encounter'||e.fixed||M.tr==='fixed')return 2;return 1}
 function evCard(p,solo){const ci=cardInfo(p);return `<button type="button" class="evcard${solo?' solo':''} ${p.g==='nữ'?'fem':'mal'}" data-pcard="${p.id}" title="Bấm để xem thông tin"><span class="evav">${avatarSVG(p,solo?72:52)}<span class="evage">${ci.age}</span></span><span class="evtx"><b>${esc(ci.name)}</b><small>${esc(ci.rel)}</small></span></button>`}
+function nameIn(tx,p){const g=esc(p.given);const cap=w=>w&&/^\p{Lu}/u.test(w);const stop=/^(Nhà|Ông|Bà|Cô|Cậu|Anh|Chị|Em|Thầy|Cụ|Lão|Hôm|Khi|Nếu|Mà|Và|Còn|Rồi|Thì|Nhưng|Một|Hai|Cả|Con|Chú|Bác|Dì|Cháu|Vợ|Chồng|Cha|Mẹ)$/;let i=-1;
+  while((i=tx.indexOf(g,i+1))>=0){if(i>0&&/\p{L}/u.test(tx[i-1]))continue;const aft=tx[i+g.length];if(aft&&/\p{L}/u.test(aft))continue;const pre=tx.slice(0,i).match(/(\S+)\s$/);const post=tx.slice(i+g.length).match(/^\s(\S+)/);const pw=pre&&pre[1].replace(/[^\p{L}]/gu,'');const nw=post&&post[1].replace(/[^\p{L}]/gu,'');
+    const hasSur=p.surname&&tx.slice(0,i).trimEnd().endsWith(p.surname);if(!hasSur&&pw&&cap(pw)&&pw!==p.surname&&!stop.test(pw))continue;if(nw&&cap(nw)&&!stop.test(nw))continue;return true}return false} /* d.1.5.23 (ảnh 25/11: 'Phạm Trung Kiên' làm hiện thẻ Hàn Trung): tên chỉ tính khi đứng riêng, không nằm giữa một họ tên khác */
 function evPeople(c,data,text){const S=X.S;const L=[],NL=[],sp=new Set(),sn=new Set();
   const addP=id=>{if(id==null||sp.has(id))return;const p=P(id);if(p&&(p.dead==null||(c&&p.id===c.id))){sp.add(id);L.push(p)}};
   const addN=(id,explicit)=>{if(id==null||sn.has(id))return;const n=npGet(id);if(n&&(n.ok!==0||explicit)&&!S.people.some(p=>nameOf(p)===n.n)){sn.add(id);NL.push(n)}}; /* d9.12.68: NPC đã mất chỉ có thẻ khi dữ liệu sự kiện nêu đích danh */ /* d9.12.63: NPC trùng tên một người trong gia phả (người đã vào nhà) không hiện thành thẻ thứ hai */
@@ -588,7 +591,7 @@ function evPeople(c,data,text){const S=X.S;const L=[],NL=[],sp=new Set(),sn=new 
   if(c)addP(c.id);
   if(data){['who','oid','xg','oth','kid','w','hp'].forEach(k=>addP(data[k]));[].concat(data.npc||[]).forEach(i=>addN(i,true));
     Object.keys(data).forEach(k=>{const v=data[k];if(Array.isArray(v)){if(v.length<=3)v.forEach(any)}else any(v)})}
-  if(text&&typeof text==='string'){const tx=text.replace(/<[^>]*>/g,'');try{alive().forEach(p=>{if(p.id!==(c&&c.id)&&p.given&&p.given.length>=2&&tx.includes(esc(p.given))&&!sp.has(p.id)&&L.length<5)addP(p.id)});if(S.np&&S.np.l)Object.values(S.np.l).forEach(n=>{if(n.n&&n.n.length>=4&&tx.includes(esc(n.n))&&!sn.has(n.id)&&NL.length<5)addN(n.id)})}catch(er){}} /* d9.12.63: người nhắc tên trong lời kể mà không nằm trong dữ liệu vẫn có thẻ */
+  if(text&&typeof text==='string'){const tx=text.replace(/<[^>]*>/g,'');try{alive().forEach(p=>{if(p.id!==(c&&c.id)&&p.given&&p.given.length>=2&&nameIn(tx,p)&&!sp.has(p.id)&&L.length<5)addP(p.id)});if(S.np&&S.np.l)Object.values(S.np.l).forEach(n=>{if(n.n&&n.n.length>=4&&tx.includes(esc(n.n))&&!sn.has(n.id)&&NL.length<5)addN(n.id)})}catch(er){}} /* d9.12.63: người nhắc tên trong lời kể mà không nằm trong dữ liệu vẫn có thẻ */
   const L4=L.slice(0,5),N4=NL.slice(0,Math.max(0,6-L4.length));return {L:L4,NL:N4}}
 function evBand(c,data,text){const ev=evPeople(c,data,text);const tot=ev.L.length+ev.NL.length;if(!tot)return '';return `<div class="evband${tot>=6?' many':tot>=4?' cmp':''}">${ev.L.map(p=>evCard(p,tot===1)).join('')}${ev.NL.map(n=>npCard(n,tot===1)).join('')}</div>`}
 function evSrc(e){const f=v=>typeof v==='function'?v.toString():Array.isArray(v)?v.map(o=>Object.values(o).map(x=>typeof x==='function'?x.toString():String(x)).join(' ')).join(' '):String(v||'');return f(e.t)+' '+f(e.x)+' '+f(e.o)}

@@ -4,7 +4,7 @@
 // Ghi chú: save không lưu chỉ số từng thời điểm, nên chỉ số hiện hiện là lúc cuối ván; tuổi, nghề, bậc nghề, gia thế (quỹ nhà) thì theo năm xảy ra.
 const fs=require('fs'),path=require('path'),cp=require('child_process');
 const [,,SAVE,OUT]=process.argv;if(!SAVE||!OUT){console.log('dùng: node tools/evreport.js <save.json> <out.md>');process.exit(1)}
-const save=JSON.parse(fs.readFileSync(SAVE,'utf8'));
+const save=(global.window=global.window||{},require("../save-ser.js"),window.BNSER.dec(fs.readFileSync(SAVE,'utf8')));
 const tmp=path.join(process.env.TEMP||'.','evprobe_'+Date.now()+'.js');
 const ids=[...new Set((save.evl||[]).filter(e=>e[2]==='ev'&&e[3]).map(e=>e[3]))];
 const firstP={};(save.evl||[]).forEach(e=>{if(e[2]==='ev'&&e[3]&&!firstP[e[3]])firstP[e[3]]=e[1]});

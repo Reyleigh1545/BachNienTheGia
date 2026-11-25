@@ -2,7 +2,7 @@
    evrules.json sinh bằng admin page: BNTG._adm.EVENTS() -> [id, age, g, job, fixed, arc, title]; sinh lại khi có thêm sự kiện. */
 const fs=require('fs'),path=require('path');
 const f=process.argv[2];if(!f){console.log('dùng: node tools/evcheck-save.js <save.json>');process.exit(1)}
-const s=JSON.parse(fs.readFileSync(f,'utf8'));const R=Object.fromEntries(JSON.parse(fs.readFileSync(path.join(__dirname,'evrules.json'),'utf8')).map(x=>[x[0],x]));
+const s=(global.window=global.window||{},require("../save-ser.js"),window.BNSER.dec(fs.readFileSync(f,'utf8')));const R=Object.fromEntries(JSON.parse(fs.readFileSync(path.join(__dirname,'evrules.json'),'utf8')).map(x=>[x[0],x]));
 const byp=Object.fromEntries(s.people.map(p=>[p.id,p]));const L=s.evl||[];const out=[];const last={};const per={};
 if(!L.length){console.log('Save này không có nhật ký popup (chạy bản d7.5 trở lên).');process.exit(0)}
 for(const e of L){const [t,pid,kind,ev,opt,ag,job,g,auto,o2]=e;const p=byp[pid];const x=ev&&R[ev];const y=Math.floor(t/12);const nm=p?p.surname+' '+p.given:'#'+pid;
