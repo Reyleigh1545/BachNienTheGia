@@ -3,7 +3,7 @@
    Hai phần: (1) GATE: các sự kiện học nghề chỉ ra cho người đang theo đúng nghề hoặc trẻ 12 đến 16 tuổi chưa đi làm; (2) PJ: gắn nghề (e.pj) cho sự kiện, để engine (fx, khóa 'm') cộng thông thạo vào đúng nghề: người đang theo nghề đó thì vào c.m, người khác thì cất vào c.pre[nghề] (setJob lấy ra làm vốn khi bắt đầu nghề đó). */
 window.EVPATCH=window.EVPATCH||[];
 window.EVPATCH.push(function(E,G){
-const find=id=>E.find(e=>e.id===id);const {fx,esc}=G;
+const find=id=>E.find(e=>e.id===id);const {fx,esc,R}=G;
 const ag=p=>G.age(p);
 const learnOK=P=>c=>c.job===P||(c.job==='chu'&&c.bizFrom===P)||(ag(c)>=12&&ag(c)<=16&&c.job==='none'&&!c.away);
 /* GATE: học nghề, chỉ người theo nghề đó hoặc trẻ 12 đến 16 tuổi chưa đi làm */
@@ -30,6 +30,23 @@ for(const id of ['kn_12','kn_74']){const e=find(id);if(!e||e.__g1528c)continue;e
     return [{l:`Đút lót để được chức ${pn(tl)}${bk?`, nhờ ${bk.n} chống lưng`:''} (${G.fmtMoney(fee)})`,vio:'trugian',c:()=>G.money()>=fee,ax:{thanh:-2,tv:1},
         f:cc=>{G.S().money-=fee;if(G.chance(win))return 'Chức về tay. Nhưng sổ sách của kẻ nhận bạc có tên mình.'+fx(cc,{lv:1,cor:12});return 'Tiền mất, chức vào tay người trả cao hơn.'+fx(cc,{cor:6,tam:-8})}},
       {l:'Không màng',ax:{thanh:1,tiet:1},f:cc=>'Giữ được tiếng sạch.'+fx(cc,{liem:3})}]}}}
+/* THẺ NGƯỜI THƯƠNG Ở MỌI BƯỚC TÌNH DUYÊN (chủ dự án 25/11: "thanh mai trúc mã, rồi cái lương duyên gì đó mà người ấy bảo mình về thưa chuyện hoặc hứa hẹn thành công vẫn không có thẻ"): người sắp chọn phải có tên và thẻ bấm xem được; người ấy là chính người sẽ cưới (c.flags.lvP). */
+{const lift={tinh_thanh_mai:()=>G.tierIdx()*3,tinh_tieu_thu:()=>30,tinh_tieu_thu_b:()=>30,tinh_tieu_thu_c:()=>30};
+  const ensureLv=(c,lf)=>{let p=c.flags.lvP;if(p&&p.given&&G.S().t-p._t<=60){p._t=G.S().t;return p}
+    p=G.mkMatch(c,{age:Math.max(16,ag(c)+(Math.random()<0.5?-2:1)),up:Math.max(-1,Math.min(3.5,(lf-G.tierIdx()*4)/8)),story:lf>=30?1:0});p._t=G.S().t;c.flags.lvP=p;return p};
+  const sub={ /* câu mở của từng bước, thay bằng tên người ấy */
+    tinh_thanh_mai:(t,p)=>t.replace('Người bạn chơi từ thuở nhỏ',esc(G.nameOf(p))+', người bạn chơi từ thuở nhỏ'),
+    tinh_tieu_thu:(t,p)=>t.replace(/^(Tiểu thư|Công tử)/,'$1 '+esc(G.nameOf(p))),
+    tinh_tieu_thu_b:(t,p)=>t.replace(/^Gia đình (nàng|chàng)/,'Gia đình '+esc(p.given)),
+    tinh_tieu_thu_c:(t,p)=>t.replace(/bên kia/g,'nhà '+esc(p.given))};
+  for(const id in lift){const e=find(id);if(!e||e.__g1528e)continue;e.__g1528e=1;const x0=e.x;
+    e.x=function(c,d){d=d||{};const t=typeof x0==='function'?x0.call(this,c,d):x0;const p=ensureLv(c,lift[id]());G.candReg(p,'Người thương');d.who=p.id;return sub[id](String(t),p)}}
+  /* chuỗi Thương Tâm Từ: tt_b, tt_c, tt_d (người ấy là Thương gia, đã có tên trong lời kể) */
+  const TH=c=>c.g==='nam'?{surname:'Thương',given:'Tâm Từ',main:'mi',traits:['khuynhthanh','phongnha'],min:{mi:84,tri:74,eq:70},job:'noi'}:{surname:'Thương',given:'Cảnh Hành',main:'tri',traits:['thongminh','muusi'],min:{tri:84,vo:70,eq:70,mi:72},job:'hiep',lv:1};
+  for(const id of ['tt_b','tt_c','tt_d']){const e=find(id);if(!e||e.__g1528e)continue;e.__g1528e=1;const x0=e.x;
+    e.x=function(c,d){d=d||{};const t=typeof x0==='function'?x0.call(this,c,d):x0;let p=c.flags.thP;if(!(p&&p.given))p=c.flags.thP=G.mkMatch(c,Object.assign({age:Math.max(16,ag(c)+R(-3,2)),up:2,story:1},TH(c)));
+      p.given=TH(c).given;p.surname='Thương';G.candReg(p,'Người thương');d.who=p.id;return t}}
+}
 /* t_g_hoc_nghe: bản gốc cất vốn học việc ở c.pre.tho (thợ thủ công), phải là thợ rèn (tho_ren) */
 {const e=find('t_g_hoc_nghe');if(e&&!e.__g1528b){e.__g1528b=1;const o0=e.o;
   e.o=function(c,d){const L=(typeof o0==='function'?o0.call(this,c,d):o0)||[];
