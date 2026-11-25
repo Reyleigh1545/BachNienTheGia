@@ -3,7 +3,7 @@
    Hai phần: (1) GATE: các sự kiện học nghề chỉ ra cho người đang theo đúng nghề hoặc trẻ 12 đến 16 tuổi chưa đi làm; (2) PJ: gắn nghề (e.pj) cho sự kiện, để engine (fx, khóa 'm') cộng thông thạo vào đúng nghề: người đang theo nghề đó thì vào c.m, người khác thì cất vào c.pre[nghề] (setJob lấy ra làm vốn khi bắt đầu nghề đó). */
 window.EVPATCH=window.EVPATCH||[];
 window.EVPATCH.push(function(E,G){
-const find=id=>E.find(e=>e.id===id);
+const find=id=>E.find(e=>e.id===id);const {fx,esc}=G;
 const ag=p=>G.age(p);
 const learnOK=P=>c=>c.job===P||(c.job==='chu'&&c.bizFrom===P)||(ag(c)>=12&&ag(c)<=16&&c.job==='none'&&!c.away);
 /* GATE: học nghề, chỉ người theo nghề đó hoặc trẻ 12 đến 16 tuổi chưa đi làm */
@@ -20,6 +20,16 @@ for(const id in PJ){const e=find(id);if(e&&!e.pj)e.pj=PJ[id]}
   e.o=function(c,d){const L=(typeof o0==='function'?o0.call(this,c,d):o0)||[];return ag(c)<12?L.filter(op=>!/Rời đi nơi khác/.test(op.l||'')):L}}}
 for(const id of ['kn_12','kn_74']){const e=find(id);if(!e||e.__g1528c)continue;e.__g1528c=1;const c0=e.c;
   e.c=function(c,d){if(!G.talent(c))return false;return typeof c0==='function'?c0.call(this,c,d):true}}
+/* ĐÚT LÓT MUA CHỨC (chủ dự án 25/11): giá theo phẩm của chức nhận, Cửu phẩm 500 bạc, mỗi phẩm gấp đôi; chỉ tự mua tới Lục phẩm, cao hơn cần người từ Tam phẩm trở lên chống lưng (G.bribe, engine.js). */
+{const e=find('qt1_chuc_beo');if(e&&!e.__g1528d){e.__g1528d=1;const c0=e.c;const JB=()=>(window.D&&window.D.JOBS&&window.D.JOBS.quan)||null;
+  const pn=r=>{const J=JB();return J&&J.lv[r]?J.lv[r].n:'phẩm cao hơn'};
+  e.c=function(c,d){if(!G.bribe.ok(c,(c.lv||0)+1))return false;return typeof c0==='function'?c0.call(this,c,d):true};
+  e.x=function(c,d){const tl=(c.lv||0)+1;const bk=tl>G.bribe.MAX_FREE?G.bribe.backer(c):null;
+    return `Có người mách ${esc(c.given)}: một chức ${pn(tl)} béo bở sắp trống. Chỉ cần lo lót đúng chỗ là được, giá ${G.fmtMoney(G.bribe.price(tl))}.${bk?` Cần có người chống lưng: ${esc(bk.n)} chịu đứng ra bảo lãnh.`:''}`};
+  e.o=function(c,d){const tl=(c.lv||0)+1;const fee=G.bribe.price(tl);const bk=tl>G.bribe.MAX_FREE?G.bribe.backer(c):null;const win=bk?0.82:0.7;
+    return [{l:`Đút lót để được chức ${pn(tl)}${bk?`, nhờ ${bk.n} chống lưng`:''} (${G.fmtMoney(fee)})`,vio:'trugian',c:()=>G.money()>=fee,ax:{thanh:-2,tv:1},
+        f:cc=>{G.S().money-=fee;if(G.chance(win))return 'Chức về tay. Nhưng sổ sách của kẻ nhận bạc có tên mình.'+fx(cc,{lv:1,cor:12});return 'Tiền mất, chức vào tay người trả cao hơn.'+fx(cc,{cor:6,tam:-8})}},
+      {l:'Không màng',ax:{thanh:1,tiet:1},f:cc=>'Giữ được tiếng sạch.'+fx(cc,{liem:3})}]}}}
 /* t_g_hoc_nghe: bản gốc cất vốn học việc ở c.pre.tho (thợ thủ công), phải là thợ rèn (tho_ren) */
 {const e=find('t_g_hoc_nghe');if(e&&!e.__g1528b){e.__g1528b=1;const o0=e.o;
   e.o=function(c,d){const L=(typeof o0==='function'?o0.call(this,c,d):o0)||[];
