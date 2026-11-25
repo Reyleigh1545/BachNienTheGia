@@ -36,7 +36,8 @@ const GW={
  bao_thu:n=>(n.oan||0)>=15?30+(100-ax(n,'diem'))*0.5+ax(n,'yc')*0.4:0,
  binh_yen:n=>(100-ax(n,'tv'))*0.7+(nage(n)>50?20:0),
  tu_hanh:n=>nage(n)>=50?(100-ax(n,'hd'))*0.5+ax(n,'tiet')*0.3:0};
-function pickGoal(n){const L=Object.keys(GW).map(k=>[k,Math.max(0,GW[k](n))]).filter(x=>x[1]>0);if(!L.length)return {k:'binh_yen',p:0,t:S().t};
+function pickGoal(n){if(!n.sk)n.sk={muu:Math.round(((n.st&&n.st.tri)||50)*0.6),khau:Math.round(((n.st&&n.st.eq)||50)*0.6),ql:30};if(!n.fam)n.fam={};/* d.1.5.36: NPC tạo trực tiếp (con của NPC…) chưa có kỹ năng thì cho mặc định, tránh lỗi 'Cannot read properties of undefined (reading ql)' (15 lần trong bot 60 năm) */
+  const L=Object.keys(GW).map(k=>[k,Math.max(0,GW[k](n))]).filter(x=>x[1]>0);if(!L.length)return {k:'binh_yen',p:0,t:S().t};
   const tot=L.reduce((s,x)=>s+x[1]*x[1],0);let r=Math.random()*tot;for(const [k,w] of L){r-=w*w;if(r<=0)return {k,p:0,t:S().t}}return {k:L[0][0],p:0,t:S().t}}
 /* mô tả tính cách ngắn (hai nét nổi nhất) để lời kể đọc ra */
 function desc(n){if(!n||!n.sub)return 'người khó đoán';const L=AXK.map(k=>[k,ax(n,k)-50]).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1])).slice(0,2);return L.map(([k,v])=>AXL[k][v>=0?0:1]).join(', ')}

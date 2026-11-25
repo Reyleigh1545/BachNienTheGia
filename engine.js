@@ -3927,16 +3927,19 @@ function ruleforcePopup(...a){return ENGX.fn.ruleforcePopup(...a)}
 function ruleMonth(...a){return ENGX.fn.ruleMonth(...a)}
 
 /* ================= cảnh giới sau 100: danh hiệu, cửa ải, thiên cơ mở 200 ================= */
-const gateCap=(c,k)=>k==='suc'?100:(c.gate&&c.gate[k])||100; /* v6.7.0-d2: sức khỏe không có cổng đột phá */
+const gateCap=(c,k)=>k==='suc'?100:Math.max(150,(c.gate&&c.gate[k])||0); /* d.1.5.36 (chủ dự án 25/11): bỏ hộp mốc 100, 120, 140; chỉ số tăng tự do tới 150, vượt 150 chỉ bằng Thiên cơ (mở tới 200) */ /* v6.7.0-d2: sức khỏe không có cổng đột phá */
 const hardCap=(c,k)=>k==='suc'?100:(c.g200&&c.g200[k])?200:150;
 const nextGate=g=>g===100?120:g===120?140:g===140?150:g===150?200:g;
 const statV=(c,k)=>c[k];
 /* v6.3.2: danh hiệu không còn tự hiện khi chỉ số đủ; phải được công nhận qua sự kiện hoặc kỳ ngộ (xem confer) */
 function titleIdx(c,k){return ctRank(c,k)}
 function titleOf(c,k){const i=ctRank(c,k);return i>=0?STITLE[k][i][1]:null}
+function autoTitle(c,k,g){const pr=g===100?0.4:g===120?0.3:0.25;if(!chance(pr))return;let L=[];try{L=brkPaths(c,k,g)}catch(e){}
+  const p=L.find(x=>x.gain&&!has(c,x.gain));if(!p)return;addTrait(c,p.gain);const T=TRAITS[p.gain];
+  log(`${nameOf(c)} ${SN[k].toLowerCase()} đạt ${g}, được đặc tính ${T?T.n:p.gain}.`,'gd');try{achieve(c,`${SN[k].toLowerCase()} ${g}`)}catch(e){}}
 function gateCheck(c,a){if(a<8)return;c.msQ=c.msQ||{};c.ttl=c.ttl||{};
   for(const [k] of STATS){if(k==='suc')continue;const g=gateCap(c,k);const v=c[k];
-    if(!c.brk&&GATES.includes(g)&&v>=g-0.6&&!((c.msRetry[k]||0)>S.t)&&c.msQ[k]!==g){c.msQ[k]=g;enqueue('ms',c.id,{k,t:g})}
+    {c.msAuto=c.msAuto||{};for(const gg of GATES){if(v>=gg-0.6&&!c.msAuto[k+gg]){c.msAuto[k+gg]=1;autoTitle(c,k,gg)}}} /* d.1.5.36: chạm mốc 100, 120, 140 không còn hộp đột phá; có xác suất tự nhận đặc tính (danh hiệu) hợp người, ghi vào thư nhà */
     const i=titleIdx(c,k);if(i>(c.ttl[k]??-1)){const first=c.ttl[k]==null&&i>0&&S.t-c.born<12*20;c.ttl[k]=i;if(i>=1&&!first)enqueue('ttl',c.id,{k,i})}}}
 function ttlPopup(c,it){const [n,t]=STITLE[it.k][it.i];const f=Math.round(4+it.i*4);c.fame+=f;cf(f*0.3,'Người nhà đạt danh hiệu');log(`${nameOf(c)} ${SN[it.k].toLowerCase()} đạt ${n}, người đời gọi là "${t}".`,'gd');
   infoPopup(c,`${SN[it.k]} ${n}`,`"${t}"`,`${esc(c.given)} đã đạt ${SN[it.k].toLowerCase()} ${n}. Tiếng tăm lan ra, người ta bắt đầu gọi là <b>${esc(t)}</b>.${it.i+1<STITLE[it.k].length?` Danh hiệu kế tiếp ở mốc ${STITLE[it.k][it.i+1][0]}.`:''}`+fx(c,{tam:5}))}
