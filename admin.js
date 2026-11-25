@@ -9,7 +9,7 @@
 (function(){
 'use strict';
 const CFG_KEY='bnthegia.adm.cfg';
-const A=window.BN_ADMIN={odds:true,auto:'off',force:'none',delay:250,play:false,ui2:!/[?&]ui=old/.test(location.search)}; /* v6.7.0-d9.2: giao diện và ảnh đại diện mới, thêm ?ui=old để tắt */
+const A=window.BN_ADMIN={odds:true,auto:'off',force:'none',delay:250,play:false,ui2:/[?&]ui=new/.test(location.search)}; /* v6.7.0-d9.2: giao diện và ảnh đại diện mới, thêm ?ui=old để tắt */
 document.addEventListener('DOMContentLoaded',()=>document.body.classList.toggle('ui2',A.ui2));
 try{Object.assign(A,JSON.parse(localStorage.getItem(CFG_KEY)||'{}'),{play:false})}catch(e){}
 const saveCfg=()=>{try{localStorage.setItem(CFG_KEY,JSON.stringify({odds:A.odds,auto:A.auto,force:A.force,delay:A.delay}))}catch(e){}};
