@@ -32,8 +32,10 @@ const lsSet=(k,v)=>{try{localStorage.setItem(k,v);return true}catch(e){return fa
 const lsDel=k=>{try{localStorage.removeItem(k)}catch(e){}};
 function meta(){try{return JSON.parse(lsGet(KEY_META))||{slots:{}}}catch(e){return {slots:{}}}}
 function slotInfo(st){const a=st.people.filter(p=>p.dead==null&&!p.left).length;return {surname:st.surname,year:Math.floor(st.t/12)+1,n:a,at:Date.now(),over:!!st.over,tier:st.tierSeen||0,region:st.region}}
-function save(){if(DRY||!S)return;const n=S.slot||1;if(!lsSet(slotKey(n),JSON.stringify(S)))return;const m=meta();m.slots[n]=slotInfo(S);m.last=n;lsSet(KEY_META,JSON.stringify(m))}
-function load(n){try{const t=lsGet(slotKey(n));return t?JSON.parse(t):null}catch(e){return null}}
+function save(){if(DRY||!S)return;const n=S.slot||1;let txt=BNSER.enc(S,VERLBL());if(!lsSet(slotKey(n),txt)){ /* d.1.5.24: hết chỗ lưu thì bớt nhật ký kiểm thử (S.evl) và thư nhà cũ rồi lưu lại, không im lặng mất bản lưu */
+    const ev0=S.evl;S.evl=(ev0||[]).slice(-600);txt=BNSER.enc(S,VERLBL());if(!lsSet(slotKey(n),txt)){S.evl=ev0;S._saveFail=(S._saveFail||0)+1;try{console.error('Không lưu được ô '+n+': bộ nhớ trình duyệt đầy')}catch(e){}return}}const m=meta();m.slots[n]=slotInfo(S);m.last=n;lsSet(KEY_META,JSON.stringify(m))}
+function load(n){try{const t=lsGet(slotKey(n));return t?BNSER.dec(t):null}catch(e){try{console.error('Đọc ô '+n+' lỗi: '+e.message)}catch(er){}return null}}
+function VERLBL(){try{const e=document.querySelector('.verlbl');return e?e.textContent.trim():''}catch(er){return ''}}
 function loadOld(){try{const t=lsGet(KEY_OLD);return t?JSON.parse(t):null}catch(e){return null}}
 function wipe(n){lsDel(slotKey(n));const m=meta();delete m.slots[n];if(m.last==n)m.last=null;lsSet(KEY_META,JSON.stringify(m))}
 
@@ -1105,16 +1107,16 @@ function infoPopup(c,eyebrow,title,text,after,other){
 }
 /* v6.7.0-d7.5: nhật ký popup cho kiểm thử: mỗi popup được gọi ra ghi [tháng, id người, loại, id sự kiện, lựa chọn, tuổi, nghề, giới, tự quyết, id người thứ hai]; lựa chọn điền sau khi chọn. Người chơi không thấy. */
 function popLog(it,c){if(DRY||!S||!c)return;S.evl=S.evl||[];const d=it.data||{};const o2=d.oid||d.who||d.xg||d.oth||null;
-  S.evl.push([S.t,c.id,it.kind,it.ev||'',null,age(c),c.job||'',c.g==='nữ'?'f':'m',isCtrl(c)?0:1,o2]);
-  if(S.evl.length>9000)S.evl.splice(0,1000)}
+  const le=[S.t,c.id,it.kind,it.ev||'',null,age(c),c.job||'',c.g==='nữ'?'f':'m',isCtrl(c)?0:1,o2];S.evl.push(le);
+  if(S.evl.length>9000)S.evl.splice(0,1000);return le} /* d.1.5.24: trả về dòng vừa ghi để việc bị bỏ qua (không hiện hộp) thì xóa đúng dòng ấy */
 function popSkip(c){if(DRY||!S||!S.evl||!c)return;for(let i=S.evl.length-1,n=0;i>=0&&n<40;i--,n++){const e=S.evl[i];if(e[1]===c.id&&e[4]==null){e[4]='(bỏ qua)';return}}}
 /* kiểm tra sau ván: đối chiếu từng popup đã gọi với điều kiện của sự kiện tại thời điểm gọi */
 function ledCheck(...a){return ENGX.fn.ledCheck(...a)}
 function popOpt(c,o){if(DRY||!S||!S.evl||!c)return;for(let i=S.evl.length-1,n=0;i>=0&&n<40;i--,n++){const e=S.evl[i];if(e[1]===c.id&&e[4]==null){e[4]=String(o&&o.l||'').replace(/<[^>]*>/g,'').slice(0,40);return}}}
-const FIXCD={tie_an_nhan_tra:[18,72],w63_duong_xa:[12,60],tc_cuop_duong:[24,120],rg_tranh_cai:[12,48],rg_chen_ep:[18,60],hg_n_tindon:[18,48]};
+const FIXCD={tie_an_nhan_tra:[36,120],tie_quy_nhan_giup:[36,120],tie_ket_nghia_giup:[36,120],tie_ban_nho:[24,96],w63_duong_xa:[12,60],tc_cuop_duong:[24,120],rg_tranh_cai:[12,48],rg_chen_ep:[18,60],hg_n_tindon:[18,48]};
 function showPopup(it,c){
-  popLog(it,c);
-  const skip=()=>{popSkip(c);setTimeout(nextPopup,0)};
+  const logE=popLog(it,c);
+  const skip=()=>{if(logE&&S&&S.evl){const i=S.evl.lastIndexOf(logE);if(i>=0)S.evl.splice(i,1)}setTimeout(nextPopup,0)}; /* d.1.5.24 (chủ dự án 25/11: 'tao không hề chọn bỏ qua'): việc bị chặn trước khi hiện hộp không phải popup, xóa khỏi nhật ký thay vì gán nhầm '(bỏ qua)' cho dòng khác */
   /* v6.4.1.5: hộp mốc chỉ số, mốc thông thạo của người ngoài quyền điều khiển cũng tự quyết */
   AUTO_C=(['ms','mm','preg','sick','retire','job','job18','law'].includes(it.kind)&&!isCtrl(c))?c:null; /* v6.6.0: người ngoài quyền điều khiển tự quyết cả chuyện thai sản, bệnh, hưu, nghề */
   if(it.kind==='ev'&&it.data&&it.data.xg){const p=P(it.data.xg);if(p&&p.outSp){if(it.ev==='v62_xg_bi_bat_nat'){p.outSp.coi=1;p.outSp.nhin=1}if(it.ev==='v62_xg_ly_hon_ve')p.outSp.back=1}}
@@ -4466,7 +4468,7 @@ function loadMenu(){
   M.querySelector('[data-back]').onclick=mainMenu;
 }
 function exportSave(st,back){
-  if(!st)return;const txt=JSON.stringify(st);const fn=`bach-nien-the-gia_ho-${st.surname}_nam-${Math.floor(st.t/12)+1}.json`;
+  if(!st)return;const txt=BNSER.enc(st,VERLBL());const fn=`bach-nien-the-gia_ho-${st.surname}_nam-${Math.floor(st.t/12)+1}.json`;
   let ok=false;try{const b=new Blob([txt],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=fn;document.body.appendChild(a);a.click();ok=true;setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}catch(e){}
   openModal(`<span class="eyebrow">Xuất bản lưu</span><h2>Họ ${esc(st.surname)}, năm ${Math.floor(st.t/12)+1}</h2>
    <p>${ok?`Đã gửi file <b>${esc(fn)}</b> về máy. Nếu trình duyệt chặn tải xuống, sao chép đoạn mã dưới đây và cất vào đâu đó.`:'Trình duyệt không cho tải file. Sao chép đoạn mã dưới đây và cất vào đâu đó.'} Khi cần, vào Nhập từ file và dán lại.</p>
@@ -4482,9 +4484,9 @@ function importMenu(){
    <p class="kvline down" id="impE" hidden></p>
    <div class="choices"><button class="btn primary" data-go>Nhập</button><button class="btn ghost" data-back>Quay lại</button></div>`,false,'menu');
   const err=t=>{const e=M.querySelector('#impE');e.textContent=t;e.hidden=false};
-  const take=txt=>{let st;try{st=JSON.parse(txt)}catch(e){return err('Mã không đọc được. Kiểm tra lại file hoặc đoạn đã dán.')}
+  const take=txt=>{let st;try{st=BNSER.dec(txt)}catch(e){return err(/Mã kiểm/.test(e.message)?'File save bị hỏng hoặc bị sửa (mã kiểm không khớp).':'Mã không đọc được. Kiểm tra lại file hoặc đoạn đã dán.')}
     if(!st||!Array.isArray(st.people)||!st.surname||st.t==null)return err('Đây không phải bản lưu của Bách Niên Thế Gia.');
-    slotPick('Nhập vào ô nào?',n=>{st.slot=n;migrate(st);lsSet(slotKey(n),JSON.stringify(st));const m=meta();m.slots[n]=slotInfo(st);m.last=n;lsSet(KEY_META,JSON.stringify(m));playSlot(n)},importMenu)};
+    slotPick('Nhập vào ô nào?',n=>{st.slot=n;migrate(st);lsSet(slotKey(n),BNSER.enc(st,VERLBL()));const m=meta();m.slots[n]=slotInfo(st);m.last=n;lsSet(KEY_META,JSON.stringify(m));playSlot(n)},importMenu)};
   M.querySelector('[data-go]').onclick=()=>{const f=M.querySelector('#impF').files[0];const t=M.querySelector('#impT').value.trim();
     if(f){const r=new FileReader();r.onload=()=>take(String(r.result));r.onerror=()=>err('Không đọc được file.');r.readAsText(f)}else if(t)take(t);else err('Chưa chọn file hoặc dán mã.')};
   M.querySelector('[data-back]').onclick=mainMenu;

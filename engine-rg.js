@@ -23,7 +23,7 @@ function ensure(c,o){o=o||{};const s=root();
   const ti=o.tier!=null?o.tier:Math.max(0,Math.min(6,G.tierIdx()+R(-1,1)));
   const base=35+ti*4;const rs=()=>clamp(Math.round(base+R(-12,28)),20,100);
   n.st=Object.assign({tri:rs(),vo:rs(),mi:rs(),eq:rs()},o.st||{});
-  if(o.main)n.st[o.main]=Math.max(n.st[o.main],R(70,92));
+  if(o.main)n.st[o.main]=Math.max(n.st[o.main]||0,R(70,92)); /* d.1.5.24: kỹ năng chưa có (khau, muu…) không thành NaN */
   n.vai=[].concat(o.vai||'quen');n.vaiTxt=o.vaiTxt||n.vai.map(v=>VAI[v]||v).join(', ');n.nghe=o.nghe||NG[n.vai[0]]||'';n.job=o.job||null;n.tier=ti;n.key=o.key||null;
   n.rel=o.rel!=null?o.rel:10;n.on=0;n.oan=0;n.ky=[];n.loc=(s.loc&&s.loc.p)||null;n.src=c?c.id:null;
   if(o.why)note(n,o.why);
@@ -76,13 +76,13 @@ const npStable=(n,minTier)=>!((n.sa!=null&&S().t-n.sa<72)||((n.tier!=null?n.tier
 function tieYear(){const s=root();s.rg.yc=0;
   const L=Object.values(s.np.l).filter(n=>n.ok!==0&&n.vai&&n.vai.length);
   for(const n of L){const a=G.np.age(n);if(a<14)continue;
-    for(const v of n.vai){const T=TIEACT[v];if(!T)continue;if(s.rg.yc>=2)break;
+    for(const v of n.vai){const T=TIEACT[v];if(!T)continue;if(s.rg.yc>=1)break;
       if(v==='doi_thu'?(n.rel>-10&&(n.oan||0)<10):(n.rel||0)<T[2])continue;
       let why=null;if(v==='quy_nhan'||v==='ket_nghia'){why=trouble();if(!why&&!((n.on||0)>0))continue;if(!npStable(n,v==='quy_nhan'?2:1))continue}
       if(chance(T[0]*0.4)){const tgt=G.npc&&G.npc.reach?G.npc.reach(n):null;if(!tgt)continue; /* d9.12.65: chỉ tìm tới người đang ở cùng nơi */
         if(!X.EVMAP[T[1]])continue;
         if(((s.evLast&&s.evLast[T[1]])||-999)>s.t-12)continue; /* d9.12.63: cùng một sự kiện người quen không ra hai lần trong 12 tháng */
-        if((s.cool&&(s.cool[T[1]]||-1e9)>s.t&&false))continue;
+        if((s.cool&&(s.cool['fcd|'+T[1]]||-1e9)>s.t)||(s.cool&&(s.cool['fcd|'+T[1]+'|'+tgt.id]||-1e9)>s.t))continue; /* d.1.5.24: việc đang trong thời gian chờ thì không xếp hàng nữa (trước đó xếp rồi bị chặn, 88 lần trong 72 năm) */
         enqueue('ev',tgt.id,{ev:T[1],data:{npc:n.id,why}});s.rg.yc++}}}
   rgFamilyYear()}
 /* anh chị em giúp nhau: người khó khăn, người khác trong nhà dư dả và có tình thì giúp; không tình thì làm ngơ và sinh oán */
