@@ -406,7 +406,7 @@ function advance(){
   /* v6.4.1.7: khoa thi ân điển: thi Hương ngay năm ấy, thi Hội và thi Đình năm sau */
   const ak=S.anK?S.anK.y:-9,yy=Math.floor(S.t/12);
   const stage=mo===8&&(ey===0||ak===yy)?0:mo===2&&(ey===1||ak===yy-1)?1:mo===3&&(ey===1||ak===yy-1)?2:-1;
-  if(stage>=0)alive().forEach(c=>{if(c.exam&&OFFJ.includes(c.job)){c.exam=null;return}if(c.exam&&c.exam.stage===stage&&!c.away)enqueue('exam',c.id,{stage})});
+  if(stage>=0)alive().forEach(c=>{if(c.exam&&(OFFJ.includes(c.job)||!!c.seat)){c.exam=null;return}if(c.exam&&c.exam.stage===stage&&!c.away)enqueue('exam',c.id,{stage})});
   if(mo===9)alive().forEach(c=>{if(c.vexam&&['quan','quan_ngu','vua'].includes(c.job)){c.vexam=null;return}if(c.vexam&&!c.away)enqueue('vexam',c.id,{})});
   // việc đã hẹn
   const due=S.sched.filter(s=>s.t<=S.t);S.sched=S.sched.filter(s=>s.t>S.t);
@@ -1173,7 +1173,7 @@ function showPopup(it,c){
     case 'resign':if(c.job==='quan')return resignPopup(c);if(c.job==='quan_ngu')return dischargePopup(c);skip();return;
     case 'retire':return retirePopup(c);
     case 'sick':return sickPopup(c);
-    case 'exam':if(OFFJ.includes(c.job)){c.exam=null;skip();return}if(c.exam&&c.exam.stage===it.stage)return examPopup(c,it.stage,it.round||0);skip();return;
+    case 'exam':if((OFFJ.includes(c.job)||!!c.seat)){c.exam=null;skip();return}if(c.exam&&c.exam.stage===it.stage)return examPopup(c,it.stage,it.round||0);skip();return;
     case 'vexam':if(c.vexam&&!c.away&&!['quan','quan_ngu','vua'].includes(c.job))return vexamPopup(c);skip();return;
     case 'job18':if(c.job==='none'&&!c.away&&!(c.tuoc>0))return jobChoice(c,true);skip();return;
     case 'job':if(c.job==='none'&&!c.away&&!(c.tuoc>0)&&!(c.flags.jobRetry>S.t+1))return jobChoice(c,false);skip();return;
@@ -1350,7 +1350,7 @@ function finishExam(c,stage,s){
 }
 const OFFJ=['quan','quan_ngu','vua','nguy']; /* d9.12.64 (chủ dự án 24/11: "làm quan vẫn ghi danh đi thi"): người đang giữ chức không ghi danh khoa cử */
 function register(c){
-  if(OFFJ.includes(c.job)){c.exam=null;return}
+  if((OFFJ.includes(c.job)||!!c.seat)){c.exam=null;return}
   if((S.noExamClan||0)>S.t){log(`Họ ${S.surname} đang bị cấm ứng thí, ${nameOf(c)} không ghi danh được.`);return}
   /* v6.4.1: rút tên rồi ghi danh lại thì thi tiếp từ kỳ đang dở, học vị đã đỗ vẫn còn */
   const sv=c.flags.exSave;const st=sv?Math.min(sv.stage,c.degree):0;
@@ -2281,7 +2281,7 @@ function wishTick(){
     const T=[];
     if(c.job!=='chu'&&!['quan','vua','quan_ngu'].includes(c.job)&&(subOf(c,'tv')>=55||subOf(c,'dl')>=65)&&Object.keys(BIZ).some(t=>canOwn(c,t)&&bizFree(t)))T.push('biz');
     if(!married(c)&&a>=19&&a<=32&&subOf(c,'hd')>=40)T.push('marry');
-    if(a<=30&&c.tri>=75&&subOf(c,'tv')>=60&&!c.exam&&c.degree<3&&!(c.flags.noExam>S.t)&&!OFFJ.includes(c.job)&&alive().filter(p=>p.exam&&inClan(p)).length<4)T.push('exam'); /* v6.6.0: chặt hơn: trí từ 75, tham vọng từ 60, tuổi tới 30, không quá bốn người cùng thi */
+    if(a<=30&&c.tri>=75&&subOf(c,'tv')>=60&&!c.exam&&c.degree<3&&!(c.flags.noExam>S.t)&&!(OFFJ.includes(c.job)||!!c.seat)&&alive().filter(p=>p.exam&&inClan(p)).length<4)T.push('exam'); /* v6.6.0: chặt hơn: trí từ 75, tham vọng từ 60, tuổi tới 30, không quá bốn người cùng thi */
     if(c.g==='nam'&&a>=16&&a<=30&&c.vo>=60&&subOf(c,'tv')>=50&&!c.vexam&&!c.exam&&!['quan','quan_ngu','vua'].includes(c.job)&&!(c.flags.noVoExam>S.t)&&alive().filter(p=>p.vexam&&inClan(p)).length<3)T.push('vexam'); /* v6.6.0: có người muốn thi võ cử */
     const w=wishOf(c);if(w&&w!=='none'&&w!==c.job&&meets(c,w)&&subOf(c,'dl')>=50&&c.tam<50&&a<45&&!['quan','vua','chu','quan_ngu','huu'].includes(c.job)&&(c.job!=='noi'||c.tri>=70||axv(c,'tv')>=65))T.push('job');
     if(married(c)&&!c.inLaw&&((c.gen||1)>=2||subOf(c,'dl')>=80)&&a>=24&&subOf(c,'dl')>=62&&c.hh===mainHH())T.push('moveout');
@@ -2294,7 +2294,7 @@ function wishTick(){
 function askStale(c,t){
   if(t==='marry')return married(c)||!!(c.spouse&&P(c.spouse)&&P(c.spouse).dead==null);
   if(t==='biz')return c.job==='chu'||['quan','vua','quan_ngu'].includes(c.job)||!Object.keys(BIZ).some(x=>canOwn(c,x));
-  if(t==='exam')return !!c.exam||c.degree>=3||OFFJ.includes(c.job);
+  if(t==='exam')return !!c.exam||c.degree>=3||(OFFJ.includes(c.job)||!!c.seat);
   if(t==='vexam')return !!c.vexam||['quan','quan_ngu','vua'].includes(c.job);
   if(t==='job')return !c.wish||c.wish===c.job||['quan','vua','chu','quan_ngu','huu'].includes(c.job);
   if(t==='moveout')return !married(c)||c.hh!==mainHH();
