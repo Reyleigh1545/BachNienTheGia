@@ -34,9 +34,9 @@ const ag=p=>G.age(p);
   e.x=function(c,d){d=d||{};const n=G.tie.ensure(c,{vai:['quen'],nghe:'thanh niên nghèo nhưng chăm chỉ',age:R(18,26),tier:0,rel:6,why:'xin thư giới thiệu'});d.npc=n.id;
     return `${esc(n.n)}, một thanh niên nghèo nhưng chăm chỉ, tìm đến ${esc(c.given)}, xin một lá thư giới thiệu gửi cho người quen ở huyện để được nhận làm việc.`}}}
 
-/* 5. hn_sinh_le_cao "Nhà gái đòi sính lễ cao": cô gái được nêu tên và chính cô ấy là người được cưới nếu chịu (ảnh 18:26: "con gái nhà gia giáo" vô danh, cưới xong ra người khác) */
+/* 5. hn_sinh_le_cao "Nhà gái đòi sính lễ cao": cô gái được nêu tên, có thẻ (bấm xem tài, sức khỏe, đặc điểm để biết có đáng bỏ sính lễ không, nhãn "Con dâu") và chính cô ấy là người được cưới nếu chịu (ảnh 18:26: "con gái nhà gia giáo" vô danh, cưới xong ra người khác) */
 {const e=find('hn_sinh_le_cao');if(e&&!e.__g1523){e.__g1523=1;const o0=e.o;
-  e.x=function(c,d){d=d||{};const p=G.mkMatch(c,{age:Math.max(16,ag(c)+R(-4,1))});c.flags.lvP=p;p._t=G.S().t;
+  e.x=function(c,d){d=d||{};const p=G.mkMatch(c,{age:Math.max(16,ag(c)+R(-4,1))});c.flags.lvP=p;p._t=G.S().t;G.candReg(p,'Con dâu');d.who=p.id;
     return `Một mối rất xứng cho ${esc(c.given)}: ${esc(G.nameOf(p))}, con gái nhà gia giáo, đẹp người đẹp nết. Nhưng nhà gái đòi sính lễ gấp đôi lệ thường.`};
   /* cưới đúng cô gái đã nêu tên (G.mkSpouse nhận người thứ ba) */
   const good=sp=>{if(!sp||sp.inLaw!==true)return sp;['tri','mi','eq'].forEach(k=>{sp[k]=Math.max(sp[k],R(58,78))});return sp};
