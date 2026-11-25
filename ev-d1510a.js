@@ -33,4 +33,9 @@ gate('dh_18',c=>one(clanL().filter(p=>p.g!=='nam'&&p.inLaw&&p.spouse&&G.P(p.spou
 gate('c631_lao_ke_chuyen',c=>one(clanL().filter(p=>ag(p)>=4&&ag(p)<=16)));
 /* v6_tu_cai đứa con nhỏ đói meo: một đứa con từ 1 đến 12 tuổi */
 gate('v6_tu_cai',c=>one(kids(c).filter(k=>ag(k)<=12)));
+/* d.1.5.18 (R30 cha mẹ, anh chị em): gd_anh_em_cai cần hai anh chị em ruột trong nhà; gd_chi_dau cần một chị dâu hoặc em dâu; lw_50 (bỏ mặc cha mẹ già) cần cha hoặc mẹ của gia chủ còn sống */
+const sibs=c=>{const L=clanL().filter(p=>p.id!==c.id&&(p.parents||[]).some(x=>(c.parents||[]).includes(x)));return L};
+gate('gd_anh_em_cai',c=>{const A=clanL().filter(p=>(p.parents||[]).length&&clanL().some(q=>q.id!==p.id&&(q.parents||[]).some(x=>p.parents.includes(x))));return A.length>=2?A[0]:null});
+gate('gd_chi_dau',c=>one(clanL().filter(p=>p.g!=='nam'&&p.inLaw&&p.spouse&&G.P(p.spouse)&&G.P(p.spouse).dead==null)));
+gate('lw_50',c=>one((c.parents||[]).map(id=>G.P(id)).filter(p=>p&&p.dead==null)));
 });

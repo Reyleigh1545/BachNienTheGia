@@ -46,6 +46,11 @@ const SPW=/người vợ|vợ nhà|người chồng|chồng nhà|vợ của|ch�
 rep('R28b lời kể nhắc vợ chồng của nhân vật mà không kiểm có vợ chồng (spouseOf, married, spouse)',defs.filter(b=>SPW.test(b.t)&&!/spouseOf|married|\.spouse|G\.sp|vợ chồng:|hwho|pickKin/.test(b.t)));
 /* R29 (7.0.0-d.1.5.11): lời kể dùng "hắn", "gã" cho một NPC; từ d.1.5.11 proFix (engine.js) tự đổi thành "bà ta", "ả" khi NPC là nữ, nhưng sự kiện viết mới nên dùng tên hoặc đại từ đúng giới. Chỉ là thông tin. */
 rep('R29 (thông tin) lời kể dùng "hắn/gã" cho NPC, proFix đổi theo giới lúc chạy',defs.filter(b=>/(?<![\p{L}])(hắn|gã)(?![\p{L}])/iu.test(b.t)&&/tie\.ensure|\.npc|d\.npc/.test(b.t)));
+/* R30 (7.0.0-d.1.5.18, luật 0.16 mở rộng): lời kể nhắc cha mẹ, anh chị em, thầy, bạn, hàng xóm của NHÂN VẬT mà khối không có phép kiểm hay chọn người cụ thể */
+const REL=[['cha mẹ',/(?<![p{L}])(cha mẹ|mẹ chồng|bố chồng|cha vợ|mẹ vợ|cha nhà|mẹ nhà)(?![p{L}])/iu,/parents|.mother|.father|famOf|kinOf|kinList|pickKin|hwho|G.tie|npc|ensure|par|parOf/],
+ ['anh chị em',/(?<![p{L}])(anh trai|em trai|chị gái|em gái|anh em ruột|chị em ruột|em ruột|anh ruột)(?![p{L}])/iu,/sib|kinList|pickKin|hwho|parents|famOf|G.tie|npc|ensure|kinOf/],
+ ['thầy trò',/(?<![p{L}])(học trò của|thầy của|sư phụ của|đệ tử của|môn sinh của)(?![p{L}])/iu,/G.tie|npc|ensure|flags.ghs|.teacher|sm_|hwho|pickKin/]];
+REL.forEach(([n,re,chk])=>rep('R30 lời kể nhắc '+n+' của nhân vật mà không kiểm hay chọn người cụ thể',defs.filter(b=>re.test(b.t)&&!chk.test(b.t))));
 out.push('khối quét: '+blocks.length+' (định nghĩa sự kiện: '+defs.length+'), file: '+files.length+', RETIRED: '+RETIRED.size);
 if(RT){
   const tmp=path.join(process.env.TEMP||process.env.TMPDIR||'.','evlint_'+Date.now()+'.js');
