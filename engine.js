@@ -5284,8 +5284,8 @@ const WP=[
   st:()=>{const hi=wpOffs('quan_ngu',ARMY.length-3).length,all=alive().filter(p=>inClan(p)&&p.job==='quan_ngu').length;return hi&&all>=2?3:(hi?2:(wpOffs('quan_ngu',3).length?1:0))}},
  {id:'T10',hold:10,n:'Võ lâm chí tôn',h:['Giang hồ có người nể phục thì có thể làm minh chủ.','Đã là đại hiệp, danh vang các môn phái; có võ quán, môn khách.','Minh chủ một phương; giữ được ngôi mười năm thì thành chí tôn.'],
   st:()=>{const top=wpOffs('hiep',3).length,m=wpOffs('hiep',2).length;return top&&(wpProj('monkhach',5)||S.biz.some(b=>b.type==='voquan'))?3:(top||m?2:(wpOffs('hiep',1).length?1:0))}},
- {id:'T11',hold:0,n:'Thế gia ngàn năm',h:['Giữ được họ qua nhiều đời đã là một thành tựu.','Nhà đã qua nhiều đời, vẫn đứng vững trong nhóm đầu thiên hạ.','Gần tám đời, hai trăm năm; chỉ cần giữ thêm cho đủ.'],
-  st:()=>{const g=S.people.reduce((m,p)=>Math.max(m,p.gen||1),1),y=Math.floor(S.t/12);return g>=8&&y>=200&&tierIdx()>=4?3:(g>=5&&tierIdx()>=4?2:(g>=3&&tierIdx()>=3?1:0))}}
+ {id:'T11',hold:0,n:'Thế gia ngàn năm',h:['Giữ được họ qua nhiều đời đã là một thành tựu.','Nhà đã qua nhiều đời, vẫn đứng vững trong nhóm đầu thiên hạ.','Gần năm đời, một trăm năm; chỉ cần giữ thêm cho đủ.'],
+  st:()=>{const g=S.people.reduce((m,p)=>Math.max(m,p.gen||1),1),y=Math.floor(S.t/12);return g>=5&&y>=100&&tierIdx()>=4?3:(g>=4&&tierIdx()>=4?2:(g>=3&&tierIdx()>=3?1:0))}}
 ];
 /* d9.5: thế lực tự phát. Ba điểm nóng của hạt giống thế giới tăng độ nóng dần; từ 60 thì loạn thiên hạ tăng theo, từ 85 thỉnh thoảng giặc nổi. */
 function tlYear(){const w=S.wr;if(!w||!w.hot||!S.dyn)return;w.heat=w.heat||{};const ky=(S.dyn.k&&S.dyn.k.uy)||60;

@@ -37,7 +37,7 @@ window.D.GIABAO={
   gb_bi_kip:{n:'Nửa quyển bí kíp',end:'T10',d:'Nửa quyển bí kíp võ lâm. Võ lực +10.',fx:{st:{vo:10}}},
   gb_lenh_bai:{n:'Lệnh bài minh chủ',end:'T10',d:'Lệnh bài từng đứng đầu võ lâm. Võ lực +6, EQ +4.',fx:{st:{vo:6,eq:4}}},
   gb_ruou:{n:'Bình rượu nghĩa hữu',end:'T10',d:'Rượu kết nghĩa của các môn phái. EQ +6, mị lực +3.',fx:{st:{eq:6,mi:3}}},
-  gb_gia_pha:{n:'Gia phả mạ vàng',end:'T11',d:'Gia phả ghi tám đời. Mị lực +4, EQ +6, cơ duyên +4.',fx:{st:{mi:4,eq:6},duyen:4}},
+  gb_gia_pha:{n:'Gia phả mạ vàng',end:'T11',d:'Gia phả ghi năm đời. Mị lực +4, EQ +6, cơ duyên +4.',fx:{st:{mi:4,eq:6},duyen:4}},
   gb_hu_bac:{n:'Hũ bạc của tổ',end:'T11',d:'Hũ bạc chôn dưới nền từ đường. Tâm trạng +4, cơ duyên +8.',fx:{st:{tam:4},duyen:8}},
   gb_bai_vi:{n:'Bài vị tổ tiên',end:'T11',d:'Bài vị chạm gỗ quý. Tâm trạng +6, cơ duyên +8.',fx:{st:{tam:6},duyen:8}},
   gb_ao_tang:{n:'Mảnh áo tang',end:'L1',d:'Mảnh áo cũ của người thoát được. Trí +4, cơ duyên +4.',fx:{st:{tri:4},duyen:4}},

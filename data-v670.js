@@ -39,7 +39,7 @@ D.ENDINGS=[
  {id:'T8',kind:'win',n:'Văn tông',t:'Học phái của gia tộc thành chính thống, cửa nhà đầy bảng vàng.'},
  {id:'T9',kind:'win',n:'Trấn quốc võ gia',t:'Gia tộc giữ ải mười năm yên, đời đời cầm quân.'},
  {id:'T10',kind:'win',n:'Võ lâm chí tôn',t:'Từ giang hồ lên đến ngôi minh chủ hoặc lập môn phái tồn tại ba đời.'},
- {id:'T11',kind:'win',n:'Thế gia ngàn năm',t:'Họ giữ được tên tuổi qua tám đời, hai trăm năm.'},
+ {id:'T11',kind:'win',n:'Thế gia ngàn năm',t:'Họ giữ được tên tuổi qua năm đời, một trăm năm.'},
  {id:'L1',kind:'lose',n:'Tru di cửu tộc',t:'Mưu phản thất bại. Họ bị xóa khỏi sử sách.'},
  {id:'L2',kind:'lose',n:'Tan nhà',t:'Nợ nần cuốn đi nhà cửa, ruộng vườn, con cháu mỗi người một ngả.'},
  {id:'L3',kind:'lose',n:'Tuyệt tự',t:'Hương khói lạnh tanh, không còn ai nối dõi.'},
