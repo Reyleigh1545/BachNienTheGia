@@ -20,11 +20,11 @@ const ag=p=>G.age(p);
     const n=G.tie.ensure(c,{vai:['quen'],nghe:'kẻ tự cao trong làng',age:R(30,52),main:'tri',rel:-5,why:'thách '+k[1]});d.npc=n.id;
     return `${esc(n.n)}, ${n.nghe}, công khai thách ${esc(c.given)} ${k[1]}. Hai bên cùng góp ${FM(d.bet)} làm giải, ai thua phải khao cả xóm.`}}}
 
-/* 3. tinh_hoi_xuan_b "Tình trong như đã": người thương phải có tên, không gọi "người ấy" vô danh (ảnh 18:41). Không làm thẻ riêng (chủ dự án 25/11: làm dâu thì là thẻ con dâu) */
+/* 3. tinh_hoi_xuan_b "Tình trong như đã": người thương phải có tên, không gọi "người ấy" vô danh (ảnh 18:41). Có thẻ "Người thương" bấm xem được (chủ dự án 25/11: hiện thẻ người thương và mối nhà gái khi chọn) */
 {const e=find('tinh_hoi_xuan_b');if(e&&!e.__g1523){e.__g1523=1;const c0=e.c,x0=e.x;
   e.c=function(c,d){if(!(c.flags&&(c.flags.lvP||c.flags.yeu)))return false;return typeof c0==='function'?c0.call(this,c,d):true};
   e.x=function(c,d){d=d||{};const p=c.flags&&c.flags.lvP;
-    if(p&&p.given){return `Đã mấy lần ${esc(c.given)} hẹn hò ${esc(G.nameOf(p))} bên bờ ao. ${esc(p.given)} hỏi: "Bao giờ thì nhà mình mang trầu cau sang?"`}
+    if(p&&p.given){G.candReg(p,'Người thương');d.who=p.id;return `Đã mấy lần ${esc(c.given)} hẹn hò ${esc(G.nameOf(p))} bên bờ ao. ${esc(p.given)} hỏi: "Bao giờ thì nhà mình mang trầu cau sang?"`}
     const nm=c.flags&&c.flags.yeu&&c.flags.yeu.n;
     if(nm)return `Đã mấy lần ${esc(c.given)} hẹn hò ${esc(nm)} bên bờ ao. Người ta hỏi: "Bao giờ thì nhà mình mang trầu cau sang?"`;
     return typeof x0==='function'?x0.call(this,c,d):x0}}}
@@ -34,9 +34,9 @@ const ag=p=>G.age(p);
   e.x=function(c,d){d=d||{};const n=G.tie.ensure(c,{vai:['quen'],nghe:'thanh niên nghèo nhưng chăm chỉ',age:R(18,26),tier:0,rel:6,why:'xin thư giới thiệu'});d.npc=n.id;
     return `${esc(n.n)}, một thanh niên nghèo nhưng chăm chỉ, tìm đến ${esc(c.given)}, xin một lá thư giới thiệu gửi cho người quen ở huyện để được nhận làm việc.`}}}
 
-/* 5. hn_sinh_le_cao "Nhà gái đòi sính lễ cao": cô gái được nêu tên, có thẻ (bấm xem tài, sức khỏe, đặc điểm để biết có đáng bỏ sính lễ không, nhãn "Con dâu") và chính cô ấy là người được cưới nếu chịu (ảnh 18:26: "con gái nhà gia giáo" vô danh, cưới xong ra người khác) */
+/* 5. hn_sinh_le_cao "Nhà gái đòi sính lễ cao": cô gái được nêu tên, có thẻ (bấm xem tài, sức khỏe, đặc điểm để biết có đáng bỏ sính lễ không, nhãn "Mối nhà gái") và chính cô ấy là người được cưới nếu chịu (ảnh 18:26: "con gái nhà gia giáo" vô danh, cưới xong ra người khác) */
 {const e=find('hn_sinh_le_cao');if(e&&!e.__g1523){e.__g1523=1;const o0=e.o;
-  e.x=function(c,d){d=d||{};const p=G.mkMatch(c,{age:Math.max(16,ag(c)+R(-4,1))});c.flags.lvP=p;p._t=G.S().t;G.candReg(p,'Con dâu');d.who=p.id;
+  e.x=function(c,d){d=d||{};const p=G.mkMatch(c,{age:Math.max(16,ag(c)+R(-4,1))});c.flags.lvP=p;p._t=G.S().t;G.candReg(p,'Mối nhà gái');d.who=p.id;
     return `Một mối rất xứng cho ${esc(c.given)}: ${esc(G.nameOf(p))}, con gái nhà gia giáo, đẹp người đẹp nết. Nhưng nhà gái đòi sính lễ gấp đôi lệ thường.`};
   /* cưới đúng cô gái đã nêu tên (G.mkSpouse nhận người thứ ba) */
   const good=sp=>{if(!sp||sp.inLaw!==true)return sp;['tri','mi','eq'].forEach(k=>{sp[k]=Math.max(sp[k],R(58,78))});return sp};
