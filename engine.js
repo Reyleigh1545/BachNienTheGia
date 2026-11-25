@@ -534,7 +534,7 @@ function moodTarget(c,a){
   if(S.rules.includes('tietkiem'))t-=3;if(S.rules.includes('nghiem'))t-=2;if(rule('tuquyet'))t+=4;
   if(rule('dichton')&&!c.inLaw&&c.parents.length&&siblingRank(c)>0)t-=3;
   t+=relMood(c);
-  if(a>=16&&inMain(c)&&!isHead(c)&&income(c)>0){const g=GOP.find(x=>x[0]===S.gop);if(g)t+=g[2]}
+  if(a>=18&&inMain(c)&&!isHead(c)&&income(c)>0){const g=GOP.find(x=>x[0]===S.gop);if(g)t+=g[2]} /* d.1.5.31 (chủ dự án 25/11): trừ tâm trạng vì góp quỹ chỉ từ 18 tuổi, ở nhà chính, không phải gia chủ */
   if((c.anbam||0)>4)t-=4;
   if(c.job==='noi'&&(c.tri>=70||axv(c,'tv')>=65))t-=5;
   return clamp(t,0,100);
