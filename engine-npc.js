@@ -52,7 +52,7 @@ function kidLife(n,a){const g=n.guard||'người nuôi';n.st=n.st||{tri:50,vo:50
   if(a<12){n.cond='còn nhỏ, sống với '+g;n.stage='tre';return}
   n.stage='hoc';if(!n.path){const st=n.st;n.path=(st.tri>=62&&st.tri>=st.vo)?'chu':(st.vo>=62?'vo':'nghe')}
   n.cond=({chu:'đang học chữ',vo:'đang học võ',nghe:'đang học nghề'})[n.path]+', ở với '+g;
-  const k={chu:'tri',vo:'vo',nghe:'eq'}[n.path];n.st[k]=Math.min(100,(n.st[k]||50)+R(1,4)+((n.sup||0)>0?1:0))}
+  const k={chu:'tri',vo:'vo',nghe:'eq'}[n.path];n.st[k]=Math.min(Math.max(100,n.st[k]||0),(n.st[k]||50)+R(1,4)+((n.sup||0)>0?1:0))}
 function becomeAdult(n,a){n.adult=1;n.stage='lon';const st=n.st||{tri:50,vo:50,mi:50,eq:50};const sup=n.sup||0;const path=n.path||(st.tri>=62?'chu':st.vo>=62?'vo':'nghe');let job,dt=0;
   if(path==='chu'){const sc=st.tri+sup*6+R(-15,15);if(sc>=88){job='quan nhỏ';dt=2}else if(sc>=66){job='thầy đồ';dt=1}else job='thư lại'}
   else if(path==='vo'){const sc=st.vo+sup*6+R(-15,15);if(sc>=85){job='võ sư đã có tiếng';dt=1}else job='lính'}
@@ -65,7 +65,7 @@ function lifeFam(n,a){n.fam=n.fam||{spouse:false,kids:0};
   const worth=(n.rel||0)>=15||(n.on||0)>0||(n.oan||0)>0||!!n.house||(n.tier||0)>=4||(n.vai||[]).some(v=>KEEPV.includes(v)); /* d9.12.69: chỉ NPC có ý nghĩa với nhà mới có con là NPC thật (bot 50 năm: NPC con cháu phình tới 449 người sống) */
   if(n.fam.spouse&&a>=22&&a<=44&&(n.fam.kl||[]).length<4&&chance(0.14)&&!worth&&(n.fam.kids||0)<4){n.fam.kids=(n.fam.kids||0)+1}
   if(n.fam.spouse&&worth&&a>=22&&a<=44&&(n.fam.kl||[]).length<4&&chance(0.14)){const sur=String(n.n).split(' ')[0];const g=chance(0.5)?'nam':'nữ';const nm=sur+' '+(g==='nam'?pick(GIVEN_M)+' '+pick(GIVEN_N):pick(GIVEN_F)+' '+pick(['Hương','Lụa','Nhi','Yến','Chi','Vy']));
-    const kid=G.np.new({n:nm,g,age:0,role:'quen'});const st=n.st||{};const mix=k=>clamp(Math.round((st[k]||50)+R(-14,14)),10,98);kid.st={tri:mix('tri'),vo:mix('vo'),mi:mix('mi'),eq:mix('eq')};
+    const kid=G.np.new({n:nm,g,age:0,role:'quen'});const st=n.st||{};const reg=v=>v>100?100+(v-100)*0.6:v;const mix=k=>clamp(Math.round(reg(st[k]||50)+R(-14,14)),10,125);kid.st={tri:mix('tri'),vo:mix('vo'),mi:mix('mi'),eq:mix('eq')};
     kid.vai=['quen'];kid.vaiTxt=kid.vai.map(v=>G.tie.VAI[v]||v).join(', ');kid.nghe='con của '+n.n;kid.tier=n.tier;kid.loc=n.loc;kid.parent=n.id;kid.guard='cha mẹ';kid.key='con_'+kid.id;kid.rel=Math.round((n.rel||0)*0.4);kid.on=0;kid.oan=0;kid.ky=[];kid.src=n.src;
     if(n.fid){kid.fid=n.fid;const F=S().np.hs&&S().np.hs[n.fid];if(F)F.mem.push(kid.id)}deepen(kid,{why:'con của '+n.n});n.fam.kl=(n.fam.kl||[]).concat(kid.id);n.fam.kids=n.fam.kl.length;pastAdd(n,'Có thêm con')}}
 function seatYear(n,a){if(n.seat&&G.npSeatLost(n)){n.seat=null;n.cond='vừa mất ghế quan nhỏ';pastAdd(n,'Mất ghế quan nhỏ');n.wantSeat=0}
@@ -85,7 +85,7 @@ function die(n){const s=S();n.ok=0;n.dead=s.t;pastAdd(n,'Qua đời');if(n.seat)
   if(n.fam&&n.fam.kids>0&&((n.rel||0)>=20||(n.on||0)>=5||(n.oan||0)>=15)&&chance(0.7)){
     const sur=String(n.n).split(' ')[0];const nm=sur+' '+(n.g==='nam'?pick(['Quang','Văn','Đức','Minh','Thành','Hữu']):pick(['Quang','Văn','Đức','Minh','Thành','Hữu']))+' '+pick(['Anh','Bình','Cường','Dũng','Hải','Khải','Long','Nam','Phúc','Sơn']);
     const kid=G.np.new({n:nm,g:chance(0.6)?'nam':'nữ',age:R(18,32),role:'quen'});
-    kid.st={tri:clamp(Math.round((n.st.tri||50)+R(-12,12)),10,98),vo:clamp(Math.round((n.st.vo||50)+R(-12,12)),10,98),mi:clamp(Math.round((n.st.mi||50)+R(-12,12)),10,98),eq:clamp(Math.round((n.st.eq||50)+R(-12,12)),10,98)};
+    kid.st={tri:clamp(Math.round(((n.st.tri||50)>100?100+((n.st.tri||50)-100)*0.6:(n.st.tri||50))+R(-12,12)),10,125),vo:clamp(Math.round(((n.st.vo||50)>100?100+((n.st.vo||50)-100)*0.6:(n.st.vo||50))+R(-12,12)),10,125),mi:clamp(Math.round(((n.st.mi||50)>100?100+((n.st.mi||50)-100)*0.6:(n.st.mi||50))+R(-12,12)),10,125),eq:clamp(Math.round(((n.st.eq||50)>100?100+((n.st.eq||50)-100)*0.6:(n.st.eq||50))+R(-12,12)),10,125)};
     kid.vai=[];const par=n.vai||[];if((n.oan||0)>=15||par.includes('doi_thu'))kid.vai.push('doi_thu');if((n.on||0)>=5||par.includes('an_nhan'))kid.vai.push('an_nhan');if(par.includes('ban_than')||par.includes('ket_nghia'))kid.vai.push('ban_than');if(!kid.vai.length)kid.vai.push('quen');
     kid.vaiTxt=kid.vai.map(v=>G.tie.VAI[v]||v).join(', ');kid.nghe='con của '+n.n+', người từng '+(n.vaiTxt||'quen biết nhà');kid.job=null;kid.tier=Math.max(0,(n.tier||2)-1);kid.key='con_'+n.id;
     kid.rel=Math.round((n.rel||0)*0.6);kid.on=Math.round((n.on||0)*0.6);kid.oan=Math.round((n.oan||0)*0.6);kid.ky=[];kid.loc=n.loc;kid.src=n.src;kid.parent=n.id;
