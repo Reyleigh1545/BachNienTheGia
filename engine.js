@@ -966,8 +966,9 @@ function stt(k,v){if(DRY||!S)return;const y=Math.floor(S.t/12);S.stat=S.stat||[]
 /* ================= popup ================= */
 const O=document.getElementById('overlay'),M=document.getElementById('modal');
 const modalOpen=()=>!O.hidden;
-function openModal(html,arc,cls){if(DRY)return;if(html.startsWith('<div class="evband"'))cls=(cls?cls+' ':'')+'ev1';const si=html.indexOf('<!--/side-->');const two=si>=0;if(two)html=html.slice(0,si)+'<div class="mmain">'+html.slice(si+12)+'</div>';M.className='modal'+(arc?' arc':'')+(two?' two':'')+(cls?' '+cls:'');M.innerHTML=html;O.hidden=false;M.scrollTop=0;const f=M.querySelector('button:not(:disabled)');if(f)f.focus({preventScroll:true})}
-function closeModal(){if(DRY)return;O.hidden=true;M.innerHTML='';render();setTimeout(nextPopup,0)}
+function openModal(html,arc,cls){if(DRY)return;dropPeek();if(html.startsWith('<div class="evband"'))cls=(cls?cls+' ':'')+'ev1';const si=html.indexOf('<!--/side-->');const two=si>=0;if(two)html=html.slice(0,si)+'<div class="mmain">'+html.slice(si+12)+'</div>';M.className='modal'+(arc?' arc':'')+(two?' two':'')+(cls?' '+cls:'');M.innerHTML=html;O.hidden=false;M.scrollTop=0;const f=M.querySelector('button:not(:disabled)');if(f)f.focus({preventScroll:true})}
+function dropPeek(){try{const x=document.getElementById('npov');if(x)x.remove()}catch(e){}} /* d.1.5.38: popup thông tin sơ bộ không được sống sót qua hộp mới hoặc khi đóng hộp */
+function closeModal(){if(DRY)return;dropPeek();O.hidden=true;M.innerHTML='';render();setTimeout(nextPopup,0)}
 function nextPopup(){
   if(DRY||modalOpen()||!S||S.over)return;
   while(S.queue.length){
