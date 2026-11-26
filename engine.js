@@ -238,7 +238,7 @@ function fx(c,d){
     else if(k==='hung'){const o=S.hung;S.hung=clamp(S.hung+v,0,100);out.push(['Hưng thịnh',Math.round(S.hung-o)])}
     else if(k==='on'){const o=S.on;S.on=clamp(S.on+v,0,100);out.push(['Ổn định',Math.round(S.on-o)])}
     else if(k==='m'){const ev=MMCTX;const pj=ev&&(ev.pj||(Array.isArray(ev.job)&&ev.job.length===1?ev.job[0]:null));
-      if(pj&&JOBS[pj]&&!(c.job===pj||(c.job==='chu'&&c.bizFrom===pj))){c.pre=c.pre||{};const o=c.pre[pj]||0;c.pre[pj]=clamp(o+v,0,60);out.push(['Thông thạo '+JOBS[pj].n.toLowerCase()+' (cất lại, dùng khi làm nghề này)',Math.round((c.pre[pj]-o)*10)/10])} /* d.1.5.28 (chủ dự án 25/11): sự kiện của nghề khác không cộng thông thạo vào nghề đang làm; người chưa theo nghề thì cất vào vốn nghề (setJob lấy ra) */
+      if(pj&&JOBS[pj]&&!(c.job===pj||(c.job==='chu'&&c.bizFrom===pj))){c.pre=c.pre||{};const o=c.pre[pj]||0;c.pre[pj]=clamp(o+v,0,60);out.push(['Thông thạo '+JOBS[pj].n.toLowerCase(),Math.round((c.pre[pj]-o)*10)/10])} /* d.1.5.28 (chủ dự án 25/11): sự kiện của nghề khác không cộng thông thạo vào nghề đang làm; người chưa theo nghề thì cất vào vốn nghề (setJob lấy ra) */
       else{const o=c.m;c.m=clamp(c.m+v,0,120);out.push(['Thông thạo',Math.round((c.m-o)*10)/10])}}
     else if(k==='merit'){c.merit=Math.max(0,c.merit+v*(1+tsum(c,'merit')+(v>0&&rule('thuongvo')?0.2:0)));meritFold(c);out.push(['Chiến công',v])}
     else if(k==='lv'&&c.job==='quan'){const o=c.lv;const nr=clamp(c.lv+v,0,8);if(nr!==o){const r=appoint(c,nr,true);out.push([`Chức: ${seatName(r.key)}`,v>0?'+':'-']);if(nr>o&&!DRY)achieve(c,`thăng làm ${seatName(r.key)}`)}}
