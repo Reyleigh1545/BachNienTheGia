@@ -51,6 +51,6 @@ const U={
 };
 window.UI2=U;
 /* bấm thẻ chân dung: mở hồ sơ nhân vật */
-document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-pcard]');if(!b)return;e.preventDefault();e.stopPropagation();
+document.addEventListener('click',e=>{if(!(document.body&&document.body.classList.contains('ui2')))return; /* d.1.5.38: ở giao diện cũ engine đã xử lý thẻ; hai bên cùng chạy thì mở cả hồ sơ lẫn popup, đóng popup xong hồ sơ vẫn nằm phía sau */const b=e.target.closest&&e.target.closest('[data-pcard]');if(!b)return;e.preventDefault();e.stopPropagation();
   const A=window.BNTG&&window.BNTG._adm;if(b.closest('.pcards')&&A&&A.brief)return A.brief(b.dataset.pcard);if(A&&A.openSheet)A.openSheet(b.dataset.pcard)},true);
 })();

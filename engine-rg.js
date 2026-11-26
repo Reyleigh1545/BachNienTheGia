@@ -23,7 +23,10 @@ function ensure(c,o){o=o||{};const s=root();
   const ti=o.tier!=null?o.tier:Math.max(0,Math.min(6,G.tierIdx()+R(-1,1)));
   const base=35+ti*4;const rs=()=>clamp(Math.round(base+R(-12,28)),20,100);
   n.st=Object.assign({tri:rs(),vo:rs(),mi:rs(),eq:rs()},o.st||{});
-  if(o.main)n.st[o.main]=Math.max(n.st[o.main]||0,R(70,92)); /* d.1.5.24: kỹ năng chưa có (khau, muu…) không thành NaN */
+  if(o.main)n.st[o.main]=Math.max(n.st[o.main]||0,R(70,92));
+  /* d.1.5.34 (chủ dự án 25/11: "nhân vật trong gia tộc đều có thể có chỉ số trên 100 nên NPC cũng phải có những người tài giỏi qua mốc 100"): một phần NPC là người tài vượt mốc 100 ở một chỉ số (n.gift); người từ bậc cao, thầy, cao nhân, quý nhân, tướng dễ gặp hơn; hiếm khi vượt 120 (thiên tài), rất hiếm tới 145 */
+  {const HI=['cao_nhan','thay','thay_thuoc','quy_nhan','tuong','doi_thu','hoang_de'];const nv=[].concat(o.vai||'quen');const pr=Math.min(0.2,0.03+(ti>=4?0.05:0)+(nv.some(v=>HI.includes(v))?0.1:0));
+   if(chance(pr)){const k=(o.main&&['tri','vo','mi','eq'].includes(o.main))?o.main:pick(['tri','vo','mi','eq']);const top=chance(0.12)?R(120,145):R(100,119);n.st[k]=Math.max(n.st[k]||0,top);n.gift=k}} /* d.1.5.24: kỹ năng chưa có (khau, muu…) không thành NaN */
   n.vai=[].concat(o.vai||'quen');n.vaiTxt=o.vaiTxt||n.vai.map(v=>VAI[v]||v).join(', ');n.nghe=o.nghe||NG[n.vai[0]]||'';n.job=o.job||null;n.tier=ti;n.key=o.key||null;
   n.rel=o.rel!=null?o.rel:10;n.on=0;n.oan=0;n.ky=[];n.loc=(s.loc&&s.loc.p)||null;n.src=c?c.id:null;
   if(o.why)note(n,o.why);

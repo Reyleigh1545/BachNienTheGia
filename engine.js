@@ -94,6 +94,10 @@ function mkPerson(...a){return ENGX.fn.mkPerson(...a)}
 /* ================= hộ gia đình ================= */
 const mainHH=()=>{const h=head();return h?h.hh:'h0'};
 const HH=id=>S.hh[id];
+/* d.1.5.37 (chủ dự án 26/11: "nhà càng tốt, chất lượng cuộc sống càng cao thì tỉ lệ bị bệnh càng thấp"): hệ số nguy cơ bệnh theo nhà ở và mức sống của hộ người đó. Nhà (Lều tranh đến Thế gia trang viên) và mức sống (Kham khổ đến Xa hoa) nhân với nhau, trong khoảng 0,4 đến 2. */
+const HEALTH_HOME=[1.4,1.2,1,0.85,0.72,0.62],HEALTH_LIFE=[1.45,1.2,1,0.82,0.68];
+function healthMul(p){try{const h=HH(p&&p.hh&&S.hh[p.hh]?p.hh:mainHH());if(!h)return 1;return clamp((HEALTH_HOME[h.home]??1)*(HEALTH_LIFE[h.life]??1),0.4,2)}catch(e){return 1}}
+const ILLEV=new Set(['v63_k_sot_co_giat','v63_k_tieu_chay','v63_k_cum_lanh_dong','v63_k_dich_tre','v63_k_uon_van','v63_k_vet_nhiem','v63_k_thieu_sua','ho_lao','dau_mua','benh_dich']);
 const hhMembers=id=>home().filter(p=>p.hh===id);
 const hhCount=id=>alive().filter(p=>p.hh===id&&!(p.away&&p.away.type!=='trade')).length;
 
@@ -434,7 +438,7 @@ function advance(){
   v61Month();
   v62Month();
   // tước vị: kỳ ngộ cực hiếm, chỉ tăng nhờ cơ duyên gia tộc
-  const fl=famLuck();if(!((S.kyT&&S.kyT.tuoc_ky_ngo)>S.t)&&chance(0.0001*(1+Math.max(0,fl-50)/8))){const cand=alive().filter(p=>age(p)>=20&&!p.away);if(cand.length)enqueue('ev',pick(cand).id,{ev:'tuoc_ky_ngo'})}
+  const fl=famLuck();if(!((S.kyT&&S.kyT.tuoc_ky_ngo)>S.t)&&chance(0.0001*(1+Math.max(0,fl-50)/8))){const cand=alive().filter(p=>age(p)>=20&&!p.away);if(cand.length){enqueue('ev',pick(cand).id,{ev:'tuoc_ky_ngo'});{const te=EVMAP.tuoc_ky_ngo;if(te)kyMark(te)}}} /* d.1.5.35: ghi chu kỳ 100 đến 1000 năm ngay khi xếp hàng (save năm 47: kỳ ngộ ngàn năm ra hai lần trong 5 năm vì việc xếp hàng thẳng không qua commitEv nên không ghi kyT) */
   // quan lại
   alive().forEach(c=>{if(c.job==='quan'&&!c.away&&chance((100-c.liem)/100*0.006*(1+c.lv*0.1)))enqueue('ev',c.id,{ev:'q_hactoi'})});
   // thăng tiến khi đủ điều kiện
@@ -942,7 +946,7 @@ function pickEvent(c,ky,baby){
       if(T.dom&&T.dom.includes(dm))w*=T.boost||1.4;if(T.quiet&&(e.ky||dm==='encounter'||dm==='jianghu'||dm==='dynasty'))w*=T.quiet}
     return w};
   const wt=e=>{const last=S.evLast[e.id];const rec=last==null?1:clamp((S.t-last)/(e.rep||(e.ky?240:96)),0.12,1);
-    return arcW(e)*(e.w||1)*({0:1.4,1:1,2:0.85,3:0.7}[e.lv]||1)*(e.td&&noble(c)?0.03:1)*(e.good?(c.duyen>60?1.6:1.2):1)*(c.seen[e.id]?1:2)*rec*(e.opener&&(S.pace||[]).filter(t=>t>S.t-12).length>=3?0.25:1)/(1+(S.evn[e.id]||0)*0.3)};
+    return arcW(e)*(e.w||1)*(ILLEV.has(e.id)?healthMul(c):1)*({0:1.4,1:1,2:0.85,3:0.7}[e.lv]||1)*(e.td&&noble(c)?0.03:1)*(e.good?(c.duyen>60?1.6:1.2):1)*(c.seen[e.id]?1:2)*rec*(e.opener&&(S.pace||[]).filter(t=>t>S.t-12).length>=3?0.25:1)/(1+(S.evn[e.id]||0)*0.3)};
   const tot=pool.reduce((a,e)=>a+wt(e),0);let r=Math.random()*tot;let ev=pool[0];
   for(const e of pool){r-=wt(e);if(r<=0){ev=e;break}}
   /* v6.4.1.3: chưa ghi nhận ở đây. Chỉ ghi lịch sử và thời gian hồi khi hộp thật sự mở (commitEv trong showPopup) */
@@ -962,8 +966,9 @@ function stt(k,v){if(DRY||!S)return;const y=Math.floor(S.t/12);S.stat=S.stat||[]
 /* ================= popup ================= */
 const O=document.getElementById('overlay'),M=document.getElementById('modal');
 const modalOpen=()=>!O.hidden;
-function openModal(html,arc,cls){if(DRY)return;if(html.startsWith('<div class="evband"'))cls=(cls?cls+' ':'')+'ev1';const si=html.indexOf('<!--/side-->');const two=si>=0;if(two)html=html.slice(0,si)+'<div class="mmain">'+html.slice(si+12)+'</div>';M.className='modal'+(arc?' arc':'')+(two?' two':'')+(cls?' '+cls:'');M.innerHTML=html;O.hidden=false;M.scrollTop=0;const f=M.querySelector('button:not(:disabled)');if(f)f.focus({preventScroll:true})}
-function closeModal(){if(DRY)return;O.hidden=true;M.innerHTML='';render();setTimeout(nextPopup,0)}
+function openModal(html,arc,cls){if(DRY)return;dropPeek();if(html.startsWith('<div class="evband"'))cls=(cls?cls+' ':'')+'ev1';const si=html.indexOf('<!--/side-->');const two=si>=0;if(two)html=html.slice(0,si)+'<div class="mmain">'+html.slice(si+12)+'</div>';M.className='modal'+(arc?' arc':'')+(two?' two':'')+(cls?' '+cls:'');M.innerHTML=html;O.hidden=false;M.scrollTop=0;const f=M.querySelector('button:not(:disabled)');if(f)f.focus({preventScroll:true})}
+function dropPeek(){try{const x=document.getElementById('npov');if(x)x.remove()}catch(e){}} /* d.1.5.38: popup thông tin sơ bộ không được sống sót qua hộp mới hoặc khi đóng hộp */
+function closeModal(){if(DRY)return;dropPeek();O.hidden=true;M.innerHTML='';render();setTimeout(nextPopup,0)}
 function nextPopup(){
   if(DRY||modalOpen()||!S||S.over)return;
   while(S.queue.length){
@@ -3927,16 +3932,19 @@ function ruleforcePopup(...a){return ENGX.fn.ruleforcePopup(...a)}
 function ruleMonth(...a){return ENGX.fn.ruleMonth(...a)}
 
 /* ================= cảnh giới sau 100: danh hiệu, cửa ải, thiên cơ mở 200 ================= */
-const gateCap=(c,k)=>k==='suc'?100:(c.gate&&c.gate[k])||100; /* v6.7.0-d2: sức khỏe không có cổng đột phá */
+const gateCap=(c,k)=>k==='suc'?100:Math.max(150,(c.gate&&c.gate[k])||0); /* d.1.5.36 (chủ dự án 25/11): bỏ hộp mốc 100, 120, 140; chỉ số tăng tự do tới 150, vượt 150 chỉ bằng Thiên cơ (mở tới 200) */ /* v6.7.0-d2: sức khỏe không có cổng đột phá */
 const hardCap=(c,k)=>k==='suc'?100:(c.g200&&c.g200[k])?200:150;
 const nextGate=g=>g===100?120:g===120?140:g===140?150:g===150?200:g;
 const statV=(c,k)=>c[k];
 /* v6.3.2: danh hiệu không còn tự hiện khi chỉ số đủ; phải được công nhận qua sự kiện hoặc kỳ ngộ (xem confer) */
 function titleIdx(c,k){return ctRank(c,k)}
 function titleOf(c,k){const i=ctRank(c,k);return i>=0?STITLE[k][i][1]:null}
+function autoTitle(c,k,g){const pr=g===100?0.4:g===120?0.3:0.25;if(!chance(pr))return;let L=[];try{L=brkPaths(c,k,g)}catch(e){}
+  const p=L.find(x=>x.gain&&!has(c,x.gain));if(!p)return;addTrait(c,p.gain);const T=TRAITS[p.gain];
+  log(`${nameOf(c)} ${SN[k].toLowerCase()} đạt ${g}, được đặc tính ${T?T.n:p.gain}.`,'gd');try{achieve(c,`${SN[k].toLowerCase()} ${g}`)}catch(e){}}
 function gateCheck(c,a){if(a<8)return;c.msQ=c.msQ||{};c.ttl=c.ttl||{};
   for(const [k] of STATS){if(k==='suc')continue;const g=gateCap(c,k);const v=c[k];
-    if(!c.brk&&GATES.includes(g)&&v>=g-0.6&&!((c.msRetry[k]||0)>S.t)&&c.msQ[k]!==g){c.msQ[k]=g;enqueue('ms',c.id,{k,t:g})}
+    {c.msAuto=c.msAuto||{};for(const gg of GATES){if(v>=gg-0.6&&!c.msAuto[k+gg]){c.msAuto[k+gg]=1;autoTitle(c,k,gg)}}} /* d.1.5.36: chạm mốc 100, 120, 140 không còn hộp đột phá; có xác suất tự nhận đặc tính (danh hiệu) hợp người, ghi vào thư nhà */
     const i=titleIdx(c,k);if(i>(c.ttl[k]??-1)){const first=c.ttl[k]==null&&i>0&&S.t-c.born<12*20;c.ttl[k]=i;if(i>=1&&!first)enqueue('ttl',c.id,{k,i})}}}
 function ttlPopup(c,it){const [n,t]=STITLE[it.k][it.i];const f=Math.round(4+it.i*4);c.fame+=f;cf(f*0.3,'Người nhà đạt danh hiệu');log(`${nameOf(c)} ${SN[it.k].toLowerCase()} đạt ${n}, người đời gọi là "${t}".`,'gd');
   infoPopup(c,`${SN[it.k]} ${n}`,`"${t}"`,`${esc(c.given)} đã đạt ${SN[it.k].toLowerCase()} ${n}. Tiếng tăm lan ra, người ta bắt đầu gọi là <b>${esc(t)}</b>.${it.i+1<STITLE[it.k].length?` Danh hiệu kế tiếp ở mốc ${STITLE[it.k][it.i+1][0]}.`:''}`+fx(c,{tam:5}))}
@@ -5350,7 +5358,7 @@ const G={totalIncome:()=>totalIncome(),romOk:c=>romOk(c),romP:c=>romP(c),ROM_OPE
   _v61:{becomeHead,econMonth,brkPaths,brkStart,thoPopup,teachPopup,vacantPopup,moveOutPopup,rewardPopup,askGopPopup,askParentPopup,bossRaisePopup,sellBiz,openBizPopup,offHolder,prefFocus,kidWish,startLv,branches,newBranch,msPopup,pageCosngoi,econEst},
   kidAdj,gain,charge,canPay,fundOf,inMain,clanKeeps,branchLeader,purse:c=>c.purse,
   tierIdx,season,famePromo,clanLv,selfLv,FAME_CLAN,FAME_SELF,
-  kho:()=>S.kho,war:()=>S.war,epi:()=>S.epi,expandBiz,gameOver,openBiz,homeLv:()=>HH(mainHH()).home,lifeLv:()=>HH(mainHH()).life,fmtMoney:money,relation,jobName,matchmaker,canOwn,mkStaff,staffEff,stfRecruitKin,stfRehire,ROLES,bizDetail,bizVacant,bizStaffInfo,staffTick,staffDie,stAge,isHead,
+  kho:()=>S.kho,war:()=>S.war,epi:()=>S.epi,expandBiz,gameOver,openBiz,homeLv:()=>HH(mainHH()).home,healthMul,lifeLv:()=>HH(mainHH()).life,fmtMoney:money,relation,jobName,matchmaker,canOwn,mkStaff,staffEff,stfRecruitKin,stfRehire,ROLES,bizDetail,bizVacant,bizStaffInfo,staffTick,staffDie,stAge,isHead,
   protect,protName,obey,comeHome,marryOut,confer,ctRank,ctPending,mkMatch,standOf,innate,divorce,lyPopup,gateCap,hardCap,titleOf,stripHonors,cheer,jobFit,laborOk,working,selfEmp,remarryOk,adoptOk,setLove,settleEstate,kidCap,inClanP:inClan,rule,cf,addTraitP:addTrait,
   _v63:{fleePopup,fleeTargets,w_wed,w_gift,w_peace,w_spoil,w_front,w_damp,w_khoFee,mapSVG,w_ensure,w63Month,doMove,movePopup,locName,locP,routes63,w_clans,w_clan,w_news,w_shock,w_startWar,w_endWar,w_home,w_dis,w_tension,w_clansYear,w_mo,w_closed,moveCost,w_ourKind,w_jobKind,homeNat,w_label,leaveJob,sickPopup,get mapProv(){return mapProv},TIERN63,CJOB63,CTR63,VILL63},
   _v633:{HOUSE_DEF,hdef,house,houseName,houseRel,houseAlly,houseKid,vil,vilLog,vd,vAdd,kPow,vFlag,vStance,vilRoutes,vilReady,vilEnd,vilStart,vilQuan,vilFighters,vilYears,vPick,pickWho,KIEN,DUY,KRANK,achieve,cf,vBranch,vFi,VBR,hinfo,hnear,houseRefs,giftNorm,w_wed,w_mo,NEAR_MO,HOUSE_TIER},
