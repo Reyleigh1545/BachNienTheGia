@@ -10,6 +10,10 @@ const learnOK=P=>c=>c.job===P||(c.job==='chu'&&c.bizFrom===P)||(ag(c)>=12&&ag(c)
 const GATE={t_g_hoc_nghe:'tho_ren',d631_tho_ren_dao:'tho_ren',d631_thay_thuoc_hoi_huu:'y',d631_hoc_nghe_gom:'tho'};
 for(const id in GATE){const e=find(id);if(!e||e.__g1528)continue;e.__g1528=1;e.pj=GATE[id];const c0=e.c,ok=learnOK(GATE[id]);
   e.c=function(c,d){if(!ok(c))return false;return typeof c0==='function'?c0.call(this,c,d):true}}
+/* yl_gap_thay (thầy thuốc ngỏ ý nhận học trò) là sự kiện học nghề: chủ dự án 26/11 thấy tá điền (nghề nong) vẫn gặp; d.1.5.28 tao bỏ sót nó khỏi GATE. Chỉ người từ 12 đến 16 tuổi chưa đi làm (người đã là thầy thuốc thì không cần bái sư). Các bước sau chỉ tiếp tục khi người ấy chưa đi nghề khác (còn rảnh hoặc đã là thầy thuốc). */
+{const e=find('yl_gap_thay');if(e&&!e.__g1540){e.__g1540=1;e.pj='y';e.age=[12,16];
+  e.c=function(c,d){return ag(c)>=12&&ag(c)<=16&&c.job==='none'&&!c.away&&(c.tri||0)>=55&&(G.subOf(c,'rong')>=50||G.subOf(c,'cc')>=60)}}
+ for(const id of ['yl_hoc','yl_dich','yl_mo','yl_ket']){const x=find(id);if(x&&!x.job)x.job=['y','none']}}
 /* PJ: chỉ gắn nghề để thông thạo cộng đúng chỗ */
 const PJ={v62_gai_hoc_det:'det',c631_thay_lang_dao:'y',ky_gt_cay_dang:'y',c5_c:'y',yl_hoc:'y',yl_dich:'y',yl_mo:'y',yl_ket:'y'};
 for(const id in PJ){const e=find(id);if(e&&!e.pj)e.pj=PJ[id]}
@@ -59,6 +63,11 @@ for(const id of ['kn_12','kn_74']){const e=find(id);if(!e||e.__g1528c)continue;e
   const e2=find('tt_vi_hanh_b');if(e2&&!e2.__g1528f){e2.__g1528f=1;const x0=e2.x;
     e2.x=function(c,d){d=d||{};const n=emperor();if(n)d.npc=n.id;return typeof x0==='function'?x0.call(this,c,d):x0}}
 }
+/* KHÁCH LẠ KHÔNG HIỆN THẺ (chủ dự án 26/11: "sự kiện người khách lạ vẫn đang hiện sai, tốt nhất là không hiện thẻ nữa"): tuoc_ky_ngo, tt_vi_hanh, tt_vi_hanh_b chỉ hiện thẻ người nhà (d.noCard). NPC vẫn giữ trong dữ liệu để kết quả đổi quan hệ như cũ. */
+for(const id of ['tuoc_ky_ngo','tt_vi_hanh','tt_vi_hanh_b']){const e=find(id);if(!e||e.__g1539)continue;e.__g1539=1;const x0=e.x;
+  e.x=function(c,d){d=d||{};d.noCard=1;
+    if(id==='tt_vi_hanh'){const n=G.emperorNpc&&G.emperorNpc();if(n){d.npc=n.id;return `Một vị khách phong thái khác thường ghé nhà ${esc(c.given)} xin nước, hỏi chuyện làm ăn, chuyện quan lại trong vùng. Người hầu theo ông đi đứng như lính. Nhà không biết ông là ai.`}} /* bản gốc tạo NPC ngẫu nhiên, có khi là đàn bà ('Người hầu theo bà') trong khi đó là vua */
+    return typeof x0==='function'?x0.call(this,c,d):x0}}
 /* t_g_hoc_nghe: bản gốc cất vốn học việc ở c.pre.tho (thợ thủ công), phải là thợ rèn (tho_ren) */
 {const e=find('t_g_hoc_nghe');if(e&&!e.__g1528b){e.__g1528b=1;const o0=e.o;
   e.o=function(c,d){const L=(typeof o0==='function'?o0.call(this,c,d):o0)||[];
