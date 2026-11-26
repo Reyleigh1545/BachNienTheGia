@@ -47,6 +47,18 @@ for(const id of ['kn_12','kn_74']){const e=find(id);if(!e||e.__g1528c)continue;e
     e.x=function(c,d){d=d||{};const t=typeof x0==='function'?x0.call(this,c,d):x0;let p=c.flags.thP;if(!(p&&p.given))p=c.flags.thP=G.mkMatch(c,Object.assign({age:Math.max(16,ag(c)+R(-3,2)),up:2,story:1},TH(c)));
       p.given=TH(c).given;p.surname='Thương';G.candReg(p,'Người thương');d.who=p.id;return t}}
 }
+/* HOÀNG ĐẾ THẬT TRONG SỰ KIỆN VUA VI HÀNH (chủ dự án 25/11: "kỳ ngộ ngàn năm: vị khách lạ là đương kim thiên tử vi hành nhưng thẻ hiện ra lại không phải là hoàng đế, chỉ số cũng không ra dáng hoàng đế"): bản chung R1 gắn một NPC ngẫu nhiên; nay thẻ là chính đương kim hoàng đế (tên ở S.dyn.emp, tuổi theo S.dyn.k.age, chỉ số cao, nhãn "Hoàng đế <niên hiệu>"). NPC có ref 'emp:<tên>' nên npcYear không đụng tới. */
+{const cl=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const emperor=()=>{const S=G.S(),d=G.vua&&G.vua.d?G.vua.d():null;if(!d||!d.emp)return null;S.np=S.np||{n:0,l:{}};const ref='emp:'+d.emp;let n=Object.values(S.np.l).find(x=>x.ref===ref);
+    const k=d.k||{};if(!n){n=G.np.new({n:d.emp,g:'nam',age:k.age||40,role:'hoangde'});n.ref=ref;n.vai=['hoang_de'];n.nghe='đương kim hoàng đế, niên hiệu '+d.era;n.tier=6;n.rel=0;n.sub=n.sub||{}}
+    n.vaiTxt='Hoàng đế '+d.era;n.born=S.t-12*(k.age||40);n.ok=1;
+    n.st={tri:cl(78+(k.tai||50)*0.2,78,100),vo:cl(70+(k.hp||50)*0.15,70,95),mi:cl(76+(k.duc||50)*0.12,76,95),eq:cl(80+(k.duc||50)*0.18,80,100)};return n};
+  G.emperorNpc=emperor;
+  const e1=find('tuoc_ky_ngo');if(e1&&!e1.__g1528f){e1.__g1528f=1;
+    e1.x=function(c,d){d=d||{};const n=emperor();if(n)d.npc=n.id;return `Một người khách lạ áo vải ghé nhà xin nước, ăn nói phi phàm. ${esc(c.given)} tiếp đãi chu đáo. Sáng hôm sau, quan quân kéo đến rợp đường: khách lạ chính là đương kim thiên tử${n?' '+esc(n.n)+' ('+esc(n.vaiTxt)+')':''} vi hành.`}}
+  const e2=find('tt_vi_hanh_b');if(e2&&!e2.__g1528f){e2.__g1528f=1;const x0=e2.x;
+    e2.x=function(c,d){d=d||{};const n=emperor();if(n)d.npc=n.id;return typeof x0==='function'?x0.call(this,c,d):x0}}
+}
 /* t_g_hoc_nghe: bản gốc cất vốn học việc ở c.pre.tho (thợ thủ công), phải là thợ rèn (tho_ren) */
 {const e=find('t_g_hoc_nghe');if(e&&!e.__g1528b){e.__g1528b=1;const o0=e.o;
   e.o=function(c,d){const L=(typeof o0==='function'?o0.call(this,c,d):o0)||[];
