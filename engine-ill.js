@@ -47,7 +47,7 @@ function illTick(c,a){const L=c.ill;if(!L||!L.length||c.dead!=null)return;const 
 /* mỗi năm: bệnh theo mùa, tuổi và đặc tính; bệnh nặng của người chơi điều khiển được sinh hộp chữa trị */
 function illYear(){const s=S();const season=X.EC.season?X.EC.season():null;let popups=0;
   alive().filter(p=>inClan(p)&&p.dead==null).forEach(p=>{const a=age(p);const sickT=(G.TRAITS&&G.has?(G.has(p,'omyeu')?1.6:G.has(p,'bachdoc')?0.1:1):1);
-    const base=(0.05+(a>=55?0.05:0)+(a<6?0.04:0)+(p.suc<40?0.05:0))*sickT*(G.homeLv&&G.homeLv()<=1?1.3:1);
+    const base=(0.05+(a>=55?0.05:0)+(a<6?0.04:0)+(p.suc<40?0.05:0))*sickT*(G.healthMul?G.healthMul(p):1);
     if(!chance(base))return;
     let pool=Object.keys(DIS).filter(k=>{const D=DIS[k];if(D.old&&a<55)return false;if(k==='dai'||k==='gay_xuong'||k==='thuong_noi'||k==='hoa_lieu'||k==='viem_phoi')return false;return true});
     if(a>=60)pool=pool.concat(['dau_lung','tim','dau_lung']);
