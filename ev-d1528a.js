@@ -59,6 +59,11 @@ for(const id of ['kn_12','kn_74']){const e=find(id);if(!e||e.__g1528c)continue;e
   const e2=find('tt_vi_hanh_b');if(e2&&!e2.__g1528f){e2.__g1528f=1;const x0=e2.x;
     e2.x=function(c,d){d=d||{};const n=emperor();if(n)d.npc=n.id;return typeof x0==='function'?x0.call(this,c,d):x0}}
 }
+/* KHÁCH LẠ KHÔNG HIỆN THẺ (chủ dự án 26/11: "sự kiện người khách lạ vẫn đang hiện sai, tốt nhất là không hiện thẻ nữa"): tuoc_ky_ngo, tt_vi_hanh, tt_vi_hanh_b chỉ hiện thẻ người nhà (d.noCard). NPC vẫn giữ trong dữ liệu để kết quả đổi quan hệ như cũ. */
+for(const id of ['tuoc_ky_ngo','tt_vi_hanh','tt_vi_hanh_b']){const e=find(id);if(!e||e.__g1539)continue;e.__g1539=1;const x0=e.x;
+  e.x=function(c,d){d=d||{};d.noCard=1;
+    if(id==='tt_vi_hanh'){const n=G.emperorNpc&&G.emperorNpc();if(n){d.npc=n.id;return `Một vị khách phong thái khác thường ghé nhà ${esc(c.given)} xin nước, hỏi chuyện làm ăn, chuyện quan lại trong vùng. Người hầu theo ông đi đứng như lính. Nhà không biết ông là ai.`}} /* bản gốc tạo NPC ngẫu nhiên, có khi là đàn bà ('Người hầu theo bà') trong khi đó là vua */
+    return typeof x0==='function'?x0.call(this,c,d):x0}}
 /* t_g_hoc_nghe: bản gốc cất vốn học việc ở c.pre.tho (thợ thủ công), phải là thợ rèn (tho_ren) */
 {const e=find('t_g_hoc_nghe');if(e&&!e.__g1528b){e.__g1528b=1;const o0=e.o;
   e.o=function(c,d){const L=(typeof o0==='function'?o0.call(this,c,d):o0)||[];
