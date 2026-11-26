@@ -478,7 +478,7 @@ function monthlyPerson(c,a){
   const tg=tsum2(c,'grow');const all=tsum(c,'growAll');
   const grow=(k,perYear)=>{perYear=(perYear||0)+(perYear?ruleGrow(c,k):0);if(!perYear)return;const cap=capOf(c,k);if(c[k]>=cap)return;const dim=growDim(c,k,cap);
     const tb=inClan(c)&&a<30?((k==='vo'&&thanHas('vothan'))?0.15:(k==='mi'&&thanHas('camthanh'))?0.1:0):0;const tmB=(()=>{const T=tmOf(c);return T&&(T.tm==='kytai'||(THAN[T.tm]&&THAN[T.tm].sk===k))?0.5:0})();
-    const gene=0.5+pot(c,k)/100;addStat(c,k,perYear/12*dim*moodF*kidm*gene*(0.7+axv(c,'cc')/170)*(1)*(1+(tg[k]||0)+all+tb+tmB+(k==='vo'&&rule('thuongvo')?0.15:0)+(k==='vo'&&c.flags.armyTrain?(S.war?1.2:0.6):0)+(k==='vo'&&c.flags.bk&&c.flags.bk.kiem?0.25:0)))};
+    const gene=0.5+pot(c,k)/100;addStat(c,k,perYear/12*dim*moodF*kidm*gene*potSpeed(c,k)*(0.7+axv(c,'cc')/170)*(1)*(1+(tg[k]||0)+all+tb+tmB+(k==='vo'&&rule('thuongvo')?0.15:0)+(k==='vo'&&c.flags.armyTrain?(S.war?1.2:0.6):0)+(k==='vo'&&c.flags.bk&&c.flags.bk.kiem?0.25:0)))};
   if(a>=4&&!away){for(const k in F.g)grow(k,F.g[k]*(love?1.2:1))}
   /* d9.9 (chủ dự án 23/11: người đi giang hồ không tự tăng chỉ số): đi giang hồ tăng võ lực, trí tuệ và EQ theo thời gian, KHÔNG tăng mị lực; võ từ 80 lên 120 mất khoảng 5 đến 10 năm tùy tư chất (gồm cả thời gian đột phá mốc 100 và 120). Dùng chung hàm grow nên theo tư chất, tâm trạng, giảm dần khi gần trần. */
   if(c.job==='hiep'&&c.away&&c.away.type==='jh'&&a>=16){for(const k in JH_G)grow(k,JH_G[k])}
@@ -3243,9 +3243,11 @@ const obeyWord=v=>v>=80?'Rất nghe lời':v>=60?'Nghe lời':v>=40?'Nửa nghe 
 function growDim(c,k,cap){const v=c[k];let d=Math.max(0.15,1-v/(cap+15));
   if(k!=='suc'){const soft=(NATK.includes(k)?natOf(c,k):pot(c,k)*0.6)+10+pot(c,k)*0.15;if(v>soft)d*=Math.max(v>=100?0.5:0.05,0.3-(v-soft)/50)}
   if(v>=100)d*=0.6;if(v>=120)d*=0.8;if(v>=150)d*=0.85;return d} /* d9.5: sau 100 hệ số 0,45; từ 120 là 0,32; từ 150 là 0,26 (trước đó 0,33 / 0,2 / 0,14) */
+/* d.1.5.42 (chủ dự án 26/11: "giảm tốc độ tăng chỉ số đi, tốc độ phụ thuộc vào tư chất tiềm năng, xuất chúng thì như hiện tại, còn thấp hơn thì giảm đi"): hệ số tốc độ rèn theo tiềm năng từng chỉ số (cùng thang chữ của potW), áp cho trí, võ, mị lực, EQ; sức khỏe giữ nguyên. */
+const potSpeed=(c,k)=>{if(k==='suc')return 1;const v=pot(c,k);return v>=85?1:v>=72?0.82:v>=58?0.66:v>=45?0.52:v>=32?0.42:0.34};
 function growStat(c,k,perYear){if(!perYear)return;const cap=k==='suc'?c.cap.suc:capOf(c,k);if(c[k]>=cap)return;
   const dim=growDim(c,k,cap);const gene=0.5+pot(c,k)/100;const moodF=0.6+0.6*c.tam/100;
-  addStat(c,k,perYear/12*dim*moodF*gene)}
+  addStat(c,k,perYear/12*dim*moodF*gene*potSpeed(c,k))}
 /* gia quy làm chỉ số lớn nhanh hơn */
 function ruleGrow(...a){return ENGX.fn.ruleGrow(...a)}
 /* làm nghề lâu thì chỉ số liên quan cũng lên */
