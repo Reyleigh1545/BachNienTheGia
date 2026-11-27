@@ -1063,7 +1063,7 @@ function choicePopup(c,eyebrow,title,text,opts,arc,data,evId){
   M.querySelectorAll('[data-hp]').forEach(b=>b.onclick=()=>{data.hp=b.dataset.hp;choicePopup(c,eyebrow,title,text,opts,arc,data,evId)});
   M.querySelectorAll('[data-ch]').forEach(b=>b.onclick=()=>{
     const i=+b.dataset.ch;const o=ok[i];let r;popOpt(c,o);if(evId)optTook(c,o);
-    if(o.go){o.go(c,data);return}
+    if(o.go){const truoc=M.innerHTML;o.go(c,data);if(M.innerHTML===truoc){closeModal();setTimeout(nextPopup,0)}return} /* d.1.5.54: bước sau không mở được hộp mới (nhà đã dời đi, không còn người đứng ra) thì đóng hộp, không kẹt */
     const m0=S.money;const rs0=relSnap();
     try{
       if(o.r){const p=probs[i];const x=AD&&AD.rollX?AD.rollX(p,o):Math.random();
@@ -4427,7 +4427,7 @@ function foldCards(app){S.fold=S.fold||{};const L=[...app.querySelectorAll('.gri
     const sm=document.createElement('summary');sm.innerHTML='<b>'+((eb&&eb.textContent)||'Mục')+'</b>'+(h2?' · <span class="muted">'+h2.textContent+'</span>':'');
     d.appendChild(sm);[...sec.childNodes].forEach(n=>{if(n!==sm)d.appendChild(n)});if(eb&&eb.parentNode===d)eb.remove();
     d.addEventListener('toggle',()=>{S.fold[key]=d.open});sec.replaceWith(d)})}
-function render(){if(window.BN_VQ&&S&&S.people)window.BN_VQ.ensure();/* d.1.5.50: tên bốn tiểu quốc theo thế giới */if(window.BN_TL&&S&&S.people)window.BN_TL.ensure();
+function render(){if(window.BN_VQ&&S&&S.people)window.BN_VQ.ensure();/* d.1.5.50: tên bốn tiểu quốc theo thế giới */if(window.BN_TL&&S&&S.people)window.BN_TL.ensure();if(window.BN_CT&&S&&S.people)window.BN_CT.apNat(S);
   if(!S||DRY)return;
   unlockPages();
   if(!S.pages.includes(page))page='giapha';
@@ -4682,6 +4682,7 @@ function w_setLoc(...a){return ENGX.fn.w_setLoc(...a)}
 function w_ensure(st){ /* gọi khi tạo ván mới hoặc nạp save cũ */
   const real=S;S=st;try{
     if(!st.w)st.w=w_new();
+    if(window.BN_CT)window.BN_CT.apNat(st); /* d.1.5.54: đặt bản đồ theo đúng ván này */
     if(!st.loc||!PROV[st.loc.p]){const p=w_startProv(st.region||'trung');w_setLoc(p,0)}
     const W=st.w;['ten','ph','sk','dmg','clans'].forEach(k=>W[k]=W[k]||{});['wars','dis','news'].forEach(k=>W[k]=W[k]||[]);W.wid=W.wid||1;W.did=W.did||1;W.cid=W.cid||1;
     houseEnsure(st);vilEnsure(st);
@@ -4821,22 +4822,24 @@ function mapSVG(selP){
   const NEN={trung:'M300 170 L470 150 L560 250 L610 370 L590 450 L470 480 L395 535 L350 470 L260 430 L200 330 L260 280 Z',bac:'M250 20 L440 4 L640 40 L630 140 L520 168 L470 150 L300 170 L250 120 Z',
     dong:'M640 290 L720 270 L850 290 L890 440 L885 560 L820 560 L760 470 L660 515 L625 480 L610 370 Z',nam:'M350 470 L395 535 L470 480 L590 560 L580 690 L420 698 L200 690 L215 610 L290 540 Z',
     tay:'M30 110 L200 50 L250 120 L300 170 L260 280 L200 330 L200 420 L120 465 L30 420 L18 250 Z'};
-  parts.push(Object.entries(NEN).map(([k,d])=>`<path d="${d}" class="rg rg-${k}" style="cursor:default"/>`).join(''));
+  if(!window.BN_CT)parts.push(Object.entries(NEN).map(([k,d])=>`<path d="${d}" class="rg rg-${k}" style="cursor:default"/>`).join(''));
   const LBL={trung:[330,225],bac:[560,40],dong:[780,258],nam:[270,690],tay:[130,505]};
   parts.push(Object.keys(NEN).map(k=>`<text x="${LBL[k][0]}" y="${LBL[k][1]}" text-anchor="middle" class="rn" pointer-events="none">${REGIONS[k].n}</text>`).join(''));
+  if(window.BN_CT)parts.push(window.BN_CT.lanhTho());
   /* đường: liền là đường bộ, đứt là đường biển; lộ trình đang đi hoặc đang xem tô đậm */
   const lo=J?J.di:(selP&&selP!==home?(window.D.route(home,selP,month())||{}).di:null);const tren=(a,b)=>{if(!lo)return false;const i=lo.indexOf(a);return i>=0&&(lo[i+1]===b||lo[i-1]===b)};
   parts.push(window.D.ROADS.map(([a,b,d,sea])=>{const A=PROV[a],B=PROV[b],on=tren(a,b);return `<line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" stroke="${on?'#b3261e':'#8a7b5c'}" stroke-width="${on?3.2:1.2}" stroke-opacity="${on?1:0.55}"${sea?' stroke-dasharray="5 4"':''} pointer-events="none"/>`}).join(''));
   /* thiên tai */
   act.forEach(d=>d.provs.forEach(p=>{const P0=PROV[p];parts.push(`<circle cx="${P0.x}" cy="${P0.y}" r="${15+d.sev*3}" class="dz ${S.t<d.since?'warn':''}" pointer-events="none"/>`)}));
   /* căng thẳng và chiến tranh */
-  BORDER.forEach((b,i)=>{const ph=W.ph[i]||0;if(!ph)return;const A=PROV[b[4]],B=PROV[b[5]];
+  BORDER.forEach((b,i)=>{const ph=W.ph[i]||0;if(!ph)return;const tt=window.BN_CT?window.BN_CT.tienTuyen(i):[b[4],b[5]];if(!tt)return;const A=PROV[tt[0]],B=PROV[tt[1]];
     parts.push(`<line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" class="tl ph${ph}" pointer-events="none"/>`)});
   Object.keys(w_front()).forEach(p=>{const P0=PROV[p];parts.push(`<circle cx="${P0.x}" cy="${P0.y}" r="13" class="wz" pointer-events="none"/>`)});
   for(const p in PROV){const P0=PROV[p],N0=NAT[P0.nat];const kinh=P0.k==='kinh';const r=kinh?8:P0.k==='lang'?4.5:6;
     const shape=P0.k==='bien'?`<rect x="${P0.x-5.5}" y="${P0.y-5.5}" width="11" height="11" transform="rotate(45 ${P0.x} ${P0.y})"`:`<circle cx="${P0.x}" cy="${P0.y}" r="${r}"`;
     parts.push(`<g class="pv ${p===selP?'on':''} ${p===home?'home':''}" data-prov="${p}" tabindex="0" role="button" aria-label="${esc(P0.n)}"><circle cx="${P0.x}" cy="${P0.y}" r="13" fill="transparent"/>${shape} fill="${N0.col}" class="pd"/><text x="${P0.x}" y="${P0.y+(kinh?19:15)}" text-anchor="middle" class="pl">${esc(P0.n)}</text>${p===home?`<text x="${P0.x}" y="${P0.y-10}" text-anchor="middle" class="hm">★</text>`:''}${S&&brAt(p).length?`<text x="${P0.x+11}" y="${P0.y-7}" text-anchor="middle" class="hm">⌂</text>`:''}</g>`)}
   if(window.BN_TL)parts.push(window.BN_TL.dau());
+  if(window.BN_CT)parts.push(window.BN_CT.dauBanDo());
   if(J){const k=Math.min(J.di.length-1,Math.max(0,Math.round((1-J.left/J.total)*(J.di.length-1))));const P0=PROV[J.di[k]];parts.push(`<circle cx="${P0.x}" cy="${P0.y}" r="10" fill="none" stroke="#b3261e" stroke-width="3" pointer-events="none"/>`)}
   parts.push('</svg>');return parts.join('')}
 function w_priceTable(...a){return ENGX.fn.w_priceTable(...a)}
@@ -5491,6 +5494,7 @@ if(window.BNHELP)window.BNHELP.bind({S:()=>S,log,G});
 if(window.BN_VQ){window.BN_VQ.bind(G);G.vq=window.BN_VQ}
 if(window.BN_CD){window.BN_CD.bind(G,{offState,seatWh,seatTm,seatName,holderNp,npGet,officerDepose,mkHolder,famEnsure,famPerson,court,qtOf,qtAdd,qtJoin,qtLog,memP,dynEns,inKinh,placeOf,OFFICES,DX,FAC,FACK});G.cd=window.BN_CD}
 if(window.BN_TL){window.BN_TL.bind(G);G.tl=window.BN_TL}
+if(window.BN_CT){window.BN_CT.bind(G,{w_cause:(i,mo)=>ENGX.fn.w_cause(i,mo),w_tension:mo=>w_tension(mo),w_news,w_rel,w_endWar,seatWh,seatTm,leaveSeat,npGet,startMove,qtAdd});G.ct=window.BN_CT}
 window.D.curNat=()=>(S&&S.loc&&PROV[S.loc.p])?PROV[S.loc.p].nat:'trieu';
 G.brief=personBrief;Object.assign(G,{askOk,traders,vacantSeat,seatFree,takeSeat,ctRank,ctName:(c,k)=>{const t=ctRank(c,k);return t>=0&&window.D.STITLE[k][t]?window.D.STITLE[k][t][1]||window.D.STITLE[k][t][0]:''},officeChurn,seatMan:(k,n)=>{const st=S.off&&S.off[k];if(!st||st.vac||st.holder||st.n!==n)return null;const p=holderNp(st);if(!p.vai||!p.vai.length)p.vai=['quan'];if(!p.st){const t=Math.round(clamp(st.ab||60,30,125));p.st={tri:t,vo:R(20,60),mi:R(35,70),eq:Math.round(clamp(t-10+R(-8,8),20,120))}}p.ky=p.ky||[];p.past=p.past||[];p.on=p.on||0;p.oan=p.oan||0;if(p.rel==null)p.rel=0;if(!p.nghe)p.nghe='quan đang giữ chức '+seatName(k);if(!p.sub&&G.npc&&G.npc.deepen){try{G.npc.deepen(p,{vai:p.vai,tier:Math.min(6,2+Math.floor((seatTm(k).r||0)/2)),nghe:p.nghe})}catch(e){}}if(!p.loc){const w=seatWh(k);if(w)p.loc=w.p}return p},seatPush:(k,why)=>{const st=S.off&&S.off[k];if(!st||st.vac||st.holder)return false;officerDepose({st},why);delete st.np;return true},buyOffice:{why:buyOfficeWhy,pay:buyPay,chance:buyChance,year:muaYear,price:()=>bribePrice(0)},bribe:{use:useBacker,price:bribePrice,backer:bribeBacker,ok:bribeOk,MAX_FREE:BRIBE_MAX_FREE},talent:c=>{if(!c)return false;try{if(pot(c,'tri')>=90||pot(c,'vo')>=90)return true;if(tsum(c,'exam')>=5||tsum(c,'growAll')>0)return true;const u=tsum2(c,'capUp');return Object.values(u).some(x=>x>0)}catch(e){return false}},candReg:(p,rel)=>{if(p){p._cand=1;if(rel)p._relTxt=rel;CAND[p.id]=p}return p},proFix,npTakeSeat,npFreeSeat,npSeatLost,potLine,placeOf,houseFor,houseSur,localOfficer,officerDepose,houseRel:(id,d)=>houseRel(id,d),provName:p=>provN(p)});G._adm={brief:personBrief,xYear,xfn:ENGX.fn,tradeProbe:(c,tr)=>tradeReturn(c,tr,true),tradeRoutes:()=>routes(),tradePrice:g=>priceOf(g),wishPick,meets,setJob,JH_G,bigAvail:c=>bigAvail(c),bigDone:c=>bigDone(c),bigStart:(c,id)=>{const b=BIGS.find(x=>x.id===id);c.viec={id:b.id,start:S.t,end:S.t};},gbApply,avatarSVG,deathPopup,clanSupport,metaImport,phamSeats,letterLv,letterAdd,letterDue,letterLines,startScreen,historyMenu,personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
   getSel:()=>sel,setSel:v=>{sel=v},running:()=>running,speed:()=>speed,setRun:(r,sp)=>{running=!!r;if(sp)speed=sp;renderTop()},

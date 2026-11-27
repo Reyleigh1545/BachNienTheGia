@@ -13,13 +13,14 @@ function w_warRisk(p){const S=X.S;const W=S.w;const hn=homeNat(),dn=PROV[p].nat;
 function w_warName(w){return `${NAT[w.a].n} đánh ${NAT[w.b].n}`}
 function w_startWar(i){const S=X.S;
   const W=S.w,b=BORDER[i];const att=chance(NAT[b[0]].hos/(NAT[b[0]].hos+NAT[b[1]].hos))?0:1;const a=b[att],d=b[1-att];
-  const why=(W.why||{})[i]||w_cause(i,S.t%12+1).why;const w={id:W.wid++,i,a,b:d,why,since:S.t,until:S.t+R(10,40),front:[b[4],b[5]]};W.wars.push(w);W.ph[i]=3;W.ten[i]=100;
-  w_news(`Chiến tranh nổ ra: ${w_warName(w)}, bắt nguồn từ ${why}. Mặt trận ở ${PROV[b[4]].n} và ${PROV[b[5]].n}.`,w_rel(a,d));
+  const why=(W.why||{})[i]||w_cause(i,S.t%12+1).why;const w={id:W.wid++,i,a,b:d,why,since:S.t,until:S.t+R(18,42),front:(window.BN_CT&&window.BN_CT.tienTuyen(i))||[b[4],b[5]],chiem:{},gop:{},next:S.t+R(2,4)};W.wars.push(w);W.ph[i]=3;W.ten[i]=100;
+  w_news(`Chiến tranh nổ ra: ${w_warName(w)}, bắt nguồn từ ${why}. Mặt trận ở ${PROV[w.front[0]].n} và ${PROV[w.front[1]].n}.`,w_rel(a,d));
   [a,d].forEach(n=>Object.keys(PROV).filter(p=>PROV[p].nat===n).forEach(p=>{w_shock(p,'sat',1.25);w_shock(p,'ngua',1.25);w_shock(p,'lua',1.12)}));
   return w}
 function w_endWar(w,why){const S=X.S;
+  const kq=window.BN_CT?window.BN_CT.ketCuc(w):''; /* d.1.5.54: đã tuyên chiến thì bản đồ phải đổi */
   const W=S.w;W.wars=W.wars.filter(x=>x!==w);W.ph[w.i]=0;W.last=W.last||{};W.last[w.i]=S.t;W.ten[w.i]=clamp(BORDER[w.i][2]+R(5,14),0,100);
-  w_news(`Hòa ước: ${w_warName(w)} đã kết thúc${why?', '+why:''}.`,w_rel(w.a,w.b))}
+  w_news(`Hòa ước: ${w_warName(w)} đã kết thúc${why?', '+why:''}.${kq?' '+kq+'.':''}`,w_rel(w.a,w.b))}
 /* d.1.5.47 (chủ dự án 27/11: "chiến tranh xuất hiện cũng tùy ý"): căng thẳng biên giới phải có nguyên nhân đọc được; vừa hòa ước thì năm năm không gây chiến lại */
 function w_cause(i,mo){const S=X.S,W=S.w,b=BORDER[i];const L=[];let p=0;const pair=[b[0],b[1]];
   const d=(W.dis||[]).find(x=>disActive(x)&&x.provs.some(q=>q===b[4]||q===b[5]||pair.includes(PROV[q].nat)&&PROV[q].r===PROV[b[4]].r));
@@ -27,12 +28,14 @@ function w_cause(i,mo){const S=X.S,W=S.w,b=BORDER[i];const L=[];let p=0;const pa
   if(pair.some(n=>n==='lang_bo'||n==='hac_ma')&&mo>=8&&mo<=11){p+=0.5;L.push('mùa thu ngựa béo, kỵ binh thảo nguyên xuống cướp phá')}
   const dy=S.dyn;if(dy&&pair.includes('trieu')){if((dy.loan||0)>=45){p+=0.8;L.push('trong nước rối ren, bên kia thừa cơ dò biên phòng')}else if(dy.k&&(dy.k.tai<40||dy.k.uy<40)){p+=0.6;L.push('vua yếu thế, bên kia coi thường biên phòng')}}
   const last=(W.last||{})[i];const nam=last==null?null:(S.t-last)/12;if(nam!=null&&nam>=8&&nam<=25){p+=0.5;L.push('mối thù từ cuộc chiến trước chưa nguôi')}
+  if((W.doi||[]).some(x=>S.t-x.t<480&&pair.includes(x.tu)&&pair.includes(x.sang)&&PROV[x.p].nat===x.sang)){p+=0.6; /* mối hận mất đất còn nóng trong 40 năm */L.push('đòi lại đất cũ đã bị cắt')} /* d.1.5.54 */
   if(!L.length)L.push(pick(['tranh chấp cột mốc ở vùng giáp ranh','thương đoàn bị chặn cướp, hai bên đổ lỗi cho nhau','dân chăn thả lấn sang bên kia rồi đánh nhau']));
   return {p,why:pick(L),truce:nam!=null&&nam<5}}
 function w_tension(mo){const S=X.S;
   const W=S.w;
   BORDER.forEach((b,i)=>{
     if(W.wars.some(w=>w.i===i))return;
+    if(window.BN_CT&&(window.BN_CT.dangXung(i)||!window.BN_CT.tienTuyen(i)))return; /* d.1.5.54: đang xung đột, hoặc hai nước hết giáp nhau */
     const hos=b[3]*(NAT[b[0]].hos+NAT[b[1]].hos)/2;let t=W.ten[i],ph=W.ph[i]||0;
     if(ph===0){ /* êm ả: thỉnh thoảng có biến cố */
       t+=(b[2]-t)*0.08;const cs=w_cause(i,mo);if(!cs.truce&&chance(0.0095*hos*(1.15+cs.p))){t=R(54,70);W.ph[i]=1;W.why=W.why||{};W.why[i]=cs.why;w_news(`Tin đồn: ${pairName63(i)} xô xát ở biên giới vì ${cs.why}.`,w_rel(b[0],b[1]))}
@@ -40,7 +43,7 @@ function w_tension(mo){const S=X.S;
       const cs=w_cause(i,mo);t+=chance(Math.min(0.7,0.47+0.05*(hos-1)+0.07*cs.p))?R(0,6):-R(0,5);
       if(t>=72&&ph===1){W.ph[i]=2;w_news(`${pairName63(i)} điều quân đến sát biên giới, hai bên chuẩn bị chiến tranh. Gốc việc: ${(W.why||{})[i]||cs.why}.`,w_rel(b[0],b[1]));
         if(w_rel(b[0],b[1])&&[b[0],b[1]].includes(homeNat()))S.recruit=Math.max(S.recruit,S.t+6)}
-      if(t>=90||(ph===2&&t>=80&&chance(0.04))){W.ten[i]=t;w_startWar(i);return}
+      if(t>=90||(ph===2&&t>=80&&chance(0.04))){W.ten[i]=t;if(!window.BN_CT||window.BN_CT.no(i)==='chien')w_startWar(i);return}
       if(t<=b[2]+6){W.ph[i]=0;if(ph>=1)w_news(`${pairName63(i)} bớt căng thẳng sau khi hai bên sứ giả qua lại.`,w_rel(b[0],b[1]))}
       if(ph===2){[b[4],b[5]].forEach(p=>{w_shock(p,'sat',1.03);w_shock(p,'lua',1.02)})}
     }
@@ -51,7 +54,8 @@ function w_tension(mo){const S=X.S;
     W.dmg[w.front[1]]=clamp((W.dmg[w.front[1]]||0)+R(1,4),0,100);W.dmg[w.front[0]]=clamp((W.dmg[w.front[0]]||0)+R(0,2),0,100);
     fa.forEach(p=>{w_shock(p,'lua',1.04,2.6);w_shock(p,'sat',1.03,2.6);w_shock(p,'ngua',1.03,2.6)});
     [w.a,w.b].forEach(n=>Object.keys(PROV).filter(p=>PROV[p].nat===n).forEach(p=>{w_shock(p,'sat',1.01,2);w_shock(p,'ngua',1.01,2)}));
-    if(S.t>=w.until)w_endWar(w,chance(0.5)?'hai bên đều kiệt sức':'sau nhiều trận giằng co')});
+    if(window.BN_CT)window.BN_CT.chien(w);else if(S.t>=w.until)w_endWar(w,'sau nhiều trận giằng co')});
+  if(window.BN_CT)window.BN_CT.month();
   /* phục hồi */
   for(const p in W.dmg){if(!w_front()[p])W.dmg[p]=Math.max(0,W.dmg[p]-2);if(!W.dmg[p])delete W.dmg[p]}
   for(const p in W.sk){for(const g in W.sk[p]){W.sk[p][g]+=(1-W.sk[p][g])*0.07;if(Math.abs(W.sk[p][g]-1)<0.02)delete W.sk[p][g]}if(!Object.keys(W.sk[p]).length)delete W.sk[p]}
@@ -150,13 +154,14 @@ function w_provPanel(p){const S=X.S;
    </div>${blk&&p!==h?`<p class="note" style="margin-top:6px">${esc(blk)}</p>`:''}`}
 function w_situation(){const S=X.S;
   const W=S.w;
-  const wars=W.wars.map(w=>`<li><b>${esc(w_warName(w))}</b> · mặt trận ${esc(PROV[w.front[0]].n)} và ${esc(PROV[w.front[1]].n)} · còn khoảng ${Math.max(0,w.until-S.t)} tháng${w.a===homeNat()||w.b===homeNat()?' · <span class="down">nước nhà tham chiến</span>':''}</li>`).join('');
+  const wars=W.wars.map(w=>`<li><b>${esc(w_warName(w))}</b> · mặt trận ${esc(PROV[w.front[0]].n)} và ${esc(PROV[w.front[1]].n)} · còn khoảng ${Math.max(0,w.until-S.t)} tháng${w.a===homeNat()||w.b===homeNat()?' · <span class="down">nước nhà tham chiến</span>':''}${window.BN_CT?window.BN_CT.moTa(w):''}</li>`).join('');
   const tens=BORDER.map((b,i)=>({i,t:W.ten[i],ph:W.ph[i]||0,rel:w_rel(b[0],b[1])})).filter(x=>!W.wars.some(w=>w.i===x.i)).sort((a,b)=>(b.rel-a.rel)||(b.t-a.t)).slice(0,6);
   const dis=W.dis.filter(d=>S.t<d.until).map(d=>`<li>${DIS[d.k].n} ở ${esc(REGIONS[d.r].n)}: ${d.provs.map(p=>esc(PROV[p].n)).join(', ')} · mức ${['','nhẹ','vừa','nặng'][d.sev]}${S.t<d.since?' · <b>sắp tới</b>':''}${d.provs.includes(S.loc.p)?' · <span class="down">nơi nhà mình ở</span>':''}</li>`).join('');
   return `<span class="eyebrow">Tình hình thiên hạ</span><h2>Thế giới</h2>
    <p class="kvline"><b>Chiến tranh</b></p>${wars?`<ul class="plain">${wars}</ul>`:'<p class="kvline muted">Hiện chưa có cuộc chiến nào.</p>'}
    <p class="kvline" style="margin-top:8px"><b>Căng thẳng giữa các nước</b></p>
    <div class="tens">${tens.map(x=>`<div class="tenrow ${x.rel?'rel':''}"><span>${esc(pairName63(x.i))}${x.rel?' ★':''}</span><span class="tbar"><i style="width:${Math.round(x.t)}%" class="ph${x.ph}"></i></span><span class="muted">${w_label(x.t)}</span></div>`).join('')}</div>
+   ${window.BN_CT?window.BN_CT.cuongVuc():''}
    <p class="kvline" style="margin-top:8px"><b>Thiên tai</b></p>${dis?`<ul class="plain">${dis}</ul>`:'<p class="kvline muted">Trời yên biển lặng.</p>'}
    <p class="kvline" style="margin-top:8px"><b>Tin truyền tới</b></p>${W.news.length?`<ul class="plain">${W.news.slice(0,8).map(n=>`<li class="${n.rel?'':'muted'}"><small>${dateStr(n.t)}</small> ${esc(n.m)}</li>`).join('')}</ul>`:'<p class="kvline muted">Chưa có tin gì.</p>'}`}
 function w_gift(id){const S=X.S;
@@ -223,5 +228,5 @@ function w63Month(mo){const EVMAP=X.EVMAP;const S=X.S;
      const ids=['w63_tin_xa','w631_su_hanh_cuoc','w631_linh_tram','w631_thay_lang_rong','w631_nguoi_hat_rong','w631_chu_thuyen'].filter(id=>EVMAP[id]&&(!EVMAP[id].c||EVMAP[id].c(hd)));
      enqueue('ev',hd.id,{ev:pick(ids)})}}}
 }
-Object.assign(X.fn,{w_new,w_startProv,w_setLoc,w_shock,w_mo,w_front,w_closed,w_warRisk,w_warName,w_startWar,w_endWar,w_tension,w_dis,w_home,w_jobKind,w_houseSur,w_markHouses,w_genClan,w_clans,w_clansYear,w_ourKind,w_khoFee,w_priceTable,w_provPanel,w_situation,w_gift,w_peace,w_kidProfile,w_wed,w63Month});
+Object.assign(X.fn,{w_cause,w_new,w_startProv,w_setLoc,w_shock,w_mo,w_front,w_closed,w_warRisk,w_warName,w_startWar,w_endWar,w_tension,w_dis,w_home,w_jobKind,w_houseSur,w_markHouses,w_genClan,w_clans,w_clansYear,w_ourKind,w_khoFee,w_priceTable,w_provPanel,w_situation,w_gift,w_peace,w_kidProfile,w_wed,w63Month});
 });

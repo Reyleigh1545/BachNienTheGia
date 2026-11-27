@@ -8,7 +8,7 @@ const kinhOf=nat=>nat==='trieu'?'thien_kinh':(window.BN_VQ&&window.BN_VQ.KINH[na
 function vuaNghi(nat){if(nat==='trieu'){const d=S().dyn;return (d&&d.k&&d.k.nghi)||40}const v=S().vq&&S().vq[nat];return v?v.vua.nghi:30}
 /* ---------- tai mắt của vua: 1 là ngay dưới mắt thiên tử ---------- */
 const SOI_C={};
-function soi(p){if(!P()[p])return 0.5;const nat=natOf(p),k=kinhOf(nat);let base;if(p===k)base=1;else{let t=SOI_C[p];if(t==null){const r=window.D.route(k,p,6);t=SOI_C[p]=r?r.thang:6}base=Math.max(0.25,0.78-0.09*t)}
+function soi(p){if(!P()[p])return 0.5;const nat=natOf(p),k=kinhOf(nat);let base;if(p===k)base=1;else{let t=SOI_C[p+nat];if(t==null){const r=window.D.route(k,p,6);t=SOI_C[p+nat]=r?r.thang:6}base=Math.max(0.25,0.78-0.09*t)}
   if(nat!=='trieu')base*=0.75;return cl(base+(vuaNghi(nat)-45)/220,0.15,1.2)}
 const soiC=c=>soi((H&&H.placeOf(c))||S().loc.p);
 const soiTxt=v=>v>=0.85?'rất nghiêm, tai mắt của vua có ở khắp nha môn':v>=0.6?'nghiêm, tuần án qua lại luôn':v>=0.42?'vừa, thỉnh thoảng có người về tra':'lơi lỏng, trời cao vua xa';
