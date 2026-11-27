@@ -219,7 +219,7 @@ function usStatus(path,p){const S=X.S;if(!p||p.dead!=null||!inClan(p)||age(p)<22
 
 function usEnq(id,a,extra){const S=X.S;const t=usTarget(a);if(t&&X.EVMAP[id])enqueue('ev',t.id,{ev:id,data:Object.assign({who:a.id},extra||{})})}
 
-function usStart(path,who,force){const S=X.S;const a=typeof who==='string'?P(who):who;if(!a)return null;
+function usStart(path,who,force){const S=X.S;if(window.D.curNat&&window.D.curNat()!=='trieu'&&!force)return null; /* mưu đại sự là chuyện của Đại Nguyễn */const a=typeof who==='string'?P(who):who;if(!a)return null;
   S.usurp=Object.assign({path,who:a.id,st:0,next:S.t+R(2,5),pending:false,pt:0,v:2,br:null},US_START[path]);S.usWait=null;
   qtLog('Bước vào mưu đại sự',`${nameOf(a)} bắt đầu con đường ${US_N[path].toLowerCase()}.`);log(`${nameOf(a)} bắt đầu mưu đại sự.`,'hi');return S.usurp}
 

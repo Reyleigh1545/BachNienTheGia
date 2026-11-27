@@ -225,24 +225,42 @@ D.build64=function(){
       const o=parseRow(line,g);if(!o)return;
       const T=o.T;
       if(T.ar!=null){T.mil=1;T.tag='vo'}
-      if(T.at){T.units=(T.sc==='B'?T.at.map(x=>'B:'+x):T.sc==='P'?T.at.map(x=>'P:'+x):T.sc==='A'?T.at.map(x=>'A:'+x):T.at.map(x=>T.sc+':'+x)).filter(u=>UNITS[u])}
+      if(T.at){T.units=(T.sc==='B'?T.at.map(x=>'B:'+x):T.sc==='P'?T.at.map(x=>'P:'+x):T.sc==='A'?T.at.map(x=>'A:'+x):T.at.map(x=>T.sc+':'+x)).filter(u=>UNITS[u]);T.units=T.units.concat(Object.keys(UNITS).filter(k=>UNITS[k].goc&&T.units.indexOf(UNITS[k].goc)>=0))} /* d.1.5.50: bản tương ứng ở tiểu quốc */
       else T.units=D.UNIT_LIST[T.sc].slice();
       OF[o.id]=Object.assign({},legacyOld[o.id]||{},T);
     })});
   /* các chức cũ giữ nguyên id để save cũ còn đọc được */
   D.OFFICE_IDS=Object.keys(OF);
 };
-D.seatKeys=function(tid){
+/* d.1.5.50: mỗi nước một quan trường. Đơn vị của tiểu quốc dựng thêm ở dưới (vqUnits); chỉ trả ghế của nước được hỏi, mặc định là nước nhà đang ở. Tiểu quốc xưng vương nên không có Nhất phẩm. */
+D.unitNat=u=>{const U=UNITS[u];return U?D.PROV[U.p].nat:'trieu'};
+D.seatKeys=function(tid,nat){
   const T=D.OFFICES[tid];if(!T||!T.units)return [];
-  const out=[];T.units.forEach(u=>{for(let i=0;i<T.k;i++)out.push(`${tid}|${u}|${i}`)});return out;
+  const n=nat||(D.curNat?D.curNat():'trieu');if(n!=='trieu'&&(T.r||0)>7)return [];
+  const out=[];T.units.forEach(u=>{if(D.unitNat(u)!==n)return;for(let i=0;i<T.k;i++)out.push(`${tid}|${u}|${i}`)});return out;
 };
+(function vqUnits(){
+  const KINH={lang_bo:'soc_do',van_dao:'van_dao',lam_quoc:'cam_thanh',sa_quoc:'sa_thanh'};const them={K:[],B:[],P:[],F:[],C:[],H:[],A:[],G:[]};
+  Object.keys(KINH).forEach(nat=>{const kinh=KINH[nat];const khu=Object.keys(D.PROV).filter(p=>D.PROV[p].nat===nat);
+    const add=(t,k,o)=>{UNITS[k]=Object.assign({k,t},o);them[t].push(k)};
+    add('K','K@'+nat,{p:kinh,n:'Vương đô'});UL.B.filter(k=>k.indexOf('@')<0).forEach(k=>{const U=UNITS[k];add('B',k+'@'+nat,{p:kinh,n:U.n,s:U.s,goc:k})});
+    khu.forEach(p=>{const P=D.PROV[p];const nm=P.n.replace(/ quan$/,'');add('P','P:'+p,{p,n:nm,s:p});
+      const c={kinh:{F:2,C:1,H:3},phu:{F:2,C:2,H:3},cang:{F:1,C:1,H:3},bien:{F:1,C:1,H:2},lang:{F:1,C:1,H:2}}[P.k]||{F:1,C:1,H:2};
+      ['F','C','H'].forEach(t=>{for(let i=0;i<c[t];i++)add(t,`${t}:${p}:${i}`,{p,n:mkName(),s:p})});
+      if(D.BORDER.some(b=>b[4]===p||b[5]===p))add('A','A:'+p,{p,n:nm,s:p});if(P.k==='cang')add('G','G:'+p,{p,n:nm,s:p})})});
+  for(const tid in D.OFFICES){const T=D.OFFICES[tid];if(!T.units)continue;
+    if(T.at){const ex=[];T.units.forEach(u=>{Object.keys(UNITS).forEach(k=>{if(UNITS[k].goc===u)ex.push(k)})});T.units=T.units.concat(ex)}
+    else if(them[T.sc])T.units=T.units.concat(them[T.sc].filter(u=>T.units.indexOf(u)<0))}
+  Object.keys(them).forEach(t=>them[t].forEach(k=>{if(UL[t].indexOf(k)<0)UL[t].push(k)}));
+})();
 /* tên đầy đủ của ghế */
 D.seatLabel=function(key){
   const parts=String(key).split('|');const T=D.OFFICES[parts[0]];if(!T)return key;
   if(parts.length<3)return T.n;
   const U=UNITS[parts[1]];if(!U)return T.n;
   const idx=+parts[2];let s=T.n;
-  if(U.t==='B')s+=' '+U.n;
+  if(U.t==='K'&&D.unitNat(U.k)!=='trieu')s+=' '+D.NAT[D.unitNat(U.k)].n;
+  if(U.t==='B')s+=' '+U.n+(D.unitNat(U.k)!=='trieu'?' '+D.NAT[D.unitNat(U.k)].n:'');
   else if(U.t==='P')s+=' '+U.n;
   else if(U.t==='F'||U.t==='C'||U.t==='H'){
     const w=U.t==='F'?'phủ':U.t==='C'?'châu':'huyện';

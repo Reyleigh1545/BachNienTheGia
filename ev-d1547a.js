@@ -21,7 +21,7 @@ return [
 window.EVPATCH=window.EVPATCH||[];
 window.EVPATCH.push(function(E,G){
 const e=E.find(x=>x.id==='tt_cau_hien');if(!e||e.__g1547)return;e.__g1547=1;
-const {fx,esc}=G;const S=()=>G.S();const N=c=>esc(c.given);const emp=()=>{try{return G.vua.d().emp}catch(er){return ''}};
+const {fx,esc}=G;const S=()=>G.S();const N=c=>esc(c.given);const emp=()=>{try{const v=window.BN_VQ&&window.BN_VQ.vua();return v?v.ten:G.vua.d().emp}catch(er){return ''}};
 /* chủ dự án 27/11: không cấp chức quá Ngũ phẩm. Phẩm tính 0 Cửu, 1 Bát, 2 Thất, 3 Lục, 4 Ngũ */
 const TRAN=4;
 const MAXV=[1,2,3,4,4,4,4,4]; /* phẩm văn cao nhất theo bậc danh hiệu trí (0 = Bác học, mốc 100) */
