@@ -33,6 +33,7 @@ function sheetHTML(c){const S=X.S;
   const can=(k,l,dis)=>h+=`<button class="btn small" data-do="${k}" ${dis?'disabled':''}>${l}</button>`;
   if(bigAvail(c).length)can('big','Việc lớn');
   if(c.viec){const bb=BIGS.find(x=>x.id===c.viec.id);h+=`<span class="kvline muted">Đang làm việc lớn: ${bb?esc(bb.n.toLowerCase()):''}, xong khoảng ${dateStr(c.viec.end)}</span>`}
+  if((c.flags&&c.flags.exFail)>=1&&!['quan','vua','nguy','quan_ngu'].includes(c.job)&&a>=18&&a<=60&&!c.away&&(c.g==='nam'||S.royal)){const w=X.EC.G.buyOffice.why(c);can('muachuc',w?`Mua chức <small>${esc(w)}</small>`:'Mua chức Cửu phẩm',!!w)}
   if(c.job==='quan_ngu'&&a>=16)can('resign','Xin giải ngũ');
   if(!c.away){
     if(a>=16&&!['quan','vua','nguy','quan_ngu','hiep'].includes(c.job))can('job',c.job==='none'||c.job==='huu'?'Chọn nghề':'Đổi nghề',c.flags.jobRetry>S.t);

@@ -95,3 +95,5 @@ Object.assign(window.EVMETA,{"np_thanh_dat":["society","npc_life","random","comm
 Object.assign(window.EVMETA,{"np_tre_thu":["society","npc_life","random","common","any","any"],"np_tre_chon_nghe":["society","npc_life","random","common","any","any"],"np_tre_lon":["society","npc_life","random","common","any","any"]});
 /* thêm tự động bởi tools/addmeta.js */
 Object.assign(window.EVMETA,{"rn_don_khi_gioi":["life","blacksmith","random","common","any","any"],"rn_hoc_tro":["life","blacksmith","random","common","any","any"],"rn_thoi_thep_la":["life","blacksmith","encounter","rare","any","any"],"rn_chay_lo":["life","blacksmith","random","common","any","any"]});
+/* thêm tự động bởi tools/addmeta.js */
+Object.assign(window.EVMETA,{"np_tra_on":["society","npc_life","random","common","any","any"],"mua_chuc_cuu":["official","purchase","random","common","any","any"]});

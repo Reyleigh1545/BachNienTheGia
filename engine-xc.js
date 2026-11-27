@@ -13,23 +13,32 @@ function w_warRisk(p){const S=X.S;const W=S.w;const hn=homeNat(),dn=PROV[p].nat;
 function w_warName(w){return `${NAT[w.a].n} đánh ${NAT[w.b].n}`}
 function w_startWar(i){const S=X.S;
   const W=S.w,b=BORDER[i];const att=chance(NAT[b[0]].hos/(NAT[b[0]].hos+NAT[b[1]].hos))?0:1;const a=b[att],d=b[1-att];
-  const w={id:W.wid++,i,a,b:d,since:S.t,until:S.t+R(10,40),front:[b[4],b[5]]};W.wars.push(w);W.ph[i]=3;W.ten[i]=100;
-  w_news(`Chiến tranh nổ ra: ${w_warName(w)}. Mặt trận ở ${PROV[b[4]].n} và ${PROV[b[5]].n}.`,w_rel(a,d));
+  const why=(W.why||{})[i]||w_cause(i,S.t%12+1).why;const w={id:W.wid++,i,a,b:d,why,since:S.t,until:S.t+R(10,40),front:[b[4],b[5]]};W.wars.push(w);W.ph[i]=3;W.ten[i]=100;
+  w_news(`Chiến tranh nổ ra: ${w_warName(w)}, bắt nguồn từ ${why}. Mặt trận ở ${PROV[b[4]].n} và ${PROV[b[5]].n}.`,w_rel(a,d));
   [a,d].forEach(n=>Object.keys(PROV).filter(p=>PROV[p].nat===n).forEach(p=>{w_shock(p,'sat',1.25);w_shock(p,'ngua',1.25);w_shock(p,'lua',1.12)}));
   return w}
 function w_endWar(w,why){const S=X.S;
-  const W=S.w;W.wars=W.wars.filter(x=>x!==w);W.ph[w.i]=0;W.ten[w.i]=clamp(BORDER[w.i][2]+R(5,14),0,100);
+  const W=S.w;W.wars=W.wars.filter(x=>x!==w);W.ph[w.i]=0;W.last=W.last||{};W.last[w.i]=S.t;W.ten[w.i]=clamp(BORDER[w.i][2]+R(5,14),0,100);
   w_news(`Hòa ước: ${w_warName(w)} đã kết thúc${why?', '+why:''}.`,w_rel(w.a,w.b))}
+/* d.1.5.47 (chủ dự án 27/11: "chiến tranh xuất hiện cũng tùy ý"): căng thẳng biên giới phải có nguyên nhân đọc được; vừa hòa ước thì năm năm không gây chiến lại */
+function w_cause(i,mo){const S=X.S,W=S.w,b=BORDER[i];const L=[];let p=0;const pair=[b[0],b[1]];
+  const d=(W.dis||[]).find(x=>disActive(x)&&x.provs.some(q=>q===b[4]||q===b[5]||pair.includes(PROV[q].nat)&&PROV[q].r===PROV[b[4]].r));
+  if(d){p+=0.9;L.push(`${DIS[d.k].n.toLowerCase()} làm vùng biên khốn đốn, người đói tràn qua cướp`)}
+  if(pair.some(n=>n==='lang_bo'||n==='hac_ma')&&mo>=8&&mo<=11){p+=0.5;L.push('mùa thu ngựa béo, kỵ binh thảo nguyên xuống cướp phá')}
+  const dy=S.dyn;if(dy&&pair.includes('trieu')){if((dy.loan||0)>=45){p+=0.8;L.push('trong nước rối ren, bên kia thừa cơ dò biên phòng')}else if(dy.k&&(dy.k.tai<40||dy.k.uy<40)){p+=0.6;L.push('vua yếu thế, bên kia coi thường biên phòng')}}
+  const last=(W.last||{})[i];const nam=last==null?null:(S.t-last)/12;if(nam!=null&&nam>=8&&nam<=25){p+=0.5;L.push('mối thù từ cuộc chiến trước chưa nguôi')}
+  if(!L.length)L.push(pick(['tranh chấp cột mốc ở vùng giáp ranh','thương đoàn bị chặn cướp, hai bên đổ lỗi cho nhau','dân chăn thả lấn sang bên kia rồi đánh nhau']));
+  return {p,why:pick(L),truce:nam!=null&&nam<5}}
 function w_tension(mo){const S=X.S;
   const W=S.w;
   BORDER.forEach((b,i)=>{
     if(W.wars.some(w=>w.i===i))return;
     const hos=b[3]*(NAT[b[0]].hos+NAT[b[1]].hos)/2;let t=W.ten[i],ph=W.ph[i]||0;
     if(ph===0){ /* êm ả: thỉnh thoảng có biến cố */
-      t+=(b[2]-t)*0.08;if(chance(0.0042*hos)){t=R(54,70);W.ph[i]=1;w_news(`Tin đồn: ${pairName63(i)} xô xát ở biên giới, quan hệ căng thẳng.`,w_rel(b[0],b[1]))}
+      t+=(b[2]-t)*0.08;const cs=w_cause(i,mo);if(!cs.truce&&chance(0.0042*hos*(1.15+cs.p))){t=R(54,70);W.ph[i]=1;W.why=W.why||{};W.why[i]=cs.why;w_news(`Tin đồn: ${pairName63(i)} xô xát ở biên giới vì ${cs.why}.`,w_rel(b[0],b[1]))}
     }else{ /* leo thang hoặc hạ nhiệt */
-      t+=chance(0.5+0.05*(hos-1))?R(0,6):-R(0,5);
-      if(t>=72&&ph===1){W.ph[i]=2;w_news(`${pairName63(i)} điều quân đến sát biên giới, hai bên chuẩn bị chiến tranh.`,w_rel(b[0],b[1]));
+      const cs=w_cause(i,mo);t+=chance(Math.min(0.7,0.47+0.05*(hos-1)+0.07*cs.p))?R(0,6):-R(0,5);
+      if(t>=72&&ph===1){W.ph[i]=2;w_news(`${pairName63(i)} điều quân đến sát biên giới, hai bên chuẩn bị chiến tranh. Gốc việc: ${(W.why||{})[i]||cs.why}.`,w_rel(b[0],b[1]));
         if(w_rel(b[0],b[1])&&[b[0],b[1]].includes(homeNat()))S.recruit=Math.max(S.recruit,S.t+6)}
       if(t>=90||(ph===2&&t>=80&&chance(0.04))){W.ten[i]=t;w_startWar(i);return}
       if(t<=b[2]+6){W.ph[i]=0;if(ph>=1)w_news(`${pairName63(i)} bớt căng thẳng sau khi hai bên sứ giả qua lại.`,w_rel(b[0],b[1]))}
