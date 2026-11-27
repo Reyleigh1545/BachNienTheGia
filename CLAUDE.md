@@ -881,7 +881,16 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 **Kết quả d.1.5.60 (27/11), xong E4, E10.** Thử ở game thật: Đại Nguyễn 1.804 ghế văn, mỗi tiểu quốc 712 đến 772, tiểu quốc có Nhất phẩm; trang Thế giới không còn khung Quan trường và Tình hình thiên hạ; quê nhà lúc đầu chỉ hiện lúa, ngô, muối, bốn năm sau thêm bốn thứ; Sóc Đô sau một chuyến buôn tơ chỉ hiện giá tơ; thế lực chưa hiện lúc mới tới, mười năm sau hiện tên và người đứng đầu; khung Vương triều đúng từng mức hiểu biết; hộp đi buôn mở được. `fulltest` 21 mục không lỗi, quét ngoặc đơn sạch, không id trùng, ba lượt bot dài 287 đến 358 năm không lỗi. **Chưa chơi tay.** Tốc độ nghe ngóng (thế lực 5% mỗi tháng, mỗi năm thêm một thứ hàng) là tao tự đặt.
 
-**E13, đề xuất làng, trấn, thành (chờ chủ dự án duyệt, chưa làm).** Gửi trong cuộc trò chuyện ngày 27/11: bảng hệ số chi tiêu, ăn uống, đi học, thu nhập theo nơi ở.
+**E13, đề xuất làng, trấn, thành, bản sửa lần một (chờ chủ dự án duyệt, chưa làm).**
+Chủ dự án sửa bản đầu, chép nguyên văn:
+> "nguy cơ dịch bệnh phải ngược lại chứ, ở làng  thì sẽ chỉ đi học ở  mức làng, thị trấn thì ở mức thị trấn, thành phố thì ở mức thành  phố, ý là cơ sở học tập chứ không phải học phí. Và mày còn tạo được ảnh không"
+
+- **Hệ số (làng · trấn · thành):** ăn mặc sinh hoạt 0,85 · 1 · 1,35; dựng và giữ nhà 0,8 · 1 · 1,4; thu nhập nông, tiều, chăn, ngư 1,15 · 0,8 · 0,5; thợ, dệt, rèn, bếp 0,85 · 1,1 · 1,2; buôn bán, nghệ nhân 0,75 · 1,1 · 1,35; y, dạy học 0,9 · 1 · 1,2; **nguy cơ dịch bệnh 1,2 · 1 · 0,9** (đã đảo theo lời chủ dự án). Bổng quan, quân cố định. Bỏ hai dòng học phí và học nhanh.
+- **Cơ sở học theo nơi ở; học phí và mức học của từng cơ sở giữ nguyên.** Ở đâu cũng có: ở nhà, theo cha mẹ, tự học, phụ việc nhà, theo người học việc, gửi vào cơ sở làm ăn, học trong doanh trại.
+  - Cấp 1: **làng** trường làng, võ đường làng, nữ công, thầy dạy chữ tại nhà; **trấn** tư thục, võ đường, nữ công, thầy dạy chữ tại nhà; **thành** tư thục, gia sư riêng, võ đường, nữ công, thầy dạy chữ tại nhà.
+  - Cấp 2: **làng** trường làng lớp lớn (cơ sở mới), học việc phường thợ, dệt thêu, bà đỡ; **trấn** trường huyện, võ đường, nhà thuốc, phường buôn, phường thợ, dệt thêu, bà đỡ, nữ công; **thành** như trấn, thêm theo danh sư.
+  - Cấp 3: **làng** thầy đồ làng (cơ sở mới), dệt thêu; **trấn** phủ học, trường võ học, phường dệt, bếp tửu lâu, thương hội; **thành** như trấn, thêm y học đường, võ phái danh môn, khuê các; **Quốc tử giám chỉ ở kinh đô**.
+- **Chờ hỏi:** nhà ở làng có được gửi con lên trấn hay thành trọ học không.
 
 (không có ý nào đang chờ khác. Các ý 23/11 đã làm ở d9.8 và d9.9 và chuyển thành luật: giao diện hộp sự kiện và hồ sơ ở mục 7, giang hồ ở mục 6, Thiên cơ ở mục 3, việc lớn ở mục 3, gia bảo ở mục 6, hệ số kỳ ngộ ở mục 5, cưới nhân phép của lính ở mục 3.)
 
