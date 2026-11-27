@@ -14,7 +14,7 @@ function famEnsure(d){d=d||dynEns();if(d.fam)return d.fam;const k=d.k;const f=d.
   for(let i=0;i<nk;i++){const a=R(0,Math.max(1,k.age-19));const mo=chance(0.5)?f.hau.id:pick(f.phi).id;
     if(chance(0.6))f.tu.push(famNew('tu',a,{m:mo,tai:R(30,90),duc:R(30,90),st:'tu'}));else f.cong.push(famNew('cong',a,{m:mo,wed:null}))}
   const P=famProvs();for(let i=R(1,3);i>0;i--)f.vuong.push(famNew('vuong',Math.max(16,k.age+R(-6,10)),{land:P.length?pick(P):null,td:pick(['trung','trung','nghi']),tai:R(30,90),duc:R(30,90),f:pick(FACK),st:'vuong'}));
-  f.qc.push(famNew('qc',R(38,46),{n:'Phạm Nhật Vượng',sur:'Phạm',td:'trung',tai:R(55,80),duc:R(55,80)}));
+  f.qc.push(famNew('qc',R(38,46),{n:'Nhật Vượng',sur:'Phạm',td:'trung',tai:R(55,80),duc:R(55,80)}));
   for(let i=R(1,2);i>0;i--)f.qc.push(famNew('qc',R(40,66),{n:mkGiven('nam'),sur:pick(SURN),td:pick(['trung','nghi']),tai:R(35,85),duc:R(35,85)}));
   return f}
 function famPerson(id){const S=X.S;const f=S.dyn&&S.dyn.fam;if(!f)return null;return [f.hau,f.thai].concat(f.phi,f.tu,f.cong,f.vuong,f.qc).find(x=>x&&x.id===id)||null}
@@ -385,10 +385,11 @@ function relTick(){const EVENTS=X.EVENTS;const S=X.S;const hd=head();if(!hd||!S.
   refs.forEach(r=>{const I=rinfo(r);if(!I)return;if(r.t==='H'&&tierIdx()<3)return;if(I.tier>=4&&tierIdx()<2)return;
     EVENTS.forEach(e=>{if(!e.rg)return;const g=e.rg;if(poor&&g.f)return;   /* nhà nghèo thì không ai đến làm thân */if(g.b&&!g.b.includes(I.band))return;if(g.d&&!g.d.includes(I.dir))return;
       if(g.init&&I.tier>=6&&I.rel<70)return;   /* Danh môn vọng tộc không chủ động kết thân */
+      if(window.BN_OFF&&window.BN_OFF.has(e.id))return;if(window.BN_TIERBLOCK&&window.BN_TIERBLOCK.has(e.id)&&tierIdx()<2)return;if(window.BN_DISPUTE&&window.BN_DISPUTE.has(e.id)&&!X.EC.traders().length)return; /* d.1.5.43 */
       const ck=e.id+'|'+r.key;if((S.cool[ck]||-1e9)>S.t||(S.cool[e.id]||-1e9)>S.t)return;try{if(g.c&&!g.c(I,hd))return}catch(err){return}
       cand.push({e,r,I,w:(e.w||1)*(r.at?1.4:1),ck})})});
   if(!cand.length)return;let tot=cand.reduce((a,x)=>a+x.w,0),rr=Math.random()*tot,pk=cand[0];for(const x of cand){rr-=x.w;if(rr<=0){pk=x;break}}
-  S.cool[pk.ck]=S.t+(pk.e.rgcd||60);S.cool[pk.e.id]=S.t+(pk.e.rgg||12);enqueue('ev',hd.id,{ev:pk.e.id,data:{rr:pk.r}})}
+  S.cool[pk.ck]=S.t+(pk.e.rgcd||60);S.cool[pk.e.id]=S.t+(pk.e.rgg||12);const tg=(window.BN_DISPUTE&&window.BN_DISPUTE.has(pk.e.id))?(()=>{const L=X.EC.traders();return L[Math.floor(Math.random()*L.length)]})():null;enqueue('ev',(tg||hd).id,{ev:pk.e.id,data:{rr:pk.r}})}
 function relWin(I){const S=X.S;const o=I.obj;o.fame=Math.round(o.fame*0.4);o.wealth=Math.round((o.wealth||50)*0.4);o.rel=-30;o.oan=40;relBook(o,'Thua trong cuộc một sống một còn, phải dời đi');
   if(I.t==='C'){const L=S.w.clans[I.p]||[];const i=L.indexOf(o);if(i>=0){L[i]=w_genClan(I.p);L[i].fame=Math.round(L[i].fame/2)}}
   const land=R(2,8);S.farm.own+=land;cf(25,'Thắng cuộc một sống một còn');S.hung=clamp(S.hung+8,0,100);return `${esc(I.name)} suy sụp, phải bán nhà dời đi nơi khác. Nhà mình lấy được ${land} mẫu ruộng và mối làm ăn của họ.`}

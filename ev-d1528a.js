@@ -54,7 +54,7 @@ for(const id of ['kn_12','kn_74']){const e=find(id);if(!e||e.__g1528c)continue;e
 /* HOÀNG ĐẾ THẬT TRONG SỰ KIỆN VUA VI HÀNH (chủ dự án 25/11: "kỳ ngộ ngàn năm: vị khách lạ là đương kim thiên tử vi hành nhưng thẻ hiện ra lại không phải là hoàng đế, chỉ số cũng không ra dáng hoàng đế"): bản chung R1 gắn một NPC ngẫu nhiên; nay thẻ là chính đương kim hoàng đế (tên ở S.dyn.emp, tuổi theo S.dyn.k.age, chỉ số cao, nhãn "Hoàng đế <niên hiệu>"). NPC có ref 'emp:<tên>' nên npcYear không đụng tới. */
 {const cl=(v,a,b)=>Math.max(a,Math.min(b,v));
   const emperor=()=>{const S=G.S(),d=G.vua&&G.vua.d?G.vua.d():null;if(!d||!d.emp)return null;S.np=S.np||{n:0,l:{}};const ref='emp:'+d.emp;let n=Object.values(S.np.l).find(x=>x.ref===ref);
-    const k=d.k||{};if(!n){n=G.np.new({n:d.emp,g:'nam',age:k.age||40,role:'hoangde'});n.ref=ref;n.vai=['hoang_de'];n.nghe='đương kim hoàng đế, niên hiệu '+d.era;n.tier=6;n.rel=0;n.st={tri:80,vo:80,mi:80,eq:80};try{if(G.npc&&G.npc.deepen)G.npc.deepen(n,{vai:['hoang_de'],tier:6,nghe:n.nghe})}catch(er){}}
+    const k=d.k||{};if(!n){n=G.np.new({n:d.emp,g:'nam',age:k.age||40,role:'hoangde'});n.ref=ref;n.vai=['hoang_de'];n.nghe='đương kim hoàng đế, niên hiệu '+d.era;n.tier=6;n.rel=0;n.st={tri:80,vo:80,mi:80,eq:80};n.sk={muu:90,khau:80,ql:80};n.sub={};n.fam={spouse:1,kids:0};n.past=[];n.ky=[];n.on=0;n.oan=0;n.vai=[]} /* d.1.5.43: không đưa vua vào sổ người quen (không vai, không deepen) */
     n.vaiTxt='Hoàng đế '+d.era;n.born=S.t-12*(k.age||40);n.ok=1;
     n.st={tri:Math.round(cl(78+(k.tai||50)*0.35,78,125)),vo:Math.round(cl(70+(k.hp||50)*0.25,70,110)),mi:Math.round(cl(76+(k.duc||50)*0.2,76,105)),eq:Math.round(cl(80+(k.duc||50)*0.3,80,120))};return n};
   G.emperorNpc=emperor;

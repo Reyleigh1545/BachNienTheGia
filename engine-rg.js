@@ -77,7 +77,7 @@ function trouble(){const s=S();const R_=[];try{if(s.money<mm(12))R_.push('đang 
   return R_.length?R_[Math.floor(Math.random()*R_.length)]:null}
 const npStable=(n,minTier)=>!((n.sa!=null&&S().t-n.sa<72)||((n.tier!=null?n.tier:2)<minTier)||(n.oan||0)>=15);
 function tieYear(){const s=root();s.rg.yc=0;
-  const L=Object.values(s.np.l).filter(n=>n.ok!==0&&n.vai&&n.vai.length);
+  const L=Object.values(s.np.l).filter(n=>n.ok!==0&&n.vai&&n.vai.length&&!/^(emp|fam):/.test(n.ref||''));
   for(const n of L){const a=G.np.age(n);if(a<14)continue;
     for(const v of n.vai){const T=TIEACT[v];if(!T)continue;if(s.rg.yc>=1)break;
       if(v==='doi_thu'?(n.rel>-10&&(n.oan||0)<10):(n.rel||0)<T[2])continue;
@@ -85,6 +85,7 @@ function tieYear(){const s=root();s.rg.yc=0;
       if(chance(T[0]*0.4)){const tgt=G.npc&&G.npc.reach?G.npc.reach(n):null;if(!tgt)continue; /* d9.12.65: chỉ tìm tới người đang ở cùng nơi */
         if(!X.EVMAP[T[1]])continue;
         if(((s.evLast&&s.evLast[T[1]])||-999)>s.t-12)continue; /* d9.12.63: cùng một sự kiện người quen không ra hai lần trong 12 tháng */
+        if((T[1]==='tie_ban_nho'||T[1]==='tie_lang_gieng')&&!(G.askOk&&G.askOk(n)))continue; /* d.1.5.43 */
         if((s.cool&&(s.cool['fcd|'+T[1]]||-1e9)>s.t)||(s.cool&&(s.cool['fcd|'+T[1]+'|'+tgt.id]||-1e9)>s.t))continue; /* d.1.5.24: việc đang trong thời gian chờ thì không xếp hàng nữa (trước đó xếp rồi bị chặn, 88 lần trong 72 năm) */
         enqueue('ev',tgt.id,{ev:T[1],data:{npc:n.id,why}});s.rg.yc++}}}
   rgFamilyYear()}

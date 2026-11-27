@@ -5,7 +5,7 @@ const S=()=>G.S();const m=v=>G.mm(v);const N=c=>esc(c.given);const FM=v=>G.fmtMo
 const nbOf=c=>G.npc.boss(c,0),peerOf=c=>G.npc.boss(c,1);
 const rel=(b,v)=>G.npc.add(b.st,'rel',v);
 const QX=o=>Object.assign({tags:{},k:'Quan trường',job:['quan'],age:[30,75],ms:1,w:0.7,pcd:96,cd:48},o);
-const vuong=()=>{const f=G.fam.ens();return (f.qc||[]).find(p=>p.dead==null&&p.n==='Phạm Nhật Vượng')};
+const vuong=()=>{const f=G.fam.ens();return (f.qc||[]).find(p=>p.dead==null&&(p.n==='Nhật Vượng'||p.n==='Phạm Nhật Vượng'))};
 const VG=o=>Object.assign({tags:{},k:'Hoàng tộc',job:['quan'],age:[34,75],ms:1,w:0.5,pcd:120,cd:60,c:c=>c.lv>=3&&G.inKinh(c)&&!!vuong()},o);
 const W=(id,t,xf,of)=>({id,t,k:'Hôn sự',fixed:1,head:1,x:(c,d)=>{const w=d.w?G.P(d.w):null;return w?xf(c,d,w):'Chuyện cũ không còn ai nhắc.'},o:(c,d)=>{const w=d.w?G.P(d.w):null;if(!w)return [{l:'Tiếc',f:()=>''}];return of(c,d,w)}});
 return [

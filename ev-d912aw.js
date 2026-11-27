@@ -82,7 +82,7 @@ NP({id:'gd_y_nguyen',t:'Người trong nhà ngỏ ý',k:'Việc nhà',head:1,
 /* ============ KỲ NGỘ LIÊN QUAN ĐẾN NPC ============ */
 KY({id:'np_ky_nguoi_cu_giau',t:'Người quen cũ mời góp vốn',
  c:()=>{const L=Object.values((S().np||{l:{}}).l).filter(n=>n.ok!==0&&n.sub&&(n.rel||0)>=25&&(n.tier||0)>=3&&G.np.age(n)<=75);return L.length>0},
- x:(c,d)=>{const L=Object.values(S().np.l).filter(n=>n.ok!==0&&n.sub&&(n.rel||0)>=25&&(n.tier||0)>=3&&G.np.age(n)<=75);const n=L.length?pick(L):null;if(!n)return 'Có người quen mời làm ăn.';d.npc=n.id;d.scam=n.sub.thanh<=35&&chance(0.7);
+ x:(c,d)=>{const L=Object.values(S().np.l).filter(n=>n.ok!==0&&!n.ref&&n.sub&&(n.rel||0)>=25&&(n.tier||0)>=3&&G.np.age(n)<=75);const n=L.length?pick(L):null;if(!n)return 'Có người quen mời làm ăn.';d.npc=n.id;d.scam=n.sub.thanh<=35&&chance(0.7);
   return `${nm(n)}, ${esc(n.nghe)}, vốn ${esc(G.npc.desc(n))}, nhớ đến ${N(c)} và mời góp vốn vào một vụ làm ăn mới. Ông nói chắc như đinh đóng cột, ${n.sk.ql>=60?'số liệu rành rành':'nhưng sổ sách thì nói qua loa'}.`},
  o:(c,d)=>{const n=T(d);if(!n)return gone();const base=pr(48,n,(ax(n,'thanh')-50)/3+(n.sk.ql-50)/4-(d.scam?30:0));return [
   pay('Góp vốn lớn',20,{r:[{khau:0.5,muu:0.6,ql:0.4},base],y:c=>{G.tie.rel(n,14,'cùng làm ăn có lời');G.tie.on(n,0);return `Vụ làm ăn thuận lợi: ${n.sk.ql>=60?'ông quản việc chặt tay':'ông gặp may'}. Nhà thu về một khoản lớn và có thêm một người đồng hành đáng tin.`+fx(c,{money:m(R(55,80)),eq:1,cfame:1,tam:4,qh:[n.n,14]})},n:c=>{G.tie.rel(n,-12,'vụ làm ăn đổ bể');if(d.scam)G.tie.oan(n,2);return `Vụ làm ăn đổ bể${d.scam?': hóa ra ông đã ém nhiều điều từ đầu':''}. Nhà mất phần vốn.`+fx(c,{money:-m(20),tam:-5,eq:-1,qh:[n.n,-12]})}}),
@@ -91,7 +91,7 @@ KY({id:'np_ky_nguoi_cu_giau',t:'Người quen cũ mời góp vốn',
   {l:'Từ chối khéo',f:c=>{G.tie.rel(n,-2,'từ chối góp vốn');return d.scam?`Mấy tháng sau nghe tin vụ làm ăn đổ bể, nhiều người mất vốn. Nhà mình may.`+fx(c,{fame:1,tam:2,qh:[n.n,-2]}):`Nghe nói vụ ấy về sau thành công thật. Mình hơi tiếc.`+fx(c,{tam:-1,qh:[n.n,-2]})}}]}}),
 KY({id:'np_ky_con_an_nhan',t:'Con người ân nhân tìm đến',
  c:()=>Object.values((S().np||{l:{}}).l).some(n=>n.ok!==0&&n.parent&&n.sub&&(n.on||0)>=3&&(n.vai||[]).includes('an_nhan')),
- x:(c,d)=>{const L=Object.values(S().np.l).filter(n=>n.ok!==0&&n.parent&&n.sub&&(n.on||0)>=3&&(n.vai||[]).includes('an_nhan'));const n=L.length?pick(L):null;if(!n)return 'Có người đến tìm.';d.npc=n.id;const par=G.tie.get(n.parent);
+ x:(c,d)=>{const L=Object.values(S().np.l).filter(n=>n.ok!==0&&!n.ref&&n.parent&&n.sub&&(n.on||0)>=3&&(n.vai||[]).includes('an_nhan'));const n=L.length?pick(L):null;if(!n)return 'Có người đến tìm.';d.npc=n.id;const par=G.tie.get(n.parent);
   return `${nm(n)}, ${esc(n.nghe)}, đến nhà ${N(c)}. Cha ông${par?` (${esc(par.n)})`:''} trước lúc mất dặn: "Đến nhà ấy mà tạ ơn". Ông ${ax(n,'thanh')>=55?'nói rất thật và hơi rụt rè':'nói trôi chảy như đã tập trước'}.`},
  o:(c,d)=>{const n=T(d);if(!n)return gone();return [
   {l:'Nhận tấm lòng, mời ở lại ăn cơm',f:c=>{G.tie.rel(n,20,'nhận tấm lòng của đời sau');G.tie.on(n,-3);G.tie.later(n,c,'tie_ban_nho',R(24,72),{});return `Bữa cơm ấm áp; ${nm(n)} kể lại những chuyện cha mình từng nhắc về nhà. Mối quan hệ nối sang đời thứ hai.`+fx(c,{money:m(R(10,20)),cfame:2,eq:1,tam:5,qh:[n.n,20]})}},
