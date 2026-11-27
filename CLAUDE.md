@@ -641,6 +641,11 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 - `fulltest` không lỗi, hai ván bot 60 năm không lỗi, không id trùng, quét ngoặc đơn sạch. **Chưa chơi tay.** Sáu sự kiện `qs_*` khai báo bằng hàm nên `addmeta` không thêm được phân loại.
 - **CHƯA LÀM, chờ chủ dự án duyệt thiết kế: (7) câu chuyện theo từng thành, từng vực (Thiên Kinh trước), (8) liên kết chuỗi có điều kiện mở và lựa chọn đắn đo, và bốn vương triều ở bốn vực.** Đề xuất ở câu trả lời trong phiên 27/11. Hiện bốn vực ngoài Trung Châu mỗi vực có vài nước nhưng chưa nước nào có vua, vương tộc, quan lại.
 
+**Thế lực quan lại, tranh ngôi, kinh đô, bản đồ lớn (chủ dự án, 27/11, nói giữa lúc làm), chép nguyên văn:**
+> "các thế lực quan lại phải có những NPC thực tế hợp tác với nhau, các thế lực phải thực sự tranh đấu với nhau. Các vị Hoàng tử tranh ngôi, không phải lúc nào cũng chỉ 2 người tranh với nhau, không phải tất cả hoàng tử đều tranh chấp với nhau, chỉ những hoàng tử đa mưu đa tài, có tham vọng lớn, các thế lực quan lại sẽ phò tá phụ trợ cho các hoàng tử khác nhau. Quan trường ở Thiên Kinh căng thẳng  và gay gắt nhất, nhưng cũng là nơi nghiêm nhặt nhất vì nằm ngay dưới mắt Thiên Tử, nhiều thế lực khác nhau, mạnh yếu khác nhau, có những hệ thống quyền lực của Hoàng Đế tra xét, kiểm tra, theo dõi, những nơi khác cũng có những kiểu như vậy chỉ là yếu hơn. 4 nước khác cũng sẽ có kinh đô riêng của họ, chỉ không phồn vinh và lớn mạnh như Thiên Kinh. Vì đặc điểm khu vực khác nhau, nên các nơi phải có sự khác nhau đôi chút. Để tăng thêm sự đa dạng, bản đồ cũng cần phải làm lớn hơn, có diện tích cụ thể của cả bản đồ và từng  nơi, có khoảng cách thực tế, khoảng cách các nơi cũng  ảnh hưởng tới các sự kiện liên quan đến nó."
+
+*Chưa làm; gộp vào kế hoạch thế giới (phần 7, 8) chờ chủ dự án duyệt.*
+
 (không có ý nào đang chờ khác. Các ý 23/11 đã làm ở d9.8 và d9.9 và chuyển thành luật: giao diện hộp sự kiện và hồ sơ ở mục 7, giang hồ ở mục 6, Thiên cơ ở mục 3, việc lớn ở mục 3, gia bảo ở mục 6, hệ số kỳ ngộ ở mục 5, cưới nhân phép của lính ở mục 3.)
 
 ---
