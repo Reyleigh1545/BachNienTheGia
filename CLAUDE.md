@@ -904,7 +904,7 @@ Chủ dự án sửa bản đầu, chép nguyên văn:
 *Tao tự đặt, chờ chủ dự án xem:* tiền ăn trọ 150 và 300 đồng; trường làng lớp lớn 240 đồng, trí +5; thầy đồ làng 500 đồng, trí +6; đổi tên "Võ đường làng" thành "Lò võ vỡ lòng" vì trấn và thành cũng dùng. Giá bán lại nhà giữ như cũ.
 **Chưa làm trong E13:** nét riêng đã nêu ở bản đề xuất đầu (xóm giềng giúp khi khó, ruộng đỡ tiền gạo, thành dễ sa cờ bạc, dễ mời danh y).
 
-**Ảnh đợt hai (28/11), một phần:** hạn mức miễn phí hết sau 74 ảnh; soi bằng mắt, **bỏ 20 tấm** (nữ quan đội mũ kiểu cảnh sát, thợ săn và đầu bếp mặc sơ mi có túi ngực, một tăng còn tóc, một đạo sĩ phất trần lơ lửng), cất ở `bo_loai/`. **Đã hẹn `gen3.js` chạy sau 7 giờ sáng 28/11:** Hoàng đế bốn phương án, vẽ lại và vẽ nốt ảnh nghề, rồi khuôn riêng họ Phạm. Còn lại sau khi chạy: soi, chọn, vẽ ảnh già, chạy `mkav`.
+**Ảnh đợt hai (28/11), một phần:** hạn mức miễn phí hết sau 74 ảnh; soi bằng mắt, **bỏ 20 tấm** (nữ quan đội mũ kiểu cảnh sát, thợ săn và đầu bếp mặc sơ mi có túi ngực, một tăng còn tóc, một đạo sĩ phất trần lơ lửng), cất ở `bo_loai/`. **Đã hủy hẹn giờ** (chủ dự án 27/11: "không cần hẹn nữa, lưu lại, ngày mai khi reset tao sẽ bảo mày làm tiếp"). **Chờ chủ dự án bảo**, rồi chạy `node avatars/klein_test/gen3.js ngay`: Hoàng đế bốn phương án, vẽ lại và vẽ nốt ảnh nghề, rồi khuôn riêng họ Phạm. Còn lại sau khi chạy: soi, chọn, vẽ ảnh già, chạy `mkav`.
 
 **Ảnh Hoàng đế (chủ dự án, 27/11), chép nguyên văn:**
 > "mày tạo ảnh cho Hoàng Đế Nguyễn Thành Trung thật đẹp trai, thật  ngầu, thật soái, thất bá khí vào"
