@@ -20,7 +20,7 @@ const CU=[['botoc','Hắc Mã Bộ','bach_hoa',62],['tuhai','Hải Minh','hai_mi
 const HO=['Lôi','Hàn','Tiêu','Lãnh','Bạch','Đoàn','Tần','Tống','Hùng','Mạnh','Cao','Phùng','Lữ','Diệp','Thẩm'];
 const GOI={sontac:['Trại chủ','Nhị trại chủ','Đầu mục','Lâu la'],thophi:['Đầu lĩnh','Phó đầu lĩnh','Toán trưởng','Tay chân'],haitac:['Thuyền chủ','Phó thuyền','Lái trưởng','Thủy thủ'],macphi:['Thủ lĩnh','Phó thủ lĩnh','Kỵ trưởng','Kỵ phỉ'],
  banghoi:['Bang chủ','Phó bang chủ','Đà chủ','Bang chúng'],hoigiao:['Giáo chủ','Hộ pháp','Hương chủ','Giáo chúng'],danhmon:['Trang chủ','Thiếu trang chủ','Giáo đầu','Môn khách'],vo:['Chưởng môn','Trưởng lão','Đại đệ tử','Môn sinh'],
- botoc:['Tù trưởng','Thủ lĩnh nhánh','Kỵ trưởng','Kỵ binh'],tuhai:['Minh chủ','Đảo chủ','Thuyền trưởng','Hải tặc'],tutruong:['Thổ ty','Phó thổ ty','Đầu mục','Trai bản'],ocdao:['Minh trưởng','Thành chủ','Đội trưởng','Dân binh'],phientran:['Phiên vương','Trấn tướng','Thiên hộ','Binh sĩ']};
+ botoc:['Tù trưởng','Thủ lĩnh nhánh','Kỵ trưởng','Kỵ binh'],tuhai:['Minh chủ','Đảo chủ','Thuyền trưởng','Hải tặc'],tutruong:['Thổ ty','Phó thổ ty','Đầu mục','Trai bản'],ocdao:['Minh trưởng','Thành chủ','Đội trưởng','Dân binh'],phientran:['Trấn thủ','Trấn tướng','Thiên hộ','Binh sĩ']};
 const goi=(f,b)=>(GOI[f.loai]||GOI.vo)[b];
 /* chỉ số người trong thế lực: theo sức thế lực và bậc (0 đứng đầu, 1 phó, 2 đầu mục, 3 thường) */
 function chiSo(f,bac){const base=f.pow;const vo=[95+base*0.75,75+base*0.55,55+base*0.4,35+base*0.3][bac];const nh=LOAI[f.loai].nh;
@@ -85,11 +85,12 @@ function goiNha(){const s=S();const here=s.loc&&s.loc.p;if(!here||s.journey||(s.
   const vo=G.alive().find(q=>G.inClan(q)&&q.job==='quan_ngu'&&(q.lv||0)>=3);if(vo){const k=o(G.placeOf(vo)).find(f=>LOAI[f.loai].nh==='cuop'&&f.pow>=35);if(k&&G.chance(0.25))G.enqueue('ev',vo.id,{ev:'tlb_dep_cuop',data:{fz:k.id}})}}
 /* đi đường đụng thế lực cướp ở khu đang qua */
 function trenDuong(p){const f=o(p).find(x=>LOAI[x.loai].nh==='cuop'&&x.rel<30);return f&&Math.random()<0.35+f.pow/200?f:null}
+const vuongTen=id=>{const v=S().dyn&&S().dyn.fam&&S().dyn.fam.vuong.find(z=>z.id===id&&z.dead==null);return v?v.n:''};
 /* khung "Thế lực" ở trang Thế giới và dấu trên bản đồ */
 function panel(p){if(!ensure()||!P()[p])return '';const e=G.esc;const L=o(p);const moTa=v=>v>=80?'rất mạnh':v>=60?'mạnh':v>=40?'khá':v>=20?'yếu':'tàn lụi';const quan=v=>v>=60?'thân thiết':v>=30?'giao hảo':v>-30?'chưa qua lại':v>-60?'hiềm khích':'thù sâu';
   const the=L.map(f=>{const T=LOAI[f.loai];const ten=id=>{const x=lay(id);return x&&!x.chet?`${e(x.n)} ở ${e(P()[x.p].n)}`:''};const ng=x=>`<b>${e(x.n)}</b>, ${goi(f,x.bac)}, ${x.age} tuổi · võ ${x.st.vo} · trí ${x.st.tri} · EQ ${x.st.eq}`;
     const thu=f.thu.map(ten).filter(Boolean),ban=f.ban.map(ten).filter(Boolean);
-    return `<li style="margin-bottom:8px"><b>${e(f.n)}</b> · ${T.n} · ${moTa(f.pow)} · với nhà: ${quan(f.rel)}<br>${ng(f.chu)}<br><small class="muted">Dưới trướng: ${f.duoi.map(x=>`${e(x.n)}, ${goi(f,x.bac)}, võ ${x.st.vo}`).join('; ')}</small>${thu.length?`<br><small class="down">Thù: ${thu.join('; ')}</small>`:''}${ban.length?`<br><small class="up">Minh hữu: ${ban.join('; ')}</small>`:''}${f.hist.length?`<br><small class="muted">${e(f.hist[0])}</small>`:''}</li>`}).join('');
+    return `<li style="margin-bottom:8px"><b>${e(f.n)}</b> · ${T.n} · ${moTa(f.pow)} · với nhà: ${quan(f.rel)}<br>${ng(f.chu)}<br><small class="muted">Dưới trướng: ${f.duoi.map(x=>`${e(x.n)}, ${goi(f,x.bac)}, võ ${x.st.vo}`).join('; ')}</small>${thu.length?`<br><small class="down">Thù: ${thu.join('; ')}</small>`:''}${ban.length?`<br><small class="up">Minh hữu: ${ban.join('; ')}</small>`:''}${f.baoChe?`<br><small class="down">${f.rel>=30?`${e(f.baoChe.n)} trong quan phủ che chở`:'Nghe đồn có người trong quan phủ che chở'}</small>`:''}${f.chuSau?`<br><small class="down">Nghe đồn có người trong hoàng tộc đứng sau</small>`:''}${f.hoangThan&&vuongTen(f.hoangThan)?`<br><small class="muted">Đất phong của thân vương ${e(vuongTen(f.hoangThan))}</small>`:''}${f.hist.length?`<br><small class="muted">${e(f.hist[0])}</small>`:''}</li>`}).join('');
   return `<section class="card"><span class="eyebrow">Thế lực ở ${e(P()[p].n)}</span>${L.length?`<ul class="plain">${the}</ul>`:'<p class="note">Chưa nghe tiếng thế lực nào đóng ở đây.</p>'}</section>`}
 function dau(){if(!ensure())return '';const parts=[];const by={};song().forEach(f=>{(by[f.p]=by[f.p]||[]).push(f)});
   for(const p in by){const A=P()[p];const L=by[p];const cuop=L.some(f=>LOAI[f.loai].nh==='cuop'&&f.pow>=40),vo=L.some(f=>LOAI[f.loai].nh!=='cuop');
@@ -111,6 +112,7 @@ window.EVF.push(g=>{G=g;const {fx,esc,chance}=g;const m=v=>g.mm(v);const FM=v=>g
  const doi=(f,v,why)=>{f.rel=cl(f.rel+v,-100,100);if(v>=10)f.thu.forEach(id=>{const x=lay(id);if(x)x.rel=cl(x.rel-Math.round(v/3),-100,100)});f.hist.unshift(`Năm ${Math.floor(S().t/12)+1}: ${why}`);if(f.hist.length>5)f.hist.pop()};
  const dong=(f,v)=>`<span class="fx"><span class="${v>0?'up':'down'}">Quan hệ với ${esc(f.n)} ${v>0?'+':''}${v}</span></span>`;
  const noiChu=(a,b,c)=>{const n=g.noiO?g.noiO():'lang';return n==='thanh'?c:n==='tran'?b:a};
+ window.BN_TL.the=the;
  const ev=(id,t,muc,x,o2)=>({id,t,k:'Thế lực',fixed:1,tags:{},
    x:(c,d)=>{const f=F(d);if(!f)return 'Chuyện ấy đã qua.';const p=nguoiRa(f,muc);d.ng=p.n;the(d,f,p);return x(c,d,f,p)},
    o:(c,d)=>{const f=F(d);if(!f)return [{l:'Thôi',f:()=>''}];const p=[f.chu].concat(f.duoi).find(z=>z.n===d.ng)||f.chu;return o2(c,d,f,p)}});

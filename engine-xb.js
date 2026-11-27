@@ -31,7 +31,7 @@ function famYear(d){const DRY=X.DRY;const EVMAP=X.EVMAP;const S=X.S;const f=famE
     if(chance(0.55))f.tu.push(famNew('tu',0,{m:mo.id,tai:R(25,92),duc:R(25,92),st:'tu'}));else f.cong.push(famNew('cong',0,{m:mo.id,wed:null}))}}
   if(k.age>=26&&k.age<52&&f.phi.length<4&&chance(0.08))f.phi.push(famNew('phi',R(17,24),{sur:pick(SURN),f:pick(FACK)}));
   /* hoàng tử lớn thì được phong vương, ra đất phong */
-  f.tu.forEach(p=>{if(p.st==='tu'&&p.age>=20&&!(d.cr&&(d.cr.a.id===p.id||d.cr.b.id===p.id))&&chance(0.25)){p.role='vuong';p.st='vuong';p.land=(famProvs().length?pick(famProvs()):null);p.td='trung';p.f=pick(FACK);f.vuong.push(p)}});
+  f.tu.forEach(p=>{if(p.st==='tu'&&p.age>=20&&!(d.cr&&['a','b','c','d'].some(z=>d.cr[z]&&d.cr[z].id===p.id))&&chance(0.25)){p.role='vuong';p.st='vuong';p.land=(famProvs().length?pick(famProvs()):null);p.td='trung';p.f=pick(FACK);f.vuong.push(p)}});
   f.tu=f.tu.filter(p=>p.role==='tu');
   /* công chúa lớn thì gả (trừ người nhà mình đang theo đuổi) */
   f.cong.forEach(p=>{if(!p.wed&&!p.hold&&p.age>=17&&chance(0.3)){p.wed=pick(SURN)+' '+mkGiven('nam')}});
@@ -272,7 +272,7 @@ function qtSentence(c,L,why){const S=X.S;L=clamp(Math.round(L),0,5);const q=qtOf
 function qtTick(){const S=X.S;const C=court();const nq=clanQuan();const H=qtH();
   alive().filter(p=>inClan(p)&&p.job==='quan').forEach(p=>{const q=qtOf(p);const F=q.f?C.f[q.f]:null;
     const base=q.cor*0.35+q.crime*6+(F&&S.t-F.fall<36?25:0)+(F&&F.pow<20?6:0)+Math.max(0,nq-3)*4+(H.trudi&&S.t-H.trudi<1200?8:0)-(q.fav-50)*0.25-(rule('camdang')&&!q.f?5:0);
-    q.risk=clamp(q.risk*0.55+Math.max(0,base),0,100);q.cor=Math.max(0,q.cor-1);
+    q.risk=clamp(q.risk*0.55+Math.max(0,base)*(window.BN_CD?0.6+window.BN_CD.soiC(p)*0.7:1),0,100);q.cor=Math.max(0,q.cor-1);
     if(q.st===0&&q.risk>=QT.giamsat&&chance(q.risk/160)){q.st=1;enqueue('ev',p.id,{ev:'qt_giam_sat'})}
     else if(q.st===1&&q.risk>=QT.danhac&&chance(q.risk/140)){q.st=2;enqueue('ev',p.id,{ev:'qt_dan_hac'})}
     else if(q.st===1&&q.risk<25)q.st=0});

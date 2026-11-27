@@ -262,7 +262,7 @@ function pageBando(){const S=X.S;const mapProv=X.mapProv;
   const p=mapProv&&PROV[mapProv]?mapProv:S.loc.p;
   return `<div class="grid2"><section class="card mapcard48"><div class="mapwrap mapwrap48">${mapSVG(p)}</div>${S.journey?`<p class="note"><b>Cả nhà đang trên đường tới ${esc(PROV[S.journey.to].n)}</b>, còn khoảng ${S.journey.left} tháng.</p>`:''}
    <p class="note" style="margin-top:6px">Màu chấm là nước cai quản. Vòng đỏ: tiền tuyến. Đường đỏ, cam: căng thẳng đang leo thang. Vòng vàng: thiên tai. Đường nét đứt là đường biển. Đường đỏ đậm là lộ trình tới nơi đang chọn. Tam giác đỏ là ổ cướp mạnh, ô vuông tím là võ lâm, danh gia, bộ tộc.</p></section>
-   <section class="card">${w_provPanel(p)}</section>${window.BN_TL?window.BN_TL.panel(p):''}
+   <section class="card">${w_provPanel(p)}</section>${window.BN_TL?window.BN_TL.panel(p):''}${window.BN_CD?window.BN_CD.panel(p):''}
    <section class="card" style="grid-column:1/-1">${w_situation()}</section>${window.BN_VQ?window.BN_VQ.panel(p):''}</div>`}
 function pageKinhdoanh(){const S=X.S;
   const can=alive().filter(p=>!p.away&&age(p)>=16).flatMap(p=>Object.keys(BIZ).filter(t=>canOwn(p,t)).map(t=>[p,t]));
@@ -406,7 +406,7 @@ function mkPerson(o){const S=X.S;
   rollHealthTitle(c);
   return c;
 }
-function mkHolder(T,old){const r=(T&&T.r)||0;const age=34+r*3+R(-4,12);return Object.assign(old||{},{n:pick(SURN)+' '+mkGiven('nam'),ab:clamp(45+r*9+R(-8,12),30,140),age,liem:R(15,90),cong:r*20+R(0,40)+Math.max(0,age-34)*2,f:pick(FACK),tc:pick(NPC_TC),rel:0,oan:0})}
+function mkHolder(T,old){if(old)delete old.np; /* d.1.5.52: người mới không mang hồ sơ NPC của người cũ */const r=(T&&T.r)||0;const age=34+r*3+R(-4,12);return Object.assign(old||{},{n:pick(SURN)+' '+mkGiven('nam'),ab:clamp(45+r*9+R(-8,12),30,140),age,liem:R(15,90),cong:r*20+R(0,40)+Math.max(0,age-34)*2,f:pick(FACK),tc:pick(NPC_TC),rel:0,oan:0})}
 function mkDyn(t,first){const d={name:'Đại Nguyễn',emp:'Nguyễn Thành Trung',era:'Hưng Bình',from:t,len:R(24,34)*12,n:1,hist:[],newT:-99};
   /* v6.5.1: ván mới có vua đầu là minh quân Trường Thịnh, ở ngôi 25 đến 35 năm tính từ lúc mở game (v6.7.0-d1) (d.fixed là tháng băng hà). Tới cuối đời thì nổ ra tranh ngôi căng thẳng. */
   if(first){d.era='Trường Thịnh';d.fixed=t+R(25,35)*12+R(0,11);d.k={age:R(28,34),hp:R(85,98),tai:R(82,95),duc:R(75,92),uy:R(70,88),nghi:R(10,30)};d.dt=R(72,88);d.qk=R(68,88);d.loan=R(3,10);
