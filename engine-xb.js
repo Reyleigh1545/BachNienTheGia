@@ -614,6 +614,7 @@ function addTraitEv(c,t){
 function addStat(c,k,v,over){
   if(k==='tam'){const o=c.tam;c.tam=clamp(c.tam+v,0,100);return c.tam-o}
   if(k==='duyen'){const o=c.duyen;c.duyen=clamp(c.duyen+v,1,100);return c.duyen-o}
+  if(!c.cap||c.cap[k]==null){c[k]=(c[k]||0)+v;return v} /* d.1.5.51: khóa không có trần (danh vọng…) thì cộng thẳng, tránh ra NaN */
   const old=c[k];const cap=k==='suc'?c.cap.suc:Math.max(capOf(c,k),c.cap[k]);
   if(v>0){if(over)c.cap[k]=Math.max(c.cap[k],Math.min(hardCap(c,k),gateCap(c,k)+5,old+v));const top=over?Math.max(c.cap[k],cap):cap;c[k]=Math.min(Math.max(old,top),old+v)}
   else c[k]=Math.max(0,old+v);

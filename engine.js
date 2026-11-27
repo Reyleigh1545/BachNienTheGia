@@ -2247,7 +2247,9 @@ function tradeReturn(c0,tr,probe){
   let risk=r.risk*(c?(1.2-c.vo/200-Math.min(0.2,c.m/600)):1.1)*(S.war?1.4:1)*(season()==='dong'&&(r.sea||r.war)?1.3:1)*(S.epi?1.2:1);
   const spoil=w_spoil(tr.good,r.mo);const val0=tr.qty*(tr.pv||priceOf(tr.good))*(1+((tr.sv||r.sell[tr.good]||1)-1)*w_damp(tr.good)*(r.fr||1))*(1-spoil)*(rule('trongthuong')?1.08:1)*(rule('trongnong')?0.95:1)*(0.92+Math.random()*0.25+sk*0.32+fameB)*(S.epi&&tr.good==='duoc'?1.4:1)*(S.war&&['lua','sat','muoi'].includes(tr.good)?1.15:1);
   let val=val0+Math.max(0,val0-tr.cost)*0.5; /* 24/11 chủ dự án trả lời câu 1: lãi chuyến buôn tăng thêm 50% nữa (phần lãi gộp trên vốn nhân 1,5; không đụng phần lỗ) */
+  const tlP=(window.BN_TL&&r.prov)?((window.D.route(S.loc.p,r.prov,month())||{}).di||[]):[S.loc.p];const tlN=window.BN_TL?window.BN_TL.nguyHiem(tlP):{them:0,gap:[]};risk=Math.min(0.9,risk+tlN.them); /* d.1.5.51: thế lực trên đường */
   let helpLine=''; /* d.1.5.44: người quen, họ thân làm nghề buôn giúp chuyến hàng; kẻ thù ép giá */
+  if(!probe&&tlN.che)helpLine+=`<span class="fx"><span class="up">${esc(tlN.che.n)} cho người đi kèm qua địa bàn</span></span>`;
   if(!probe&&window.BNHELP){const th=BNHELP.find('trade',{who}),tf=BNHELP.foe('trade',{who});if(th){val+=tr.cost*0.05*th.lv;risk*=1-0.15*th.lv;helpLine+=BNHELP.use(th,'trade','chỉ mối mua rẻ, bán được giá, đường đi an toàn hơn')}if(tf){val-=tr.cost*0.05;helpLine+=`<span class="fx"><span class="down">${esc(tf.name)} ngầm ép giá</span></span>`;log(`${tf.name} ngầm ép giá chuyến buôn.`,'hi')}}
   const toll=Math.round(tr.cost*(0.01+0.02*r.mo+0.04*(r.cross||0))*tollOff());
   const fee=tr.hired?Math.max(0,(val-toll-tr.cost)*0.2):0;
@@ -2256,7 +2258,7 @@ function tradeReturn(c0,tr,probe){
   const buyable=Object.entries(r.buy);
   /* v6.4.1.7: Thiên hạ đệ nhất tiêu trong họ thì chuyến buôn hiếm khi gặp nạn, Thương Thánh thì bớt một phần */
   if(chance(risk*(thanHas('detieu')?0.2:1)*(thanHas('thuongthanh')?0.8:1))){
-    return choicePopup(who,'Đi buôn chuyến','Gặp nạn trên đường về',`Đoàn hàng ${esc(r.n.toLowerCase())} gặp ${pick(['cướp núi','bão lớn','quan ải sách nhiễu','dịch bệnh trong đoàn','hải tặc'])}.${helpLine}`,[
+    return choicePopup(who,'Đi buôn chuyến','Gặp nạn trên đường về',`Đoàn hàng ${esc(r.n.toLowerCase())} gặp ${tlN.gap.length&&chance(Math.min(0.9,tlN.them/Math.max(0.01,risk)+0.25))?`người của ${esc(tlN.gap[0].n)} chặn đường ở ${esc(PROV[tlN.gap[0].p].n)}`:pick(['cướp núi','bão lớn','quan ải sách nhiễu','dịch bệnh trong đoàn','hải tặc'])}.${helpLine}`,[
       {l:'Liều giữ hàng',r:[{vo:1,eq:0.5},60],y:x=>`Giữ được hàng, thu ${money(got)}.`+fx(x,{money:got,m:2,fame:5}),n:x=>'Mất trắng, người bị thương.'+fx(x,{suc:-R(15,30),hpMax:-R(0,3),tam:-15}),nn:x=>'Mất trắng, suýt mất mạng.'+fx(x,{suc:-R(30,45),hpMax:-R(3,6),tam:-20})},
       {l:'Bỏ bớt hàng giữ mạng',f:x=>`Cứu được một phần, thu ${money(got*0.4)}.`+fx(x,{money:Math.round(got*0.4),tam:-6})}]);
   }
@@ -3822,7 +3824,7 @@ function rivalTick(){if(!head()||S.over)return;const ti=tierIdx();S.rv=S.rv||{h:
 function fixMonth(){
   usMonth();
   /* v6.4.1.7: hoàng đế, danh hiệu cấp Thần, thiên mệnh, chiến tranh tại nơi ở */
-  moveTick();kingMonth();chMonth();arcMonth();projMonth();if(month()===3){wpYear();thanYear();tmYear();hhSweep();projYear();ledYear();hhSpouseSync();ruleYear();npYear()}if(month()===6)purgeYear();if(month()===9){officeChurn();if(window.BN_VQ)window.BN_VQ.year()}if(month()===10&&ENGX.fn.taxCollect)ENGX.fn.taxCollect();if(month()===9)rivalTick();
+  moveTick();kingMonth();chMonth();arcMonth();projMonth();if(month()===3){wpYear();thanYear();tmYear();hhSweep();projYear();ledYear();hhSpouseSync();ruleYear();npYear()}if(month()===6)purgeYear();if(month()===9){officeChurn();if(window.BN_VQ)window.BN_VQ.year();if(window.BN_TL)window.BN_TL.year()}if(month()===10&&ENGX.fn.taxCollect)ENGX.fn.taxCollect();if(month()===9)rivalTick();
   alive().forEach(p=>{if(!p.tmChk&&inClan(p)&&S.t-p.born<=1&&!p.inLaw)tmBirth(p)});
   /* v6.4.1.6: chi xa hết nhiệm kỳ thì hỏi về hay ở; mỗi năm gửi quỹ về; lính về phép */
   for(const id in S.hh){const H=S.hh[id];if(!H.far||!H.off||H.asked)continue;const o=P(H.off);if(!o||o.dead!=null||!inClan(o)||!o.pst){H.asked=1;const L=branchLeader(id);enqueue('brEnd',(L&&inClan(L)?L:head()).id,{hh:id})}}
@@ -4409,7 +4411,7 @@ function foldCards(app){S.fold=S.fold||{};const L=[...app.querySelectorAll('.gri
     const sm=document.createElement('summary');sm.innerHTML='<b>'+((eb&&eb.textContent)||'Mục')+'</b>'+(h2?' · <span class="muted">'+h2.textContent+'</span>':'');
     d.appendChild(sm);[...sec.childNodes].forEach(n=>{if(n!==sm)d.appendChild(n)});if(eb&&eb.parentNode===d)eb.remove();
     d.addEventListener('toggle',()=>{S.fold[key]=d.open});sec.replaceWith(d)})}
-function render(){if(window.BN_VQ&&S&&S.people)window.BN_VQ.ensure();/* d.1.5.50: tên bốn tiểu quốc theo thế giới */
+function render(){if(window.BN_VQ&&S&&S.people)window.BN_VQ.ensure();/* d.1.5.50: tên bốn tiểu quốc theo thế giới */if(window.BN_TL&&S&&S.people)window.BN_TL.ensure();
   if(!S||DRY)return;
   unlockPages();
   if(!S.pages.includes(page))page='giapha';
@@ -4754,7 +4756,7 @@ function moveTick(){const j=S.journey;if(!j)return;j.left--;
   alive().forEach(p=>{if(inClan(p)&&!p.away&&age(p)>=5)p.busyUntil=Math.max(p.busyUntil||0,S.t+1)});
   const i=Math.min(j.di.length-1,Math.max(0,Math.round((1-j.left/j.total)*(j.di.length-1))));const p=j.di[i];const dh=(PROV[p]&&PROV[p].dh)||[];const hd=head();if(!hd||!chance(0.38))return;
   const L=[];if(dh.includes('nui')||dh.includes('samac')||dh.includes('rung'))L.push('dl_cuop','dl_cuop');if(dh.includes('song')||dh.includes('ho')||dh.includes('bien'))L.push('dl_nuoc');if(dh.includes('dam')||dh.includes('rung')||dh.includes('tuyet')||dh.includes('samac'))L.push('dl_om');if(j.cross&&(PROV[p].k==='bien'||PROV[p].nat!==PROV[j.from].nat))L.push('dl_quanai','dl_quanai');
-  if(!L.length)L.push('dl_cuop','dl_nuoc','dl_om');enqueue('ev',hd.id,{ev:pick(L),data:{p,to:j.to}},true)}
+  if(!L.length)L.push('dl_cuop','dl_nuoc','dl_om');const tlf=window.BN_TL&&window.BN_TL.trenDuong(p);if(tlf){enqueue('ev',hd.id,{ev:'tlb_chan_duong',data:{fz:tlf.id}},true);return}enqueue('ev',hd.id,{ev:pick(L),data:{p,to:j.to}},true)}
 function doMove(to,tier,flee,paid){
   const W=S.w,from=S.loc.p;const info=moveCost({p:to},tier);const cost=paid?0:flee?Math.min(Math.max(0,Math.round(S.money)),Math.round(info.cost*0.4)):info.cost;
   const sameProv=to===from;
@@ -4818,6 +4820,7 @@ function mapSVG(selP){
   for(const p in PROV){const P0=PROV[p],N0=NAT[P0.nat];const kinh=P0.k==='kinh';const r=kinh?8:P0.k==='lang'?4.5:6;
     const shape=P0.k==='bien'?`<rect x="${P0.x-5.5}" y="${P0.y-5.5}" width="11" height="11" transform="rotate(45 ${P0.x} ${P0.y})"`:`<circle cx="${P0.x}" cy="${P0.y}" r="${r}"`;
     parts.push(`<g class="pv ${p===selP?'on':''} ${p===home?'home':''}" data-prov="${p}" tabindex="0" role="button" aria-label="${esc(P0.n)}"><circle cx="${P0.x}" cy="${P0.y}" r="13" fill="transparent"/>${shape} fill="${N0.col}" class="pd"/><text x="${P0.x}" y="${P0.y+(kinh?19:15)}" text-anchor="middle" class="pl">${esc(P0.n)}</text>${p===home?`<text x="${P0.x}" y="${P0.y-10}" text-anchor="middle" class="hm">★</text>`:''}${S&&brAt(p).length?`<text x="${P0.x+11}" y="${P0.y-7}" text-anchor="middle" class="hm">⌂</text>`:''}</g>`)}
+  if(window.BN_TL)parts.push(window.BN_TL.dau());
   if(J){const k=Math.min(J.di.length-1,Math.max(0,Math.round((1-J.left/J.total)*(J.di.length-1))));const P0=PROV[J.di[k]];parts.push(`<circle cx="${P0.x}" cy="${P0.y}" r="10" fill="none" stroke="#b3261e" stroke-width="3" pointer-events="none"/>`)}
   parts.push('</svg>');return parts.join('')}
 function w_priceTable(...a){return ENGX.fn.w_priceTable(...a)}
@@ -5470,6 +5473,7 @@ const G={totalIncome:()=>totalIncome(),romOk:c=>romOk(c),romP:c=>romP(c),ROM_OPE
 /* v6.4.1.1: cổng riêng cho trang admin (admin.js). Bản thường không dùng tới */
 if(window.BNHELP)window.BNHELP.bind({S:()=>S,log,G});
 if(window.BN_VQ){window.BN_VQ.bind(G);G.vq=window.BN_VQ}
+if(window.BN_TL){window.BN_TL.bind(G);G.tl=window.BN_TL}
 window.D.curNat=()=>(S&&S.loc&&PROV[S.loc.p])?PROV[S.loc.p].nat:'trieu';
 G.brief=personBrief;Object.assign(G,{askOk,traders,vacantSeat,seatFree,takeSeat,ctRank,ctName:(c,k)=>{const t=ctRank(c,k);return t>=0&&window.D.STITLE[k][t]?window.D.STITLE[k][t][1]||window.D.STITLE[k][t][0]:''},officeChurn,seatMan:(k,n)=>{const st=S.off&&S.off[k];if(!st||st.vac||st.holder||st.n!==n)return null;const p=holderNp(st);if(!p.vai||!p.vai.length)p.vai=['quan'];if(!p.st){const t=Math.round(clamp(st.ab||60,30,125));p.st={tri:t,vo:R(20,60),mi:R(35,70),eq:Math.round(clamp(t-10+R(-8,8),20,120))}}p.ky=p.ky||[];p.past=p.past||[];p.on=p.on||0;p.oan=p.oan||0;if(p.rel==null)p.rel=0;if(!p.nghe)p.nghe='quan đang giữ chức '+seatName(k);if(!p.sub&&G.npc&&G.npc.deepen){try{G.npc.deepen(p,{vai:p.vai,tier:Math.min(6,2+Math.floor((seatTm(k).r||0)/2)),nghe:p.nghe})}catch(e){}}if(!p.loc){const w=seatWh(k);if(w)p.loc=w.p}return p},seatPush:(k,why)=>{const st=S.off&&S.off[k];if(!st||st.vac||st.holder)return false;officerDepose({st},why);delete st.np;return true},buyOffice:{why:buyOfficeWhy,pay:buyPay,chance:buyChance,year:muaYear,price:()=>bribePrice(0)},bribe:{use:useBacker,price:bribePrice,backer:bribeBacker,ok:bribeOk,MAX_FREE:BRIBE_MAX_FREE},talent:c=>{if(!c)return false;try{if(pot(c,'tri')>=90||pot(c,'vo')>=90)return true;if(tsum(c,'exam')>=5||tsum(c,'growAll')>0)return true;const u=tsum2(c,'capUp');return Object.values(u).some(x=>x>0)}catch(e){return false}},candReg:(p,rel)=>{if(p){p._cand=1;if(rel)p._relTxt=rel;CAND[p.id]=p}return p},proFix,npTakeSeat,npFreeSeat,npSeatLost,potLine,placeOf,houseFor,houseSur,localOfficer,officerDepose,houseRel:(id,d)=>houseRel(id,d),provName:p=>provN(p)});G._adm={brief:personBrief,xYear,xfn:ENGX.fn,tradeProbe:(c,tr)=>tradeReturn(c,tr,true),tradeRoutes:()=>routes(),tradePrice:g=>priceOf(g),wishPick,meets,setJob,JH_G,bigAvail:c=>bigAvail(c),bigDone:c=>bigDone(c),bigStart:(c,id)=>{const b=BIGS.find(x=>x.id===id);c.viec={id:b.id,start:S.t,end:S.t};},gbApply,avatarSVG,deathPopup,clanSupport,metaImport,phamSeats,letterLv,letterAdd,letterDue,letterLines,startScreen,historyMenu,personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
   getSel:()=>sel,setSel:v=>{sel=v},running:()=>running,speed:()=>speed,setRun:(r,sp)=>{running=!!r;if(sp)speed=sp;renderTop()},

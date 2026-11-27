@@ -96,7 +96,7 @@ function die(n){const s=S();n.ok=0;n.dead=s.t;pastAdd(n,'Qua đời');if(n.seat)
   return n}
 /* d9.12.69: trần NPC còn sống (save họ Công Tôn: 231 NPC, 128 sống cho một nhà 12 người): quá 90 thì NPC lâu năm, không quan hệ ơn oán, không giữ ghế, không có con hay họ, không có việc hẹn, được cho xa nhà (ok=0, arch), cũ nhất trước */
 const KEEPV=['doi_thu','an_nhan','ban_than','quy_nhan','ket_nghia','thay','mon_sinh','nguoi_thuong','tinh_dich','khach'];
-function archiveNpc(s,L){const live=L.filter(n=>n.ok!==0&&!/^(emp|fam|vq):/.test(n.ref||''));if(live.length<=90)return;const ref=new Set();(s.sched||[]).forEach(x=>{if(x.data&&x.data.npc)ref.add(x.data.npc)});Object.values(s.off||{}).forEach(o=>{if(o&&o.np)ref.add(o.np)});const byId=Object.fromEntries(live.map(n=>[n.id,n]));
+function archiveNpc(s,L){const live=L.filter(n=>n.ok!==0&&!/^(emp|fam|vq|fz):/.test(n.ref||''));if(live.length<=90)return;const ref=new Set();(s.sched||[]).forEach(x=>{if(x.data&&x.data.npc)ref.add(x.data.npc)});Object.values(s.off||{}).forEach(o=>{if(o&&o.np)ref.add(o.np)});const byId=Object.fromEntries(live.map(n=>[n.id,n]));
   const tt=n=>n.parent&&byId[n.parent]?Math.min(n.t||0,byId[n.parent].t||0):(n.t||0);
   const base=n=>!ref.has(n.id)&&!n.seat&&!n.house&&Math.abs(n.rel||0)<12&&!(n.on||0)&&!(n.oan||0)&&!(n.vai||[]).some(v=>KEEPV.includes(v))&&s.t-tt(n)>=240;
   const A=new Set(live.filter(base).map(n=>n.id));
@@ -106,7 +106,7 @@ function archiveNpc(s,L){const live=L.filter(n=>n.ok!==0&&!/^(emp|fam|vq):/.test
   let over=live.length-90;for(const n of cand){if(over<=0)break;n.ok=0;n.arch=s.t;pastAdd(n,'Đã xa nhà, không còn qua lại');over--}}
 function npcYear(){const s=S();if(!s||!s.np||!s.np.l)return;
   archiveNpc(s,Object.values(s.np.l));
-  const L=Object.values(s.np.l).filter(n=>n.ok!==0&&n.vai&&n.vai.length&&!/^(emp|fam|vq):/.test(n.ref||'')); /* d.1.5.43: vua và hoàng tộc không phải người quen thường (ảnh 27/11: hoàng đế đến vay tiền); đời họ do famYear lo */
+  const L=Object.values(s.np.l).filter(n=>n.ok!==0&&n.vai&&n.vai.length&&!/^(emp|fam|vq|fz):/.test(n.ref||'')); /* d.1.5.43: vua và hoàng tộc không phải người quen thường (ảnh 27/11: hoàng đế đến vay tiền); đời họ do famYear lo */
   for(const n of L){if(!n.sub)deepen(n);const a=nage(n);if(a<18){kidLife(n,a);continue}if(!n.adult)becomeAdult(n,a);lifeFam(n,a);seatYear(n,a);
     /* sống và chết */
     n.hp=Math.max(0,(n.hp||80)-(a>55?R(0,4):R(-1,1)));
