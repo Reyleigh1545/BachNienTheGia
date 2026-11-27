@@ -313,7 +313,7 @@ VE('P',{id:'vil_p_trong',t:'Kẻ trong nhà',vc:()=>!!vv().fl.spy&&!vv().fl.spyO
 VE('P',{id:'vil_p_hoa',t:'Lời giảng hòa của mưu sĩ',vc:()=>vv().D.ok&&vv().ch>=2&&!vv().fl.hoa,vw:0.6,
  x:c=>`${DN} đến cổng nhà ${N(c)} với một tráp lễ nhỏ và nụ cười ôn hòa: "Ông chủ của tôi không muốn thù oán. Nếu nhà mình nể mặt, mỗi năm nộp một chút đóng góp, bên kia bảo đảm không ai quấy rầy."`,
  o:c=>{const pay=loss(10,20);return [
-  {l:`Chấp nhận, nộp mỗi năm (${fm(pay)} lần đầu)`,c:()=>G.money()>=pay,f:c=>`Hòa ước nhỏ lập xong. Một năm yên ổn sau đó, nhưng người trong vùng nhìn nhà mình như kẻ đã quỳ xuống.`+fl('hoa')+st('hide')+kp(6)+dt(-6)+fx(c,{money:-pay,fame:-4,tam:-4})+vd(10,18,'Nhà mình chấp nhận hòa ước với Phạm Trung Kiên.')},
+  {l:`Chấp nhận, nộp mỗi năm (${fm(pay)})`,c:()=>G.money()>=pay,f:c=>`Hòa ước nhỏ lập xong. Một năm yên ổn sau đó, nhưng người trong vùng nhìn nhà mình như kẻ đã quỳ xuống.`+fl('hoa')+st('hide')+kp(6)+dt(-6)+fx(c,{money:-pay,fame:-4,tam:-4})+vd(10,18,'Nhà mình chấp nhận hòa ước với Phạm Trung Kiên.')},
   {l:'Từ chối thẳng, nói thẳng điều mình biết',r:RR({khau:1,eq:0.7,gan:0.5},0.5),y:c=>`${DN} mất nụ cười, nhìn ${N(c)} thật lâu: "Nhà mình biết nhiều hơn tôi tưởng." Rồi anh ta đi.`+fl('hoa')+pf(1)+dt(2)+fx(c,{fame:3,tam:4})+vd(6,12,'Nhà mình từ chối hòa ước với Phạm Trung Kiên.'),
    n:c=>`Lời quá gấp, ${DN} lạnh lùng ra về. Từ đó áp lực nặng hơn.`+fl('hoa')+kp(3)+fx(c,{tam:-3})+vd(6,12)},
   {l:'Giả vờ nhận, mua thời gian',r:RR({muu:1,khau:0.6,thanh:-0.3},0.5),y:c=>`${DN} tin, trao thêm một số thông tin vô tình. Nhà mình chắt lọc được hai ba điều đáng giá.`+fl('hoa')+pf(1)+wt(0)+fx(c,{money:-Math.round(pay/2),tam:1})+vd(10,18,'Nhà mình giả vờ nhận hòa ước để thu thập tin tức.'),

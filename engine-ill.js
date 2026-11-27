@@ -15,7 +15,7 @@ const DIS={
  dau_lung:{n:'Đau lưng, khớp',sev:1,dur:[999,999],d:1,mort:0,ch:0,chronic:1,sea:null,old:1},
  tim:{n:'Bệnh tim',sev:3,dur:[999,999],d:2,mort:0.012,ch:0,chronic:1,sea:null,old:1},
  dai:{n:'Bệnh dại',sev:4,dur:[2,3],d:9,mort:0.45,ch:0,sea:null},
- thuong_noi:{n:'Thương nội (tẩu hỏa)',sev:2,dur:[3,9],d:3,mort:0.004,ch:0.3,sea:null},
+ thuong_noi:{n:'Thương nội',sev:2,dur:[3,9],d:3,mort:0.004,ch:0.3,sea:null},
  viem_phoi:{n:'Viêm phổi',sev:3,dur:[2,5],d:6,mort:0.03,ch:0.35,sea:null},
  gay_xuong:{n:'Gãy xương',sev:2,dur:[2,4],d:3,mort:0,ch:0.1,sea:null},
  hoa_lieu:{n:'Bệnh hoa liễu',sev:1,dur:[6,18],d:1,mort:0.001,ch:0.2,sea:null}
@@ -55,7 +55,7 @@ function illYear(){const s=S();const season=X.EC.season?X.EC.season():null;let p
     try{const PV=(window.D&&window.D.PROV)||{};const pv=PV[s.loc&&s.loc.p];const rg=pv&&pv.r;const add=(k,n)=>{if(DIS[k])for(let i=0;i<n;i++)pool.push(k)};if(rg==='nam'||rg==='tay'){add('sot_ret',3)}else if(rg==='bac'){add('thuong_han',2);add('ho_phoi',2)}else if(rg==='dong'||rg==='trung'){add('sot_ret',1);add('thuong_han',1)}}catch(e){}
     const id=pick(pool);const i=start(p,id);if(!i)return;
     if(i.sev>=2&&popups<1&&X.EC.isCtrl&&X.EC.isCtrl(p)&&X.EVMAP.ill_chua){popups++;enqueue('ev',p.id,{ev:'ill_chua',data:{ill:id}})}
-    else if(i.sev>=2)treat(p,i,chance(0.5)?'lang':'tu')})}
+    else if(i.sev>=2){const mh=window.BNHELP?window.BNHELP.find('med',{who:p}):null;if(mh){treat(p,i,'danhy');window.BNHELP.use(mh,'med',`đến chữa cho ${p.given}`)}else treat(p,i,chance(0.5)?'lang':'tu')}})}
 X.yearly.push(illYear);
 G.ill={start,has,treat,DIS,doctorPower,tick:illTick};
 Object.assign(X.fn,{illTick});

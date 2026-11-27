@@ -15,7 +15,7 @@ return [
 /* ================= nông dân ================= */
 V({id:'t_n_dia_chu_ban',t:'Địa chủ sa sút bán ruộng',job:NONG,
  x:'Nhà địa chủ đầu làng có con trai mê cờ bạc, phải bán gấp mấy mẫu ruộng tốt, giá rẻ hơn hẳn thường lệ.',
- o:[{l:'Mua ngay 2 mẫu, giá chỉ bằng nửa (khoảng 8 lạng)',c:()=>G.money()>=8000,f:c=>{const p=8000;return 'Được hai mẫu ruộng tốt.'+fx(c,{money:-p})+land(2)}},
+ o:[{l:'Mua ngay 2 mẫu, giá chỉ bằng nửa (8 lạng)',c:()=>G.money()>=8000,f:c=>{const p=8000;return 'Được hai mẫu ruộng tốt.'+fx(c,{money:-p})+land(2)}},
     {l:'Ngỏ ý mua chịu, trả dần',r:[{eq:1,fame:0.3},40],y:c=>'Địa chủ nể tình cho mua chịu một mẫu, trả dần không lấy lãi.'+land(1)+fx(c,{money:-m(40)}),n:c=>'Người ta chỉ bán tiền tươi.'+fx(c,{tam:-3})},
     {l:'Thôi',f:c=>''}]}),
 V({id:'t_n_duoc_mua',t:'Được mùa lớn',job:NONG,sea:['thu','ha'],

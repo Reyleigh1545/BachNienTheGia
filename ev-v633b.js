@@ -92,7 +92,7 @@ HK('vu',{id:'h_vu_thuphong',t:'Tàng thư các của Vũ phủ',hc:(c,h)=>h.rel>
   {l:'Xin mượn một bộ về nhà',r:RR({tri:0.8,eq:0.5},0.55),y:c=>`Thượng thư gật đầu cho mượn. Bộ sách về nhà, cả nhà cùng đọc.`+hr('vu',6)+fx(c,{tri:2,tam:3,m:5}),n:c=>`Một trang bị ố nước, ${N(c)} phải mang trả cùng lời tạ tội.`+hr('vu',-4)+fx(c,{tam:-4})},
   {l:'Đọc vài quyển rồi cáo từ',f:c=>`Đọc xong thì đi, không vướng nợ gì.`+fx(c,{tri:1})}]}),
 H('vu',{id:'h_vu_trieunghi',t:'Triều nghị chia phe',hw:0.8,hcd:96,hc:()=>S().fame>=100||G.tierIdx()>=3,
- x:()=>`Trong triều đang tranh nhau: một phe đòi tăng binh lương cho biên ải (phe ${hn('nguyen')}), phe kia đòi giảm thuế cho dân (phe ${hn('vu')}). ${hn('vu')} viết thư riêng hỏi ý nhà mình, mong có tiếng nói của các nhà có tiếng trong vùng.`,
+ x:()=>`Trong triều đang tranh nhau: một phe đòi tăng binh lương cho biên ải, tức phe ${hn('nguyen')}, phe kia đòi giảm thuế cho dân, tức phe ${hn('vu')}. ${hn('vu')} viết thư riêng hỏi ý nhà mình, mong có tiếng nói của các nhà có tiếng trong vùng.`,
  o:()=>[
   {l:'Ủng hộ phe giảm thuế',f:c=>`Thư hồi âm gửi đi. Phe văn mừng, phe võ nhăn mặt.`+hr('vu',12)+hr('nguyen',-6)+fx(c,{fame:3,cfame:1})},
   {l:'Ủng hộ phe tăng binh lương',f:c=>`Thư hồi âm gửi đi. Phe võ mừng, phe văn tiếp tục chê trách.`+hr('nguyen',12)+hr('vu',-6)+fx(c,{fame:3,cfame:1})},

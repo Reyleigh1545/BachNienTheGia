@@ -95,7 +95,7 @@ function lawPriv(c,L){if(L.tc)return 0;let p=0;if(c.job==='quan'){if(c.lv>=4)p++
 function lawFine(lvl,gr){return mm(lvl<=0?5:lvl===1?[8,12,16][gr-1]:lvl===2?[25,35,50][gr-1]:[60,90,130][gr-1])}
 function lawApply(c,L,lvl,gr){const S=X.S;lvl=clamp(Math.round(lvl),0,5);if(inClan(c))ledAdd('an',[c.id],{lvl,c:L&&L.id||null},{w:60});if(age(c)<16)lvl=Math.min(lvl,2);
   /* lệ độc đinh: nhà chỉ còn một người trụ cột thì không bị khổ sai, đày hay xử tử (trừ thập ác) */
-  let pre='';if(lvl>=3&&!L.tc&&!alive().some(p=>p.id!==c.id&&age(p)>=14)){lvl=2;pre='Theo lệ độc đinh (nhà chỉ còn một người trụ cột), quan giảm hình. '}
+  let pre='';if(lvl>=3&&!L.tc&&!alive().some(p=>p.id!==c.id&&age(p)>=14)){lvl=2;pre='Theo lệ độc đinh, quan giảm hình. '}
   memSet('tienan:'+c.id,360);memAdd('lw_tong',1,240);S.cases=S.cases||[];S.cases.unshift({t:S.t,who:c.id,law:L.id,lvl});if(S.cases.length>30)S.cases.length=30;
   const q=c.job==='quan';
   if(lvl<=0)return `Bị khiển trách và phải bồi thường.`+fx(c,{money:-mm(5),fame:-1});
@@ -115,15 +115,17 @@ function lawPopup(c,it){const S=X.S;const L=LAWM(it.law);if(!L||c.dead!=null||!i
   const text=`${o.ctx?esc(o.ctx):esc(nameOf(c))+' bị đưa ra công đường'}. Tội: <b>${esc(L.n.toLowerCase())}</b>.${priv?` Nhờ phẩm cấp được giảm ${priv} bậc.`:''}${L.tc?' Thuộc thập ác, không được chuộc.':''} Hình định: <b>${lawLvText(l0,gr)}</b>.`;
   const helper=alive().some(p=>inClan(p)&&p.id!==c.id&&((p.job==='quan'&&p.lv>=4)||(p.tuoc||0)>0))||(c.tuoc||0)>0;
   const opts=[{l:'Nhận tội, chịu hình',f:c=>lawApply(c,L,l0,gr)},
-    {l:`Thuê thầy cãi (${money(c20)})`,c:()=>S.money>=c20,r:[{khau:0.7,tri:0.5},clamp(55+(tc?15:0)-(ev-50)*0.5,15,90)],
+    {l:`Thuê thầy cãi (${money(c20)})`,c:()=>S.money>=c20,r:[{_g:1,khau:0.7,tri:0.5},clamp(55+(tc?15:0)-(ev-50)*0.5,15,90)],
       y:c=>{S.money-=c20;return 'Thầy cãi khéo, án được giảm một mức. '+lawApply(c,L,l0-1,gr)},n:c=>{S.money-=c20;return 'Thầy cãi không lay được quan xử án. '+lawApply(c,L,l0,gr)}}];
   if(!L.tc&&l0<=3)opts.push({l:`Chuộc bằng bạc (${money(fin)})`,c:()=>S.money>=fin,f:c=>{S.money-=fin;memSet('tienan:'+c.id,360);memAdd('lw_tong',1,240);cf(-1,'Chuộc tội bằng bạc');return `Nộp đủ bạc chuộc, được tha hình. Vụ việc ghi vào sổ.`+fx(c,{fame:-2})}});
-  if(!L.tc)opts.push({l:`Lo lót quan xử án (${money(cl)})`,c:()=>S.money>=cl,r:[{muu:0.6,eq:0.5},45],
+  if(!L.tc)opts.push({l:`Lo lót quan xử án (${money(cl)})`,c:()=>S.money>=cl,r:[{_g:1,muu:0.6,eq:0.5},45],
     y:c=>{S.money-=cl;return 'Quan nhận lễ, án nhẹ đi hai mức. '+lawApply(c,L,l0-2,gr)+fx(c,{liem:-4})},n:c=>{S.money-=cl;return 'Việc đưa hối lộ bị lộ, án nặng thêm. '+lawApply(c,L,l0+1,gr)+fx(c,{liem:-6,fame:-5})}});
-  if(helper)opts.push({l:'Nhờ người có phẩm tước trong họ lên tiếng',r:[{eq:0.7,khau:0.4},L.tc?30:55],y:c=>'Người có quyền thế nói giúp, án giảm một mức. '+lawApply(c,L,l0-1,gr),n:c=>'Lời nói giúp không được nghe, còn mang tiếng nhờ vả. '+lawApply(c,L,l0,gr)+fx(c,{fame:-3})});
+  const lh=!L.tc&&window.BNHELP?BNHELP.find('law',{who:c}):null,lf=window.BNHELP?BNHELP.foe('law',{who:c}):null; /* d.1.5.44: quan, người có thế quen thân can thiệp; kẻ thù cản kháng án. Thập ác không giảm */
+  if(lh)opts.push({l:`Nhờ ${lh.name} can thiệp`,r:[{_g:1,eq:0.7,khau:0.4},clamp(45+15*lh.lv,20,90)],y:c=>'Có người nói giúp, án nhẹ đi. '+lawApply(c,L,l0-lh.lv,gr)+BNHELP.use(lh,'law',`can thiệp cho ${c.given} ở công đường`),n:c=>'Lời nói giúp không lay được quan xử án. '+lawApply(c,L,l0,gr)+BNHELP.use(lh,'law',`đã đỡ lời cho ${c.given} nhưng không thành`)});
+  if(helper)opts.push({l:'Nhờ người có phẩm tước trong họ lên tiếng',r:[{_g:1,eq:0.7,khau:0.4},L.tc?30:55],y:c=>'Người có quyền thế nói giúp, án giảm một mức. '+lawApply(c,L,l0-1,gr),n:c=>'Lời nói giúp không được nghe, còn mang tiếng nhờ vả. '+lawApply(c,L,l0,gr)+fx(c,{fame:-3})});
   {const holder=alive().find(p=>inClan(p)&&p.flags&&p.flags.baoLanh>S.t);const q=holder&&G.tie&&G.tie.act('quy_nhan').filter(n=>(n.rel||0)>=10)[0];
-    if(holder&&q)opts.push({l:`Cầm thiếp bảo lãnh của ${esc(q.n)} đến xin`,r:[{eq:0.7,khau:0.4},L.tc?35:80],y:c=>{holder.flags.baoLanh=0;G.tie.rel(q,-6,'dùng thiếp bảo lãnh');return `Thiếp của ${esc(q.n)} đến tay quan xử án, ông ta đổi sắc mặt rồi giảm án hai mức. `+lawApply(c,L,l0-2,gr)+fx(c,{qh:[q.n,-6]})},n:c=>{holder.flags.baoLanh=0;return `Quan xử án trả lại thiếp, nói không thể vì quen biết mà bẻ luật. Lời bảo lãnh mất tác dụng. `+lawApply(c,L,l0,gr)+fx(c,{fame:-2})}})} /* d9.12: đọc cờ baoLanh do tie_quy_nhan_giup đặt */
-  opts.push({l:`Kháng án lên cấp trên (${money(c15)})`,c:()=>S.money>=c15,r:[{tri:0.6,khau:0.5},clamp(40-(ev-50)*0.4,10,70)],y:c=>{S.money-=c15;return 'Cấp trên xét lại, giảm một mức. '+lawApply(c,L,l0-1,gr)},n:c=>{S.money-=c15;return 'Cấp trên giữ nguyên án. '+lawApply(c,L,l0,gr)+fx(c,{fame:-2})}});
+    if(holder&&q)opts.push({l:`Cầm thiếp bảo lãnh của ${esc(q.n)} đến xin`,r:[{_g:1,eq:0.7,khau:0.4},L.tc?35:80],y:c=>{holder.flags.baoLanh=0;G.tie.rel(q,-6,'dùng thiếp bảo lãnh');return `Thiếp của ${esc(q.n)} đến tay quan xử án, ông ta đổi sắc mặt rồi giảm án hai mức. `+lawApply(c,L,l0-2,gr)+fx(c,{qh:[q.n,-6]})},n:c=>{holder.flags.baoLanh=0;return `Quan xử án trả lại thiếp, nói không thể vì quen biết mà bẻ luật. Lời bảo lãnh mất tác dụng. `+lawApply(c,L,l0,gr)+fx(c,{fame:-2})}})} /* d9.12: đọc cờ baoLanh do tie_quy_nhan_giup đặt */
+  opts.push({l:`Kháng án lên cấp trên (${money(c15)})`,c:()=>S.money>=c15,r:[{_g:1,tri:0.6,khau:0.5},clamp(40-(ev-50)*0.4-(lf?10:0),5,70)],y:c=>{S.money-=c15;return 'Cấp trên xét lại, giảm một mức. '+lawApply(c,L,l0-1,gr)},n:c=>{S.money-=c15;return 'Cấp trên giữ nguyên án. '+lawApply(c,L,l0,gr)+fx(c,{fame:-2})}});
   if(it.test)return {text,opts};
   choicePopup(c,'Công đường',`Xét xử: ${L.n}`,text,opts)}
 function staffEff(st,role){const R0=ROLES[role];let s=0,n=0;for(const k in R0.req){s+=Math.min(1.25,st[k]/R0.req[k]);n++}return (n?s/n:1)*(0.7+st.m/200)*staffVigor(st)}
@@ -136,7 +138,7 @@ function staffVigor(st){const a=stAge(st);return (st.sick>0?0.4:1)*(a<18?0.8:age
 function staffDie(b,st,why){
   const sn=stfSnap(st);stfRemove(b,st);
   b.staff.forEach(x=>{x.loy=clamp((x.loy||60)-3,0,100)});
-  log(`${sn.n} (${sn.ra} ở ${BIZ[b.type].lv[b.lv][0].toLowerCase()}) qua đời, thọ ${sn.age} tuổi.`,'hi');
+  log(`${sn.n}, ${sn.ra} ở ${BIZ[b.type].lv[b.lv][0].toLowerCase()}, qua đời, thọ ${sn.age} tuổi.`,'hi');
   stfEvent(b,'stf_death',Object.assign(sn,{why}))}
 function staffTick(b){const S=X.S;
   b.staff.slice().forEach(st=>{

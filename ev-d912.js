@@ -102,9 +102,9 @@ const ADD={
 const closeKin=(c,G)=>G.alive().filter(p=>p.id!==c.id&&G.inClan(p)&&p.dead==null&&(p.spouse===c.id||(p.parents||[]).includes(c.id)||(c.parents||[]).includes(p.id)||((p.parents||[]).length&&(c.parents||[]).some(x=>p.parents.includes(x)))));
 const SPECIAL={
  t_c_thao_duoc:(E,G)=>{const e=E.find(x=>x.id==='t_c_thao_duoc');if(!e||typeof e.o==='function')return;const o1=e.o[1];if(!o1||typeof o1.f!=='function')return;const f0=o1.f;
-  o1.f=function(c,d){const t=f0.call(this,c,d);const L=closeKin(c,G);const txt=L.map(p=>G.esc(p.given)+': '+G.fx(p,{hpMax:5})).join(' ');return t+(L.length?` Người thân thiết cũng được bồi bổ (${L.length} người): ${txt}`:'')+G.fx(c,{hpMax:3})}},
+  o1.f=function(c,d){const t=f0.call(this,c,d);const L=closeKin(c,G);const txt=L.map(p=>G.esc(p.given)+': '+G.fx(p,{hpMax:5})).join(' ');return t+(L.length?` Người thân thiết cũng được bồi bổ, cả thảy ${L.length} người:${txt}`:'')+G.fx(c,{hpMax:3})}},
  v6_ky_thu_tich:(E,G)=>{const e=E.find(x=>x.id==='v6_ky_thu_tich');if(!e||typeof e.o==='function')return;const o1=e.o[1];if(!o1||typeof o1.f!=='function')return;const f0=o1.f;
-  o1.f=function(c,d){const t=f0.call(this,c,d);let n=0;G.alive().filter(p=>G.inClan(p)&&G.inMain(p)&&G.age(p)>=12&&!p.away).forEach(p=>{G.addStat(p,'tri',2);G.addStat(p,'eq',1);n++});return t+` Cả nhà cùng đọc (${n} người): trí +2, EQ +1 mỗi người.`}},
+  o1.f=function(c,d){const t=f0.call(this,c,d);let n=0;G.alive().filter(p=>G.inClan(p)&&G.inMain(p)&&G.age(p)>=12&&!p.away).forEach(p=>{G.addStat(p,'tri',2);G.addStat(p,'eq',1);n++});return t+` Cả nhà cùng đọc, ${n} người:trí +2, EQ +1 mỗi người.`}},
  qn653_duyet_doi:(E,G)=>{const e=E.find(x=>x.id==='qn653_duyet_doi');if(!e||typeof e.o==='function')return;const o0=e.o[0];const y0=o0&&o0.y;if(typeof y0!=='function')return;
   o0.y=function(c,d){const t=y0.call(this,c,d);return t+G.fx(c,{merit:Math.round(12*0.35*Math.max(1,c.lv))})}},
  v64_vo_tap_tran:(E,G)=>{const e=E.find(x=>x.id==='v64_vo_tap_tran');if(!e||typeof e.o!=='function')return;const o0=e.o;

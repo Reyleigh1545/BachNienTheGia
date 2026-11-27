@@ -10,8 +10,9 @@ D.NAT.trieu.n='Đại Nguyễn';
 D.NAT.trieu.d='Triều Đại Nguyễn do Nguyễn Thành Trung dựng nên, có ải biên giới Bắc và Tây.';
 
 /* ---------- nơi đặt chức ---------- */
-const RP=['nhan_mon','thien_kinh','hoai_thuy','lac_giang','hai_khau','ngoc_mon'];
-const CNT={nhan_mon:{F:1,C:2,H:3},thien_kinh:{F:2,C:1,H:4},hoai_thuy:{F:2,C:2,H:5},lac_giang:{F:2,C:2,H:6},hai_khau:{F:1,C:2,H:4},ngoc_mon:{F:1,C:2,H:3}};
+const RP=Object.keys(D.PROV).filter(p=>D.PROV[p].nat==='trieu'); /* d.1.5.49: 16 khu của Đại Nguyễn trên bản đồ 48 khu */
+const CNT0={nhan_mon:{F:1,C:2,H:3},thien_kinh:{F:2,C:1,H:4},hoai_thuy:{F:2,C:2,H:5},lac_giang:{F:2,C:2,H:6},hai_khau:{F:1,C:2,H:4},ngoc_mon:{F:1,C:2,H:3}};
+const CNTK={kinh:{F:2,C:1,H:4},phu:{F:2,C:2,H:5},cang:{F:1,C:2,H:4},bien:{F:1,C:2,H:3},lang:{F:1,C:2,H:4}};const CNT={};RP.forEach(p=>{CNT[p]=CNT0[p]||CNTK[D.PROV[p].k]});
 const BO=[['lai','Lại'],['ho','Hộ'],['le','Lễ'],['binh','Binh'],['hinh','Hình'],['cong','Công']];
 const SYL1=['Thanh','Bình','An','Phong','Long','Vân','Lam','Hà','Hưng','Phúc','Thái','Vĩnh','Gia','Kim','Ngọc','Bảo','Đông','Tây','Nam','Bắc','Trường','Quảng','Nghĩa','Định','Tuy','Hoa','Lạc','Mộc','Sơn','Thủy'];
 const SYL2=['Lâm','Điền','Khê','Dương','Nguyên','Phố','Lĩnh','Xuyên','Thành','Hải','Giang','Châu','Thôn','Hà','Cốc','Sa','Nhai','Trì','Bạc','Đài','Quan','Phong','Ninh','Hòa','Yên'];
@@ -23,7 +24,7 @@ UNITS.K={k:'K',t:'K',p:'thien_kinh',n:'Kinh sư'};
 BO.forEach(([id,n])=>{const k='B:'+id;UNITS[k]={k,t:'B',p:'thien_kinh',n:'bộ '+n,s:id};UL.B.push(k)});
 RP.forEach(p=>{const nm=D.PROV[p].n.replace(/ quan$/,'');const k='P:'+p;UNITS[k]={k,t:'P',p,n:nm,s:p};UL.P.push(k)});
 RP.forEach(p=>{['F','C','H'].forEach(t=>{for(let i=0;i<CNT[p][t];i++){const k=`${t}:${p}:${i}`;UNITS[k]={k,t,p,n:mkName(),s:p};UL[t].push(k)}})});
-['nhan_mon','ngoc_mon'].forEach(p=>{const k='A:'+p;UNITS[k]={k,t:'A',p,n:D.PROV[p].n.replace(/ quan$/,''),s:p};UL.A.push(k)});
+RP.filter(p=>D.PROV[p].k==='bien').forEach(p=>{const k='A:'+p;UNITS[k]={k,t:'A',p,n:D.PROV[p].n.replace(/ quan$/,''),s:p};UL.A.push(k)});
 UNITS['G:hai_khau']={k:'G:hai_khau',t:'G',p:'hai_khau',n:'Hải Khẩu',s:'hai_khau'};UL.G.push('G:hai_khau');
 D.UNITS=UNITS;D.UNIT_LIST=UL;D.BO=BO;D.REALM=RP;
 
@@ -224,24 +225,42 @@ D.build64=function(){
       const o=parseRow(line,g);if(!o)return;
       const T=o.T;
       if(T.ar!=null){T.mil=1;T.tag='vo'}
-      if(T.at){T.units=(T.sc==='B'?T.at.map(x=>'B:'+x):T.sc==='P'?T.at.map(x=>'P:'+x):T.sc==='A'?T.at.map(x=>'A:'+x):T.at.map(x=>T.sc+':'+x)).filter(u=>UNITS[u])}
+      if(T.at){T.units=(T.sc==='B'?T.at.map(x=>'B:'+x):T.sc==='P'?T.at.map(x=>'P:'+x):T.sc==='A'?T.at.map(x=>'A:'+x):T.at.map(x=>T.sc+':'+x)).filter(u=>UNITS[u]);T.units=T.units.concat(Object.keys(UNITS).filter(k=>UNITS[k].goc&&T.units.indexOf(UNITS[k].goc)>=0))} /* d.1.5.50: bản tương ứng ở tiểu quốc */
       else T.units=D.UNIT_LIST[T.sc].slice();
       OF[o.id]=Object.assign({},legacyOld[o.id]||{},T);
     })});
   /* các chức cũ giữ nguyên id để save cũ còn đọc được */
   D.OFFICE_IDS=Object.keys(OF);
 };
-D.seatKeys=function(tid){
+/* d.1.5.50: mỗi nước một quan trường. Đơn vị của tiểu quốc dựng thêm ở dưới (vqUnits); chỉ trả ghế của nước được hỏi, mặc định là nước nhà đang ở. Tiểu quốc xưng vương nên không có Nhất phẩm. */
+D.unitNat=u=>{const U=UNITS[u];return U?D.PROV[U.p].nat:'trieu'};
+D.seatKeys=function(tid,nat){
   const T=D.OFFICES[tid];if(!T||!T.units)return [];
-  const out=[];T.units.forEach(u=>{for(let i=0;i<T.k;i++)out.push(`${tid}|${u}|${i}`)});return out;
+  const n=nat||(D.curNat?D.curNat():'trieu');if(n!=='trieu'&&(T.r||0)>7)return [];
+  const out=[];T.units.forEach(u=>{if(D.unitNat(u)!==n)return;for(let i=0;i<T.k;i++)out.push(`${tid}|${u}|${i}`)});return out;
 };
+(function vqUnits(){
+  const KINH={lang_bo:'soc_do',van_dao:'van_dao',lam_quoc:'cam_thanh',sa_quoc:'sa_thanh'};const them={K:[],B:[],P:[],F:[],C:[],H:[],A:[],G:[]};
+  Object.keys(KINH).forEach(nat=>{const kinh=KINH[nat];const khu=Object.keys(D.PROV).filter(p=>D.PROV[p].nat===nat);
+    const add=(t,k,o)=>{UNITS[k]=Object.assign({k,t},o);them[t].push(k)};
+    add('K','K@'+nat,{p:kinh,n:'Vương đô'});UL.B.filter(k=>k.indexOf('@')<0).forEach(k=>{const U=UNITS[k];add('B',k+'@'+nat,{p:kinh,n:U.n,s:U.s,goc:k})});
+    khu.forEach(p=>{const P=D.PROV[p];const nm=P.n.replace(/ quan$/,'');add('P','P:'+p,{p,n:nm,s:p});
+      const c={kinh:{F:2,C:1,H:3},phu:{F:2,C:2,H:3},cang:{F:1,C:1,H:3},bien:{F:1,C:1,H:2},lang:{F:1,C:1,H:2}}[P.k]||{F:1,C:1,H:2};
+      ['F','C','H'].forEach(t=>{for(let i=0;i<c[t];i++)add(t,`${t}:${p}:${i}`,{p,n:mkName(),s:p})});
+      if(D.BORDER.some(b=>b[4]===p||b[5]===p))add('A','A:'+p,{p,n:nm,s:p});if(P.k==='cang')add('G','G:'+p,{p,n:nm,s:p})})});
+  for(const tid in D.OFFICES){const T=D.OFFICES[tid];if(!T.units)continue;
+    if(T.at){const ex=[];T.units.forEach(u=>{Object.keys(UNITS).forEach(k=>{if(UNITS[k].goc===u)ex.push(k)})});T.units=T.units.concat(ex)}
+    else if(them[T.sc])T.units=T.units.concat(them[T.sc].filter(u=>T.units.indexOf(u)<0))}
+  Object.keys(them).forEach(t=>them[t].forEach(k=>{if(UL[t].indexOf(k)<0)UL[t].push(k)}));
+})();
 /* tên đầy đủ của ghế */
 D.seatLabel=function(key){
   const parts=String(key).split('|');const T=D.OFFICES[parts[0]];if(!T)return key;
   if(parts.length<3)return T.n;
   const U=UNITS[parts[1]];if(!U)return T.n;
   const idx=+parts[2];let s=T.n;
-  if(U.t==='B')s+=' '+U.n;
+  if(U.t==='K'&&D.unitNat(U.k)!=='trieu')s+=' '+D.NAT[D.unitNat(U.k)].n;
+  if(U.t==='B')s+=' '+U.n+(D.unitNat(U.k)!=='trieu'?' '+D.NAT[D.unitNat(U.k)].n:'');
   else if(U.t==='P')s+=' '+U.n;
   else if(U.t==='F'||U.t==='C'||U.t==='H'){
     const w=U.t==='F'?'phủ':U.t==='C'?'châu':'huyện';

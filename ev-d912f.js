@@ -11,7 +11,7 @@ return [
   {l:'Nghỉ ngơi, tự chữa bằng thuốc nam',f:c=>{G.ill.treat(c,i,'tu');return 'Nghỉ ngơi, uống thuốc nam theo kinh nghiệm dân gian. Chậm nhưng ít tốn.'+fx(c,{tam:-1})}},
   ...(doc()?[{l:'Nhờ người nhà làm nghề y chữa',f:c=>{G.ill.treat(c,i,'nha');return `Người nhà làm nghề y xem mạch, bốc thuốc cho ${N(c)}, ngày nào cũng ghé thăm.`+fx(c,{tam:1,suc:2})}}]:[]),
   {l:`Mời thầy lang trong vùng (${FM(cd)})`,c:()=>G.money()>=cd,f:c=>{G.ill.treat(c,i,'lang');return `Thầy lang bốc thang thuốc đúng bệnh, dặn kiêng cữ.`+fx(c,{money:-cd,tam:1})}},
-  {l:`Mời danh y về tận nhà (${FM(cy)})`,c:()=>G.money()>=cy,r:[{eq:0.4,tri:0.3},85],y:c=>{G.ill.treat(c,i,'danhy');return `Danh y xem bệnh rất kỹ, kê đơn tận gốc, bệnh giảm nhanh.`+fx(c,{money:-cy,suc:4,tam:3})},n:c=>{G.ill.treat(c,i,'lang');return `Danh y đi vắng, phải nhờ học trò, hiệu quả như thầy lang thường.`+fx(c,{money:-cy,tam:-1})}},
+  {l:`Mời danh y về tận nhà (${FM(cy)})`,c:()=>G.money()>=cy,r:[{_g:1,eq:0.4,tri:0.3},85],y:c=>{G.ill.treat(c,i,'danhy');return `Danh y xem bệnh rất kỹ, kê đơn tận gốc, bệnh giảm nhanh.`+fx(c,{money:-cy,suc:4,tam:3})},n:c=>{G.ill.treat(c,i,'lang');return `Danh y đi vắng, phải nhờ học trò, hiệu quả như thầy lang thường.`+fx(c,{money:-cy,tam:-1})}},
   {l:'Lên chùa cầu khấn, đốt hương',f:c=>{G.ill.treat(c,i,'cung');return `Cầu khấn tâm trạng nhẹ hẳn, nhưng bệnh vẫn phải chờ thời gian.`+fx(c,{money:-m(1),tam:3})}}]}}
 ];
 });

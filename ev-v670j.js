@@ -20,7 +20,7 @@ GJ({id:'gh_nhap_mon',t:'Nhập môn phái',c:c=>rk(c)===0&&sects().length>0&&!(c
   if(ta.length){const s=ta[0];out.push({l:`Theo ${s.n}`,f:c=>{c.flags.gh=1;c.flags.ghs=s.id;return `${esc(s.n)} dạy những chiêu hiểm, đổi lại đòi sự trung thành tuyệt đối. Tiếng tăm không đẹp.`+fx(c,{vo:3,fame:-6,liem:-4})}})}
   out.push({l:'Vẫn đi một mình',f:c=>{c.flags.ghs='none';return `${N(c)} thấy ràng buộc môn quy không hợp mình.`+fx(c,{tam:2})}});return out}}),
 GJ({id:'gh_ti_vo',t:'Tỉ võ giữa hai phái',c:c=>rk(c)>=1&&rk(c)<3&&!!sectOf(c),
- x:c=>{const r=rival(c);return `${esc(r.n)} (${AL[r.al]||'phái khác'}) thách ${esc(sectOf(c).n)} một trận tỉ võ ở chợ phiên. Chưởng môn đẩy ${N(c)} ra đài: thắng thì phái nở mày, thua thì mất mặt cả môn.`},
+ x:c=>{const r=rival(c);return `${esc(r.n)}, ${AL[r.al]||'phái khác'}, thách ${esc(sectOf(c).n)} một trận tỉ võ ở chợ phiên. Chưởng môn đẩy ${N(c)} ra đài: thắng thì phái nở mày, thua thì mất mặt cả môn.`},
  o:c=>[{l:'Lên đài, dốc hết sức',r:[{vo:1.2,suc:0.3},58],y:c=>{c.flags.gh=Math.max(rk(c),2);return 'Ba mươi hiệp, thắng sát nút. Cả chợ vỗ tay.'+fx(c,{vo:3,fame:10,tam:8})},n:c=>'Thua một chiêu cuối, nằm dưỡng thương mấy tuần. Đồng môn không trách nhưng im lặng.'+fx(c,{suc:-8,tam:-8,fame:-3})},
   {l:'Xin chưởng môn đổi người',f:c=>{return 'Chưởng môn nhìn một lúc rồi gọi người khác. Từ đó ánh mắt đồng môn khác đi.'+fx(c,{tam:-6,fame:-2})}}]}),
 GJ({id:'gh_bi_kip',t:'Một quyển bí kíp',c:c=>rk(c)===2&&c.lv>=1,age:[20,60],

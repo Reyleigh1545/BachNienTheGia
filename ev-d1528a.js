@@ -32,7 +32,7 @@ for(const id of ['kn_12','kn_74']){const e=find(id);if(!e||e.__g1528c)continue;e
     return `Có người mách ${esc(c.given)}: một chức ${pn(tl)} béo bở sắp trống. Chỉ cần lo lót đúng chỗ là được, giá ${G.fmtMoney(G.bribe.price(tl))}.${bk?` Cần có người chống lưng: ${esc(bk.n)} chịu đứng ra bảo lãnh.`:''}`};
   e.o=function(c,d){const tl=(c.lv||0)+1;const fee=G.bribe.price(tl);const bk=tl>G.bribe.MAX_FREE?G.bribe.backer(c):null;const win=bk?0.82:0.7;
     return [{l:`Đút lót để được chức ${pn(tl)}${bk?`, nhờ ${bk.n} chống lưng`:''} (${G.fmtMoney(fee)})`,vio:'trugian',c:()=>G.money()>=fee,ax:{thanh:-2,tv:1},
-        f:cc=>{G.S().money-=fee;if(G.chance(win))return 'Chức về tay. Nhưng sổ sách của kẻ nhận bạc có tên mình.'+fx(cc,{lv:1,cor:12});return 'Tiền mất, chức vào tay người trả cao hơn.'+fx(cc,{cor:6,tam:-8})}},
+        f:cc=>{G.S().money-=fee;const used=G.bribe.use(bk,cc);if(G.chance(win))return 'Chức về tay. Nhưng sổ sách của kẻ nhận bạc có tên mình.'+fx(cc,{lv:1,cor:12})+used;return 'Tiền mất, chức vào tay người trả cao hơn.'+fx(cc,{cor:6,tam:-8})+used}},
       {l:'Không màng',ax:{thanh:1,tiet:1},f:cc=>'Giữ được tiếng sạch.'+fx(cc,{liem:3})}]}}}
 /* THẺ NGƯỜI THƯƠNG Ở MỌI BƯỚC TÌNH DUYÊN (chủ dự án 25/11: "thanh mai trúc mã, rồi cái lương duyên gì đó mà người ấy bảo mình về thưa chuyện hoặc hứa hẹn thành công vẫn không có thẻ"): người sắp chọn phải có tên và thẻ bấm xem được; người ấy là chính người sẽ cưới (c.flags.lvP). */
 {const lift={tinh_thanh_mai:()=>G.tierIdx()*3,tinh_tieu_thu:()=>30,tinh_tieu_thu_b:()=>30,tinh_tieu_thu_c:()=>30};
@@ -54,12 +54,12 @@ for(const id of ['kn_12','kn_74']){const e=find(id);if(!e||e.__g1528c)continue;e
 /* HOÀNG ĐẾ THẬT TRONG SỰ KIỆN VUA VI HÀNH (chủ dự án 25/11: "kỳ ngộ ngàn năm: vị khách lạ là đương kim thiên tử vi hành nhưng thẻ hiện ra lại không phải là hoàng đế, chỉ số cũng không ra dáng hoàng đế"): bản chung R1 gắn một NPC ngẫu nhiên; nay thẻ là chính đương kim hoàng đế (tên ở S.dyn.emp, tuổi theo S.dyn.k.age, chỉ số cao, nhãn "Hoàng đế <niên hiệu>"). NPC có ref 'emp:<tên>' nên npcYear không đụng tới. */
 {const cl=(v,a,b)=>Math.max(a,Math.min(b,v));
   const emperor=()=>{const S=G.S(),d=G.vua&&G.vua.d?G.vua.d():null;if(!d||!d.emp)return null;S.np=S.np||{n:0,l:{}};const ref='emp:'+d.emp;let n=Object.values(S.np.l).find(x=>x.ref===ref);
-    const k=d.k||{};if(!n){n=G.np.new({n:d.emp,g:'nam',age:k.age||40,role:'hoangde'});n.ref=ref;n.vai=['hoang_de'];n.nghe='đương kim hoàng đế, niên hiệu '+d.era;n.tier=6;n.rel=0;n.st={tri:80,vo:80,mi:80,eq:80};try{if(G.npc&&G.npc.deepen)G.npc.deepen(n,{vai:['hoang_de'],tier:6,nghe:n.nghe})}catch(er){}}
+    const k=d.k||{};if(!n){n=G.np.new({n:d.emp,g:'nam',age:k.age||40,role:'hoangde'});n.ref=ref;n.vai=['hoang_de'];n.nghe='đương kim hoàng đế, niên hiệu '+d.era;n.tier=6;n.rel=0;n.st={tri:80,vo:80,mi:80,eq:80};n.sk={muu:90,khau:80,ql:80};n.sub={};n.fam={spouse:1,kids:0};n.past=[];n.ky=[];n.on=0;n.oan=0;n.vai=[]} /* d.1.5.43: không đưa vua vào sổ người quen (không vai, không deepen) */
     n.vaiTxt='Hoàng đế '+d.era;n.born=S.t-12*(k.age||40);n.ok=1;
     n.st={tri:Math.round(cl(78+(k.tai||50)*0.35,78,125)),vo:Math.round(cl(70+(k.hp||50)*0.25,70,110)),mi:Math.round(cl(76+(k.duc||50)*0.2,76,105)),eq:Math.round(cl(80+(k.duc||50)*0.3,80,120))};return n};
   G.emperorNpc=emperor;
   const e1=find('tuoc_ky_ngo');if(e1&&!e1.__g1528f){e1.__g1528f=1;
-    e1.x=function(c,d){d=d||{};const n=emperor();if(n)d.npc=n.id;return `Một người khách lạ áo vải ghé nhà xin nước, ăn nói phi phàm. ${esc(c.given)} tiếp đãi chu đáo. Sáng hôm sau, quan quân kéo đến rợp đường: khách lạ chính là đương kim thiên tử${n?' '+esc(n.n)+' ('+esc(n.vaiTxt)+')':''} vi hành.`}}
+    e1.x=function(c,d){d=d||{};const n=emperor();if(n)d.npc=n.id;return `Một người khách lạ áo vải ghé nhà xin nước, ăn nói phi phàm. ${esc(c.given)} tiếp đãi chu đáo. Sáng hôm sau, quan quân kéo đến rợp đường: khách lạ chính là đương kim thiên tử${n?' '+esc(n.n)+', '+esc(n.vaiTxt)+',':''} vi hành.`}}
   const e2=find('tt_vi_hanh_b');if(e2&&!e2.__g1528f){e2.__g1528f=1;const x0=e2.x;
     e2.x=function(c,d){d=d||{};const n=emperor();if(n)d.npc=n.id;return typeof x0==='function'?x0.call(this,c,d):x0}}
 }

@@ -6,7 +6,7 @@ function sheetHTML(c){const S=X.S;
   const a=age(c),J=JOBS[c.job],dead=c.dead!=null,out=!inClan(c);
   const deg=['','Cử nhân','Đỗ thi Hội',c.flags.examTitle||'Tiến sĩ'][c.degree];
   let h=`<button class="xclose" data-close aria-label="Đóng">×</button><div class="who">${avatarSVG(c,64)}<div style="min-width:0"><h2>${esc(nameOf(c))}</h2>
-   <div class="chips"><span class="chip ${c.id===S.head?'gold':''}">${relation(c)}</span><span class="chip">${dead?'Đã mất':a+' tuổi'}</span>${selfPerks(c)}${c.hb?`<button class="chip gold" data-info="hb:${c.hb}">Uy gia chủ +${c.hb}</button>`:''}${c.tuoc?`<button class="chip gold" data-info="tr:tu_${Math.min(5,c.tuoc)}">${TUOC[c.tuoc]}</button>`:''}${c.degree?`<button class="chip gold" data-info="tr:dg_${Math.min(3,c.degree)}">${deg}</button>`:''}${ctChips(c)}${c.outSp?`<span class="chip">Về nhà họ ${esc(c.outSp.sur)}</span>`:''}${c.preg?'<span class="chip red">Mang thai</span>':''}${(c.ill||[]).map(i=>`<span class="chip red">Ốm: ${esc(i.n)}${i.sev>=3?' (nặng)':''}</span>`).join('')}${c.pst&&isOff(c)?`<span class="chip blue">Nhậm chức ${esc(provN(c.pst.p))}${c.pst.fam?(c.pst.fam>1?' · cả nhà theo':' · có vợ chồng theo'):''}</span>`:''}${c.away&&awayText(c)?`<span class="chip blue">${awayText(c)}</span>`:''}${c.hh!==mainHH()&&!out&&HH(c.hh)&&HH(c.hh).name?`<span class="chip blue">${esc(HH(c.hh).name)}</span>`:''}</div>
+   <div class="chips"><span class="chip ${c.id===S.head?'gold':''}">${relation(c)}</span><span class="chip">${dead?'Đã mất':a+' tuổi'}</span>${selfPerks(c)}${c.hb?`<button class="chip gold" data-info="hb:${c.hb}">Uy gia chủ +${c.hb}</button>`:''}${c.tuoc?`<button class="chip gold" data-info="tr:tu_${Math.min(5,c.tuoc)}">${TUOC[c.tuoc]}</button>`:''}${c.degree?`<button class="chip gold" data-info="tr:dg_${Math.min(3,c.degree)}">${deg}</button>`:''}${ctChips(c)}${c.outSp?`<span class="chip">Về nhà họ ${esc(c.outSp.sur)}</span>`:''}${c.preg?'<span class="chip red">Mang thai</span>':''}${(c.ill||[]).map(i=>`<span class="chip red">Ốm: ${esc(i.n)}${i.sev>=3?', nặng':''}</span>`).join('')}${c.pst&&isOff(c)?`<span class="chip blue">Nhậm chức ${esc(provN(c.pst.p))}${c.pst.fam?(c.pst.fam>1?' · cả nhà theo':' · có vợ chồng theo'):''}</span>`:''}${c.away&&awayText(c)?`<span class="chip blue">${awayText(c)}</span>`:''}${c.hh!==mainHH()&&!out&&HH(c.hh)&&HH(c.hh).name?`<span class="chip blue">${esc(HH(c.hh).name)}</span>`:''}</div>
    <div class="chips">${realTraits(c).map(traitChip).join('')}${habChips(c)}${viceChips(c)}</div></div></div>
    ${ctNote(c)?`<p class="muted small" style="margin:.3rem 0 .5rem">${ctNote(c)}</p>`:''}
    <div class="dsec tight"><h3>${I('axes','Tính cách')}</h3><div class="chips">${axChips(c)||'<span class="muted small">Chưa có nét nổi bật</span>'}</div></div>
@@ -24,8 +24,8 @@ function sheetHTML(c){const S=X.S;
     h+=`${['quan_ngu','noi','hiep'].includes(c.job)?'':bar(c.job==='chu'&&JOBS[c.bizFrom]?'Thông thạo '+JOBS[c.bizFrom].n.toLowerCase():'Thông thạo',c.m,120,'mm','mm')}
     <div class="kvline">${c.job==='nong'?'Thu theo mùa vụ':c.job==='chu'?(bizOf(c)&&bizOf(c).last?`Lãi tháng trước ${money(bizOf(c).last.profit)}`:'Lãi cơ sở'):c.job==='hiep'?`Túi riêng ${money(c.purse)}`:`${money(income(c))}/tháng`}${c.job==='quan'?` · lộc ngoài ${money(sideIncome(c))}`:''}${c.job==='quan'&&postOf(c)?` · ${esc(postOf(c).n)}`:''}${c.job==='quan'&&c.qt?` · ${c.qt.f?'phe '+facN(c.qt.f):'không theo phe'}${c.qt.st?` · <b class="down">${QST_N[c.qt.st]}</b>`:''}`:''}${selfEmp(c)?' · tự làm, không có chủ':''}${pieceJob(c)?' · thu theo năng suất':''}</div>`;
     if(c.job==='hiep'){{const s0=c.flags.ghs&&(S.wr&&S.wr.sects||[]).find(x=>x.id===c.flags.ghs);const W0=S.wr&&S.wr.gwar;const ch=c.flags.ghc;const bk=c.flags.bk||{};const bks=[bk.kiem&&'kiếm phổ',bk.noi&&'nội công',bk.khinh&&'khinh công'].filter(Boolean);
-      h+=`<div class="kvline">${s0?`Phái <b>${esc(s0.n)}</b> (sức ${s0.pow||50})${ch?' · chức <b>'+({hophap:'Hộ pháp',truonglao:'Trưởng lão'}[ch]||ch)+'</b>':''}${W0&&(W0.a===s0.id||W0.b===s0.id)?' · <span class="down">đang giao tranh</span>':''}`:'Chưa vào môn phái nào'}${bks.length?' · bí kíp: '+bks.join(', '):''}</div>`}
-      const L=JOBS.hiep.lv[c.lv+1];h+=`<div class="kvline">Tiếng tăm (danh vọng) <b class="num">${fmt(c.fame)}</b> · ${SN.vo} <b class="num">${Math.round(c.vo)}</b></div>${L?`<div class="kvline muted">Muốn lên ${esc(L.n.toLowerCase())}: ${Object.entries(L.req).map(([k,v])=>k==='fame'?`danh vọng ${fmt(v)}`:`${SN[k].toLowerCase()} ${v}`).join(', ')}</div>`:'<div class="kvline muted">Đã đứng đầu võ lâm</div>'}`}
+      h+=`<div class="kvline">${s0?`Phái <b>${esc(s0.n)}</b> · sức ${s0.pow||50}${ch?' · chức <b>'+({hophap:'Hộ pháp',truonglao:'Trưởng lão'}[ch]||ch)+'</b>':''}${W0&&(W0.a===s0.id||W0.b===s0.id)?' · <span class="down">đang giao tranh</span>':''}`:'Chưa vào môn phái nào'}${bks.length?' · bí kíp: '+bks.join(', '):''}</div>`}
+      const L=JOBS.hiep.lv[c.lv+1];h+=`<div class="kvline">Tiếng tăm <b class="num">${fmt(c.fame)}</b> · ${SN.vo} <b class="num">${Math.round(c.vo)}</b></div>${L?`<div class="kvline muted">Muốn lên ${esc(L.n.toLowerCase())}: ${Object.entries(L.req).map(([k,v])=>k==='fame'?`danh vọng ${fmt(v)}`:`${SN[k].toLowerCase()} ${v}`).join(', ')}</div>`:'<div class="kvline muted">Đã đứng đầu võ lâm</div>'}`}
     const r=nextReq(c);if(r)h+=`<div class="kvline muted">Lên ${esc(J.lv[c.lv+1].n.toLowerCase())}: ${Object.entries(r).filter(([k])=>k!=='land').map(([k,v])=>k==='m'?`thông thạo ${v}`:k==='fame'?`danh vọng ${v}`:k==='degree'?'đỗ cử nhân':k==='flag'?(v==='thuyen'?'thuyền lớn':'cơ duyên riêng'):`${SN[k]} ${v}`).join(', ')||'thêm ruộng'}</div>`;
   }else if(a<16)h+=`<div class="kvline muted">${a>=6&&c.school!=='nha'?esc((SCHOOL[a<10?1:a<14?2:3][c.school]||{n:'Đi học'}).n):'Còn nhỏ'}${c.appr&&JOBS[c.appr]&&a>=6?' · học nghề '+JOBS[c.appr].n.toLowerCase():''}${Object.keys(c.pre).length?' · đã học việc '+Object.entries(c.pre).map(([j,v])=>`${JOBS[j].n.toLowerCase()} ${Math.round(v)}`).join(', '):''}</div>`;
   else h+=`<div class="kvline muted">${c.job==='huu'?'An hưởng tuổi già':c.flags.jobRetry>S.t?'Trượt phỏng vấn, đợi năm sau':'Chưa có nghề'}</div>`;
@@ -36,7 +36,7 @@ function sheetHTML(c){const S=X.S;
   if(c.job==='quan_ngu'&&a>=16)can('resign','Xin giải ngũ');
   if(!c.away){
     if(a>=16&&!['quan','vua','nguy','quan_ngu','hiep'].includes(c.job))can('job',c.job==='none'||c.job==='huu'?'Chọn nghề':'Đổi nghề',c.flags.jobRetry>S.t);
-    if(c.job==='quan'){{const w=promoWhy(c);can('office',w?`Thăng tiến <small>(${esc(w)})</small>`:'Thăng tiến',!!w)};can('resign','Từ quan')}
+    if(c.job==='quan'){{const w=promoWhy(c);can('office',w?`Thăng tiến <small>${esc(w)}</small>`:'Thăng tiến',!!w)};can('resign','Từ quan')}
     Object.keys(BIZ).filter(t=>canOwn(c,t)).forEach(t=>{const L0=BIZ[t].lv[0];h+=`<button class="btn small" data-open="${t}" ${canOpenAny(c,L0[1])?'':'disabled'}>Mở ${esc(L0[0].toLowerCase())} · ${money(L0[1],1)}</button>`});
     /* d9.10: hợp nghề mà chưa đủ điều kiện thì nói rõ thiếu gì (trước đó nút biến mất, chủ dự án hỏi vì sao nghề Y không mở được hiệu thuốc) */
     if(a>=18&&c.job!=='chu')Object.keys(BIZ).filter(t=>!canOwn(c,t)&&relJob(c,t)).forEach(t=>{const why=bizSkillWhy(c,t).filter(w=>!/^không làm nghề/.test(w));if(why.length)h+=`<span class="kvline muted">${esc(BIZ[t].lv[0][0])}: chưa mở được, cần ${esc(why.join(', '))}</span>`});
@@ -57,7 +57,7 @@ function sheetHTML(c){const S=X.S;
   if(c.brk){const bp=BRK100[c.brk.k].find(x=>x.id===c.brk.id);if(bp)h+=`<div class="kvline">Đột phá ${esc(SN[c.brk.k].toLowerCase())}: ${esc(bp.l.toLowerCase())} · tháng ${S.t-c.brk.start}/${c.brk.end-c.brk.start}</div>`}
   h+=`</div>`;
   if(a>=6&&!c.away&&!c.brk){const pf=prefFocus(c);const side=sideInc(c,true);
-    h+=`<div class="dsec"><h3>${I('focus','Thời gian rảnh')}</h3><select class="sel" id="focusSel">${Object.entries(FOCUS).filter(([k,F])=>(k!=='giup'||a>=10)&&(!F.side||a>=12)&&(a>=12||['nghi','hoc','vo','ren','cam','phat','giup'].includes(k))).map(([k,F])=>`<option value="${k}" ${c.focus===k?'selected':''} ${affordFocus(c,k)||c.focus===k?'':'disabled'}>${F.n}${k===pf?' (ý thích)':''} · ${F.side?'kiếm thêm':F.cost>0?money(focusCost(c,k))+'/tháng':'miễn phí'}</option>`).join('')}</select>
+    h+=`<div class="dsec"><h3>${I('focus','Thời gian rảnh')}</h3><select class="sel" id="focusSel">${Object.entries(FOCUS).filter(([k,F])=>(k!=='giup'||a>=10)&&(!F.side||a>=12)&&(a>=12||['nghi','hoc','vo','ren','cam','phat','giup'].includes(k))).map(([k,F])=>`<option value="${k}" ${c.focus===k?'selected':''} ${affordFocus(c,k)||c.focus===k?'':'disabled'}>${F.n}${k===pf?' · ý thích':''} · ${F.side?'kiếm thêm':F.cost>0?money(focusCost(c,k))+'/tháng':'miễn phí'}</option>`).join('')}</select>
     <div class="kvline muted">${c.focusUntil&&c.focusUntil>S.t?`Theo sắp đặt, còn giữ khoảng ${c.focusUntil-S.t} tháng rồi quay về ${esc(FOCUS[pf].n.toLowerCase())}`:`Tự chọn theo ý mình. Ép theo việc khác thì giữ được khoảng ${focusHold(c)} tháng`}${side?` · kiếm thêm ${money(side)} tháng này`:FOCUS[c.focus].side?' · tháng này không có việc':''}</div>${loveNow(c)?`<div class="kvline up small">Đang làm việc mình yêu thích: chỉ số lên nhanh hơn 20%, tâm trạng cao hơn 3${FOCUS[c.focus].side?', kiếm thêm hơn 12%':''}.</div>`:''}</div>`}
   if(a>=6&&a<18){const lvl=a<10?1:a<14?2:3;const sc=SCHOOL[lvl][c.school];h+=`<div class="dsec"><h3>Học đường</h3><div class="acts"><span class="kvline">${sc?esc(sc.n)+(sc.fee?` · ${money(sc.fee)}/tháng`:''):'Ở nhà'}</span><button class="btn small" data-do="school">Đổi trường</button></div></div>`}
   if(a>=16){
@@ -67,7 +67,7 @@ function sheetHTML(c){const S=X.S;
     else{
       const wife=c.g==='nữ'?c:sp;const hcap=HOMES[HH(wife.hh).home].cap;const room=hhCount(wife.hh)<hcap;const wa=age(wife);const want=c.wantChild||sp.wantChild;
       h+=`<div class="kvline">Bạn đời <button class="lnk" data-sel="${sp.id}">${esc(nameOf(sp))}</button>, ${age(sp)} tuổi · ${loveWord(c.love??50)}</div>${(c.love??50)<35&&head()?`<div class="acts"><button class="btn small ghost" data-do="ly">Phân xử vợ chồng</button></div>`:''}`;
-      if(wife.preg)h+=`<div class="kvline">Mang thai${wife.preg.twins?' (song thai?)':''}, dự sinh ${dateStr(wife.preg.due)}</div>`;
+      if(wife.preg)h+=`<div class="kvline">Mang thai${wife.preg.twins?', có thể song thai':''}, dự sinh ${dateStr(wife.preg.due)}</div>`;
       else if(wa<=46){const wc=x=>wantsKid(x)?'muốn có con':'chưa muốn';const hd=head();const cd=(c.flags.kidT||0)>S.t;
         h+=`<div class="kvline">${esc(c.given)} ${wc(c)} · ${esc(sp.given)} ${wc(sp)}${wantsKid(c)&&wantsKid(sp)?' · đang mong con':''}</div>
         <div class="acts">${hd&&!isHead(c)&&!isHead(sp)||hd&&(isHead(c)||isHead(sp))?`<button class="btn small" data-do="kid+" ${cd?'disabled':''}>Khuyên sinh con</button><button class="btn small ghost" data-do="kid-" ${cd?'disabled':''}>Khuyên tạm hoãn</button>`:''}${room?'':`<span class="kvline down">Nhà đã đủ ${hcap} người</span>`}</div>`}
@@ -79,7 +79,7 @@ function sheetHTML(c){const S=X.S;
   const fam=alive().filter(p=>p.id!==c.id&&inClan(p)&&age(p)>=4&&(kin(c,p)!=='ho'||p.hh===c.hh)).sort((x,y)=>relOf(c,y)-relOf(c,x));
   if(fam.length)h+=`<div class="dsec"><h3>${I('rel','Quan hệ')}</h3><div class="rels">${fam.slice(0,12).map(p=>{const v=Math.round(relOf(c,p));return `<button class="relrow" data-sel="${p.id}">${avatarSVG(p,22)}<span>${esc(p.given)}<small>${KIN_N[kin(c,p)]}</small></span><b class="num ${v<0?'down':v>=60?'up':''}">${relWord(v)}</b></button>`}).join('')}</div></div>`;
   const hd=head();const acts=[];
-  if(c.id!==S.head&&a>=18&&!c.away&&hd)acts.push(`<button class="btn small ghost" data-do="head" ${(S.headT||0)>S.t?'disabled':''}>Giao quyền gia chủ${(S.headT||0)>S.t?` (${S.headT-S.t} tháng)`:''}</button>`);
+  if(c.id!==S.head&&a>=18&&!c.away&&hd)acts.push(`<button class="btn small ghost" data-do="head" ${(S.headT||0)>S.t?'disabled':''}>Giao quyền gia chủ${(S.headT||0)>S.t?` · ${S.headT-S.t} tháng`:''}</button>`);
   if(c.id!==S.head&&a>=18&&married(c)&&!c.inLaw&&c.hh===mainHH()&&(c.gen||1)>=2)acts.push(`<button class="btn small ghost" data-do="moveout">Cho ra ở riêng</button>`);
   if(c.id!==S.head&&hd&&a>=14)acts.push(`<button class="btn small ghost" data-do="expel">Trục xuất</button>`);
   if(a>=25&&!c.away)acts.push(`<button class="btn small ghost" data-do="will">Lập di chúc</button>`);
@@ -88,7 +88,7 @@ function sheetHTML(c){const S=X.S;
   if(c.id!==S.head&&hd&&a>=16&&inMain(c)&&c.purse>=mmn(1))acts.push(`<button class="btn small" data-do="gop" ${(c.flags.gopT||0)>S.t?'disabled':''}>Xin góp công quỹ</button>`);
   if(a>=16&&!isHead(c)&&S.people.some(p=>c.parents.includes(p.id)&&p.dead==null&&inClan(p)&&p.purse>mmn(1)))acts.push(`<button class="btn small ghost" data-do="xin" ${(c.flags.xinT||0)>S.t?'disabled':''}>Xin cha mẹ giúp tiền</button>`);
   {const vb=!c.away&&viceOf(c).length?viceBy(c):null;
-   if(vb)acts.push(`<button class="btn small" data-do="randay" ${(c.flags.vdT||0)>S.t?'disabled':''}>${canPunish(vb,c)?'Răn dạy':'Khuyên can'}${(c.flags.vdT||0)>S.t?` (${c.flags.vdT-S.t} tháng)`:''}</button>`)}
+   if(vb)acts.push(`<button class="btn small" data-do="randay" ${(c.flags.vdT||0)>S.t?'disabled':''}>${canPunish(vb,c)?'Răn dạy':'Khuyên can'}${(c.flags.vdT||0)>S.t?` · ${c.flags.vdT-S.t} tháng`:''}</button>`)}
   if(acts.length)h+=`<div class="dsec"><h3>Việc nhà</h3><div class="acts">${acts.join('')}</div></div>`;
   return h;
 }
@@ -158,7 +158,7 @@ function pageCosngoi(){const S=X.S;
   const main=mainHH();const exp=EXPECT[tierIdx()];const est=econEst();const L=S.flow||est;
   const sum=o=>Object.values(o||{}).reduce((a,b)=>a+b,0);
   /* v6.4.1.3: dòng thói quen ghi rõ ai, thói quen gì (gồm cả sở thích tốn tiền như sưu tầm, thuốc bổ, không chỉ tật xấu) */
-  const habWho=()=>alive().filter(p=>inClan(p)&&clanKeeps(p)&&p.habits.some(x=>HABITS[x]&&HABITS[x].cost)).map(p=>`${esc(p.given)}: ${p.habits.filter(x=>HABITS[x]&&HABITS[x].cost).map(x=>HABITS[x].n.toLowerCase()+(isVice(x)?' (tật xấu)':'')).join(', ')}`).join('; ');
+  const habWho=()=>alive().filter(p=>inClan(p)&&clanKeeps(p)&&p.habits.some(x=>HABITS[x]&&HABITS[x].cost)).map(p=>`${esc(p.given)}: ${p.habits.filter(x=>HABITS[x]&&HABITS[x].cost).map(x=>HABITS[x].n.toLowerCase()+(isVice(x)?' · tật xấu':'')).join(', ')}`).join('; ');
   const rows=(o,cls)=>Object.entries(o||{}).filter(([,v])=>v).map(([k,v])=>`<dt>${FLOWN[k]||k}${k==='thoi'?`<br><small class="muted">${habWho()||'không rõ'}</small>`:''}</dt><dd class="num ${cls}">${money(v)}</dd>`).join('');
   const h=S.hh[main];const H=HOMES[h.home];const nx=HOMES[h.home+1];const e=hhExpense(main);
   const mainCard=`<section class="card"><span class="eyebrow">Nhà chính · gia tộc lo</span><h2>${esc(h.name)} · ${H.n}</h2><div class="homeart">${homeSVG(h.home)}</div>
@@ -167,7 +167,7 @@ function pageCosngoi(){const S=X.S;
     ${h.life<exp?`<p class="kvline down">Dưới mức ${LIFE[exp][0].toLowerCase()} của gia thế, cả nhà mất mặt</p>`:''}
     ${nx?`<button class="btn" data-build="${main}" style="margin-top:8px;width:100%" ${S.money<nx.cost?'disabled':''}><strong>Xây ${nx.n}</strong><small>${money(nx.cost)} công quỹ · ở được ${nx.cap} người · danh vọng +${nx.fame}</small></button>`:''}</section>`;
   const fund=`<section class="card"><span class="eyebrow">${I('money','Công quỹ')}</span><h2>${money(S.money)}</h2>
-    <p class="kvline muted">Tháng ${S.flow?'trước':'tới (ước tính)'}: ${L.net!=null?`<b class="num ${L.net<0?'down':'up'}">${L.net>=0?'+':''}${money(L.net)}</b>`:''}</p>
+    <p class="kvline muted">Tháng ${S.flow?'trước':'tới'}: ${L.net!=null?`<b class="num ${L.net<0?'down':'up'}">${L.net>=0?'+':''}${money(L.net)}</b>`:''}</p>
     <dl class="kv">${rows(L.in,'up')}<dt><b>Tổng thu</b></dt><dd class="num"><b>${money(sum(L.in))}</b></dd>${rows(L.out,'down')}<dt><b>Tổng chi</b></dt><dd class="num"><b>${money(sum(L.out))}</b></dd></dl>
     <div class="field" style="margin-top:8px"><label>${I('gop','Người đi làm góp về công quỹ')}</label><div class="seg wrap">${GOP.map(([v,n,t])=>`<button class="btn" data-gop="${v}" aria-pressed="${S.gop===v}">${n}${t?` <small class="${t<0?'down':'up'}">vui ${t>0?'+':''}${t}</small>`:''}</button>`).join('')}</div></div></section>`;
   const offs=clanFormed()?`<section class="card"><span class="eyebrow">${I('coff','Chức trong tộc')}</span><h2>Người lo việc chung</h2><div class="staff">${Object.entries(CLANOFF).map(([k,O0])=>{const p=offHolder(k);const [st,v]=O0.need;
@@ -194,14 +194,14 @@ function pageRuong(){const S=X.S;
   const pjU=(S.proj||[]).filter(p=>projDef(p.id)&&(p.st==='xay'||p.st==='xong')&&projAc(projDef(p.id),p.n)>0).map(p=>({id:p.id,n:projDef(p.id).n,ac:projAc(projDef(p.id),p.n)}));
   const clU=(F.clr||[]).map(x=>({n:x.n,mo:Math.max(0,x.t-S.t)}));
   return `<div class="grid2"><section class="card"><span class="eyebrow">Đất phong</span><h2>${fmt(tot)} mẫu đất</h2>${U2()?U2().land({tot,fld,clr,wild,projs:pjU,clrList:clU}):''}
-   <dl class="kv">${U2()?`<dt>Đất phong · đất mua</dt><dd class="num">${fmt(F.fief||0)} · ${fmt(F.own||0)} mẫu</dd>`:`<dt>Đất phong (theo tước vị)</dt><dd class="num">${fmt(F.fief||0)} mẫu</dd><dt>Đất mua</dt><dd class="num">${fmt(F.own||0)} mẫu</dd>
-   <dt>Dùng cho cơ sở</dt><dd class="num">${fmt(use)} mẫu</dd><dt>Ruộng cho tá điền cày</dt><dd class="num">${fmt(fld)} mẫu${clr?` (+ ${fmt(clr)} đang khai hoang)`:''}</dd><dt>Đất hoang còn trống</dt><dd class="num">${fmt(wild)} mẫu</dd>`}
-   <dt>Tô thu về mỗi năm (ước)</dt><dd class="num">${money(toEst()*12)}</dd></dl>
+   <dl class="kv">${U2()?`<dt>Đất phong · đất mua</dt><dd class="num">${fmt(F.fief||0)} · ${fmt(F.own||0)} mẫu</dd>`:`<dt>Đất phong</dt><dd class="num">${fmt(F.fief||0)} mẫu</dd><dt>Đất mua</dt><dd class="num">${fmt(F.own||0)} mẫu</dd>
+   <dt>Dùng cho cơ sở</dt><dd class="num">${fmt(use)} mẫu</dd><dt>Ruộng cho tá điền cày</dt><dd class="num">${fmt(fld)} mẫu${clr?` · thêm ${fmt(clr)} đang khai hoang`:''}</dd><dt>Đất hoang còn trống</dt><dd class="num">${fmt(wild)} mẫu</dd>`}
+   <dt>Tô thu về mỗi năm</dt><dd class="num">${money(toEst()*12)}</dd></dl>
    ${projs?`<ul class="plain">${projs}</ul>`:''}
-   <div class="acts" style="margin-top:8px"><button class="btn small" data-farm="clear" ${(S.money<clrC||wild<1)?'disabled':''}>Khai hoang 1 mẫu (${money(clrC)}, mười hai tháng)</button></div>
+   <div class="acts" style="margin-top:8px"><button class="btn small" data-farm="clear" ${(S.money<clrC||wild<1)?'disabled':''}>Khai hoang 1 mẫu (${money(clrC)})</button></div>
    <div class="acts" style="margin-top:6px"><button class="btn small" data-farm="buy" ${(!right||S.money<buyC)?'disabled':''}>Mua 1 mẫu đất hoang (${money(buyC)})</button><button class="btn small" data-farm="sell" ${(F.own<1||wild<1)?'disabled':''}>Bán 1 mẫu đất hoang</button></div>
    ${right?'':'<p class="kvline muted">Chưa có người làm quan hoặc có tước, nên chưa được mua đất.</p>'}
-   <div class="field" style="margin-top:8px"><label>Mức tô (phần trăm nông sản tá điền thu về)</label><div class="seg wrap">${TOLV.map(([n,r,f,d],i)=>`<button class="btn" data-to="${i}" aria-pressed="${(F.to??1)===i}">${n} ${Math.round(r*100)}%</button>`).join('')}</div><p class="kvline muted">${esc(TOLV[F.to??1][3])}. Tô thu theo mùa gặt, mỗi vụ một lần.</p></div>
+   <div class="field" style="margin-top:8px"><label>Mức tô</label><div class="seg wrap">${TOLV.map(([n,r,f,d],i)=>`<button class="btn" data-to="${i}" aria-pressed="${(F.to??1)===i}">${n} ${Math.round(r*100)}%</button>`).join('')}</div><p class="kvline muted">${esc(TOLV[F.to??1][3])}. Tô thu theo mùa gặt, mỗi vụ một lần.</p></div>
    <div class="field" style="margin-top:8px"><label>Nhận tô bằng</label><div class="seg"><button class="btn" data-farm="sellnow" aria-pressed="${!F.store}">Bán ngay thành tiền</button><button class="btn" data-farm="store" aria-pressed="${F.store}">Nhập kho gia tộc</button></div></div></section>
    <section class="card"><span class="eyebrow">Gieo trồng</span><h2>Đã chỉ định ${fmt(al)}/${fmt(fld)} mẫu ruộng</h2>
    <p class="kvline muted">Phần chưa chỉ định thì tá điền tự quyết, thường trồng lúa. Chỉ định theo ý mình thì tá điền trồng theo.</p>
@@ -215,7 +215,7 @@ function pageKho(){const S=X.S;
    <section class="card"><span class="eyebrow">Thị trường</span><h2>Giá chợ ${REGIONS[S.region||'trung'].n}</h2><div class="mkt">${Object.entries(GOODS).map(([g,G0])=>{const v=mk(g);return `<div><b>${G0.n}</b><span class="num ${v>1.1?'up':v<0.9?'down':''}">${money(priceOf(g))}/${G0.u} · ×${v.toFixed(2)}</span></div>`}).join('')}</div></section>
    <section class="card"><span class="eyebrow">Đi buôn</span><h2>Chuyến buôn</h2>
    ${S.trips.length?S.trips.map(t=>`<p class="note">${t.cid&&P(t.cid)?esc(nameOf(P(t.cid))):'Lái buôn thuê'} chở ${fmt(t.qty)} ${GOODS[t.good].u} ${GOODS[t.good].n.toLowerCase()} đi ${esc((routes()[t.route]||routes()[0]).n)}, dự về ${dateStr(t.until)}.</p>`).join(''):'<p class="kvline muted">Chưa có chuyến nào.</p>'}
-   <button class="btn primary" data-trip style="margin-top:8px" ${S.trips.length>=maxTrips()?'disabled':''}>Tổ chức chuyến buôn (${S.trips.length}/${maxTrips()} chuyến)</button></section></div>`;
+   <button class="btn primary" data-trip style="margin-top:8px" ${S.trips.length>=maxTrips()?'disabled':''}>Tổ chức chuyến buôn · ${S.trips.length}/${maxTrips()} chuyến</button></section></div>`;
 }
 function pageQuan(){const S=X.S;const qKind=X.qKind;const qOpenB=X.qOpenB;const qOpenT=X.qOpenT;const qProv=X.qProv;
   const mine=alive().filter(p=>inPost(p));
@@ -237,22 +237,22 @@ function pageQuan(){const S=X.S;const qKind=X.qKind;const qOpenB=X.qOpenB;const 
     let seatsN=0,ownN=0;
     const ents=ts.map(id=>{const T=OFFICES[id];const ks=DX.seatKeys(id).filter(inProv);seatsN+=ks.length;const on=ks.filter(k=>own.has(k)).length;ownN+=on;return {id,T,ks,on}});
     const open=qOpenB===b||(qOpenB==null&&ownN>0)||(qOpenB==null&&b===17&&0);
-    const head=`<button class="btn small ghost qb" data-qb="${b}"><b>${sg?'Chánh':'Tòng'} ${RANKS[r].toLowerCase()}</b> · ${ts.length} chức · ${seatsN} ghế${ownN?` · nhà giữ ${ownN}`:''} · bổng gốc ${money(SALARY[r])}/tháng ${open?'▲':'▼'}</button>`;
+    const head=`<button class="btn small ghost qb" data-qb="${b}"><b>${sg?'Chánh':'Tòng'} ${RANKS[r].toLowerCase()}</b> · ${ts.length} chức · ${seatsN} ghế${ownN?` · nhà giữ ${ownN}`:''} · bổng ${money(Math.round(SALARY[r]*(sg?1:0.9)))}/tháng ${open?'▲':'▼'}</button>`;
     if(!open)return `<div class="qgrp">${head}</div>`;
     return `<div class="qgrp">${head}${ents.map(({id,T,ks,on})=>{
       const isO=qOpenT===id;
       let seatList='';
       if(isO){seatList=`<div class="qseats">${ks.slice(0,80).map(k=>{const st=offState(k);const hp=st.holder?P(st.holder):null;
         return `<div class="srow2"><span>${esc(seatName(k))}</span><small>${hp?`Người nhà: <b>${esc(nameOf(hp))}</b>`:st.vac?'<b class="up">Đang trống</b>':`${esc(st.n)} · ${st.age} tuổi · năng lực ${st.ab}${st.liem<35?' · tiếng tham':''}`}</small></div>`}).join('')}${ks.length>80?`<small class="muted">Và ${ks.length-80} ghế nữa.</small>`:''}</div>`}
-      const pay=T.mil?`Quân bổng khoảng ${money(ARMY[T.ar][1]*0.7*T.mul)}`:`Bổng ${money(SALARY[T.r]*T.mul)}, lộc ngoài ×${T.side}`;
+      const pay=T.mil?`Quân bổng ${money(Math.round(ARMY[T.ar][1]*0.7))}`:`Bổng ${money(Math.round(SALARY[T.r]*(T.sg===0?0.9:1)))}, lộc ngoài ×${T.side}`;
       return `<div class="off ${on?'mine':''}"><div><b>${esc(T.n)}</b> <span class="chip">${TAG[T.tag]}</span><small>${esc(T.d)} ${pay}. Cần ${Object.entries(T.req).map(([k,v])=>`${SN[k]} ${v}`).join(', ')}${T.mil?`, đang ở bậc ${ARMY[T.ar][0]}`:''}. ${esc(T.g||'')}</small>${seatList}</div>
        <div class="who2"><small>${ks.length} ghế${on?` · nhà giữ ${on}`:''}</small><br><button class="btn small ghost" data-qt="${id}">${isO?'Gấp lại':'Xem ghế'}</button></div></div>`}).join('')}</div>`}).join('');
   const provs=DX.REALM;
   return `<section class="card"><span class="eyebrow">Quan trường</span><h2>Quan chế triều ${esc(d.name)}</h2>
-   <p class="kvline">Niên hiệu <b>${esc(d.era)}</b> · Hoàng Đế <b>${esc(d.emp)}</b>, năm thứ ${yr}${d.n>1?` (đời vua thứ ${d.n} của triều)`:', vị vua khai quốc'}.</p>
+   <p class="kvline">Niên hiệu <b>${esc(d.era)}</b> · Hoàng Đế <b>${esc(d.emp)}</b>, năm thứ ${yr}${d.n>1?`, đời vua thứ ${d.n} của triều`:', vị vua khai quốc'}.</p>
    <h3>Người nhà trong quan trường</h3><div class="offs">${mineHtml}</div></section>
    <section class="card"><span class="eyebrow">Các chức và ghế</span><h2>Bảng chức vị</h2>
-   <p class="kvline muted">Mỗi chức có nhiều ghế đặt ở nhiều nơi, mỗi ghế chỉ một người ngồi. Người cùng gia tộc không ngồi chung nha môn hay chung huyện, và không làm quan ở quê nhà (lệ hồi tị).</p>
+   <p class="kvline muted">Mỗi chức có nhiều ghế đặt ở nhiều nơi, mỗi ghế chỉ một người ngồi. Người cùng gia tộc không ngồi chung nha môn hay chung huyện, và không làm quan ở quê nhà.</p>
    <div class="acts"><select class="sel" id="qKind"><option value="" ${qKind===''?'selected':''}>Văn và võ</option><option value="van" ${qKind==='van'?'selected':''}>Quan văn</option><option value="vo" ${qKind==='vo'?'selected':''}>Quan võ</option></select>
    <select class="sel" id="qProv"><option value="">Mọi nơi</option>${provs.map(p=>`<option value="${p}" ${qProv===p?'selected':''}>${esc(provN(p))}</option>`).join('')}</select></div>
    <div class="offs">${rows}</div></section>`;
@@ -260,10 +260,10 @@ function pageQuan(){const S=X.S;const qKind=X.qKind;const qOpenB=X.qOpenB;const 
 function pageBando(){const S=X.S;const mapProv=X.mapProv;
   if(!S.w)w_ensure(S);
   const p=mapProv&&PROV[mapProv]?mapProv:S.loc.p;
-  return `<div class="grid2"><section class="card"><div class="mapwrap">${mapSVG(p)}</div>
-   <p class="note" style="margin-top:6px">Màu chấm là nước cai quản. Vòng đỏ: tiền tuyến. Đường đỏ, cam: căng thẳng đang leo thang. Vòng vàng: thiên tai. Đường gạch: tuyến buôn tới nơi đang chọn.</p></section>
-   <section class="card">${w_provPanel(p)}</section>
-   <section class="card" style="grid-column:1/-1">${w_situation()}</section></div>`}
+  return `<div class="grid2"><section class="card mapcard48"><div class="mapwrap mapwrap48">${mapSVG(p)}</div>${S.journey?`<p class="note"><b>Cả nhà đang trên đường tới ${esc(PROV[S.journey.to].n)}</b>, còn khoảng ${S.journey.left} tháng.</p>`:''}
+   <p class="note" style="margin-top:6px">Màu đất và màu chấm là nước đang cai quản. Vòng nét đứt là khu đang bị chiếm. Vòng đỏ: tiền tuyến. Đường đỏ, cam: căng thẳng đang leo thang. Vòng vàng: thiên tai. Đường nét đứt là đường biển. Đường đỏ đậm là lộ trình tới nơi đang chọn. Tam giác đỏ là ổ cướp mạnh, ô vuông tím là võ lâm, danh gia, bộ tộc.</p></section>
+   <section class="card">${w_provPanel(p)}</section>${window.BN_TL?window.BN_TL.panel(p):''}${window.BN_CD?window.BN_CD.panel(p):''}${window.BN_TK?window.BN_TK.panel(p):''}
+   <section class="card" style="grid-column:1/-1">${w_situation()}</section>${window.BN_VQ?window.BN_VQ.panel(p):''}</div>`}
 function pageKinhdoanh(){const S=X.S;
   const can=alive().filter(p=>!p.away&&age(p)>=16).flatMap(p=>Object.keys(BIZ).filter(t=>canOwn(p,t)).map(t=>[p,t]));
   const rows=S.biz.map(b=>{const B=BIZ[b.type],L=B.lv[b.lv];const o=P(b.owner);const k=b.last||bizCalc(b);const si=bizStaffInfo(b);return {b,B,L,o,k,si}});
@@ -280,7 +280,7 @@ function pageKinhdoanh(){const S=X.S;
      <td>${staffCell(r)}</td><td class="r">${r.si.empty.length?`<button class="btn small" data-qhire="${r.b.id}:${r.si.empty[0]}">Tuyển</button> `:''}<button class="btn small ghost" data-bz="${r.b.id}">Chi tiết</button></td></tr>`).join('')}
    </tbody></table></div>`:'<p class="kvline muted">Mở một cơ sở ở khung bên dưới để bắt đầu.</p>'}</section>
    <section class="card"><span class="eyebrow">Mở cơ sở mới</span>
-   ${can.length?`<div class="choices">${can.map(([p,t])=>{const L0=BIZ[t].lv[0];return `<button class="btn" data-openb="${p.id}:${t}" ${canOpenAny(p,L0[1])?'':'disabled'}><strong>${esc(nameOf(p))} mở ${esc(L0[0].toLowerCase())} · ${money(L0[1])}</strong><small>Trần doanh thu ${money(L0[2])}/tháng</small></button>`}).join('')}</div>`:`<p class="kvline muted">Chưa ai đủ sức mở cơ sở. Cần người từ 18 tuổi đang làm nghề hợp với cơ sở (tiểu nhị, thợ, y, dạy học, tiêu sư…), thông thạo nghề ấy từ ${BM_NEED} và quản trị từ ${QL_NEED}.</p>`}</section></div>`;
+   ${can.length?`<div class="choices">${can.map(([p,t])=>{const L0=BIZ[t].lv[0];return `<button class="btn" data-openb="${p.id}:${t}" ${canOpenAny(p,L0[1])?'':'disabled'}><strong>${esc(nameOf(p))} mở ${esc(L0[0].toLowerCase())} · ${money(L0[1])}</strong><small>Trần doanh thu ${money(L0[2])}/tháng</small></button>`}).join('')}</div>`:`<p class="kvline muted">Chưa ai đủ sức mở cơ sở. Cần người từ 18 tuổi đang làm nghề hợp với cơ sở, thông thạo nghề ấy từ ${BM_NEED} và quản trị từ ${QL_NEED}.</p>`}</section></div>`;
 }
 function ruleYear(){const S=X.S;if(!head())return;
   if(!rule('nghiem')&&alive().some(p=>p.fame<-60)&&!((S.rfT||0)>S.t)){S.rfT=S.t+60;enqueue('ruleforce',S.head,{k:'nghiem'})}
@@ -321,7 +321,7 @@ function npCard(n,solo){const p=npPseudo(n);const a=age(p);const sub=(n.vaiTxt||
 function npSheet(id){const S=X.S;const n=npGet(id);if(!n||typeof document==='undefined')return;const old=document.getElementById('npov');if(old)old.remove();
   const p=npPseudo(n);const a=age(p);const rel=n.rel||0;const rt=rel>=45?'thân thiết':rel>=20?'có tình':rel>=0?'bình thường':rel>=-25?'lạnh nhạt':'có hiềm khích';
   const traits=(typeof G!=='undefined'&&G.npc&&n.sub)?G.npc.desc(n):'';const st=n.st||{};const past=(n.past||[]).slice(-3).map(x=>x.x).filter(Boolean);
-  const rows=[n.loc?['Đang ở',provN(n.loc)]:null,n.house?['Thuộc',houseSur(n.house)+' Gia']:null,(()=>{try{const F=n.fid&&S.np.hs&&S.np.hs[n.fid];const ms=F?F.mem.filter(i=>i!==n.id).map(i=>npGet(i)).filter(x=>x&&x.ok!==0&&!(x.parent===n.id)).slice(0,3).map(x=>esc(x.n)):[];return ms.length?['Cùng họ',ms.join(', ')]:null}catch(e){return null}})(),(()=>{try{const ks=(n.fam&&n.fam.kl||[]).map(i=>npGet(i)).filter(x=>x&&x.ok!==0).slice(0,4).map(x=>esc(x.n.split(' ').slice(1).join(' '))+' ('+npAge(x)+')');return ks.length?['Con',ks.join(', ')]:null}catch(e){return null}})(),traits?['Nét nổi bật',traits]:null,npSum(n)?['Tài',npSum(n)]:null,['Với nhà mình',rt],n.cond?['Tình cảnh',n.cond]:null,past.length?['Từng trải',past.join('; ')]:null].filter(Boolean);
+  const rows=[n.loc?['Đang ở',provN(n.loc)]:null,n.house?['Thuộc',houseSur(n.house)+' Gia']:null,(()=>{try{const F=n.fid&&S.np.hs&&S.np.hs[n.fid];const ms=F?F.mem.filter(i=>i!==n.id).map(i=>npGet(i)).filter(x=>x&&x.ok!==0&&!(x.parent===n.id)).slice(0,3).map(x=>esc(x.n)):[];return ms.length?['Cùng họ',ms.join(', ')]:null}catch(e){return null}})(),(()=>{try{const ks=(n.fam&&n.fam.kl||[]).map(i=>npGet(i)).filter(x=>x&&x.ok!==0).slice(0,4).map(x=>esc(x.n.split(' ').slice(1).join(' '))+' · '+npAge(x)+' tuổi');return ks.length?['Con',ks.join('; ')]:null}catch(e){return null}})(),traits?['Nét nổi bật',traits]:null,npSum(n)?['Tài',npSum(n)]:null,['Với nhà mình',rt],n.cond?['Tình cảnh',n.cond]:null,past.length?['Từng trải',past.join('; ')]:null].filter(Boolean);
   const d=document.createElement('div');d.id='npov';d.className='npov';
   d.innerHTML=`<div class="npbox" role="dialog" aria-label="Hồ sơ người quen"><button type="button" class="npx" aria-label="Đóng">×</button><div class="nphead"><span class="npav">${avatarSVG(p,84)}</span><div><b>${esc(n.n)}</b><small>${a} tuổi${n.ok===0?' · đã mất':''} · ${esc(n.vaiTxt||'người quen')}</small></div></div>${n.nghe?`<p class="npdesc">${esc(n.nghe)}</p>`:''}${rows.map(r=>`<div class="nprow"><span>${esc(r[0])}</span><b>${esc(r[1])}</b></div>`).join('')}</div>`;
   document.body.appendChild(d);const close=()=>{const x=document.getElementById('npov');if(x)x.remove()};d.addEventListener('click',e=>{if(e.target===d||(e.target.closest&&e.target.closest('.npx')))close()});}
@@ -406,7 +406,7 @@ function mkPerson(o){const S=X.S;
   rollHealthTitle(c);
   return c;
 }
-function mkHolder(T,old){const r=(T&&T.r)||0;const age=34+r*3+R(-4,12);return Object.assign(old||{},{n:pick(SURN)+' '+mkGiven('nam'),ab:clamp(45+r*9+R(-8,12),30,140),age,liem:R(15,90),cong:r*20+R(0,40)+Math.max(0,age-34)*2,f:pick(FACK),tc:pick(NPC_TC),rel:0,oan:0})}
+function mkHolder(T,old){if(old)delete old.np; /* d.1.5.52: người mới không mang hồ sơ NPC của người cũ */const r=(T&&T.r)||0;const age=34+r*3+R(-4,12);return Object.assign(old||{},{n:pick(SURN)+' '+mkGiven('nam'),ab:clamp(45+r*9+R(-8,12),30,140),age,liem:R(15,90),cong:r*20+R(0,40)+Math.max(0,age-34)*2,f:pick(FACK),tc:pick(NPC_TC),rel:0,oan:0})}
 function mkDyn(t,first){const d={name:'Đại Nguyễn',emp:'Nguyễn Thành Trung',era:'Hưng Bình',from:t,len:R(24,34)*12,n:1,hist:[],newT:-99};
   /* v6.5.1: ván mới có vua đầu là minh quân Trường Thịnh, ở ngôi 25 đến 35 năm tính từ lúc mở game (v6.7.0-d1) (d.fixed là tháng băng hà). Tới cuối đời thì nổ ra tranh ngôi căng thẳng. */
   if(first){d.era='Trường Thịnh';d.fixed=t+R(25,35)*12+R(0,11);d.k={age:R(28,34),hp:R(85,98),tai:R(82,95),duc:R(75,92),uy:R(70,88),nghi:R(10,30)};d.dt=R(72,88);d.qk=R(68,88);d.loan=R(3,10);
@@ -431,7 +431,7 @@ function mkSpouse(c,free,o){const DRY=X.DRY;const S=X.S;
   if(p.needT!=null&&tierIdx()-p.needT>=3&&!free)cf(-2,'Kết thông gia không môn đăng hộ đối');
   S.people.push(p);S.hung=clamp(S.hung+2,0,100);if(!DRY&&S.queue&&S.head!=null)enqueue('wed',c.id,{pid:p.id,free:!!free});else cf(free?2:5,'Cưới hỏi');
   addStat(c,'tam',12);addStat(p,'tam',10);
-  log(`${nameOf(c)} kết duyên cùng ${nameOf(p)}${p.job&&p.job!=='none'?` (${jobName(p).toLowerCase()})`:''}.`,'gd');
+  log(`${nameOf(c)} kết duyên cùng ${nameOf(p)}${p.job&&p.job!=='none'?`, ${jobName(p).toLowerCase()},`:''}.`,'gd');
   return p;
 }
 function mkGiven(g,o){
@@ -505,7 +505,7 @@ function kingDie(d,why){const DRY=X.DRY;const EVMAP=X.EVMAP;const S=X.S;d=d||dyn
   dynSnap(d);
   if(!DRY)alive().forEach(p=>{const K=p.flags&&p.flags.pheK;if(p.flags.phe&&K&&K.n===oldN&&inClan(p)&&EVMAP.qk_phe_b)later(p,'qk_phe_b',R(2,6))});
   log(`Hoàng đế ${old} ${why||'băng hà'}. Hoàng Đế ${d.emp} lên ngôi, niên hiệu ${d.era}.${d.k.age<16?' Vua còn nhỏ, triều chính trong tay quan nhiếp chính.':''}`,'gd');
-  qtLog('Đổi đời vua',`Hoàng đế ${old} ${why||'băng hà'}, ${d.emp} lên ngôi (niên hiệu ${d.era}).`)}
+  qtLog('Đổi đời vua',`Hoàng đế ${old} ${why||'băng hà'}, ${d.emp} lên ngôi, niên hiệu ${d.era}.`)}
 function kinhOff(){return alive().some(p=>inClan(p)&&["quan","quan_ngu"].includes(p.job)&&p.seat&&(()=>{const W=seatWh(p.seat);return !!W&&!!PROV[W.p]&&PROV[W.p].k==="kinh"})())}
 function kingMonth(){const EVMAP=X.EVMAP;const S=X.S;const d=S.dyn;if(!d||!d.k||!head())return;crMonth();
   const t=kingT();if((t==='hon'||t==='bao')&&S.t%12===6)alive().forEach(p=>{if(inClan(p)&&p.job==='quan')p.liem=Math.max(0,p.liem-1)});

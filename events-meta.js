@@ -95,3 +95,11 @@ Object.assign(window.EVMETA,{"np_thanh_dat":["society","npc_life","random","comm
 Object.assign(window.EVMETA,{"np_tre_thu":["society","npc_life","random","common","any","any"],"np_tre_chon_nghe":["society","npc_life","random","common","any","any"],"np_tre_lon":["society","npc_life","random","common","any","any"]});
 /* thêm tự động bởi tools/addmeta.js */
 Object.assign(window.EVMETA,{"rn_don_khi_gioi":["life","blacksmith","random","common","any","any"],"rn_hoc_tro":["life","blacksmith","random","common","any","any"],"rn_thoi_thep_la":["life","blacksmith","encounter","rare","any","any"],"rn_chay_lo":["life","blacksmith","random","common","any","any"]});
+/* thêm tự động bởi tools/addmeta.js */
+Object.assign(window.EVMETA,{"np_tra_on":["society","npc_life","random","common","any","any"],"mua_chuc_cuu":["official","purchase","random","common","any","any"]});
+/* thêm tự động bởi tools/addmeta.js */
+Object.assign(window.EVMETA,{"cd_mat_tham":["government","official_duty","random","common","official","any"],"cd_cuop_hoi_lo":["government","official_duty","random","common","official","any"],"cd_hoang_tu_thu_ba":["government","special_office","random","common","any","any"]});
+/* thêm tự động bởi tools/addmeta.js */
+Object.assign(window.EVMETA,{"tk_pho_cam_gio":["dynasty","honor","random","common","any","any"],"tk_pho_xe_ngua":["dynasty","honor","random","common","any","any"],"tk_pho_tin_don":["dynasty","honor","random","common","any","any"],"tk_pho_hoa_dang":["dynasty","honor","random","common","any","any"],"tk_pho_tiec_tuoc":["dynasty","honor","random","common","any","any"],"tk_pho_luc_soat":["dynasty","honor","random","common","any","any"]});
+/* thêm tự động bởi tools/addmeta.js */
+Object.assign(window.EVMETA,{"vq_phu_ma":["official","royal","random","common","any","any"],"cx_doi_chu":["world","war","random","common","any","any"],"cx_tran_bien":["world","war","random","common","any","any"],"tki_pho_cam_gio":["life","city_story","random","common","any","any"],"tki_pho_xe_ngua":["life","city_story","random","common","any","any"],"tki_pho_tin_don":["life","city_story","random","common","any","any"],"tki_pho_hoa_dang":["life","city_story","random","common","any","any"],"tki_pho_tiec_tuoc":["life","city_story","random","common","any","any"],"tki_pho_luc_soat":["life","city_story","random","common","any","any"]});

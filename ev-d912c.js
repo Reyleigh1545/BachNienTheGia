@@ -64,7 +64,7 @@ E({id:'cuu_nguoi_duoi_nuoc',t:'Người đuối nước',age:[12,70],w:0.6,
 /* ============ Tiến cử thuộc hạ (quân ngũ) ============ */
 E({id:'qn653_tien_cu',t:'Tiến cử thuộc hạ',job:['quan_ngu'],lvr:[5,7],cd:36,
  x:(c,d)=>{const a=G.tie.ensure(c,{vai:['thuoc_ha'],nghe:'thuộc hạ tài giỏi nhưng ngạo mạn',age:R(28,40),main:'vo',rel:0,why:'ứng viên tiến cử',key:'tn_'+G.S().t+'_a'});const b=G.tie.ensure(c,{vai:['thuoc_ha'],nghe:'thuộc hạ hiền lành, trung thành',age:R(30,46),main:'eq',rel:10,why:'ứng viên tiến cử',key:'tn_'+G.S().t+'_b'});a.st.eq=Math.min(a.st.eq,40);d.npc=[a.id,b.id];d.a=a.id;d.b=b.id;
-  return `Triều đình cho phép ${N(c)} tiến cử một người trong dưới trướng lên chức cao hơn. Hai người đều có công: ${nm(a)} (${a.nghe}) và ${nm(b)} (${b.nghe}).`},
+  return `Triều đình cho phép ${N(c)} tiến cử một người trong dưới trướng lên chức cao hơn. Hai người đều có công: ${nm(a)}, ${a.nghe}, và ${nm(b)}, ${b.nghe}.`},
  o:(c,d)=>{const a=G.tie.get(d.a),b=G.tie.get(d.b);if(!a||!b)return gone();return [
   {l:`Tiến cử ${a.n}`,f:c=>{G.tie.later(a,c,'tie_thuoc_ha',R(24,72),{});return `${nm(a)} lên chức, làm nên việc lớn, nhưng chẳng tỏ ra nhớ ơn.`+fx(c,{merit:R(8,14),qh:[[a.n,G.tie.rel(a,10,'được tiến cử')[1]],[b.n,G.tie.rel(b,-12,'không được chọn')[1]]],fame:2})}},
   {l:`Tiến cử ${b.n}`,f:c=>{G.tie.later(b,c,'tie_thuoc_ha',R(24,72),{});return `${nm(b)} một lòng trung thành với mình, ${nm(a)} thì quay lưng.`+fx(c,{qh:[[b.n,G.tie.rel(b,24,'được tiến cử')[1]],[a.n,G.tie.rel(a,-18,'bị bỏ qua')[1]]],eq:1,fame:2})}}]}}),
