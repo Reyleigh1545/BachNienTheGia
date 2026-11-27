@@ -89,9 +89,9 @@ const FOCUS={
   buonnho:{n:'Buôn chuyến nhỏ',cost:0,g:{eq:1},tam:0,side:{inc:240,mo:0,vary:1,cap:400},d:'Gánh hàng đi chợ phiên. Cần ít vốn riêng, lời lỗ thất thường'}};
 
 /* trường học: học phí đồng/tháng */
-const SCHOOL={
+const SCHOOL={/* d.1.5.61: thêm trường làng lớp lớn (cấp 2) và thầy đồ làng (cấp 3) để trẻ ở làng còn đường học chữ */
   1:{doanh:{n:'Học trong doanh trại',fee:0,g:{tri:3,vo:3,suc:1},army:1},nha:{n:'Ở nhà',fee:0,g:{}},lang:{n:'Trường làng',fee:100,g:{tri:4}},tu:{n:'Tư thục',fee:400,g:{tri:6,eq:1},tier:1},giasu:{n:'Gia sư riêng',fee:2400,g:{tri:8,mi:1,eq:1},tier:3},
-     vodo:{n:'Võ đường làng',fee:160,g:{vo:6,suc:2}},nucong:{n:'Nữ công gia chánh',fee:100,g:{mi:2,eq:3},anyGirl:1}},
+     vodo:{n:'Lò võ vỡ lòng',fee:160,g:{vo:6,suc:2}},nucong:{n:'Nữ công gia chánh',fee:100,g:{mi:2,eq:3},anyGirl:1}},
   2:{doanh:{n:'Học trong doanh trại',fee:0,g:{tri:4,vo:4,suc:2},army:1},nha:{n:'Ở nhà',fee:0,g:{}},huyen:{n:'Trường huyện',fee:640,g:{tri:7},tier:1},danhsu:{n:'Theo danh sư',fee:3200,g:{tri:10,eq:2},tier:3},
      vodd:{n:'Võ đường',fee:560,g:{vo:8,suc:3}},hocy:{n:'Học việc nhà thuốc',fee:240,g:{tri:3},pre:{y:3}},hocbuon:{n:'Theo phường buôn',fee:130,g:{eq:4},pre:{tieunhi:3}},
      hoctho:{n:'Học việc phường thợ',fee:80,g:{vo:2},pre:{tho:3}},nucong:{n:'Nữ công gia chánh',fee:190,g:{mi:3,eq:3},anyGirl:1}},
@@ -356,7 +356,7 @@ const JOBX={
   tieu:{ax:{gan:1.5,yc:.5},sk:{muu:1}},thulai:{ax:{thanh:-.3},sk:{ql:3,muu:1}},nhadich:{ax:{gan:1,rong:-.5},sk:{muu:1}},quan:{ax:{tv:1,thanh:-.3},sk:{muu:3,ql:2,khau:1}},
   nguy:{ax:{diem:1},sk:{ky:3}},quan_ngu:{ax:{gan:1.5,yc:1,diem:-.5},sk:{muu:1}},hiep:{ax:{gan:1.5,dl:1.5},sk:{muu:1}},chu:{ax:{tv:1,dl:1},sk:{khau:1}},noi:{ax:{rong:.5,cc:.5},sk:{ql:3}},
   none:{ax:{cc:-1,dl:-.5},sk:{}},huu:{ax:{diem:.5},sk:{}}};
-const SCHOOLX={lang:{ax:{ht:1,tiet:1}},tu:{ax:{ht:1.5,tiet:1},sk:{muu:1}},giasu:{ax:{ht:1,tiet:1.5},sk:{muu:2,khau:1}},vodo:{ax:{gan:2,diem:-.5}},nucong:{ax:{ht:1,cc:1},sk:{ql:2}},
+const SCHOOLX={lang:{ax:{ht:1,tiet:1}},truonglang2:{ax:{ht:1,tiet:1}},thaydo:{ax:{ht:1},sk:{muu:2}},tu:{ax:{ht:1.5,tiet:1},sk:{muu:1}},giasu:{ax:{ht:1,tiet:1.5},sk:{muu:2,khau:1}},vodo:{ax:{gan:2,diem:-.5}},nucong:{ax:{ht:1,cc:1},sk:{ql:2}},
   huyen:{ax:{ht:1,tv:1},sk:{muu:2}},danhsu:{ax:{tv:1.5,tiet:1},sk:{muu:3,khau:1}},vodd:{ax:{gan:2,yc:1}},hocy:{ax:{rong:1,cc:1},sk:{ky:3}},hocbuon:{ax:{hd:1,tv:1},sk:{khau:3,ql:1}},hoctho:{ax:{cc:2},sk:{ky:3}},
   phu:{ax:{tv:1,ht:1},sk:{muu:3}},qtg:{ax:{tv:2},sk:{muu:4,khau:2}},vop:{ax:{gan:2,yc:2},sk:{muu:1}},vohk:{ax:{gan:1.5,yc:1},sk:{muu:2}},yhd:{ax:{rong:1.5},sk:{ky:4}},thoi:{ax:{tv:1.5,hd:1},sk:{khau:3,ql:3}},khue:{ax:{tiet:1.5,ht:1},sk:{khau:2,ql:1}}};
 const FOCUSX={nghi:{ax:{cc:-.3}},hoc:{ax:{yc:.4,cc:.4},sk:{muu:1}},vo:{ax:{gan:1,yc:.5}},ren:{ax:{yc:.5}},nghe:{ax:{cc:1.5},sk:{ky:2}},giao:{ax:{hd:1.5,tiet:-.5},sk:{khau:3}},cam:{ax:{diem:1},sk:{khau:1}},
@@ -497,6 +497,8 @@ SCHOOL[1].daychu={n:'Mời thầy dạy chữ tại nhà',fee:200,g:{tri:4,eq:1}
 SCHOOL[2].daychu={n:'Mời thầy dạy chữ tại nhà',fee:350,g:{tri:5,eq:1},tier:2,anyGirl:1,girlOnly:1,need:1};
 SCHOOL[3].daychu={n:'Mời thầy dạy chữ tại nhà',fee:600,g:{tri:6,eq:2},tier:2,anyGirl:1,girlOnly:1,need:1};
 SCHOOL[3].khue.need=1;SCHOOL[1].giasu.need=2;SCHOOL[2].danhsu.need=2;
+/* d.1.5.61: hai cơ sở học chỉ có ở làng; học phí, mức học do Claude tự đặt */
+SCHOOL[2].truonglang2={n:'Trường làng lớp lớn',fee:240,g:{tri:5},need:3};SCHOOL[3].thaydo={n:'Thầy đồ làng',fee:500,g:{tri:6},need:3};
 ['lang','tu'].forEach(k=>SCHOOL[1][k].need=3);SCHOOL[1].vodo.need=3;
 ['huyen','vodd','hoctho'].forEach(k=>SCHOOL[2][k].need=3);
 ['phu','qtg','vop','vohk'].forEach(k=>SCHOOL[3][k].need=3);
