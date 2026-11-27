@@ -113,7 +113,7 @@ function taxSetPol(k,months){const t=taxS();t.pol=k;t.until=S().t+(months||12)}
 function taxPolicy(){const t=taxS(),s=S();if(t.until>s.t)return;const d=s.dyn||{};let k='thuong';
   if(d.newT!=null&&s.t-d.newT<=24)k='mien';else if(((d.qk!=null&&d.qk<30)||s.war)&&chance(0.5))k='tang';else if(chance(0.05))k='mien';else if(chance(0.08))k='giam';
   t.pol=k;t.until=s.t+12;if(k!=='thuong')log('Triều đình năm nay '+POLN[k]+(k==='tang'?', vì quốc khố hụt hoặc có chiến sự.':'.'),'hi')}
-function taxCollect(){const t=taxS(),s=S();if(!X.S||!s.money&&s.money!==0)return;const base=taxBase();const due=Math.round(base*(POLF[t.pol]||1))+Math.round((t.owed||0)*1.2);
+function taxCollect(){const t=taxS(),s=S();if(!X.S||!s.money&&s.money!==0)return;const base=taxBase();const due=Math.round(base*(POLF[t.pol]??1))+Math.round((t.owed||0)*1.2);
   if(due<=0){t.hist.push({y:Math.floor(s.t/12),due:0,pol:t.pol});t.owed=0;if(t.pol==='mien')log('Năm nay triều đình miễn thuế, nhà không phải nộp.','gd');return}
   const pay=Math.min(due,Math.max(0,s.money));s.money-=pay;t.owed=due-pay;t.hist.push({y:Math.floor(s.t/12),due,pay,pol:t.pol,base});if(t.hist.length>8)t.hist.shift();
   log('Thuế mùa thu, '+POLN[t.pol]+': nộp '+X.money(pay)+(t.owed>0?', còn nợ '+X.money(t.owed)+', năm sau tính thêm 20%':'')+(taxEx()>0.01?'; nhà có phẩm tước được miễn giảm '+Math.round(taxEx()*100)+'%':'')+'.','gd');

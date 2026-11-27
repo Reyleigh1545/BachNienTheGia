@@ -26,10 +26,22 @@ function start(c,id,o){o=o||{};const D=DIS[id];if(!D||!c||c.dead!=null)return nu
   const i={id,n:D.n,sev,t0:t,until:D.dur[0]>=999?999999:t+mo,tr:0,ch:!!D.chronic};ills(c).push(i);
   if(sev>=2&&alive().includes(c)&&inClan(c))log(`${nameOf(c)} mắc ${D.n.toLowerCase()}.`,'hi');return i}
 const has=(c,id)=>!!(c.ill&&c.ill.some(i=>!id||i.id===id));
-/* sức chữa của người nhà làm nghề y: thông thạo y của người giỏi nhất còn ở nhà */
-function doctorPower(){let b=0;alive().forEach(p=>{if(inClan(p)&&p.job==='y'&&!p.away&&p.dead==null)b=Math.max(b,(p.m||0)/100+(p.tri||50)/400)});return b}
+/* người nhà chữa được: người KHÁC người bệnh, làm nghề y, từ 16 tuổi, đang ở nhà và không ốm nặng; lấy người tay nghề cao nhất (d.1.5.57: trước đây thầy thuốc tự chữa cho mình, chắc chắn thành) */
+function doctorOf(c,d){let best=null,bv=-1;alive().forEach(p=>{if(!inClan(p)||p.dead!=null||p.away||age(p)<16||(p.job!=='y'&&p.job!=='nguy'))return;if(c&&p.id===c.id||d&&(p.id===d.who||p.id===d.kid))return;if((p.ill||[]).some(i=>i.sev>=2))return;const v=(p.m||0)+(p.tri||50)*0.5;if(v>bv){bv=v;best=p}});return best}
+const khaNang=bs=>Math.round(Math.max(25,Math.min(85,35+(bs.m||0)*0.4+((bs.tri||50)-60)*0.3))); /* tỉ lệ chữa được, theo tay nghề người chữa */
+/* sức chữa khi chữa được: luôn thấp hơn danh y (0,8) */
+const sucNha=bs=>Math.max(0.35,Math.min(0.7,0.25+(bs.m||0)/250+(bs.tri||50)/600));
+/* thầy thuốc tự chữa (chủ dự án 27/11: "bệnh nhẹ có thể tự chữa cho mình, bệnh nặng thì không"): nhẹ là mức 1, 2; từ mức 3 hoặc đang mắc bệnh nặng khác thì không. Vẫn gieo xúc xắc, kém người khác chữa 10 điểm */
+function optTu(c,o){o=o||{};if(!c||(c.job!=='y'&&c.job!=='nguy')||age(c)<16||c.away||o.nang||o.i&&o.i.sev>=3||(c.ill||[]).some(z=>z.sev>=3))return null;const i=o.i;const fxx=X.fx||X.EC.fx;
+  const chua=z=>{const pw=Math.max(0.3,sucNha(c)-0.1);z.tr=Math.max(z.tr||0,pw);if(z.until<900000)z.until=Math.min(z.until,S().t+Math.max(1,Math.round((z.until-S().t)*(1-pw*0.6))))};
+  return {l:'Tự bắt mạch, bốc thuốc cho mình',r:[{_p:1},Math.max(20,khaNang(c)-10)],y:cc=>{if(i)chua(i);else (cc.ill||[]).forEach(chua);if((cc.m||0)<100)cc.m=(cc.m||0)+1;return 'Thuốc đúng bệnh, người nhẹ dần.'+fxx(cc,{suc:-2,tam:2})},
+    n:cc=>{if(i)i.tr=Math.max(i.tr||0,0.15);return 'Người đang ốm thì bắt mạch cho mình cũng kém chuẩn, uống mấy thang không chuyển.'+fxx(cc,{suc:-R(4,9),tam:-4})}}}
+function doctorPower(c){const bs=doctorOf(c);return bs?sucNha(bs):0}
+function optNha(c,bs,o){o=o||{};const i=o.i;const fxx=X.fx||X.EC.fx,them=X.EC.addStat;const ten=esc(bs.given);return {l:`Để ${bs.given}, thầy thuốc trong nhà, chữa`,r:[{_p:1},khaNang(bs)],
+  y:cc=>{if(i)treat(cc,i,'nha',bs);else (cc.ill||[]).forEach(z=>treat(cc,z,'nha',bs));them(bs,'tam',3);if((bs.m||0)<100)bs.m=(bs.m||0)+1;return `${ten} bắt mạch, bốc thuốc, thức mấy đêm liền. Bệnh lui.`+fxx(cc,{suc:o.lon?-4:-1,tam:3})},
+  n:cc=>{if(i)i.tr=Math.max(i.tr||0,0.2);them(bs,'tam',-8);return `${ten} làm hết sức mà bệnh không chuyển, đành bó tay.`+fxx(cc,{suc:-(o.lon?R(12,22):R(5,12)),tam:-6})}}}
 /* điều trị: how = 'tu' | 'lang' | 'danhy' | 'nha' | 'cung'; trả về mô tả ngắn */
-function treat(c,i,how){const pw={tu:0.15,lang:0.45,danhy:0.8,nha:0.35+doctorPower(),cung:0.05}[how]||0;i.tr=Math.max(i.tr||0,pw);
+function treat(c,i,how,bs){const pw={tu:0.15,lang:0.45,danhy:0.8,nha:bs?sucNha(bs):doctorPower(c),cung:0.05}[how]||0;i.tr=Math.max(i.tr||0,pw);
   if(pw>=0.4&&i.until<900000)i.until=Math.min(i.until,S().t+Math.max(1,Math.round((i.until-S().t)*(1-pw*0.6))));return pw}
 function illTick(c,a){const L=c.ill;if(!L||!L.length||c.dead!=null)return;const t=S().t;
   for(let k=L.length-1;k>=0;k--){const i=L[k];const D=DIS[i.id];if(!D){L.splice(k,1);continue}
@@ -57,6 +69,6 @@ function illYear(){const s=S();const season=X.EC.season?X.EC.season():null;let p
     if(i.sev>=2&&popups<1&&X.EC.isCtrl&&X.EC.isCtrl(p)&&X.EVMAP.ill_chua){popups++;enqueue('ev',p.id,{ev:'ill_chua',data:{ill:id}})}
     else if(i.sev>=2){const mh=window.BNHELP?window.BNHELP.find('med',{who:p}):null;if(mh){treat(p,i,'danhy');window.BNHELP.use(mh,'med',`đến chữa cho ${p.given}`)}else treat(p,i,chance(0.5)?'lang':'tu')}})}
 X.yearly.push(illYear);
-G.ill={start,has,treat,DIS,doctorPower,tick:illTick};
+G.ill={start,has,treat,DIS,doctorPower,doctorOf,optNha,optTu,khaNang,tick:illTick};
 Object.assign(X.fn,{illTick});
 });

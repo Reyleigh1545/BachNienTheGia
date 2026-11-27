@@ -14,16 +14,22 @@ function khuon(c,S){const L=c.g==='nữ'?BO.nu:BO.nam;if(!L.length)return null;i
   c.mat=k;return k}
 const DAN=['nong','khuanvac','tieuphu','ngu','chan','thosan','laido','tho','tho_ren','hau'];
 const BUON=['chu','tieunhi','hangrong'];
+/* khuôn mà ảnh gốc (và các nét mặt đi theo) là đồng phục: giáp, mũ quan, đồ võ */
+const DONG_PHUC={nam_6:'linh',nam_9:'quan',nu_8:'vo'};
 function trangPhuc(c,giau){const j=c.job;
   if(c.g==='nữ'){if((c.tuoc||0)>0||(giau&&(j==='none'||j==='noi')))return 'phunhan';if(j==='y'||j==='nguy'||j==='mo')return 'thaythuoc';if(j==='det'||j==='tho')return 'thodet';if(DAN.includes(j))return 'danthuong';if(j==='quan'||j==='vua')return 'phunhan';return null}
+  if(j==='y'||j==='nguy')return 'thaythuoc';
   if(j==='quan'||j==='vua'||j==='thulai')return 'quan';if(j==='quan_ngu'||j==='tieu'||j==='nhadich')return 'linh';if(BUON.includes(j)||(c.tuoc||0)>0)return 'thuongnhan';if(DAN.includes(j))return 'danthuong';return null}
 /* kiểu ảnh: theo tuổi trước, rồi buồn, giận, trang phục theo thân phận, vui; thiếu ảnh nào thì lùi về ảnh gốc */
 function kieu(c,k,a,giau){const co=CO[k]||[];const gia=co.includes('truongthanh'); /* khuôn mà ảnh gốc là người già */
   const lon=gia?'truongthanh':'goc';const lay=(...ds)=>ds.find(x=>x&&co.includes(x))||'goc';
   if(a<=11)return lay('tre');if(a<=17)return lay('thieunien',lon);if(a>=60)return lay(gia?'goc':'gia','goc');
   const song=c.dead==null&&!c._np;const tam=c.tam==null?50:c.tam;
-  if(song&&tam<=25)return lay('buon',lon);if(song&&c.flags&&c.flags.ran)return lay('gian',lon);
+  if(!DONG_PHUC[k]){if(song&&tam<=25)return lay('buon',lon);if(song&&c.flags&&c.flags.ran)return lay('gian',lon)}
   const t=trangPhuc(c,giau);if(t&&co.includes(t))return t;
+  /* đồng phục chỉ cho đúng nghề; nghề khác không có ảnh riêng thì mặc đồ thường */
+  const dp=DONG_PHUC[k];const hop=dp&&((dp==='linh'&&c.job==='quan_ngu')||(dp==='quan'&&(c.job==='quan'||c.job==='vua'))||(dp==='vo'&&(c.job==='hiep'||c.job==='quan_ngu')));
+  if(dp&&!hop)return lay('danthuong',lon);
   if(song&&tam>=85)return lay('vui',lon);return lay(lon)}
 let so=0;
 function svg(c,size,a,S,giau){if(TAT)return null;const k=khuon(c,S);if(!k)return null;const v=kieu(c,k,a,giau);const s=size||40;const id='anh'+(++so);const mat=c.dead!=null||c.left;

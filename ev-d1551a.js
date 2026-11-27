@@ -45,6 +45,7 @@ function ensure(){const s=S();if(!s||!s.wr)return null;if(s.fz)return s.fz;const
     if(chinhTa||x<0.2){a.thu.push(b.id);b.thu.push(a.id)}else if(x<0.3){a.ban.push(b.id);b.ban.push(a.id)}}
   return s.fz}
 const ke=(a,b)=>a===b||(window.D.ADJ[a]||[]).some(z=>z[0]===b);
+const taiO=f=>String(f.n).includes(P()[f.p].n)?'':` ở ${P()[f.p].n}`;
 const song=()=>{const F=ensure();return F?F.l.filter(f=>!f.chet):[]};
 const lay=id=>{const F=ensure();return F&&F.l.find(f=>f.id===id)};
 const o=p=>song().filter(f=>f.p===p).sort((a,b)=>b.pow-a.pow);
@@ -52,7 +53,7 @@ const o=p=>song().filter(f=>f.p===p).sort((a,b)=>b.pow-a.pow);
 function nguyHiem(path){let r=0;const gap=[];let che=null;for(const p of (path||[]))for(const f of o(p)){const nh=LOAI[f.loai].nh;
     if(f.rel>=60&&!che)che=f;else if(f.rel>=30)continue;else if(nh==='cuop'||(f.loai==='ta')||(nh!=='vo'&&f.rel<=-30)||f.rel<=-40){r+=f.pow/100*0.09*(f.rel<=-30?1.6:1);gap.push(f)}}
   return {them:Math.min(0.28,r)*(che?0.4:1),gap:gap.sort((a,b)=>b.pow-a.pow),che}}
-function tin(f,s){const here=S().loc&&S().loc.p;if(here&&ke(f.p,here)){G.log(`${f.n} ở ${P()[f.p].n}: ${s}.`,'hi')}f.hist.unshift(`Năm ${Math.floor(S().t/12)+1}: ${s}`);if(f.hist.length>5)f.hist.pop()}
+function tin(f,s){const here=S().loc&&S().loc.p;if(here&&f.p===here){G.log(`${f.n}${taiO(f)}: ${s}.`,'hi')}f.hist.unshift(`Năm ${Math.floor(S().t/12)+1}: ${s}`);if(f.hist.length>5)f.hist.pop()}
 /* đổi đời người trong thế lực */
 function doiNguoi(f){const all=[f.chu].concat(f.duoi);all.forEach(x=>x.age++);if(Math.random()<(f.chu.age<50?0.012:f.chu.age<65?0.035:0.1)){const cu=f.chu.n;const k=f.duoi.slice().sort((a,b)=>b.st.vo+b.st.tri-a.st.vo-a.st.tri)[0];
     f.duoi=f.duoi.filter(x=>x!==k);k.bac=0;k.st=chiSo(f,0);f.chu=k;f.duoi.push(nguoi(f,2));f.pow=cl(f.pow-R(3,14),5,100);f.rel=Math.round(f.rel*0.6);tin(f,`${goi(f,0)} ${cu} không còn, ${k.n} lên thay`)}}
@@ -88,7 +89,7 @@ function trenDuong(p){const f=o(p).find(x=>LOAI[x.loai].nh==='cuop'&&x.rel<30);r
 const vuongTen=id=>{const v=S().dyn&&S().dyn.fam&&S().dyn.fam.vuong.find(z=>z.id===id&&z.dead==null);return v?v.n:''};
 /* khung "Thế lực" ở trang Thế giới và dấu trên bản đồ */
 function panel(p){if(!ensure()||!P()[p])return '';const e=G.esc;const L=o(p);const moTa=v=>v>=80?'rất mạnh':v>=60?'mạnh':v>=40?'khá':v>=20?'yếu':'tàn lụi';const quan=v=>v>=60?'thân thiết':v>=30?'giao hảo':v>-30?'chưa qua lại':v>-60?'hiềm khích':'thù sâu';
-  const the=L.map(f=>{const T=LOAI[f.loai];const ten=id=>{const x=lay(id);return x&&!x.chet?`${e(x.n)} ở ${e(P()[x.p].n)}`:''};const ng=x=>`<b>${e(x.n)}</b>, ${goi(f,x.bac)}, ${x.age} tuổi · võ ${x.st.vo} · trí ${x.st.tri} · EQ ${x.st.eq}`;
+  const the=L.map(f=>{const T=LOAI[f.loai];const ten=id=>{const x=lay(id);return x&&!x.chet?`${e(x.n)}${e(taiO(x))}`:''};const ng=x=>`<b>${e(x.n)}</b>, ${goi(f,x.bac)}, ${x.age} tuổi · võ ${x.st.vo} · trí ${x.st.tri} · EQ ${x.st.eq}`;
     const thu=f.thu.map(ten).filter(Boolean),ban=f.ban.map(ten).filter(Boolean);
     return `<li style="margin-bottom:8px"><b>${e(f.n)}</b> · ${T.n} · ${moTa(f.pow)} · với nhà: ${quan(f.rel)}<br>${ng(f.chu)}<br><small class="muted">Dưới trướng: ${f.duoi.map(x=>`${e(x.n)}, ${goi(f,x.bac)}, võ ${x.st.vo}`).join('; ')}</small>${thu.length?`<br><small class="down">Thù: ${thu.join('; ')}</small>`:''}${ban.length?`<br><small class="up">Minh hữu: ${ban.join('; ')}</small>`:''}${f.baoChe?`<br><small class="down">${f.rel>=30?`${e(f.baoChe.n)} trong quan phủ che chở`:'Nghe đồn có người trong quan phủ che chở'}</small>`:''}${f.chuSau?`<br><small class="down">Nghe đồn có người trong hoàng tộc đứng sau</small>`:''}${f.hoangThan&&vuongTen(f.hoangThan)?`<br><small class="muted">Đất phong của thân vương ${e(vuongTen(f.hoangThan))}</small>`:''}${f.hist.length?`<br><small class="muted">${e(f.hist[0])}</small>`:''}</li>`}).join('');
   return `<section class="card"><span class="eyebrow">Thế lực ở ${e(P()[p].n)}</span>${L.length?`<ul class="plain">${the}</ul>`:'<p class="note">Chưa nghe tiếng thế lực nào đóng ở đây.</p>'}</section>`}
@@ -147,7 +148,7 @@ window.EVF.push(g=>{G=g;const {fx,esc,chance}=g;const m=v=>g.mm(v);const FM=v=>g
    {l:`Mang lễ đáp, kết giao${th?`, biết rằng họ đang thù ${th.n}`:''} (${FM(v)})`,c:()=>g.money()>=v,f:cc=>{S().money-=v;doi(f,24,'hai nhà kết giao');return 'Từ nay đường đi qua địa bàn họ yên hơn.'+fx(cc,{cfame:5,fame:5,eq:1})+dong(f,24)}},
    {l:'Tiếp chuyện lễ độ, chưa hứa gì',f:cc=>{doi(f,6,'tiếp đón lễ độ');return 'Hai bên uống hết tuần trà.'+fx(cc,{eq:1})+dong(f,6)}},
    {l:'Từ chối, nhà không muốn dính chuyện võ lâm',f:cc=>{doi(f,-10,'bị từ chối kết giao');return 'Người ấy thu thiếp về.'+fx(cc,{tam:2})+dong(f,-10)}}]}),
- ev('tlb_cau_vien','Minh hữu cầu viện',2,(c,d,f,p)=>{const th=f.thu.map(lay).find(x=>x&&!x.chet);d.th=th&&th.id;return th?`${ten(f,p)}, đích thân đến: ${esc(th.n)} ở ${esc(P()[th.p].n)} sắp kéo tới. Chỗ qua lại bấy lâu nên mới dám mở lời.`:`${ten(f,p)}, ghé thăm, nói dạo này cần người giúp một tay giữ địa bàn.`},
+ ev('tlb_cau_vien','Minh hữu cầu viện',2,(c,d,f,p)=>{const th=f.thu.map(lay).find(x=>x&&!x.chet);d.th=th&&th.id;return th?`${ten(f,p)}, đích thân đến: ${esc(th.n)}${esc(taiO(th))} sắp kéo tới. Chỗ qua lại bấy lâu nên mới dám mở lời.`:`${ten(f,p)}, ghé thăm, nói dạo này cần người giúp một tay giữ địa bàn.`},
   (c,d,f,p)=>{const th=d.th&&lay(d.th);const v=m(12);const k=nhaVo();return [
    {l:`Giúp tiền lương thảo (${FM(v)})`,c:()=>g.money()>=v,f:cc=>{S().money-=v;f.pow=cl(f.pow+10,0,100);if(th){th.rel=cl(th.rel-20,-100,100);th.pow=cl(th.pow-6,0,100)}doi(f,18,'được giúp lương lúc nguy');return `${esc(f.n)} đứng vững.${th?` ${esc(th.n)} biết tiền ấy từ đâu.`:''}`+fx(cc,{cfame:3})+dong(f,18)}},
    ...(k&&th?[{l:`Cử ${k.given} sang đánh cùng`,h:1,r:[{_g:1,vo:1,suc:0.5},cl(95-th.chu.st.vo*0.45,15,80)],y:cc=>{f.pow=cl(f.pow+8,0,100);th.pow=cl(th.pow-R(14,28),0,100);th.rel=cl(th.rel-35,-100,100);G.addStat(k,'vo',R(2,5));doi(f,32,'được người nhà sang đánh cùng');return `Hai bên liên thủ, ${esc(th.n)} phải lui.`+fx(cc,{fame:12,cfame:6})+dong(f,32)},n:cc=>{G.addStat(k,'suc',-R(20,42));th.rel=cl(th.rel-30,-100,100);doi(f,22,'đã sang đánh cùng dù thua');return `Trận ấy thua, ${esc(k.given)} bị thương nặng. ${esc(th.n)} ghi tên nhà mình.`+fx(cc,{tam:-12})+dong(f,22)}}]:[]),

@@ -1706,7 +1706,7 @@ function postPopup(c,key){
       c.flags.hauBo={r:Math.max(0,(c.lv||1)-1),t:S.t+R(8,20)};c.job='none';c.lv=0;c.bonus=0;c.flags.noPromoUntil=S.t+12;
       return `${esc(c.given)} từ chối đi xa nhậm chức, xin ở lại với gia đình. Tên vẫn nằm trong sổ hậu bổ chờ ghế khác.`+fx(c,{fame:-2})};
     choicePopup(c,'Hoạn lộ','Nhậm chức ở xa',`${esc(c.given)} được bổ <b>${esc(seatName(key))}</b> ở ${esc(provN(to))}. Gia chủ không thể bỏ nhà mà đi, nên muốn nhận chức thì <b>cả nhà phải dọn tới ${esc(provN(to))}</b>: bán ruộng ở nơi cũ, dời cơ sở làm ăn theo, mất bớt quan hệ cũ. Không muốn thì xin từ chối.${blk?' <b class="down">'+esc(blk)+'</b>':''}`,[
-      {l:`Dời cả nhà tới ${provN(to)} (${money(info.cost)})`,c:()=>S.money>=info.cost&&!blk,f:c=>{delete c.flags.prevSeat;startMove(to,0,false);return `Cả nhà ${esc(c.given)} dọn tới ${esc(provN(to))} để ông nhậm chức ${esc(seatName(key))}.`+fx(c,{fame:3})}},
+      {l:`Dời cả nhà tới ${provN(to)} (${money(info.cost)})`,c:()=>S.money>=info.cost&&!blk,f:c=>{delete c.flags.prevSeat;startMove(to,0,false);return `Cả nhà ${esc(c.given)} sửa soạn dời tới ${esc(provN(to))} để ${c.g==='nữ'?'bà':'ông'} nhậm chức ${esc(seatName(key))}.`+fx(c,{fame:3})}},
       {l:'Từ chối chức này',f:refuse}]);
     return}
   if(!needMove(c,key)){unpostFol(c,true);c.pst=null;return}
@@ -2308,9 +2308,9 @@ function compat(a,b){
 }
 const ACTS={
   vc:{p:['cùng nhau ra chợ phiên','thủ thỉ chuyện nhà đến khuya','cùng chăm mảnh vườn sau nhà','cùng nhau đi lễ chùa'],n:['cãi nhau vì chuyện tiền nong','giận nhau mấy ngày không nói','to tiếng vì chuyện con cái','lục đục vì chuyện bên nội bên ngoại']},
-  cha:{p:['được cha mẹ dạy bảo','kể chuyện ngày xưa cho nhau nghe','cùng làm việc nhà','được cha mẹ khen'],n:['bị cha mẹ mắng vì lười','cãi lại cha mẹ','bất đồng chuyện tương lai','giận dỗi bỏ cơm']},
+  cha:{p:['{tr} dạy bảo {du}','{tr} và {du} kể chuyện ngày xưa cho nhau nghe','{tr} và {du} cùng làm việc nhà','{tr} khen {du}'],n:['{tr} mắng {du} vì lười','{du} cãi lại {tr}','{tr} và {du} bất đồng chuyện tương lai','{du} giận {tr}, bỏ cơm']}, /* d.1.5.57: câu có hướng, không gán cho cả cặp */
   ae:{p:['rủ nhau đi câu cá','giúp nhau việc nặng','cùng bày trò nghịch','tâm sự chuyện riêng'],n:['tranh phần với nhau','ganh tị nhau','đánh nhau một trận','nói xấu nhau với người ngoài']},
-  ong:{p:['nghe ông bà kể chuyện cổ tích','được ông bà dúi quà','đấm lưng cho ông bà'],n:['làm ông bà phật ý','bị ông bà trách']},
+  ong:{p:['{tr} kể chuyện cổ tích cho {du} nghe','{tr} dúi quà cho {du}','{du} đấm lưng cho {tr}'],n:['{du} làm {tr} phật ý','{tr} trách {du}']},
   ho:{p:['chuyện trò hợp ý','giúp nhau một việc','cùng uống chén trà'],n:['nói xấu sau lưng nhau','va chạm chuyện nhỏ','xích mích vì việc bếp núc']}};
 function interactTick(){
   const fam=home().filter(p=>age(p)>=6);if(fam.length<2)return;
@@ -2322,7 +2322,8 @@ function interactTick(){
     const d=Math.round(compat(a,b)/5+R(-4,4));
     addRel(a,b,d);
     if(d>=3&&k==='cha'){const par=a.parents.includes(b.id)?b:a;const kid=par===a?b:a;if(age(kid)<18){const best=STATS.filter(([x])=>x!=='suc').sort((x,y)=>par[y[0]]-par[x[0]])[0][0];addStat(kid,best,0.4)}}
-    if(Math.abs(d)>=4||chance(0.15)){const t=pick(ACTS[k][d>=0?'p':'n']);log(`${nameOf(a)} và ${nameOf(b)} ${t}.`,d<0?'hi':'')}
+    if(Math.abs(d)>=4||chance(0.15)){const t=pick(ACTS[k][d>=0?'p':'n']);
+      if(t.includes('{')){const tr=a.born<=b.born?a:b,du=tr===a?b:a;log(t.replace('{tr}',nameOf(tr)).replace('{du}',nameOf(du))+'.',d<0?'hi':'')}else log(`${nameOf(a)} và ${nameOf(b)} ${t}.`,d<0?'hi':'')}
     const r=relOf(a,b);
     if(r<=-50&&!(a.flags.cfT>S.t)&&head()&&!isHead(a)&&!isHead(b)){a.flags.cfT=S.t+24;enqueue('conflict',S.head,{a:a.id,b:b.id})}
   }
@@ -2503,7 +2504,7 @@ function localOfficer(id,p){const L=localSeat(id,p);if(!L||L.st.vac||L.st.holder
 function officeChurn(){if(DRY||!S.off)return;muaYear();const vn=window.BN_VQ?window.BN_VQ.vua():null;const d=vn?{loan:vn.loan}:(S.dyn||{}),k=vn?vn.k:(d.k||{}); /* vua của nước nhà đang ở */
   const mine=alive().filter(c=>inClan(c)&&(c.job==='quan'||c.job==='quan_ngu')&&c.seat);
   const myP=new Set(mine.map(c=>(seatWh(c.seat)||{}).p).filter(Boolean));const news=[];let n=0;
-  for(const key of shuf(Object.keys(S.off))){if(n>=6)break;const st=S.off[key];if(!st||st.vac||st.holder)continue;const T=seatTm(key);if(!T)continue;
+  for(const key of shuf(Object.keys(S.off))){if(n>=6)break;const st=S.off[key];if(!st||st.vac||st.holder||st.pham)continue;const T=seatTm(key);if(!T)continue; /* d.1.5.57: ghế của người trong cốt truyện không bị đấu đá thường chạm tới */
     const kem=(st.liem||50)<35,yeu=(st.ab||60)<39+(T.r||0)*9,ngo=(k.nghi||0)>=55&&(T.r||0)>=5;
     const wk=seatWh(key),mat=window.BN_CD&&wk?0.6+window.BN_CD.soi(wk.p)*0.7:1; /* d.1.5.52: nơi tai mắt gắt thì ghế đổi nhiều hơn */
     if(!chance((0.02+(kem?0.05:0)+(yeu?0.03:0)+(ngo?0.04:0)+((d.loan||0)>=50?0.02:0))*mat))continue;n++;
@@ -2517,7 +2518,7 @@ function officeChurn(){if(DRY||!S.off)return;muaYear();const vn=window.BN_VQ?win
     if(!chance(0.2+((T.r||0)>=4?0.06:0)+((c.liem||50)>=70?0.04:0)+((k.nghi||0)>=55?0.04:0)+(inKinh(c)?0.12:0)))continue;const w=seatWh(c.seat); /* d.1.5.52: kinh đô tranh chấp gay gắt nhất */
     /* cùng tỉnh chưa có đồng liêu nào được tạo thì tạo dần */
     if(w){let them=0;for(const tid of shuf(Object.keys(OFFICES))){if(them>=3)break;const T3=OFFICES[tid];if(!!T3.mil!==!!T.mil||T3.tag==='y'||(T3.r||0)<(T.r||0)-1||(T3.r||0)>(T.r||0)+2)continue;const k3=DX.seatKeys(tid).find(z=>{const q=seatWh(z);return q&&q.p===w.p&&z!==c.seat});if(k3){offState(k3);them++}}}
-    const L=Object.keys(S.off).filter(z=>{const s2=S.off[z],T2=seatTm(z),w2=seatWh(z);return s2&&!s2.vac&&!s2.holder&&T2&&!!T2.mil===!!T.mil&&w&&w2&&w2.p===w.p&&(T2.r||0)>=(T.r||0)-1});
+    const L=Object.keys(S.off).filter(z=>{const s2=S.off[z],T2=seatTm(z),w2=seatWh(z);return s2&&!s2.vac&&!s2.holder&&!s2.pham&&T2&&!!T2.mil===!!T.mil&&w&&w2&&w2.p===w.p&&(T2.r||0)>=(T.r||0)-1});
     if(!L.length)continue;const z=pick(L);c.flags.qsT=S.t;enqueue('ev',c.id,{ev:pick((T.r||0)>=2?['qs_do_loi','qs_tranh_cong','qs_ep_phe']:['qs_do_loi','qs_tranh_cong']),data:{qk:z,qn:S.off[z].n}})}}
 function officerDepose(lo,why){if(!lo||!lo.st)return;lo.st.vac=true;lo.st.vacT=S.t;lo.st.why=why||'bị cách chức';if(lo.np)lo.np.cond='vừa bị cách chức'}
 /* d9.12.67: NPC làm quan nhỏ ngồi vào ghế thật (S.off) còn trống ở tỉnh mình; chết hoặc bị thay thì nhả ghế */
@@ -5496,6 +5497,7 @@ if(window.BNHELP)window.BNHELP.bind({S:()=>S,log,G});
 if(window.BN_VQ){window.BN_VQ.bind(G);G.vq=window.BN_VQ}
 if(window.BN_CD){window.BN_CD.bind(G,{offState,seatWh,seatTm,seatName,holderNp,npGet,officerDepose,mkHolder,famEnsure,famPerson,court,qtOf,qtAdd,qtJoin,qtLog,memP,dynEns,inKinh,placeOf,OFFICES,DX,FAC,FACK});G.cd=window.BN_CD}
 if(window.BN_TL){window.BN_TL.bind(G);G.tl=window.BN_TL}
+G.hdef=hdef;G.npHouse=npHouse;
 if(window.BN_TK){window.BN_TK.bind(G,{famEnsure,qtAdd,qtOf,qtJoin,memP,famPerson,court,officerDepose,npGet,npFam,npHouse});G.tk=window.BN_TK}
 if(window.BN_CT){window.BN_CT.bind(G,{w_cause:(i,mo)=>ENGX.fn.w_cause(i,mo),w_tension:mo=>w_tension(mo),w_news,w_rel,w_endWar,seatWh,seatTm,leaveSeat,npGet,startMove,qtAdd});G.ct=window.BN_CT}
 window.D.curNat=()=>(S&&S.loc&&PROV[S.loc.p])?PROV[S.loc.p].nat:'trieu';
