@@ -18,7 +18,7 @@ function npcOk(n,vai){try{return X.G.tie.stable(n,vai==='quy_nhan'?2:1)}catch(e)
 /* mọi người và họ có thể với tới người đang làm việc */
 function people(who){const s=S();const out=[];const w=whoOf(who);let here=null;try{here=X.G.placeOf(w)}catch(e){}
   const L=(s&&s.np&&s.np.l)||{};
-  for(const k in L){const n=L[k];if(!n||n.ok===0||n.dead!=null||/^(emp|fam|vq|fz):/.test(n.ref||''))continue;if(Math.floor((s.t-n.born)/12)<18)continue;
+  for(const k in L){const n=L[k];if(!n||n.ok===0||n.dead!=null||/^(emp|fam|vq|fz|tki):/.test(n.ref||''))continue;if(Math.floor((s.t-n.born)/12)<18)continue;
     if(n.loc&&here&&n.loc!==here)continue;
     const vai=n.vai||[];
     out.push({key:'n:'+n.id,name:n.n,rel:n.rel||0,npc:n,stable:npcOk(n,vai.includes('quy_nhan')?'quy_nhan':''),tags:t=>{

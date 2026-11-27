@@ -202,7 +202,7 @@ function w_wed(id){const S=X.S;
   opts.push({l:'Thôi',f:()=>''});choicePopup(hd,'Thông gia',`Hỏi thông gia ${cname(c)}`,`Nhà có tiếng thì cưới gả cũng thành chuyện đáng bàn.`,opts)}
 function w63Month(mo){const EVMAP=X.EVMAP;const S=X.S;
   if(!S.w)w_ensure(S);
-  w_tension(mo);w_dis(mo);w_home();
+  w_tension(mo);w_dis(mo);w_home();if(window.BN_TK)window.BN_TK.month(); /* d.1.5.55: chuyện Thiên Kinh */
   if(S.t%12===0)w_clansYear();
   if(S.war&&mo%3===0){const lv=Math.round(expenses().total*0.1);if(lv>0){S.money-=lv;if(mo===3)log(`Thuế binh năm nay: ${money(lv*4)}.`)}}
   if(S.war&&S.war.near===0){const hd=head();if(hd&&chance(0.05))enqueue('ev',hd.id,{ev:pick(['w63_giac_tran','w63_giac_tran','w63_chay_loan','w63_thue_luong'])})}

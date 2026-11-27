@@ -77,7 +77,7 @@ function trouble(){const s=S();const R_=[];try{if(s.money<mm(12))R_.push('đang 
   return R_.length?R_[Math.floor(Math.random()*R_.length)]:null}
 const npStable=(n,minTier)=>!((n.sa!=null&&S().t-n.sa<72)||((n.tier!=null?n.tier:2)<minTier)||(n.oan||0)>=15);
 function tieYear(){const s=root();s.rg.yc=0;
-  const L=Object.values(s.np.l).filter(n=>n.ok!==0&&n.vai&&n.vai.length&&!/^(emp|fam|vq|fz):/.test(n.ref||''));
+  const L=Object.values(s.np.l).filter(n=>n.ok!==0&&n.vai&&n.vai.length&&!/^(emp|fam|vq|fz|tki):/.test(n.ref||''));
   for(const n of L){const a=G.np.age(n);if(a<14)continue;
     for(const v of n.vai){const T=TIEACT[v];if(!T)continue;if(s.rg.yc>=1)break;
       if(v==='doi_thu'?(n.rel>-10&&(n.oan||0)<10):(n.rel||0)<T[2])continue;
