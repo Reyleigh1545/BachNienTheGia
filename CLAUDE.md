@@ -662,6 +662,11 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 **Kết quả đợt 0 (7.0.0-d.1.5.48, 27/11):** bổng cố định và mua chức như luật ở mục 4. Thử ở game thật: cùng Ngũ phẩm chánh ở ghế khác nhau, thông thạo 0 và 100, có thưởng đều 8 bạc, tòng 7,2; không người dắt mối thì 0/300 lần có cửa; vùng toàn quan liêm 80 thì 0/400, liêm 40 thì 83/400, liêm 12 thì khoảng 215/400; mua được chức; kẻ bán bị hặc thì năm sau bị phát giác, ra công đường khung xử tử. `fulltest` 23 OK, không id trùng, quét ngoặc đơn sạch. **Chưa chơi tay.** **Còn chưa chắc, hỏi lại trước đợt A:** "4 tiểu quốc vây quanh" nghĩa là mỗi vực đúng một nước (bỏ hoặc gộp các nước nhỏ hiện có), hay mỗi vực một vương triều cạnh vài tiểu quốc.
 
+**Chọn kiểu bản đồ (chủ dự án, 27/11), chép nguyên văn:**
+> "kiểu 1 đi, vì kiểu 2 sẽ khá nhiều NPC, cần suy  tính  lâu dài"
+
+*Hiểu:* năm nước: Đại Nguyễn ở Trung Châu và bốn tiểu quốc, mỗi vực một nước; nước nhỏ cũ thành thế lực. Danh sách 48 khu đề xuất ở mục 12, **chờ duyệt**.
+
 (không có ý nào đang chờ khác. Các ý 23/11 đã làm ở d9.8 và d9.9 và chuyển thành luật: giao diện hộp sự kiện và hồ sơ ở mục 7, giang hồ ở mục 6, Thiên cơ ở mục 3, việc lớn ở mục 3, gia bảo ở mục 6, hệ số kỳ ngộ ở mục 5, cưới nhân phép của lính ở mục 3.)
 
 ---
@@ -806,6 +811,84 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 ---
 
 ## 12. Kế hoạch tương lai (dự định, **chưa phải luật**; chủ dự án duyệt hoặc đổi trước khi làm, mục 0.4)
+
+### Đề xuất bản đồ 48 khu (đợt A, CHỜ CHỦ DỰ ÁN DUYỆT, chưa code)
+
+Năm nước; tên bốn tiểu quốc đổi theo seed. Nước nhỏ cũ thành thế lực trong vực: Hắc Mã (bộ tộc kỵ mã, Bắc), Hải Minh (liên minh hải tặc, Đông), Thổ ty (các tù trưởng, Nam), liên minh Ốc đảo (Tây); Hà Tây ở Sơn Hà thành phiên trấn của Đại Nguyễn. Nhạn Môn quan và Ngọc Môn quan tính vào Trung Châu. Diện tích tính bằng nghìn dặm vuông; * là khu mới. Đề xuất đi đường: cả nhà đi bộ, xe khoảng 600 dặm một tháng, đường biển 900; núi, sa mạc, đầm lầy, mùa đông phương bắc chậm hơn; tin đi nhanh gấp ba người.
+
+**Trung Châu, Đại Nguyễn** · 16 khu · 348 nghìn dặm vuông
+
+| Khu | Địa hình | Vị thế | DT | Từ Thiên Kinh | Đường nối, tính bằng dặm (~ là đường biển) |
+|---|---|---|---|---|---|
+| Thiên Kinh | đồng bằng, sông lớn | kinh đô | 14 | 0 | Thuận An 180, Vân Lĩnh 220, Bình Hồ 340, Trường Châu 320, Lạc Giang 300 |
+| Thuận An * | đồng bằng, ven sông | sát kinh | 12 | 180 | Thiên Kinh 180, Lạc Giang 260, Phong Dương 480 |
+| Vân Lĩnh * | núi, rừng | sát kinh | 16 | 220 | Thiên Kinh 220, An Tây 520, Phong Dương 460 |
+| Bình Hồ * | hồ lớn | gần kinh | 18 | 340 | Thiên Kinh 340, Hoài Thủy 280, Thanh Trạch 300 |
+| Trường Châu * | đồng bằng, ngã ba đường lớn | gần kinh | 20 | 320 | Thiên Kinh 320, Hoài Thủy 350, An Tây 560, Sơn Hà 620 |
+| Lạc Giang | đồng bằng phù sa | gần kinh | 24 | 300 | Thiên Kinh 300, Thuận An 260, Hải Khẩu 380, Đông Lai 420 |
+| Hoài Thủy | sông lớn | nội địa | 26 | 620 | Bình Hồ 280, Trường Châu 350, Hải Khẩu 440, Nam Quan 600 |
+| Thanh Trạch * | đầm lầy | nội địa | 18 | 640 | Bình Hồ 300, Nam Quan 520, Sơn Hà 540 |
+| Hải Khẩu | cửa biển, cảng | duyên hải | 16 | 680 | Lạc Giang 380, Hoài Thủy 440, Đông Lai 220, Lam Loan 700~ |
+| Đông Lai * | bờ biển, đồi | duyên hải | 20 | 720 | Lạc Giang 420, Hải Khẩu 220, Bạch Sa 600~ |
+| Phong Dương * | đồi, rừng | giáp biên bắc | 28 | 660 | Thuận An 480, Vân Lĩnh 460, Nhạn Môn quan 400 |
+| Nhạn Môn quan | núi, cửa ải | biên cương bắc | 22 | 1060 | Phong Dương 400, Mã Trường 520, Thiết Sơn 480 |
+| An Tây * | đồi khô | giáp biên tây | 30 | 740 | Vân Lĩnh 520, Trường Châu 560, Ngọc Môn quan 480, Sơn Hà 500 |
+| Ngọc Môn quan | cửa ải, rìa sa mạc | biên cương tây | 26 | 1220 | An Tây 480, Lưu Sa Trấn 560, Hồng Nham 600 |
+| Nam Quan * | núi, rừng rậm | biên cương nam | 24 | 1160 | Hoài Thủy 600, Thanh Trạch 520, Lam Sơn 450, Chướng Giang 480 |
+| Sơn Hà | núi hiểm, mỏ | xa kinh, phiên trấn | 34 | 940 | Trường Châu 620, Thanh Trạch 540, An Tây 500 |
+
+**Bắc Nguyên, tiểu quốc Bắc** · 8 khu · 383 nghìn dặm vuông
+
+| Khu | Địa hình | Vị thế | DT | Từ Thiên Kinh | Đường nối, tính bằng dặm (~ là đường biển) |
+|---|---|---|---|---|---|
+| Sóc Đô * | thung lũng sông giữa thảo nguyên | kinh đô | 20 | 2140 | Mã Trường 560, Bạch Hoa Nguyên 300, Hàn Giang 320 |
+| Mã Trường | thảo nguyên, chợ ngựa | giáp Đại Nguyễn | 60 | 1580 | Nhạn Môn quan 520, Bạch Hoa Nguyên 420, Sóc Đô 560 |
+| Thiết Sơn | núi, mỏ sắt, rừng thông | giáp Đại Nguyễn | 44 | 1540 | Nhạn Môn quan 480, Hàn Giang 430, Hắc Lâm 520 |
+| Bạch Hoa Nguyên * | thảo nguyên chăn thả | gần kinh | 70 | 2000 | Mã Trường 420, Sóc Đô 300, Tuyết Lĩnh 700, Thiên Sơn 1100 |
+| Hàn Giang * | sông băng | nội địa | 38 | 1970 | Thiết Sơn 430, Sóc Đô 320, Băng Hồ 460 |
+| Hắc Lâm * | rừng rậm | xa kinh | 55 | 2060 | Thiết Sơn 520, Băng Hồ 500 |
+| Băng Hồ * | hồ đóng băng | xa kinh | 30 | 2430 | Hàn Giang 460, Hắc Lâm 500, Tuyết Lĩnh 620 |
+| Tuyết Lĩnh | cao nguyên tuyết | biên viễn | 66 | 2700 | Băng Hồ 620, Bạch Hoa Nguyên 700 |
+
+**Đông Hải, tiểu quốc Đông** · 8 khu · 109 nghìn dặm vuông
+
+| Khu | Địa hình | Vị thế | DT | Từ Thiên Kinh | Đường nối, tính bằng dặm (~ là đường biển) |
+|---|---|---|---|---|---|
+| Vân Đảo | đảo lớn, đồng bằng ven biển | kinh đô | 22 | 1800 | Bạch Sa 480~, Lam Loan 520~, Phù Tang Lĩnh 200, Diêm Điền 260 |
+| Bạch Sa | bãi cát, thương cảng | giáp Đại Nguyễn | 14 | 1320 | Đông Lai 600~, Vân Đảo 480~, Triều Trạch 340 |
+| Lam Loan * | vịnh kín, đóng thuyền | giáp Đại Nguyễn | 12 | 1380 | Hải Khẩu 700~, Triều Trạch 300, Vân Đảo 520~ |
+| Diêm Điền | ruộng muối, làng chài | gần kinh | 10 | 2060 | Vân Đảo 260, Thanh Ngư Đảo 380~ |
+| Phù Tang Lĩnh * | núi trên đảo, rừng gỗ | gần kinh | 18 | 2000 | Vân Đảo 200, Thanh Ngư Đảo 420~ |
+| Triều Trạch * | đầm nước lợ, rừng ngập | nội địa | 16 | 1660 | Bạch Sa 340, Lam Loan 300, Nam Hải Nhai 900~ |
+| Thanh Ngư Đảo * | quần đảo đánh cá | xa kinh | 8 | 2420 | Diêm Điền 380~, Phù Tang Lĩnh 420~, Hải Minh Đảo 560~ |
+| Hải Minh Đảo | đảo xa, đá ngầm | biên viễn | 9 | 2980 | Thanh Ngư Đảo 560~ |
+
+**Nam Cương, tiểu quốc Nam** · 8 khu · 242 nghìn dặm vuông
+
+| Khu | Địa hình | Vị thế | DT | Từ Thiên Kinh | Đường nối, tính bằng dặm (~ là đường biển) |
+|---|---|---|---|---|---|
+| Cẩm Thành | cảng sông lớn | kinh đô | 24 | 2360 | Mía Châu 300, Nam Hải Nhai 440 |
+| Mía Châu | đồng bằng, sông | gần kinh | 30 | 2060 | Chướng Giang 420, Dược Cốc 380, Cẩm Thành 300 |
+| Lam Sơn | núi, rừng lam chướng | giáp Đại Nguyễn | 40 | 1610 | Nam Quan 450, Dược Cốc 320, Chướng Giang 360 |
+| Dược Cốc | thung lũng, núi | nội địa | 18 | 1930 | Lam Sơn 320, Mía Châu 380, Tượng Lâm 480 |
+| Chướng Giang * | sông trong rừng độc | giáp Đại Nguyễn | 34 | 1640 | Nam Quan 480, Lam Sơn 360, Mía Châu 420, Vụ Trạch 460 |
+| Vụ Trạch * | đầm lầy sương mù | xa kinh | 28 | 2100 | Tượng Lâm 400, Chướng Giang 460 |
+| Tượng Lâm * | rừng già | xa kinh | 48 | 2410 | Dược Cốc 480, Vụ Trạch 400 |
+| Nam Hải Nhai * | vách biển, ngọc trai | biên viễn | 20 | 2560 | Cẩm Thành 440, Triều Trạch 900~ |
+
+**Tây Mạc, tiểu quốc Tây** · 8 khu · 308 nghìn dặm vuông
+
+| Khu | Địa hình | Vị thế | DT | Từ Thiên Kinh | Đường nối, tính bằng dặm (~ là đường biển) |
+|---|---|---|---|---|---|
+| Sa Thành | thành giữa sa mạc, sông nhỏ | kinh đô | 26 | 2200 | Lưu Sa Trấn 420, Hồng Nham 480, Thanh Tuyền 300 |
+| Lưu Sa Trấn * | trạm con đường tơ lụa | giáp Đại Nguyễn | 36 | 1780 | Ngọc Môn quan 560, Sa Thành 420, Nguyệt Hồ 460 |
+| Hồng Nham * | hẻm núi đá | giáp Đại Nguyễn | 32 | 1820 | Ngọc Môn quan 600, Sa Thành 480, Liên Sa 520 |
+| Thanh Tuyền | ốc đảo, suối | gần kinh | 20 | 2500 | Sa Thành 300, Liên Sa 340, Nguyệt Hồ 380 |
+| Liên Sa | ốc đảo, mỏ ngọc | nội địa | 28 | 2340 | Hồng Nham 520, Thanh Tuyền 340, Thiên Sơn 700 |
+| Nguyệt Hồ * | hồ muối | nội địa | 30 | 2240 | Lưu Sa Trấn 460, Thanh Tuyền 380, Hoàng Sa 520 |
+| Hoàng Sa * | sa mạc lớn | xa kinh | 90 | 2760 | Nguyệt Hồ 520, Thiên Sơn 640 |
+| Thiên Sơn * | núi tuyết, đầu nguồn | biên viễn | 46 | 3040 | Hoàng Sa 640, Liên Sa 700, Bạch Hoa Nguyên 1100 |
+
 
 **Đã làm ở d9.10 theo mục tiêu "làm hết mục 11 và 12" (chủ dự án 23/11):** thế lực tự phát đầy đủ (`tl2_*`), tách `engine-x.js` (ENGX), nghề mới Thợ săn và Lái đò, `classify-fill.js`, gập thẻ Gia tộc và Cơ ngơi, `pickKin` có dải thẻ chân dung; công cụ đo (`tools/bal.js`, `lvgen.js`, `mock-ui.js`, `shot-ui.js`, sửa `run.js` và `roots-gen.js`); giang hồ thành hệ thống; quân hộ đời đời, Đông xưởng theo năm, thu hồi Thiết khoán; quan trường sống hơn (thế gia tranh ghế, xung đột giữa các quan, hồ sơ Quốc công Vượng, chi phí giữ quan hệ, chuỗi liên hôn và lên kinh năm bước); nội dung theo mức (`events-lv.js`, trọng số theo mức, câu nối cho chuỗi cũ, ký ức hàng xóm, 8 kỳ ngộ gia tộc, cốt truyện thứ hai); giao diện (hộp có người cùng bố cục, Escape, lý do chưa mở được cơ sở, thử khung điện thoại); cân bằng Khởi nghĩa đo lại.
 
