@@ -787,6 +787,61 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 
 **Kết quả ảnh đại diện (7.0.0-d.1.5.56, 27/11):** sinh thêm 42 ảnh, vẽ lại 6 ảnh lỗi (ria mép ở nữ, vết trên trán, thánh giá, nam ra nữ), **đủ 132 ảnh**, đã soi cả 12 bộ. Vào game qua `ava-anh.js`; ảnh thu nhỏ trong `av/` tổng 627 KB **có đưa vào kho** để bản trên mạng dùng được (ảnh gốc trong `avatars/` vẫn không đưa). Thử: gia đình 12 người đủ tuổi, nghề, tâm trạng ra đúng kiểu; 132/132 ảnh tải được; chụp Gia phả và hộp sự kiện; hai lượt bot dài không lỗi; `fulltest` đạt 21 mục (hai lượt báo lỗi ở bước tiến 24 tháng vì cả nhà thử bị tru di). **Chưa xem trên điện thoại.** **Còn:** chỉ 6 mặt mỗi giới nên nhà đông sẽ trùng mặt; khuôn nam_5 để tóc dài nét mềm, trông giống con gái; chưa có kiểu riêng cho tăng, đạo sĩ, ăn mày, vua mặc long bào.
 
+**Đánh giá bản d.1.5.56 (chủ dự án, 27/11, file `Test result/Test.docx` kèm save họ Triệu năm 49), chép nguyên văn:**
+> Bản đồ bị rời rạc, phải gắn lại thành 1  cụm không thì những phần thừa kia sẽ trở thành vô lí
+>
+> Sự kiện người nhà lâm bệnh có lựa chọn nhờ người nhà làm thầy thuốc  chữa nhưng nhà không có ai làm thầy thuốc ngoại trừ chính gia chủ ( lúc này nhà chỉ mới có một mình gia chủ),  và sự kiện này lần nào cũng chắc chắn  thành công.
+>
+> Có một số sự kiện  bị  mắc bệnh khác  lại không có nhờ  người nhà làm nghề y chữa
+>
+> Ở Bản đồ còn cái quan trường của quốc gia, bỏ cái đấy đi, bỏ luôn tình  hình thiên hạ, để người chơi tự biết các thông tin vặt thông qua các sự kiện có liên quan cung cấp thông tin, cả trang giá  cả theo khu vực cũng vậy, khi người chơi biết được thông tin về loại nào thì mới hiện loại ấy ra, các thế lực trên bản đồ thế giới cũng vậy, nghe ngóng được tin tức thì mới hiện, không biết thì ẩn hết
+>
+> Ảnh avatar hiện đang hiện sai nghề, làm nghề Y nhưng hiện thẻ nghề lính
+>
+> Sự kiện con em đánh người nên cụ thể  là con em nào, con của ai thì người ấy xử trí, trừ khi gây gỗ với người không nên đụng  vào thì mới cần gia chủ ra mặt.
+>
+> Đất đổi chủ không hợp lí, đổi từ một nơi xa lắc xa lơ như trong save vào năm 10 là vô lí
+>
+> Về mặt thì tạm thời chưa đủ ảnh nên trùng không có vấn đề gì
+>
+> Tru di là do bot chọn sai, không phải vấn đề
+>
+> Quan trường tiểu quốc cũng đủ 9 phẩm như Đại Nguyễn, chỉ là ít chức vụ hơn
+>
+> Có những sự kiện đang bị gọi sai tên, sai cách gọi
+>
+> Thi cử tại sao lại trở nên vô cùng khó, trí trên 100 rồi nhưng mà vẫn không thể  nào qua được kì thi thứ   2, điểm thi cũng khá thấp
+>
+> Tăng thêm chiều sâu của việc sống ở làng, trấn hay thành, về chi tiêu, ăn uống, đi học, thu  nhập.
+>
+> Chưa thấy thời gian dời nhà, chỉ thấy được dịch chuyển đến ngay, phải để ý xem trong lúc dời nhà có còn kiếm được tiền, có gặp những sự kiện không nên gặp lúc đang di chuyển hay không
+>
+> Những cái còn lại mày tự đọc save rồi đưa ra ý nghĩ.
+
+*Kết quả kiểm (27/11), **chưa sửa gì, chờ chủ dự án bảo làm** (mục 0.13). Số thứ tự E là ý của chủ dự án theo thứ tự trên; S là lỗi Claude tự tìm trong save.*
+- **E1 Bản đồ rời rạc. Đúng, lỗi d.1.5.54.** Hàm vẽ lãnh thổ chỉ tô ô cách một khu dưới 60 đơn vị nên đất vỡ thành từng mảng, hở giữa; nền địa lý cũ đã bỏ. *Hướng:* một khối lục địa liền (mặt đất cố định), mọi ô trên đất thuộc khu gần nhất, chỉ đường biên đổi.
+- **E2 Chữa bệnh bằng người nhà. Đúng, lỗi có từ d9.12.** `doctorPower()` không loại chính người bệnh; lựa chọn không tốn tiền, **không xúc xắc**; sức chữa 0,35 + thông thạo/100 + trí/400, với thông thạo 33 và trí 99 là 0,93, **hơn danh y 0,80**. Save: 8 lần `ill_chua`, nhiều lần thầy thuốc tự chữa cho mình. *Hướng:* phải là người nhà khác, đang ở nhà, không ốm nặng; có xúc xắc theo tay nghề; không vượt danh y.
+- **E3 Sự kiện bệnh khác thiếu người nhà chữa. Đúng.** Chỉ `benh_dich` có (và cũng tính cả người bệnh, thành công còn trừ 8 sức khỏe). Thiếu: `kiet_ly`, `ho_lao`, `dau_mua`, `tre_om_vat`, `cho_dai`, `v63_k_sot_co_giat`, `v63_k_dich_tre`, `dl_om`; kho `v63_k_*` còn lại phải rà. *Hướng:* một hàm chung "người nhà chữa" thêm vào mọi sự kiện có người bệnh.
+- **E4 Trang Thế giới chỉ hiện điều đã biết. Ý mới, đảo một phần luật mục 6 (d.1.5.50 đến .54).** Bỏ khung Quan trường và Tình hình thiên hạ (gồm cả cương vực, đất đổi chủ, diễn biến chiến sự); giá cả chỉ hiện hàng đã biết; thế lực chỉ hiện khi nghe ngóng được. *Cần làm:* sổ "tin đã biết" (đi buôn, ở đó, người quen kể, sự kiện), mỗi tin có nguồn. *Cần hỏi:* khung **Vương triều** tiểu quốc và "Người ở Thiên Kinh đã quen" bỏ hay giữ; màu đất và đường biên trên bản đồ có hiện hết không; tin cũ có mờ đi theo thời gian không.
+- **E5 Ảnh sai nghề. Đúng, lỗi của Claude ở d.1.5.56.** `trangPhuc` cho nam không xét nghề y, thầy đồ, bà đỡ…, nên dùng ảnh gốc; ảnh gốc `nam_6` mặc giáp, `nam_9` đội mũ quan. Save: gia chủ làm y dùng `nam_6`. Bộ nam **không có ảnh thầy thuốc**. *Hướng:* khuôn có ảnh gốc là trang phục nghề thì người nghề khác dùng ảnh dân thường; vẽ thêm ảnh thầy thuốc nam (cần hạn mức Cloudflare).
+- **E6 Con em đánh người. Đúng.** `lw_02` giao cho người có con, lời kể "Con cháu nhà X" không nêu đứa nào, không có thẻ đứa trẻ. *Hướng:* nêu tên và thẻ đứa trẻ, giao cho cha mẹ nó; chỉ gia chủ khi bên bị đánh là nhà có thế; quét mọi sự kiện "con cháu" cùng kiểu (R28a còn 34).
+- **E7 Đất đổi chủ vô lý. Đúng, lỗi d.1.5.54.** Save: năm 10 Thiên Lang lấy Thiên Sơn và Liên Sa của Tinh Sa, năm 22 lấy Nguyệt Hồ, Thanh Tuyền. Đường Bạch Hoa tới Thiên Sơn dài 1.100 dặm rồi Thiên Sơn tới Liên Sa 700 dặm, nên nước phương bắc thành vùng rời ở tận tây nam. Phép thử "kề nhau" chỉ xét có đường. *Hướng:* tách "đường đi" khỏi "giáp ranh trên đất"; chỉ chiếm khu giáp ranh liền khối; khu bị chiếm phải nối được về lõi nước; giảm số đất đổi tay trong những thập niên đầu.
+- **E8 Trùng mặt:** không phải vấn đề lúc này.
+- **E9 Tru di:** do bot chọn, **không phải vấn đề** (đóng).
+- **E10 Tiểu quốc đủ 9 phẩm, chỉ ít chức hơn. Chủ dự án quyết, đóng câu hỏi X1.** Bỏ trần Nhị phẩm ở `seatKeys`; tiểu quốc ít ghế hơn. *Cần hỏi:* ít hơn khoảng bao nhiêu.
+- **E11 Gọi sai tên, sai cách gọi. Đúng, tìm được:** (a) bảng sinh hoạt gia đình viết theo góc người con rồi gán cho **cả cặp**: "A và B được cha mẹ dạy bảo" trong đó A hoặc B chính là cha mẹ; cặp ông cháu cũng vậy (lỗi cũ). (b) "Cả nhà … dọn tới … để **ông** nhậm chức" viết cứng "ông" cho cả nữ quan. (c) Tên thế lực lặp nơi: "Bạch Liên Giáo mới ở Thiên Kinh ở Thiên Kinh", "Bọn Roi Sắt Lạc Giang ở Lạc Giang" (**lỗi Claude, d.1.5.51**). **Có thể còn chỗ khác trong lời hộp mà save không lưu chữ; cần chủ dự án chỉ thêm ảnh.**
+- **E12 Thi cử khó. Chưa xác nhận được.** Công thức không đổi từ v6.4.1.2. Tính thử, luôn chọn cách an toàn, sức khỏe 70: trí 100 tâm trạng 70 đỗ thi Hội 96%, tâm trạng 40 còn 51%, **tâm trạng 15 còn 5%**; trí 110 trở lên tâm trạng từ 40 đỗ 97% trở lên; trí 85 chỉ 15% trở xuống. Save: Phúc Bảo trượt Hội năm 32 với 56, 58, 61 điểm, năm 35 đỗ với 81, 83, 85. Với điểm ấy thì lúc thi hoặc trí còn khoảng 75 đến 85, hoặc tâm trạng rất thấp, hoặc chọn cách mạo hiểm bị trừ tới 20. **Save không ghi lựa chọn và chỉ số lúc thi.** *Hướng:* trước khi thi hiện bằng chữ sức học, tâm trạng, sức khỏe đang kéo điểm ra sao; ghi nhật ký trí, tâm trạng, cách làm bài mỗi vòng. *Cần chủ dự án:* ảnh hoặc save lúc người trí trên 100 trượt.
+- **E13 Chiều sâu làng, trấn, thành (chi tiêu, ăn uống, đi học, thu nhập). Ý mới, chưa làm.** Cần đề xuất bảng cụ thể rồi chủ dự án duyệt.
+- **E14 Dời nhà như đến ngay. Đúng một phần.** Save có đi đường (năm 35, 41 hai tháng; năm 44 một tháng; một hộp ốm dọc đường). Nhưng: câu hiện ngay sau khi bấm là "Cả nhà dọn về <nơi cũ>" hoặc "dọn tới … để ông nhậm chức" như đã tới; ngoài bản đồ không có dấu nào cho biết đang đi; 180 dặm chỉ một tháng nên trôi rất nhanh. **Thu nhập không bị chặn** khi đi đường (nghề, bổng, cơ sở vẫn chạy; người nhậm chức nhận bổng ngay trước khi tới). Sự kiện thường bị chặn, nhưng **sự kiện cố định** (quan trường, thế lực, người quen, chuyện thành…) không kiểm đang đi đường. *Cần hỏi:* đi đường thì mất những khoản thu nào; quan đi nhậm chức có bổng đi đường không.
+- **E15 Tự đọc save, nhận xét thêm:**
+  - **S1 Thuế miễn vẫn thu đủ (nặng, lỗi cũ).** `POLF[t.pol]||1`: hệ số miễn là 0 nên bị thay bằng 1. Save T10/47 "miễn thuế: nộp 4 bạc 764 đồng".
+  - **S2 Quan trường đấu đá chạm người của cốt truyện (nặng, lỗi Claude d.1.5.47 và .52).** `officeChurn` và đòn phe không chừa ghế cốt truyện: Phạm Trung Hòa mất chức năm 36, **Phạm Trung Kiên "bị hặc tham nhũng" năm 40**, phá lịch thăng chức của ân oán họ Phạm.
+  - **S3 Nhật ký ngập tin xa (lỗi Claude).** Trong 250 dòng còn lưu: 41 dòng "Quan trường:", **19 dòng là ghế nước ngoài** dù nhà ở Đại Nguyễn; thêm tin thế lực và tin họ khác đổi gia chủ. Đẩy mất nhật ký của chính nhà. Hợp với ý E4.
+  - **S4 Gia tộc teo.** 48 năm chỉ có ba đời đàn ông, **không ai có vợ trong gia phả**, con cháu đến từ việc nhận cháu mồ côi; gia chủ đời hai mất năm 45 tuổi vì thương hàn dù đã mời thầy lang. Nhà có thể tuyệt tự bất cứ lúc nào mà game không nhắc việc cưới gả. Chưa rõ người chơi có thấy nút Mối không.
+  - **S5 Chuyện Thiên Kinh:** nhà chỉ ở kinh thành vài năm; mạch Ngõ Mực khép vì rời đi quá 5 năm, mạch Lầu Vọng Nguyệt còn chờ. Người làm quan bị điều đi liên tục thì chuyện ở một thành dễ đứt giữa chừng; cân nhắc khi viết chuyện thành khác.
+  - **S6** Bệnh tật chiếm nhiều nhất: `ill_chua` 8 trên 132 lần gặp việc, và lần nào cũng chọn người nhà chữa vì nó lợi nhất (hệ quả của E2).
+- **Thứ tự Claude đề xuất khi được bảo làm:** (1) lỗi sai rõ: S1, S2, E2, E11, E5, E6; (2) bản đồ và chiến tranh: E1, E7; (3) E3, E14, S3; (4) E10; (5) ý mới cần duyệt trước: E4, E13, E12.
+
 (không có ý nào đang chờ khác. Các ý 23/11 đã làm ở d9.8 và d9.9 và chuyển thành luật: giao diện hộp sự kiện và hồ sơ ở mục 7, giang hồ ở mục 6, Thiên cơ ở mục 3, việc lớn ở mục 3, gia bảo ở mục 6, hệ số kỳ ngộ ở mục 5, cưới nhân phép của lính ở mục 3.)
 
 ---
@@ -936,6 +991,12 @@ Hộp của engine (tang lễ, chữa bệnh, tiệc thọ, hôn lễ…) mặc 
 69. **Đặt tiền tố id mới phải tìm xem đã ai dùng (27/11, tự phát hiện).** Tao đặt `tk_` cho chuyện Thiên Kinh trong khi Thiết khoán đã dùng. *Quét:* trước khi đặt tiền tố, tìm `id:'xx_` trong mọi gói và tên biến trạng thái trong `S`.
 70. **Hàm "lấy người trong chuyện" không được sửa trạng thái người ấy (27/11, tự phát hiện).** Hàm lấy NPC đặt lại `ok=1` nên người đã chết sống lại. *Quét:* hàm đọc chỉ đọc; chết, sống, đổi vai ghi ở chỗ sự việc xảy ra.
 71. **Lời nhắc vẽ ảnh chỉ tả thứ cần có (26/11 và 27/11).** Viết "không ria, không thánh giá, không dấu trên trán" thì model vẽ đúng thứ đó. Ghi nhớ đã dặn mà script còn sót câu ấy nên nữ vẫn mọc ria. *Quét:* trước khi chạy, tìm chữ "no " trong lời nhắc; ảnh mới nào cũng soi bằng mắt.
+72. **Lựa chọn "nhờ người nhà" phải là người khác, có giá và có rủi ro (chủ dự án 27/11).** Thầy thuốc tự chữa cho mình, chắc chắn thành, không tốn gì. *Quét:* mọi lựa chọn dựa vào "nhà có người làm nghề X" (`hasJob`, `doctorPower`, `clanSupport`) phải loại chính người gặp việc, nêu tên người giúp và có xúc xắc hoặc giá.
+73. **Câu viết theo góc nhìn một người không được gán cho cả cặp; không viết cứng "ông", "bà" (chủ dự án 27/11).** "Cha và con được cha mẹ dạy bảo". *Quét:* mọi câu ghép `A và B …` và mọi chuỗi có tên người kèm đại từ cố định.
+74. **Đổi tay lãnh thổ phải kiểm bằng hình và địa lý, không chỉ bằng đồ thị đường (chủ dự án 27/11).** Đường dài cho đi lại bị coi là giáp ranh, sinh vùng đất rời ở tận đầu kia; hàm tô đất để hở. Claude đã đo số khu nhưng không kiểm mỗi nước có liền khối hay không. *Quét:* sau mô phỏng, đếm số mảnh rời của mỗi nước và nhìn ảnh bản đồ ở nhiều thế giới.
+75. **Ảnh đại diện phải khớp nghề cho mọi nghề, kể cả khi thiếu ảnh (chủ dự án 27/11).** Thiếu kiểu thầy thuốc nam thì rơi về ảnh gốc mặc giáp; bài thử chỉ dựng đúng những nghề có ảnh riêng. *Quét:* thử đủ mọi nghề × mọi khuôn, khuôn có ảnh gốc là đồng phục thì không được làm ảnh mặc định.
+76. **Hệ số 0 không được viết `a||1` (27/11, tự phát hiện).** Miễn thuế thành thu đủ. *Quét:* tìm `]||1` và `||1)` ở mọi bảng hệ số có thể bằng 0.
+77. **Cơ chế đại trà mới (đấu đá, thanh trừng) phải chừa người của cốt truyện (27/11, tự phát hiện).** `officeChurn` và đòn phe hạ cả Phạm Trung Kiên. *Quét:* vòng lặp nào đổi ghế, giết, dời NPC phải lọc `pham`, `holder` và các `ref` cốt truyện.
 
 ---
 
