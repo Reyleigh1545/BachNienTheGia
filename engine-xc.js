@@ -121,7 +121,7 @@ function w_clansYear(){const S=X.S;
       c.rel+=(relBase(c)-c.rel)*0.08;if(c.feud&&chance(0.08))c.feud=0;if(c.oan)c.oan*=0.97;
       if(c.end==null)c.end=S.t+12*termYears(c.head.age);
       if(S.t>=c.end||c.head.age>=88){const oa=c.head.age,oh=cHeadFull(c);clanSucc(c,PROV[p].r,18);
-        if(c.house&&S.loc&&(p===S.loc.p||w_mo(S.loc.p,p)<=2))log(`${cname(c)}: gia chủ ${oh} ${oa>=72?'đã mất':'nhường chức'}, ${cHeadFull(c)} nối ngôi.`)}
+        if(c.house&&S.loc&&p===S.loc.p)log(`${cname(c)}: gia chủ ${oh} ${oa>=72?'đã mất':'nhường chức'}, ${cHeadFull(c)} nối ngôi.`)}
       c.kids=c.kids.filter(k=>!(k.age>=32&&chance(0.4)));
       while(c.kids.length<R(1,3)&&chance(0.5)){const gg=chance(0.5)?'nam':'nữ';c.kids.push({id:'k'+(W.cid++),g:gg,given:outsiderName(gg,PROV[p].r).given,age:R(0,6)})}});
     /* họ lụi tàn bị thay bằng họ mới */

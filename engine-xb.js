@@ -124,7 +124,7 @@ function houseYear(){const S=X.S;
     if(h.end==null)h.end=S.t+12*termYears(h.head.age);
     if(S.t>=h.end||h.head.age>=88){
       const old=houseName(d.id),oa=h.head.age;clanSucc(h,PROV[d.p].r,20);
-      w_news(`Gia chủ ${old} ${oa>=72?'qua đời':'nhường chức, lui về an dưỡng'}. ${houseName(d.id)} nối chức, ${d.sur} Gia vẫn giữ nếp cũ.`,hnear(d.id))}
+      w_news(`Gia chủ ${old} ${oa>=72?'qua đời':'nhường chức, lui về an dưỡng'}. ${houseName(d.id)} nối chức, ${d.sur} Gia vẫn giữ nếp cũ.`,!!S.loc&&(d.p===S.loc.p||Math.abs(h.rel||0)>=15))}
     h.kids=h.kids.filter(k=>!(k.age>=30&&chance(0.45)));
     if(h.kids.length<3&&h.head.age<58&&chance(0.35)){const gg=chance(0.5)?'nam':'nữ';h.kids.push({id:'k'+(W.cid++),given:outsiderName(gg,PROV[d.p].r).given,g:gg,age:0})}
     if(h.kids.length<2){const gg=chance(0.5)?'nam':'nữ';h.kids.push({id:'k'+(W.cid++),given:outsiderName(gg,PROV[d.p].r).given,g:gg,age:R(3,12)})}})}
