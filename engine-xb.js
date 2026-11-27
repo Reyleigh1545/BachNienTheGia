@@ -65,7 +65,7 @@ function famMemAdd(k,o){const S=X.S;S.fm=S.fm||[];o=o||{};const cf=mkCfg(k);cons
 function famHas(k,mw){const S=X.S;return (S.fm||[]).some(x=>x.k===k&&x.w>=(mw||1))}
 function projWhy(P){const o=projOf(P.id);if(o&&o.st==='xay')return 'Đang xây';if(o&&(o.st==='xong'))return 'Đã có';
   if(tierNow()<P.tier)return `Cần gia thế ${TIERS[P.tier][0].toLowerCase()} trở lên`;
-  {const need=projAc(P);if(need>0&&wildAcres()<need)return `Cần ${need} mẫu đất trống , đang có ${fmt(wildAcres())}`}
+  {const need=projAc(P);if(need>0&&wildAcres()<need)return `Cần ${need} mẫu đất trống, đang có ${fmt(wildAcres())}`}
   if(P.need==='teacher'&&!alive().some(p=>inClan(p)&&age(p)>=18&&(p.job==='su'||p.tri>=70)))return 'Cần có người làm thầy';
   return ''}
 function projStart(id){const S=X.S;const P=projDef(id);if(!P||projWhy(P))return false;const cost=projCost(P);if(S.money<cost)return false;

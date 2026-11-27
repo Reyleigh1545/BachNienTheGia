@@ -62,7 +62,7 @@ function w_dis(mo){const S=X.S;
   /* chiếu xuống nhà mình */
   const mine=W.dis.find(d=>disActive(d)&&d.provs.includes(S.loc.p));
   if(mine){const D0=DIS[mine.k];const crop=clamp(1-(1-D0.crop)*mine.sev/2,0.2,1);
-    if(!S.disaster||S.disaster.id!==mine.id){if(clanLv()>=5){const rl=mmt(R(6,14));S.money+=rl;log(`Quan địa phương nể dòng họ, cấp ${money(rl)} cứu trợ.`,'gd')}S.disaster={id:mine.id,k:mine.k,wk:mine.k,until:mine.until,sev:mine.sev,crop,provs:mine.provs};log(`${D0.n} , mức ${['','nhẹ','vừa','nặng'][mine.sev]}, ập đến nơi nhà mình ở. ${D0.say}`,'hi');
+    if(!S.disaster||S.disaster.id!==mine.id){if(clanLv()>=5){const rl=mmt(R(6,14));S.money+=rl;log(`Quan địa phương nể dòng họ, cấp ${money(rl)} cứu trợ.`,'gd')}S.disaster={id:mine.id,k:mine.k,wk:mine.k,until:mine.until,sev:mine.sev,crop,provs:mine.provs};log(`${D0.n}, mức ${['','nhẹ','vừa','nặng'][mine.sev]}, ập đến nơi nhà mình ở. ${D0.say}`,'hi');
       if(D0.epi>=0.9&&!S.epi){S.epi=true;S.epiEnd=S.t+R(3,5)}
       const hd=head();if(hd&&mine.sev>=2)enqueue('ev',hd.id,{ev:'w63_dis_'+mine.k,data:{sev:mine.sev}})}
     else S.disaster.until=mine.until}

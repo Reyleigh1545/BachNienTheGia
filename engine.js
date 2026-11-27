@@ -147,7 +147,7 @@ function headBSync(){
     const d=want-cur;
     ['tri','vo','mi','eq'].forEach(k=>{p.cap[k]=Math.max(1,p.cap[k]+d);p[k]=Math.max(0,p[k]+d)});
     p.cap.suc=Math.max(10,p.cap.suc+d);p.suc=clamp(p.suc+d,1,p.cap.suc);
-    if(cur>0&&want>0&&!DRY)log(`Địa vị gia tộc ${d>0?'lên':'xuống'}, uy gia chủ của ${p.given} ${d>0?'thêm':'bớt'} ${Math.abs(d)} mọi chỉ số , nay +${want}.`,d>0?'gd':'hi')
+    if(cur>0&&want>0&&!DRY)log(`Địa vị gia tộc ${d>0?'lên':'xuống'}, uy gia chủ của ${p.given} ${d>0?'thêm':'bớt'} ${Math.abs(d)} mọi chỉ số, nay +${want}.`,d>0?'gd':'hi')
   })}
 let MMCTX=null;
 /* v6.7.0: tiền trong sự kiện theo bảng cố định theo bậc gia thế (bảy bậc). Cỡ việc v: nhỏ 10, vừa 30, lớn 100, đại 300.
@@ -237,7 +237,7 @@ function fx(c,d){
     else if(k==='cfame'){const o=S.fame;cf(v,v>=0?'Kỳ ngộ của gia tộc':'Kỳ ngộ bất lợi cho gia tộc');out.push(['Danh vọng gia tộc',Math.round(S.fame-o)])}
     else if(k==='hung'){const o=S.hung;S.hung=clamp(S.hung+v,0,100);out.push(['Hưng thịnh',Math.round(S.hung-o)])}
     else if(k==='on'){const o=S.on;S.on=clamp(S.on+v,0,100);out.push(['Ổn định',Math.round(S.on-o)])}
-    else if(k==='m'){const ev=MMCTX;const pj=ev&&(ev.pj||(Array.isArray(ev.job)&&ev.job.length===1?ev.job[0]:null));
+    else if(k==='m'){const ev=MMCTX;let pj=ev&&(ev.pj||(Array.isArray(ev.job)&&ev.job.length===1?ev.job[0]:null));if(Array.isArray(pj))pj=pj.includes(c.job)||(c.job==='chu'&&pj.includes(c.bizFrom))?null:pj[0]; /* d.1.5.46: nhiều nghề hợp thì ai đang làm một trong số đó cộng vào nghề đang làm */
       if(pj&&JOBS[pj]&&!(c.job===pj||(c.job==='chu'&&c.bizFrom===pj))){c.pre=c.pre||{};const o=c.pre[pj]||0;c.pre[pj]=clamp(o+v,0,60);out.push(['Thông thạo '+JOBS[pj].n.toLowerCase(),Math.round((c.pre[pj]-o)*10)/10])} /* d.1.5.28 (chủ dự án 25/11): sự kiện của nghề khác không cộng thông thạo vào nghề đang làm; người chưa theo nghề thì cất vào vốn nghề (setJob lấy ra) */
       else{const o=c.m;c.m=clamp(c.m+v,0,120);out.push(['Thông thạo',Math.round((c.m-o)*10)/10])}}
     else if(k==='merit'){c.merit=Math.max(0,c.merit+v*(1+tsum(c,'merit')+(v>0&&rule('thuongvo')?0.2:0)));meritFold(c);out.push(['Chiến công',v])}
@@ -640,7 +640,7 @@ function grantTitle(c,n,why){
 function tuocCheck(c,why,fromGrant){if(!c||c.dead!=null)return false;
   const cur=c.tuoc||0;let to=cur;for(let k=5;k>cur;k--)if((c.cong||0)>=TUOC_CONG[k]){to=k;break}
   if(to<=cur){if(!fromGrant)return false;const nx=Math.min(5,cur+1);
-    tuocMsg=cur>=5?' Triều đình ghi thêm công.':` Triều đình ghi công , công trạng ${Math.round(c.cong)}/${TUOC_CONG[nx]}, chưa đủ để phong ${TUOC[nx]}.`;
+    tuocMsg=cur>=5?' Triều đình ghi thêm công.':` Triều đình ghi công, công trạng ${Math.round(c.cong)}/${TUOC_CONG[nx]}, chưa đủ để phong ${TUOC[nx]}.`;
     log(`Triều đình ghi công ${nameOf(c)}${why?' vì '+why:''}, công trạng ${Math.round(c.cong)}.`,'gd');return false}
   c.tuoc=to;c.tuocPrev=to;fiefSync();
   S.hung=clamp(S.hung+4,0,100);c.fame+=30*to;cf(15*to,'Được phong tước');
@@ -1801,7 +1801,7 @@ function officePopup(c){
   cand.forEach(({tid,T,key})=>{const st=offState(key);
     const nm=seatName(key);const ph=phTxt(T);
     const spec=mil?{vo:1,tri:0.4,eq:0.4}:{tri:1,eq:0.6,fame:0.4};
-    if(st.vac){const cd=seatCands(key,st);const best=cd.reduce((m,x)=>Math.max(m,x.ab),0);const mine=Math.round(myAb(c)+(c.cong||0)/10);const tgt=clamp(Math.round(55+(mine-best)*1.2-promoPen(c)+(oh?5*oh.lv:0)-(ofe?5:0)),10,90);
+    if(st.vac){const cd=seatCands(key,st);const best=cd.reduce((m,x)=>Math.max(m,x.ab),0);const mine=Math.round(myAb(c)+(c.cong||0)/10);const tgt=clamp(Math.round(55+(mine-best)*1.2-promoPen(c)-(oh?5*oh.lv:0)+(ofe?5:0)),10,90); /* d.1.5.46: tgt là ĐỘ KHÓ của prob(): người tiến cử làm giảm, kẻ thù làm tăng (bản .44 gắn ngược) */
       opts.push({l:`Xin xét ${nm}, ${ph}, đang trống, ${cd.length} người cùng xin`,r:[spec,tgt],y:c=>{if(!assignPost(c,key))return 'Ghế đã có người khác.';delete st.cd;return `Được bổ nhiệm ${nm}!`+fx(c,{fame:8+T.r*4,tam:8})},n:c=>tryWait(c,key,rivalNote(c,key))+fx(c,{tam:-4})})}
     else{const cm=seatCmp(c,st);
       const p0=cm.out?clamp(0.12+cm.dt/80+cm.dc/300+(st.liem<35?0.1:0)+((qtOf(c).fav||0)/400),0.08,0.7):clamp(0.04+cm.dt/200,0.02,0.2);const p=clamp(p0*(1-promoPen(c)/100)+(oh?0.05*oh.lv:0)-(ofe?0.03:0),0.01,0.75);
@@ -2371,7 +2371,7 @@ function askPopup(c,t){
 function conflictPopup(it){
   const a=P(it.a),b=P(it.b),h=head();if(!a||!b||!inClan(a)||!inClan(b)||!h)return setTimeout(nextPopup,0);
   const k=KIN_N[kin(a,b)];
-  choicePopup(h,'Gia sự',`${a.given} và ${b.given} bất hòa`,`${esc(nameOf(a))} , ${persWord(a)}, và ${esc(nameOf(b))}, ${persWord(b)}, là ${k}, mâu thuẫn ngày càng sâu. Người trong nhà xì xào.`,[
+  choicePopup(h,'Gia sự',`${a.given} và ${b.given} bất hòa`,`${esc(nameOf(a))}, ${persWord(a)}, và ${esc(nameOf(b))}, ${persWord(b)}, là ${k}, mâu thuẫn ngày càng sâu. Người trong nhà xì xào.`,[
     {l:'Gọi cả hai ra hòa giải',r:[{eq:0.7,khau:0.6},45],y:x=>{addRel(a,b,35);S.on=clamp(S.on+3,0,100);return 'Hai người bắt tay làm hòa.'},n:x=>{addRel(a,b,-5);return 'Hòa giải không thành, còn giận thêm.'}},
     {l:'Phân xử nghiêm, bắt nhận lỗi',f:x=>{const lo=subOf(a,'ht')<subOf(b,'ht')?a:b;addRel(a,b,15);addStat(lo,'tam',-10);S.on=clamp(S.on+4,0,100);return `${esc(lo.given)} bị bắt nhận lỗi, ấm ức nhưng phải nghe.`}},
     {l:'Mặc kệ',f:x=>{addRel(a,b,-5);S.on=clamp(S.on-3,0,100);return 'Chuyện trong nhà cứ âm ỉ.'}}]);
