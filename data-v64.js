@@ -236,8 +236,10 @@ D.build64=function(){
 D.unitNat=u=>{const U=UNITS[u];return U?D.PROV[U.p].nat:'trieu'};
 D.seatKeys=function(tid,nat){
   const T=D.OFFICES[tid];if(!T||!T.units)return [];
-  const n=nat||(D.curNat?D.curNat():'trieu');if(n!=='trieu'&&(T.r||0)>7)return [];
-  const out=[];T.units.forEach(u=>{if(D.unitNat(u)!==n)return;for(let i=0;i<T.k;i++)out.push(`${tid}|${u}|${i}`)});return out;
+  const n=nat||(D.curNat?D.curNat():'trieu');
+  /* d.1.5.60 (chủ dự án 27/11: "tiểu quốc cũng đủ 9 phẩm như Đại Nguyễn, chỉ ít chức vụ hơn … ít hơn dựa theo số khu vực"): ghế địa phương vốn theo số khu; ghế trung ương nhiều suất thì giảm theo tỉ lệ số khu so với 16 */
+  const soKhu=Object.keys(D.PROV).filter(p=>D.PROV[p].nat===n).length;
+  const out=[];T.units.forEach(u=>{if(D.unitNat(u)!==n)return;const U=UNITS[u];const k=U&&(U.t==='K'||U.t==='B')?Math.max(1,Math.min(T.k,Math.round(T.k*soKhu/16))):T.k;for(let i=0;i<k;i++)out.push(`${tid}|${u}|${i}`)});return out;
 };
 (function vqUnits(){
   const KINH={lang_bo:'soc_do',van_dao:'van_dao',lam_quoc:'cam_thanh',sa_quoc:'sa_thanh'};const them={K:[],B:[],P:[],F:[],C:[],H:[],A:[],G:[]};

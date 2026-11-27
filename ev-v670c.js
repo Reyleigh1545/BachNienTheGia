@@ -27,7 +27,7 @@ function memClearQ(){const p=(S().proj||[]).find(x=>x.id==='quyennap');if(p)p.st
 const nobles=c=>clan().some(p=>(p.job==='quan'&&p.lv>=4)||(p.tuoc||0)>0);
 return [
 /* ===================== LUẬT: HÌNH SỰ ===================== */
-LW({id:'lw_02',t:'Con em đánh người',tier:[0,6],ms:1,c:hasKid,
+LW({id:'lw_02',t:'Con em đánh người',tier:[0,6],ms:1,c:()=>false /* d.1.5.57: thay bằng lw_02b, lw_02c nêu đúng đứa trẻ và giao đúng người */,
  x:c=>`Con cháu nhà ${N(c)} đánh bạn học đến chảy máu đầu. Nhà người bị đánh sang đòi công đạo, miệng nói đến quan.`,
  o:c=>{const k=kid(c);return [
   pay('Bồi thường thuốc thang, xin lỗi',15,{f:c=>'Hai nhà làm lành. Đứa con bị phạt quỳ trước bàn thờ.'+fx(c,{money:-m(15),tam:-1})}),

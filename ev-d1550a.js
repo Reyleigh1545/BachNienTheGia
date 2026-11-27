@@ -75,16 +75,20 @@ function year(){if(!ensure())return;const V=S().vq;NATS.forEach(n=>namTriVi(V[n]
   const cn=d.cong.find(x=>!x.dead&&!x.wed&&x.age>=16&&x.age<=24);if(cn&&G.tierIdx()>=3&&(S().vqPmT||-1e9)<=S().t&&G.chance(0.12)){const trai=G.alive().find(c=>G.inClan(c)&&!c.away&&c.g==='nam'&&!G.married(c)&&c.spouse==null&&G.age(c)>=18&&G.age(c)<=30&&((c.degree||0)>=1||(c.tri||0)>=95||(c.vo||0)>=95));if(trai){S().vqPmT=S().t+120;G.enqueue('ev',trai.id,{ev:'vq_phu_ma',data:{nat,cn:cn.n}})}}}
 /* khung "Vương triều" ở trang Thế giới */
 function panel(p){const nat=window.D.PROV[p]&&window.D.PROV[p].nat;if(!NATS.includes(nat))return '';const V=ensure();if(!V)return '';const d=V[nat];const e=G.esc;
+  /* d.1.5.60: chỉ hiện điều đã biết. Ở nước ấy thì biết vua; ở từ một năm biết vương tử; từ ba năm biết quyền quý, thế gia; người nhà làm quan ở nước ấy mới rõ tài, chí và phe. Người đã gặp qua sự kiện thì luôn biết */
+  const B=window.BN_BIET;const daO=!B||B.daO(nat),nam=B?B.namO(nat):99;const quen=x=>!B||B.quenNguoi(nat,x.n);const quanCo=!B||B.coQuan(nat,2);const quanCao=!B||B.coQuan(nat,4);
+  const tuL=d.tu.filter(t=>nam>=1||quen(t)),quyL=d.quy.filter(x=>nam>=3||quen(x)),giaL=d.gia.filter(x=>nam>=3||quen(x.chu)),congL=d.cong.filter(x=>nam>=1||quen(x)),pheL=quanCo?d.phe:d.phe.filter(x=>quen(x.chu));
+  if(!daO&&!tuL.length&&!quyL.length&&!giaL.length&&!congL.length&&!pheL.length)return '';
   const who=x=>`<b>${e(x.n)}</b>, ${x.age} tuổi`;const taiw=v=>v>=80?'rất cao':v>=65?'cao':v>=45?'vừa':'thấp';
-  const tu=d.tu.length?d.tu.map(t=>{const f=d.phe.filter(x=>x.tu===t.n);return `<li>${who(t)}${t.age>=16?` · tài ${taiw(t.tai)}, mưu ${taiw(t.muu)}${duTranh(t)?' · <b class="down">có chí tranh ngôi</b>':''}${f.length?' · được '+f.map(x=>e(x.n)).join(', ')+' phò':''}`:''}</li>`}).join(''):'<li class="muted">Chưa có vương tử.</li>';
+  const tu=tuL.length?tuL.map(t=>{const f=d.phe.filter(x=>x.tu===t.n);return `<li>${who(t)}${quanCao&&t.age>=16?` · tài ${taiw(t.tai)}, mưu ${taiw(t.muu)}${duTranh(t)?' · <b class="down">có chí tranh ngôi</b>':''}${f.length?' · được '+f.map(x=>e(x.n)).join(', ')+' phò':''}`:''}</li>`}).join(''):'<li class="muted">Chưa nghe gì về các vương tử.</li>';
   return `<section class="card" style="grid-column:1/-1"><span class="eyebrow">Vương triều ${e(d.ten)} · niên hiệu ${e(d.nien)} · đời vua thứ ${d.doi}</span><h3>Quốc vương ${e(d.vua.n)}, ${d.vua.age} tuổi</h3>
    <p class="kvline">Đức ${taiw(d.vua.duc)} · Uy ${taiw(d.vua.uy)} · ${d.vua.nghi>=60?'đa nghi':d.vua.nghi>=35?'hay xét nét':'rộng lòng'}${d.tranh?' · <b class="down">các vương tử đang tranh ngôi</b>':''}</p>
    <p class="note">Vương hậu ${who(d.hau)}${d.phi.length?' · Phi: '+d.phi.map(x=>e(x.n)).join(', '):''}</p>
    <h4>Vương tử</h4><ul class="plain">${tu}</ul>
-   <p class="kvline">Vương nữ: ${d.cong.length?d.cong.map(x=>e(x.n)+' '+x.age+' tuổi').join(', '):'chưa có'}</p>
-   <h4>Quyền quý</h4><ul class="plain">${d.quy.map(q=>`<li><b>${e(q.n)}</b>, ${e(q.tuoc)}, ${q.age} tuổi</li>`).join('')}</ul>
-   <h4>Thế gia</h4><ul class="plain">${d.gia.map(g=>`<li><b>${e(g.sur)} Gia</b> ở ${e(window.D.PROV[g.p].n)} · gia chủ ${e(g.chu.n)} · thế ${taiw(g.the)}</li>`).join('')}</ul>
-   <h4>Phe trong triều</h4><ul class="plain">${d.phe.map(f=>`<li><b>${e(f.n)}</b> · đứng đầu ${e(f.chu.n)} · thế ${taiw(f.the)}${f.tu?' · phò '+e(f.tu):''}</li>`).join('')}</ul>
+   <p class="kvline">Vương nữ: ${congL.length?congL.map(x=>e(x.n)+' '+x.age+' tuổi').join(', '):'chưa nghe gì'}</p>
+   <h4>Quyền quý</h4><ul class="plain">${quyL.length?'':'<li class="muted">Chưa nghe gì.</li>'}${quyL.map(q=>`<li><b>${e(q.n)}</b>, ${e(q.tuoc)}, ${q.age} tuổi</li>`).join('')}</ul>
+   <h4>Thế gia</h4><ul class="plain">${giaL.length?'':'<li class="muted">Chưa nghe gì.</li>'}${giaL.map(g=>`<li><b>${e(g.sur)} Gia</b> ở ${e(window.D.PROV[g.p].n)} · gia chủ ${e(g.chu.n)} · thế ${taiw(g.the)}</li>`).join('')}</ul>
+   <h4>Phe trong triều</h4><ul class="plain">${pheL.length?'':'<li class="muted">Chưa nghe gì.</li>'}${pheL.map(f=>`<li><b>${e(f.n)}</b> · đứng đầu ${e(f.chu.n)} · thế ${taiw(f.the)}${f.tu?' · phò '+e(f.tu):''}</li>`).join('')}</ul>
    ${d.hist.length?`<p class="kvline muted">${d.hist.slice(0,3).map(e).join(' · ')}</p>`:''}</section>`}
 window.BN_VQ={NATS,KINH,bind(g){G=g},ensure,apTen,year,vua,natNha,duTranh,suc,noiNgoi,namTriVi,panel};
 /* sự kiện gắn riêng với triều Đại Nguyễn (hoàng tộc, họ Phạm, mưu đại sự…): nhà sống ở tiểu quốc thì không ra */

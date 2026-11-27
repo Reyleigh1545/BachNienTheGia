@@ -59,7 +59,7 @@ function sheetHTML(c){const S=X.S;
   if(a>=6&&!c.away&&!c.brk){const pf=prefFocus(c);const side=sideInc(c,true);
     h+=`<div class="dsec"><h3>${I('focus','Thời gian rảnh')}</h3><select class="sel" id="focusSel">${Object.entries(FOCUS).filter(([k,F])=>(k!=='giup'||a>=10)&&(!F.side||a>=12)&&(a>=12||['nghi','hoc','vo','ren','cam','phat','giup'].includes(k))).map(([k,F])=>`<option value="${k}" ${c.focus===k?'selected':''} ${affordFocus(c,k)||c.focus===k?'':'disabled'}>${F.n}${k===pf?' · ý thích':''} · ${F.side?'kiếm thêm':F.cost>0?money(focusCost(c,k))+'/tháng':'miễn phí'}</option>`).join('')}</select>
     <div class="kvline muted">${c.focusUntil&&c.focusUntil>S.t?`Theo sắp đặt, còn giữ khoảng ${c.focusUntil-S.t} tháng rồi quay về ${esc(FOCUS[pf].n.toLowerCase())}`:`Tự chọn theo ý mình. Ép theo việc khác thì giữ được khoảng ${focusHold(c)} tháng`}${side?` · kiếm thêm ${money(side)} tháng này`:FOCUS[c.focus].side?' · tháng này không có việc':''}</div>${loveNow(c)?`<div class="kvline up small">Đang làm việc mình yêu thích: chỉ số lên nhanh hơn 20%, tâm trạng cao hơn 3${FOCUS[c.focus].side?', kiếm thêm hơn 12%':''}.</div>`:''}</div>`}
-  if(a>=6&&a<18){const lvl=a<10?1:a<14?2:3;const sc=SCHOOL[lvl][c.school];h+=`<div class="dsec"><h3>Học đường</h3><div class="acts"><span class="kvline">${sc?esc(sc.n)+(sc.fee?` · ${money(sc.fee)}/tháng`:''):'Ở nhà'}</span><button class="btn small" data-do="school">Đổi trường</button></div></div>`}
+  if(a>=6&&a<18){const lvl=a<10?1:a<14?2:3;const sc=SCHOOL[lvl][c.school];h+=`<div class="dsec"><h3>Học đường</h3><div class="acts"><span class="kvline">${sc?(o=>esc(sc.n)+(o&&o.tro?`, trọ học ở ${o.noi===2?'thành':'trấn'}`:'')+(sc.fee+(o&&o.tro||0)?` · ${money(sc.fee+(o&&o.tro||0))}/tháng`:''))(X.EC.truongO(c.school,lvl)):'Ở nhà'}</span><button class="btn small" data-do="school">Đổi trường</button></div></div>`}
   if(a>=16){
     h+=`<div class="dsec"><h3>Hôn nhân</h3>`;
     const sp=spouseOf(c);
@@ -162,10 +162,10 @@ function pageCosngoi(){const S=X.S;
   const rows=(o,cls)=>Object.entries(o||{}).filter(([,v])=>v).map(([k,v])=>`<dt>${FLOWN[k]||k}${k==='thoi'?`<br><small class="muted">${habWho()||'không rõ'}</small>`:''}</dt><dd class="num ${cls}">${money(v)}</dd>`).join('');
   const h=S.hh[main];const H=HOMES[h.home];const nx=HOMES[h.home+1];const e=hhExpense(main);
   const mainCard=`<section class="card"><span class="eyebrow">Nhà chính · gia tộc lo</span><h2>${esc(h.name)} · ${H.n}</h2><div class="homeart">${homeSVG(h.home)}</div>
-    <p class="kvline" style="margin-top:8px">${hhCount(main)}/${H.cap} người · bảo dưỡng ${money(H.upkeep)}/tháng · ăn tiêu cả nhà ${money(e.total)}/tháng</p>
+    <p class="kvline" style="margin-top:8px">${hhCount(main)}/${H.cap} người · bảo dưỡng ${money(X.EC.homeUp(h.home))}/tháng · ăn tiêu cả nhà ${money(e.total)}/tháng</p>
     <div class="field" style="margin-top:8px"><label for="life_${main}">Mức sống</label><select class="sel" id="life_${main}" data-life="${main}">${LIFE.map(([n,c],i)=>`<option value="${i}" ${h.life===i?'selected':''}>${n} · ${money(c)}/người/tháng</option>`).join('')}</select></div>
     ${h.life<exp?`<p class="kvline down">Dưới mức ${LIFE[exp][0].toLowerCase()} của gia thế, cả nhà mất mặt</p>`:''}
-    ${nx?`<button class="btn" data-build="${main}" style="margin-top:8px;width:100%" ${S.money<nx.cost?'disabled':''}><strong>Xây ${nx.n}</strong><small>${money(nx.cost)} công quỹ · ở được ${nx.cap} người · danh vọng +${nx.fame}</small></button>`:''}</section>`;
+    ${nx?`<button class="btn" data-build="${main}" style="margin-top:8px;width:100%" ${S.money<X.EC.homeCost(h.home+1)?'disabled':''}><strong>Xây ${nx.n}</strong><small>${money(X.EC.homeCost(h.home+1))} công quỹ · ở được ${nx.cap} người · danh vọng +${nx.fame}</small></button>`:''}</section>`;
   const fund=`<section class="card"><span class="eyebrow">${I('money','Công quỹ')}</span><h2>${money(S.money)}</h2>
     <p class="kvline muted">Tháng ${S.flow?'trước':'tới'}: ${L.net!=null?`<b class="num ${L.net<0?'down':'up'}">${L.net>=0?'+':''}${money(L.net)}</b>`:''}</p>
     <dl class="kv">${rows(L.in,'up')}<dt><b>Tổng thu</b></dt><dd class="num"><b>${money(sum(L.in))}</b></dd>${rows(L.out,'down')}<dt><b>Tổng chi</b></dt><dd class="num"><b>${money(sum(L.out))}</b></dd></dl>
@@ -262,8 +262,8 @@ function pageBando(){const S=X.S;const mapProv=X.mapProv;
   const p=mapProv&&PROV[mapProv]?mapProv:S.loc.p;
   return `<div class="grid2"><section class="card mapcard48"><div class="mapwrap mapwrap48">${mapSVG(p)}</div>${S.journey?`<p class="note"><b>Cả nhà đang trên đường tới ${esc(PROV[S.journey.to].n)}</b>, còn khoảng ${S.journey.left} tháng.</p>`:''}
    <p class="note" style="margin-top:6px">Màu đất và màu chấm là nước đang cai quản. Vòng nét đứt là khu đang bị chiếm. Vòng đỏ: tiền tuyến. Đường đỏ, cam: căng thẳng đang leo thang. Vòng vàng: thiên tai. Đường nét đứt là đường biển. Đường đỏ đậm là lộ trình tới nơi đang chọn. Tam giác đỏ là ổ cướp mạnh, ô vuông tím là võ lâm, danh gia, bộ tộc.</p></section>
-   <section class="card">${w_provPanel(p)}</section>${window.BN_TL?window.BN_TL.panel(p):''}${window.BN_CD?window.BN_CD.panel(p):''}${window.BN_TK?window.BN_TK.panel(p):''}
-   <section class="card" style="grid-column:1/-1">${w_situation()}</section>${window.BN_VQ?window.BN_VQ.panel(p):''}</div>`}
+   <section class="card">${w_provPanel(p)}</section>${window.BN_TL?window.BN_TL.panel(p):''}${window.BN_TK?window.BN_TK.panel(p):''}
+   ${window.BN_VQ?window.BN_VQ.panel(p):''}</div>`}
 function pageKinhdoanh(){const S=X.S;
   const can=alive().filter(p=>!p.away&&age(p)>=16).flatMap(p=>Object.keys(BIZ).filter(t=>canOwn(p,t)).map(t=>[p,t]));
   const rows=S.biz.map(b=>{const B=BIZ[b.type],L=B.lv[b.lv];const o=P(b.owner);const k=b.last||bizCalc(b);const si=bizStaffInfo(b);return {b,B,L,o,k,si}});
@@ -315,7 +315,7 @@ function ruleMonth(){const S=X.S;
   if(rule('camxa'))for(const id in S.hh){if(S.hh[id].life>3)S.hh[id].life=3}
   if(rule('nghiadien')){if(S.lastNet>0)S.money-=Math.round(S.lastNet*0.05);branches().forEach(id=>{const h=S.hh[id];if(h.money<0&&S.money>-h.money+mm(2)){S.money+=h.money;log(`Nghĩa điền giúp ${h.name} trả ${money(-h.money)} nợ.`,'gd');h.money=0}})}}
 function npCardInfo(n){const p=npPseudo(n);return {id:n.id,np:1,g:n.g,age:age(p),dead:n.ok===0,name:n.n,tuoc:'',sub:(n.vaiTxt||'người quen'),inc:null,incTxt:'',av:avatarSVG(p,76),title:n.nghe||''}}
-function npPseudo(n){const S=X.S;const w=String(n.n).split(' ');return {id:n.id,surname:w[0],given:w.slice(1).join(' ')||w[0],g:n.g,born:n.born,job:n.job||'none',lv:n.lv||0,tam:50,tuoc:0,dead:n.ok===0?(n.dead==null?S.t:n.dead):null,flags:{},_np:1}}
+function npPseudo(n){const S=X.S;const w=String(n.n).split(' ');return {id:n.id,surname:w[0],given:w.slice(1).join(' ')||w[0],g:n.g,born:n.born,job:n.job||'none',lv:n.lv||0,tam:50,tuoc:0,dead:n.ok===0?(n.dead==null?S.t:n.dead):null,flags:{},_np:1,_nghe:n.nghe,_vai:n.vai}}
 function npSum(n){const t=n.st;return t?[['trí',t.tri],['võ',t.vo],['mị',t.mi],['EQ',t.eq]].filter(x=>x[1]!=null).map(x=>x[0]+' '+Math.round(x[1])).join(', '):''}
 function npCard(n,solo){const p=npPseudo(n);const a=age(p);const sub=(n.vaiTxt||'người quen');return `<button type="button" class="evcard npcard${solo?' solo':''}" data-ncard="${n.id}" title="Bấm để xem người này${n.nghe?': '+esc(n.nghe):''}"><span class="evav">${avatarSVG(p,solo?72:52)}<span class="evage">${a}</span></span><span class="evtx"><b>${esc(n.n)}</b><small>${esc(sub)}</small></span></button>`}
 function npSheet(id){const S=X.S;const n=npGet(id);if(!n||typeof document==='undefined')return;const old=document.getElementById('npov');if(old)old.remove();
@@ -537,7 +537,10 @@ function kidWish(c){const S=X.S;const a=age(c);let w=c.kidW==null?55:c.kidW;cons
   if(n>=kidCap())w-=10+Math.round(30*obey(c)/100);if(rule('dongcon'))w+=8;
   return clamp(Math.round(w),0,100)}
 function kidAdj(c,v,mo){const S=X.S;const sp=spouseOf(c);[c,sp].forEach(x=>{if(x)x.kidAdj={v,until:S.t+(mo||36)}})}
-function kidLearn(c,a){const S=X.S;if(a<6||a>=18||(c.away&&c.away.type!=='follow'))return;const lvl=a<10?1:a<14?2:3;const sc=SCHOOL[lvl][c.school];
+function kidLearn(c,a){const S=X.S;if(a<6||a>=18||(c.away&&c.away.type!=='follow'))return;const lvl=a<10?1:a<14?2:3;
+  /* d.1.5.61: dời nhà mà nơi mới không còn cơ sở đang học thì chọn lại */
+  if(c.school&&c.school!=='nha'&&!S.journey&&!c.away&&X.EC.truongO&&!X.EC.truongO(c.school,lvl)){const cu=c.school;X.EC.schoolAuto(c,lvl);if(cu!==c.school)X.log(`Nơi ở mới không có ${((SCHOOL[lvl][cu]||{}).n||'trường cũ').toLowerCase()}, ${c.given} chuyển sang ${((SCHOOL[lvl][c.school]||{}).n||'ở nhà').toLowerCase()}.`)}
+  const sc=SCHOOL[lvl][c.school];
   if(c.school!=='nha'&&!(sc&&sc.chore))c.eduY=(c.eduY||0)+1/12;
   /* trẻ ở nhà vẫn lớn khôn nhờ việc đời, nhờ người lớn trong nhà (v6.3.4: phần lớn khôn tự nhiên đã tính vào tiềm năng, chỗ này chỉ còn phần học hỏi thêm) */
   if(!sc||c.school==='nha'||sc.chore){growStat(c,'tri',0.7);growStat(c,'eq',0.6);growStat(c,'suc',0.6)}

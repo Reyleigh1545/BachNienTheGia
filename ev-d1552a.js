@@ -14,7 +14,7 @@ const soiC=c=>soi((H&&H.placeOf(c))||S().loc.p);
 const soiTxt=v=>v>=0.85?'rất nghiêm, tai mắt của vua có ở khắp nha môn':v>=0.6?'nghiêm, tuần án qua lại luôn':v>=0.42?'vừa, thỉnh thoảng có người về tra':'lơi lỏng, trời cao vua xa';
 /* ---------- phe quan: người thật ---------- */
 const ghe=key=>{const T=H.seatTm(key),w=H.seatWh(key);return T&&w?{T,w}:null};
-function trongNuoc(nat,minR){const out=[];const off=S().off||{};for(const key in off){const o=off[key];if(!o||o.vac||o.holder)continue;const g=ghe(key);if(!g||g.T.mil||g.T.tag==='y'||(g.T.r||0)<minR||natOf(g.w.p)!==nat)continue;out.push({key,o,r:g.T.r||0,p:g.w.p})}return out}
+function trongNuoc(nat,minR){const out=[];const off=S().off||{};for(const key in off){const o=off[key];if(!o||o.vac||o.holder||o.pham)continue;const g=ghe(key);if(!g||g.T.mil||g.T.tag==='y'||(g.T.r||0)<minR||natOf(g.w.p)!==nat)continue;out.push({key,o,r:g.T.r||0,p:g.w.p})}return out}
 function thanhVien(k,nat){return trongNuoc(nat,4).filter(x=>x.o.f===k).sort((a,b)=>b.r-a.r||(b.o.ab||0)-(a.o.ab||0))}
 const dau=(k,nat)=>thanhVien(k,nat)[0]||null;
 /* triều đình mỗi nước phải có đủ người thật ở ghế cao: tạo một lần, ưu tiên kinh đô, mỗi phe ít nhất ba người */
@@ -59,7 +59,7 @@ function year(){if(!H||!S()||!S().dyn)return;const nha=natOf(S().loc.p);const C=
   rieng(nha);quyenQuy(nha);theLuc();
 }
 /* người cầm việc tra xét: một quan án sát đang ngồi ghế thật, ưu tiên cùng khu */
-function nguoiTra(c,nat){const p=H.placeOf(c);const ks=H.DX.seatKeys('ansat',nat).filter(k=>k!==c.seat);if(!ks.length)return null;const key=ks.find(k=>(H.seatWh(k)||{}).p===p)||ks[0];let o=H.offState(key);if(o.holder)return null;if(o.vac){H.mkHolder(H.seatTm(key),o);o.vac=false;o.since=S().t;delete o.why}return {key,o}}
+function nguoiTra(c,nat){const p=H.placeOf(c);const ks=H.DX.seatKeys('ansat',nat).filter(k=>k!==c.seat);if(!ks.length)return null;const key=ks.find(k=>(H.seatWh(k)||{}).p===p)||ks[0];let o=H.offState(key);if(o.holder||o.pham)return null;if(o.vac){H.mkHolder(H.seatTm(key),o);o.vac=false;o.since=S().t;delete o.why}return {key,o}}
 /* việc riêng đến với từng quan trong nhà */
 function rieng(nha){for(const c of quanNha()){if((c.flags.cdT||-1e9)>S().t)continue;const q=H.qtOf(c),r=bacGhe(c),s=soiC(c);const cq=natOf(H.placeOf(c));
   const L=[];
@@ -82,7 +82,7 @@ function quyenQuy(nha){const L=[];const s=S();
     else if(buon){const m2=Math.min(s.money,v);s.money-=m2;G.log(`${x.ten} cho người chặn mối hàng của ${buon.given}, thiệt ${G.fmtMoney(m2)}.`,'hi')}
     else{s.fame-=3;G.log(`${x.ten} buông lời chê nhà mình, thiên hạ nghe theo.`,'hi')}}}
 /* quan địa phương, hoàng thân và thế lực: quan tham che cho cướp, quan giỏi đè cướp, thân vương có ý riêng ngầm nuôi */
-function theLuc(){const T=window.BN_TL;if(!T)return;const theo={};for(const key in (S().off||{})){const o=S().off[key];if(!o||o.vac||o.holder)continue;const w=H.seatWh(key);if(w)(theo[w.p]=theo[w.p]||[]).push({key,o})}
+function theLuc(){const T=window.BN_TL;if(!T)return;const theo={};for(const key in (S().off||{})){const o=S().off[key];if(!o||o.vac||o.holder||o.pham)continue;const w=H.seatWh(key);if(w)(theo[w.p]=theo[w.p]||[]).push({key,o})}
   const vg=(S().dyn.fam&&S().dyn.fam.vuong)||[];
   for(const f of T.song()){if(T.LOAI[f.loai].nh!=='cuop')continue;const L=theo[f.p]||[];const tham=L.find(x=>(x.o.liem||50)<28);const giam=L.find(x=>(x.o.liem||50)>=65&&(x.o.ab||60)>=70);
     if(tham){f.baoChe={n:tham.o.n,key:tham.key};f.pow=cl(f.pow+3,0,100)}else delete f.baoChe;
