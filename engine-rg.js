@@ -96,7 +96,7 @@ function rgFamilyYear(){const L=alive().filter(p=>inClan(p)&&!p.inLaw);const don
     const sibs=L.filter(q=>q.id!==p.id&&q.dead==null&&age(q)>=20&&!q.away&&(q.parents||[]).some(x=>(p.parents||[]).includes(x))&&(q.purse||0)>mm(25));
     if(!sibs.length)continue;const q=pick(sibs);const w=rgGet('p:'+q.id,'p:'+p.id,'anh_em')+20;
     if(done[p.id])continue;done[p.id]=1;
-    if(w>=25&&chance(0.4)){const v=Math.round(mm(8));q.purse-=v;p.purse=(p.purse||0)+v;rgSet('p:'+q.id,'p:'+p.id,'anh_em',6,'giúp lúc khó');rgSet('p:'+p.id,'p:'+q.id,'anh_em',10,'được giúp lúc khó');log(`${q.surname} ${q.given} bớt tiền riêng giúp ${p.given} lúc túng thiếu (anh chị em).`,'gd')}
+    if(w>=25&&chance(0.4)){const v=Math.round(mm(8));q.purse-=v;p.purse=(p.purse||0)+v;rgSet('p:'+q.id,'p:'+p.id,'anh_em',6,'giúp lúc khó');rgSet('p:'+p.id,'p:'+q.id,'anh_em',10,'được giúp lúc khó');log(`${q.surname} ${q.given} bớt tiền riêng giúp ${p.given} lúc túng thiếu.`,'gd')}
     else if(w<5&&chance(0.3)){rgSet('p:'+p.id,'p:'+q.id,'anh_em',-6,'bị làm ngơ lúc khó');log(`${p.given} xin giúp mà ${q.given} làm ngơ, tình anh chị em thêm nguội.`)}}}
 /* ---------- tình duyên: lập lịch để chắc chắn xảy ra (d9.12; kế hoạch mục 3.6). Luật mục 3: mở đầu chỉ cho người 18 đến 25 tuổi, có tài, có đức, dễ rung động tùy tính cách (romOk, romP trong engine). Trước đây chỉ trông vào bốc ngẫu nhiên nên 84 năm có 0 mối tình ---------- */
 function romYear(){const s=S();const open=G.ROM_OPEN().filter(id=>X.EVMAP[id]&&/^tinh_(hoi_xuan|thu_tinh|thanh_mai|tieu_thu)$/.test(id));if(!open.length)return;
@@ -116,7 +116,7 @@ function taxPolicy(){const t=taxS(),s=S();if(t.until>s.t)return;const d=s.dyn||{
 function taxCollect(){const t=taxS(),s=S();if(!X.S||!s.money&&s.money!==0)return;const base=taxBase();const due=Math.round(base*(POLF[t.pol]||1))+Math.round((t.owed||0)*1.2);
   if(due<=0){t.hist.push({y:Math.floor(s.t/12),due:0,pol:t.pol});t.owed=0;if(t.pol==='mien')log('Năm nay triều đình miễn thuế, nhà không phải nộp.','gd');return}
   const pay=Math.min(due,Math.max(0,s.money));s.money-=pay;t.owed=due-pay;t.hist.push({y:Math.floor(s.t/12),due,pay,pol:t.pol,base});if(t.hist.length>8)t.hist.shift();
-  log('Thuế mùa thu ('+POLN[t.pol]+'): nộp '+X.money(pay)+(t.owed>0?', còn nợ '+X.money(t.owed)+' (năm sau tính thêm 20%)':'')+(taxEx()>0.01?'; nhà có phẩm tước được miễn giảm '+Math.round(taxEx()*100)+'%':'')+'.','gd');
+  log('Thuế mùa thu, '+POLN[t.pol]+': nộp '+X.money(pay)+(t.owed>0?', còn nợ '+X.money(t.owed)+', năm sau tính thêm 20%':'')+(taxEx()>0.01?'; nhà có phẩm tước được miễn giảm '+Math.round(taxEx()*100)+'%':'')+'.','gd');
   if(t.owed>0)X.fn&&0}
 function taxYear(){taxPolicy();const s=S();/* quan huyện lạm thu: người làm quan thật ở sổ (vai quan_huyen) có tham thì đặt thuế phụ */
   if(!s.biz&&!G.tierIdx())return;const lo=G.localOfficer?G.localOfficer('trihuyen'):null;/* d9.12.65: chỉ khi quan huyện thật đang ngồi ghế ở tỉnh nhà và không thanh liêm (liêm dưới 50) */if(lo&&lo.st.liem<50&&chance(0.07+(50-lo.st.liem)/400+(s.war?0.05:0))&&X.EVMAP.thu_lam_thu&&G.tierIdx()>=1){const h=alive().find(p=>p.id===s.head);if(h)enqueue('ev',h.id,{ev:'thu_lam_thu',data:{}})}}

@@ -233,7 +233,7 @@ CD({id:'cd_34',t:'Lễ nhận sắc tước',c:c=>(c.tuoc||0)>=1,age:[30,90],ms:
   pay('Làm lễ vừa phải',30,{f:c=>'Lễ đủ phép, không phô trương. Quan khách hài lòng.'+fx(c,{money:-m(30),cfame:3})}),
   {l:'Làm lễ đơn giản, quyên số tiền còn lại cho dân nghèo',c:()=>G.money()>=m(10),f:c=>'Mọi người khen nhà biết sống.'+fx(c,{money:-m(10),cfame:5,fame:3})}]}),
 CD({id:'cd_39',t:'Cha mẹ mất, phải về chịu tang',job:['quan'],c:c=>c.lv>=2&&G.age(c)>=45&&G.age(c)<=68,ms:1,w:0.4,pcd:600,
- x:c=>`Tin buồn đến muộn: người cha (hoặc mẹ) của ${N(c)} qua đời ở quê. Luật triều định quan phải rời chức về chịu tang hai mươi bảy tháng. Chỉ khi vua giữ lại mới được ở.`,
+ x:c=>`Tin buồn đến muộn: một người sinh thành của ${N(c)} qua đời ở quê. Luật triều định quan phải rời chức về chịu tang hai mươi bảy tháng. Chỉ khi vua giữ lại mới được ở.`,
  o:c=>[{l:'Về quê chịu tang đủ hạn',f:c=>{c.busyUntil=S().t+27;return 'Mình giao việc, thu xếp đồ, về quê. Ngoài sân lễ, người làng nói: "Ông ấy không bỏ đạo hiếu".'+fx(c,{fame:5,tam:-5,liem:3})}},
   {l:'Xin vua cho đoạt tình, giữ lại chức',r:[{eq:0.6,khau:0.6},30],y:c=>'Vua chuẩn tấu. Mình ở lại kinh, lòng nặng trĩu.'+fx(c,{fav:6,fame:-3,tam:-4}),n:c=>'Triều đình bác lời xin, thêm tiếng bất hiếu.'+fx(c,{fame:-8,fav:-3})}]}),
 CD({id:'cd_26',t:'Vua ban thiết khoán',c:c=>c.fame>=900&&(c.tuoc||0)>=2,head:1,age:[40,90],w:0.2,pcd:900,

@@ -466,7 +466,7 @@ DN({id:'dn_30',t:'Học trò nghèo thi đỗ',c:()=>PR('hocbong')&&(S().monsinh
   {l:'Cho cậu ít vốn lên đường',c:rich(10),f:c=>'Học trò rơi nước mắt.'+fx(c,{money:-m(10),cfame:4})}]}),
 DN({id:'dn_31',t:'Công trình bỏ dở',c:()=>HU(),w:2,
  x:c=>`Công trình nhà ${N(c)} đã xuống cấp vì thiếu tiền duy trì. Dân làng nhìn vào, bàn tán.`,
- o:c=>[{l:'Tu sửa khi có điều kiện (qua mục dự án)',f:c=>'Gia chủ ghi nhớ.'+fx(c,{tam:-1})},
+ o:c=>[{l:'Tu sửa khi có điều kiện',f:c=>'Gia chủ ghi nhớ.'+fx(c,{tam:-1})},
   {l:'Thừa nhận đã vượt sức, xin cả họ thông cảm',f:c=>'Cả họ gật đầu. Tiếng nhà ít bị tổn hại.'+fx(c,{on:1,cfame:-1})}]}),
 /* ===================== KỲ NGỘ NỐI VỚI DỰ ÁN VÀ ÁN CŨ ===================== */
 ];

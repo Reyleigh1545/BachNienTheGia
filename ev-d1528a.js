@@ -59,7 +59,7 @@ for(const id of ['kn_12','kn_74']){const e=find(id);if(!e||e.__g1528c)continue;e
     n.st={tri:Math.round(cl(78+(k.tai||50)*0.35,78,125)),vo:Math.round(cl(70+(k.hp||50)*0.25,70,110)),mi:Math.round(cl(76+(k.duc||50)*0.2,76,105)),eq:Math.round(cl(80+(k.duc||50)*0.3,80,120))};return n};
   G.emperorNpc=emperor;
   const e1=find('tuoc_ky_ngo');if(e1&&!e1.__g1528f){e1.__g1528f=1;
-    e1.x=function(c,d){d=d||{};const n=emperor();if(n)d.npc=n.id;return `Một người khách lạ áo vải ghé nhà xin nước, ăn nói phi phàm. ${esc(c.given)} tiếp đãi chu đáo. Sáng hôm sau, quan quân kéo đến rợp đường: khách lạ chính là đương kim thiên tử${n?' '+esc(n.n)+' ('+esc(n.vaiTxt)+')':''} vi hành.`}}
+    e1.x=function(c,d){d=d||{};const n=emperor();if(n)d.npc=n.id;return `Một người khách lạ áo vải ghé nhà xin nước, ăn nói phi phàm. ${esc(c.given)} tiếp đãi chu đáo. Sáng hôm sau, quan quân kéo đến rợp đường: khách lạ chính là đương kim thiên tử${n?' '+esc(n.n)+', '+esc(n.vaiTxt)+',':''} vi hành.`}}
   const e2=find('tt_vi_hanh_b');if(e2&&!e2.__g1528f){e2.__g1528f=1;const x0=e2.x;
     e2.x=function(c,d){d=d||{};const n=emperor();if(n)d.npc=n.id;return typeof x0==='function'?x0.call(this,c,d):x0}}
 }

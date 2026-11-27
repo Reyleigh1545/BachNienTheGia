@@ -15,7 +15,7 @@ const DIS={
  dau_lung:{n:'Đau lưng, khớp',sev:1,dur:[999,999],d:1,mort:0,ch:0,chronic:1,sea:null,old:1},
  tim:{n:'Bệnh tim',sev:3,dur:[999,999],d:2,mort:0.012,ch:0,chronic:1,sea:null,old:1},
  dai:{n:'Bệnh dại',sev:4,dur:[2,3],d:9,mort:0.45,ch:0,sea:null},
- thuong_noi:{n:'Thương nội (tẩu hỏa)',sev:2,dur:[3,9],d:3,mort:0.004,ch:0.3,sea:null},
+ thuong_noi:{n:'Thương nội',sev:2,dur:[3,9],d:3,mort:0.004,ch:0.3,sea:null},
  viem_phoi:{n:'Viêm phổi',sev:3,dur:[2,5],d:6,mort:0.03,ch:0.35,sea:null},
  gay_xuong:{n:'Gãy xương',sev:2,dur:[2,4],d:3,mort:0,ch:0.1,sea:null},
  hoa_lieu:{n:'Bệnh hoa liễu',sev:1,dur:[6,18],d:1,mort:0.001,ch:0.2,sea:null}

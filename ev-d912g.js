@@ -24,7 +24,7 @@ const SC=[
   right:'Nhận sự giúp đỡ và mời vào nhà',wrong:'Nghi ngờ, từ chối người lạ',
   good:c=>'Người lạ ấy là quý nhân thật: một khoản giúp đúng lúc cứu cả nhà. Về sau còn nhiều lần ghé giúp.'+fx(c,{money:m(R(35,60)),on:3,eq:2,tam:7}),bad:c=>'Người lạ lặng lẽ đi tiếp. Nhà phải bán bớt đồ để qua cơn khó.'+fx(c,{money:-m(15),tam:-6,on:-2})}
 ];
-const addProph=(c,months,kind,note)=>{const i=kind?SC.findIndex(x=>x.k===kind):R(0,SC.length-1);const sc=SC[i<0?0:i];G.later(c,'tt_ung_nghiem',months,{sc:SC.indexOf(sc)});G.log&&G.log(`Lời tiên tri ${note||''} (ghi nhớ): "${sc.pre}" Lời dặn: ${sc.hint}.`,'hi');return sc};
+const addProph=(c,months,kind,note)=>{const i=kind?SC.findIndex(x=>x.k===kind):R(0,SC.length-1);const sc=SC[i<0?0:i];G.later(c,'tt_ung_nghiem',months,{sc:SC.indexOf(sc)});G.log&&G.log(`Lời tiên tri ${note||''}: "${sc.pre}" Lời dặn: ${sc.hint}.`,'hi');return sc};
 const prophInit=()=>({addProph,SC});
 G.tt=prophInit();
 return [
@@ -36,20 +36,20 @@ return [
  x:(c,d)=>{const n=G.tie.ensure(c,{vai:['cao_nhan'],nghe:'bà đồng ngoài chợ phiên',g:'nữ',age:R(60,78),main:'tri',tier:0,rel:0,why:'xem chỉ tay'});d.npc=n.id;d.sc=R(0,SC.length-1);const sc=SC[d.sc];return `Qua chợ phiên, ${nm(n)}, bà đồng già, kéo tay ${N(c)} lại, nhìn vào lòng bàn tay lâu thật lâu: "${sc.pre}" Bà không đòi tiền.`},
  o:(c,d)=>{const n=T(d);if(!n)return [{l:'Thôi',f:()=>''}];const sc=SC[d.sc];return [
   {l:'Cúi đầu cảm ơn, ghi nhớ từng lời',f:c=>{G.tt.addProph(c,R(30,42),SC[d.sc].k,'của bà đồng');return `Câu nói ấy cứ vang trong đầu nhiều đêm. Mình ghi lại: "${sc.hint}".`+fx(c,{tam:2,eq:1,qh:[n.n,G.tie.rel(n,8,'được nghe lời')[1]]})}},
-  {l:'Hỏi kỹ từng điều, biếu bà tiền hương',c:()=>G.money()>=m(2),f:c=>{G.tt.addProph(c,R(30,42),SC[d.sc].k,'của bà đồng (hỏi kỹ)');return `Bà nói thêm một câu: "${sc.hint}, đúng lúc ấy chớ do dự". ${N(c)} ghi nhớ kỹ lời này.`+fx(c,{money:-m(2),tam:1,tri:1,qh:[n.n,G.tie.rel(n,14,'biếu tiền hương')[1]]})}},
-  {l:'Cười, không tin lời đồn thổi',f:c=>{G.tt.addProph(c,R(30,42),SC[d.sc].k,'của bà đồng (không tin)');return `Bà nhìn ${N(c)} rất lâu rồi buông tay. Mình không ghi lại gì, nhưng lời bà vẫn lọt vào tai.`+fx(c,{tam:-1})}}]}},
+  {l:'Hỏi kỹ từng điều, biếu bà tiền hương',c:()=>G.money()>=m(2),f:c=>{G.tt.addProph(c,R(30,42),SC[d.sc].k,'của bà đồng');return `Bà nói thêm một câu: "${sc.hint}, đúng lúc ấy chớ do dự". ${N(c)} ghi nhớ kỹ lời này.`+fx(c,{money:-m(2),tam:1,tri:1,qh:[n.n,G.tie.rel(n,14,'biếu tiền hương')[1]]})}},
+  {l:'Cười, không tin lời đồn thổi',f:c=>{G.tt.addProph(c,R(30,42),SC[d.sc].k,'của bà đồng');return `Bà nhìn ${N(c)} rất lâu rồi buông tay. Mình không ghi lại gì, nhưng lời bà vẫn lọt vào tai.`+fx(c,{tam:-1})}}]}},
 /* ---------- giấc mơ tiên tri ---------- */
 {id:'kn_85',t:'Giấc mơ tiên tri',k:'Kỳ ngộ',age:[18,75],ky:1,good:1,u:'person',w:0.4,tags:{},
  x:(c,d)=>{d.sc=R(0,SC.length-1);d.w=pick(['Phúc','Hiểm','Quan','Tài']);return `Đêm qua ${N(c)} mơ thấy đứng trước một cánh cửa đá khắc một chữ lạ: "${d.w}". Sáng tỉnh, vẫn nhớ từng nét và một lời nhắn lơ lửng: "${SC[d.sc].pre}"`},
  o:(c,d)=>[
-  {l:'Ghi lại đúng từng nét, ghi cả lời nhắn',r:[{tri:0.5,eq:0.4},50],y:c=>{G.tt.addProph(c,R(18,48),SC[d.sc].k,'trong giấc mơ');return `Mình ghi lại lời nhắn và dặn lòng: "${SC[d.sc].hint}". Ít lâu sau gặp lại đúng chữ ấy trong một cuốn sách cổ.`+fx(c,{tam:5,tri:2})},n:c=>{G.tt.addProph(c,R(18,48),SC[d.sc].k,'trong giấc mơ (không nhớ rõ)');return 'Nét chữ lẫn vào quên lãng. Chỉ nhớ lờ mờ đoạn đầu lời nhắn.'+fx(c,{tam:-1})}},
-  {l:'Coi như giấc mơ thường',f:c=>{G.tt.addProph(c,R(18,48),SC[d.sc].k,'trong giấc mơ (bỏ qua)');return 'Mơ đâu thì cho qua đó. Nhưng chữ ấy vẫn lảng vảng.'+fx(c,{tam:0})}}]},
+  {l:'Ghi lại đúng từng nét, ghi cả lời nhắn',r:[{tri:0.5,eq:0.4},50],y:c=>{G.tt.addProph(c,R(18,48),SC[d.sc].k,'trong giấc mơ');return `Mình ghi lại lời nhắn và dặn lòng: "${SC[d.sc].hint}". Ít lâu sau gặp lại đúng chữ ấy trong một cuốn sách cổ.`+fx(c,{tam:5,tri:2})},n:c=>{G.tt.addProph(c,R(18,48),SC[d.sc].k,'trong giấc mơ');return 'Nét chữ lẫn vào quên lãng. Chỉ nhớ lờ mờ đoạn đầu lời nhắn.'+fx(c,{tam:-1})}},
+  {l:'Coi như giấc mơ thường',f:c=>{G.tt.addProph(c,R(18,48),SC[d.sc].k,'trong giấc mơ');return 'Mơ đâu thì cho qua đó. Nhưng chữ ấy vẫn lảng vảng.'+fx(c,{tam:0})}}]},
 /* ---------- người đàn bà bí ẩn ---------- */
 {id:'kn_13',t:'Người đàn bà bí ẩn',k:'Kỳ ngộ',age:[20,50],ky:1,good:1,u:'person',w:0.4,c:c=>c.g==='nam',tags:{},
  x:(c,d)=>{const n=G.tie.ensure(c,{vai:['cao_nhan'],nghe:'người đàn bà áo thâm bên cầu đá',g:'nữ',age:R(40,60),main:'tri',rel:0,why:'kể một chuyện cho nghe'});d.npc=n.id;d.sc=R(0,SC.length-1);return `Trên đường về, ${N(c)} gặp ${nm(n)}, áo thâm, đứng bên cầu đá, hỏi bâng quơ: "Chàng có muốn nghe một chuyện không?" Giọng bà dịu như nước.`},
  o:(c,d)=>{const n=T(d);if(!n)return [{l:'Thôi',f:()=>''}];return [
   {l:'Dừng lại nghe',r:[{tri:0.5,eq:0.5},55],y:c=>{G.tt.addProph(c,R(72,168),SC[d.sc].k,'của người đàn bà bí ẩn');return `Chuyện bà kể là về một nơi, một người và một lời hứa. Cuối chuyện bà dặn: "${SC[d.sc].hint}". Nhiều năm sau mình sẽ gặp lại đúng chuyện ấy.`+fx(c,{tam:4,tri:2,qh:[n.n,G.tie.rel(n,10,'được nghe chuyện')[1]]})},n:c=>'Chuyện nghe xong lòng thấy trống rỗng, không rõ ý. Chỉ nhớ bà ấy cười rất hiền.'+fx(c,{tam:-2})},
-  {l:'Chắp tay rồi đi tiếp',f:c=>{G.tt.addProph(c,R(72,168),SC[d.sc].k,'(không nghe)');return 'Đi một đoạn quay lại, bà đã biến mất. Lời bà vẫn âm ỉ như một điềm.'+fx(c,{tam:1})}}]}},
+  {l:'Chắp tay rồi đi tiếp',f:c=>{G.tt.addProph(c,R(72,168),SC[d.sc].k,'');return 'Đi một đoạn quay lại, bà đã biến mất. Lời bà vẫn âm ỉ như một điềm.'+fx(c,{tam:1})}}]}},
 /* ================= CHUỖI SƯ MÔN (thay c4_*) ================= */
 {id:'sm_nhan_thay',t:'Võ sư nhận học trò',k:'Sư môn',age:[14,40],once:1,w:0.7,c:c=>c.vo>=45&&c.job!=='hiep'&&!(c.flags&&c.flags.sm),tags:{},
  x:(c,d)=>{const n=G.tie.ensure(c,{vai:['thay'],nghe:'võ sư dạy ở võ đường trong vùng',age:R(46,62),main:'vo',st:{vo:R(80,100)},rel:0,why:'nhận làm học trò',tier:2});d.npc=n.id;return `${nm(n)}, võ sư dạy ở võ đường trong vùng, thấy ${N(c)} múa quyền ở bãi đất trống và gọi lại: "Gân cốt tốt, nhưng thế đi chưa đúng. Muốn học thật thì đến võ đường ta."`},

@@ -15,7 +15,7 @@ return [
 {id:'di_chuc_viec_dai',t:'Việc dở dang trong di chúc',tags:{},fixed:1,head:0,ms:1,
  x:(c,d)=>`${N(c)} vừa lập di chúc, còn một việc chưa xong: ${(c.flags.ccv||0)>0&&!c.flags.ccv_x?'kỳ vật đang nuôi dở':'chuyện dài đang theo đuổi'}. Nếu mình đi trước, giao việc ấy cho ai nối tiếp?`,
  o:(c,d)=>{const sp=G.spouseOf(c);const ks=G.alive().filter(p=>p.id!==c.id&&G.inClan(p)&&!p.inLaw&&(G.age(p)>=16)&&(((p.parents||[]).includes(c.id))||((p.parents||[]).some(i=>{const q=G.P(i);return q&&(q.parents||[]).includes(c.id)})))).sort((a,b)=>a.born-b.born).slice(0,4);
-  const L=ks.map(k=>({l:`Giao cho ${esc(k.given)} (${G.age(k)} tuổi)`,f:c=>{c.will=Object.assign({},c.will||{to:'auto'},{long:k.id});return `${esc(k.given)} được dặn giữ việc dở dang của ${N(c)}. Người ấy sẽ biết khi ngày đó đến.`+fx(c,{tam:2})}}));
+  const L=ks.map(k=>({l:`Giao cho ${esc(k.given)}, ${G.age(k)} tuổi`,f:c=>{c.will=Object.assign({},c.will||{to:'auto'},{long:k.id});return `${esc(k.given)} được dặn giữ việc dở dang của ${N(c)}. Người ấy sẽ biết khi ngày đó đến.`+fx(c,{tam:2})}}));
   if(sp&&G.inClan(sp)&&sp.dead==null)L.push({l:`Giao cho ${esc(sp.given)}`,f:c=>{c.will=Object.assign({},c.will||{to:'auto'},{long:sp.id});return `${esc(sp.given)} nhận lời giữ việc dở dang.`+fx(c,{tam:2})}});
   L.push({l:'Để gia tộc tự định',f:c=>{if(c.will)delete c.will.long;return `Không dặn riêng ai. Khi đến lúc, việc sẽ về người phù hợp nhất trong nhà.`}});return L}},
 {id:'no_chi_cau_cuu',t:'Chi họ cầu cứu gia tộc trả nợ',tags:{},fixed:1,head:1,ms:1,

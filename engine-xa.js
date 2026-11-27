@@ -95,7 +95,7 @@ function lawPriv(c,L){if(L.tc)return 0;let p=0;if(c.job==='quan'){if(c.lv>=4)p++
 function lawFine(lvl,gr){return mm(lvl<=0?5:lvl===1?[8,12,16][gr-1]:lvl===2?[25,35,50][gr-1]:[60,90,130][gr-1])}
 function lawApply(c,L,lvl,gr){const S=X.S;lvl=clamp(Math.round(lvl),0,5);if(inClan(c))ledAdd('an',[c.id],{lvl,c:L&&L.id||null},{w:60});if(age(c)<16)lvl=Math.min(lvl,2);
   /* lệ độc đinh: nhà chỉ còn một người trụ cột thì không bị khổ sai, đày hay xử tử (trừ thập ác) */
-  let pre='';if(lvl>=3&&!L.tc&&!alive().some(p=>p.id!==c.id&&age(p)>=14)){lvl=2;pre='Theo lệ độc đinh (nhà chỉ còn một người trụ cột), quan giảm hình. '}
+  let pre='';if(lvl>=3&&!L.tc&&!alive().some(p=>p.id!==c.id&&age(p)>=14)){lvl=2;pre='Theo lệ độc đinh, quan giảm hình. '}
   memSet('tienan:'+c.id,360);memAdd('lw_tong',1,240);S.cases=S.cases||[];S.cases.unshift({t:S.t,who:c.id,law:L.id,lvl});if(S.cases.length>30)S.cases.length=30;
   const q=c.job==='quan';
   if(lvl<=0)return `Bị khiển trách và phải bồi thường.`+fx(c,{money:-mm(5),fame:-1});
@@ -138,7 +138,7 @@ function staffVigor(st){const a=stAge(st);return (st.sick>0?0.4:1)*(a<18?0.8:age
 function staffDie(b,st,why){
   const sn=stfSnap(st);stfRemove(b,st);
   b.staff.forEach(x=>{x.loy=clamp((x.loy||60)-3,0,100)});
-  log(`${sn.n} (${sn.ra} ở ${BIZ[b.type].lv[b.lv][0].toLowerCase()}) qua đời, thọ ${sn.age} tuổi.`,'hi');
+  log(`${sn.n}, ${sn.ra} ở ${BIZ[b.type].lv[b.lv][0].toLowerCase()}, qua đời, thọ ${sn.age} tuổi.`,'hi');
   stfEvent(b,'stf_death',Object.assign(sn,{why}))}
 function staffTick(b){const S=X.S;
   b.staff.slice().forEach(st=>{
