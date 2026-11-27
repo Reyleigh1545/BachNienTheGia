@@ -1,14 +1,20 @@
-/* Bách Niên Thế Gia · 7.0.0-d.1.5.47 · MUA CHỨC CỬU PHẨM SAU KHI THI TRƯỢT; MỜI LÀM QUAN CHỈ NGƯỜI TÀI CÓ DANH HIỆU
+/* Bách Niên Thế Gia · 7.0.0-d.1.5.47 · MUA CHỨC QUA CỬA SAU CỦA QUAN THAM; MỜI LÀM QUAN CHỈ NGƯỜI TÀI CÓ DANH HIỆU
    (chủ dự án 27/11: "cho người làm quan mua chức nếu nhà có tiền mà thi 1 lần không qua. Việc người có trí cao được mời làm quan thì chỉ nên xuất hiện trên người có trí trên 100 và đã có danh hiệu trí lực,
    cũng có thể mời cả người có võ cao có danh hiệu võ làm võ quan, tùy theo điểm chỉ số và danh hiệu mà được xét đến các chức vị cao hơn nhưng các chức vị này phải còn trống"). */
 window.EVF.push(G=>{
-const {fx,esc,R}=G;const S=()=>G.S();const FM=v=>G.fmtMoney(v);const N=c=>esc(c.given);
+const {fx,esc,R,chance}=G;const S=()=>G.S();const FM=v=>G.fmtMoney(v);const N=c=>esc(c.given);
+const man=d=>d&&d.qk?G.seatMan(d.qk,d.qn):null;
 return [
-{id:'mua_chuc_cuu',t:'Quyên tiền mua chức',k:'Hoạn lộ',fixed:1,tags:{},
- x:c=>`${N(c)} thi không đỗ. Có người chỉ đường: triều đình đang nhận quyên, nộp ${FM(G.buyOffice.price())} thì được bổ một chức Cửu phẩm. Quan trường vẫn nhớ ai vào bằng bạc.`,
- o:c=>[
-  {l:`Quyên bạc nhận chức Cửu phẩm (${FM(G.buyOffice.price())})`,c:()=>!G.buyOffice.why(c),f:cc=>{const r=G.buyOffice.buy(cc);return r?`${N(cc)} cầm bằng nhậm chức. ${r}`+fx(cc,{liem:-8,fame:-2,tam:6}):'Việc quyên chức không thành.'}},
-  {l:'Giữ bạc, đèn sách chờ khoa sau',ax:{cc:2},f:cc=>`${N(cc)} cất bạc đi, tối lại chong đèn.`+fx(cc,{tri:R(1,2),tam:-2})}]}
+/* d.1.5.48: người bán là quan tham đang ngồi ghế thật, có người dắt mối; mua quan bán tước là tội chém, về sau có thể bị phát giác */
+{id:'mua_chuc_cuu',t:'Cửa sau mua chức',k:'Hoạn lộ',fixed:1,tags:{},
+ x:(c,d)=>{const n=man(d);if(!n)return 'Mối ấy không còn.';d.npc=n.id;return `${esc(d.mg||'Một người quen')} dắt mối: ${esc(d.qn)}, đang giữ chức ${esc(G.seatName(d.qk))}, chịu nhận ${FM(G.buyOffice.price())} để lo cho ${N(c)} một chức Cửu phẩm. Người ta nói nhỏ, vì mua quan bán tước là tội chém. Bạc đã vào sổ người ấy thì tên mình cũng nằm trong sổ.`},
+ o:(c,d)=>{const n=man(d);if(!n)return [{l:'Thôi',f:()=>''}];const gia=G.buyOffice.price();const re=Math.round(gia*0.7);
+  const mua=(cc,fee)=>{const r=G.buyOffice.pay(cc,fee,d.qk,d.qn);if(r){G.tie.rel(n,10,'nhận bạc chạy chức');G.tie.on(n,4)}return r};
+  return [
+  {l:`Nộp đủ bạc, nhận chức (${FM(gia)})`,c:()=>G.money()>=gia,ax:{tv:2},f:cc=>{const r=mua(cc,gia);return r?`${N(cc)} cầm bằng nhậm chức. ${r}`+fx(cc,{liem:-12,tam:4}):'Chức ấy không còn trống.'}},
+  {l:`Mặc cả còn bảy phần (${FM(re)})`,c:()=>G.money()>=re,r:[{_g:1,khau:0.8,muu:0.4},40],y:cc=>{const r=mua(cc,re);return r?`Người ấy cười, nhận bảy phần. ${r}`+fx(cc,{liem:-12,tam:5}):'Chức ấy không còn trống.'},n:cc=>{S().money-=Math.round(re*0.3);G.tie.rel(n,-15,'bị mặc cả');return `${esc(d.qn)} giữ phần đặt cọc rồi coi như chưa từng nghe gì.`+fx(cc,{tam:-8})}},
+  {l:'Không mua, coi như chưa nghe',ax:{thanh:1},f:cc=>{G.tie.rel(n,-5,'từ chối cửa sau');return `${N(cc)} cảm ơn người dắt mối rồi về chong đèn.`+fx(cc,{liem:4,tri:1,tam:-2})}},
+  {l:'Gom chứng cứ, tố kẻ bán quan',ax:{thanh:2},r:[{_g:1,tri:0.6,gan:0.6,eq:0.3},35],y:cc=>{G.tie.rel(n,-60,'bị tố bán quan');G.tie.oan(n,30);G.seatPush(d.qk,'bị hặc tham nhũng vì bán quan');return `Án được tra. ${esc(d.qn)} mất chức.`+fx(cc,{fame:16,cfame:6,liem:6,tam:5})},n:cc=>{G.tie.rel(n,-50,'bị tố hụt');G.tie.oan(n,25);G.later(cc,'qs_tra_thu',R(12,40),{qk:d.qk,qn:d.qn});return `Chứng cứ không đủ. ${esc(d.qn)} đã biết ai đứng sau lá đơn.`+fx(cc,{fame:-8,tam:-10})}}]}}
 ];
 });
 /* MỜI LÀM QUAN: văn cần trí trên 100 và đã có danh hiệu trí; võ cần võ trên 100 và đã có danh hiệu võ. Danh hiệu càng cao thì được xét chức càng cao; chỉ mời vào ghế còn trống. */

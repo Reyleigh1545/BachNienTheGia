@@ -33,7 +33,6 @@ function sheetHTML(c){const S=X.S;
   const can=(k,l,dis)=>h+=`<button class="btn small" data-do="${k}" ${dis?'disabled':''}>${l}</button>`;
   if(bigAvail(c).length)can('big','Việc lớn');
   if(c.viec){const bb=BIGS.find(x=>x.id===c.viec.id);h+=`<span class="kvline muted">Đang làm việc lớn: ${bb?esc(bb.n.toLowerCase()):''}, xong khoảng ${dateStr(c.viec.end)}</span>`}
-  if((c.flags&&c.flags.exFail)>=1&&!['quan','vua','nguy','quan_ngu'].includes(c.job)&&a>=18&&a<=60&&!c.away&&(c.g==='nam'||S.royal)){const w=X.EC.G.buyOffice.why(c);can('muachuc',w?`Mua chức <small>${esc(w)}</small>`:'Mua chức Cửu phẩm',!!w)}
   if(c.job==='quan_ngu'&&a>=16)can('resign','Xin giải ngũ');
   if(!c.away){
     if(a>=16&&!['quan','vua','nguy','quan_ngu','hiep'].includes(c.job))can('job',c.job==='none'||c.job==='huu'?'Chọn nghề':'Đổi nghề',c.flags.jobRetry>S.t);
@@ -238,14 +237,14 @@ function pageQuan(){const S=X.S;const qKind=X.qKind;const qOpenB=X.qOpenB;const 
     let seatsN=0,ownN=0;
     const ents=ts.map(id=>{const T=OFFICES[id];const ks=DX.seatKeys(id).filter(inProv);seatsN+=ks.length;const on=ks.filter(k=>own.has(k)).length;ownN+=on;return {id,T,ks,on}});
     const open=qOpenB===b||(qOpenB==null&&ownN>0)||(qOpenB==null&&b===17&&0);
-    const head=`<button class="btn small ghost qb" data-qb="${b}"><b>${sg?'Chánh':'Tòng'} ${RANKS[r].toLowerCase()}</b> · ${ts.length} chức · ${seatsN} ghế${ownN?` · nhà giữ ${ownN}`:''} · bổng gốc ${money(SALARY[r])}/tháng ${open?'▲':'▼'}</button>`;
+    const head=`<button class="btn small ghost qb" data-qb="${b}"><b>${sg?'Chánh':'Tòng'} ${RANKS[r].toLowerCase()}</b> · ${ts.length} chức · ${seatsN} ghế${ownN?` · nhà giữ ${ownN}`:''} · bổng ${money(Math.round(SALARY[r]*(sg?1:0.9)))}/tháng ${open?'▲':'▼'}</button>`;
     if(!open)return `<div class="qgrp">${head}</div>`;
     return `<div class="qgrp">${head}${ents.map(({id,T,ks,on})=>{
       const isO=qOpenT===id;
       let seatList='';
       if(isO){seatList=`<div class="qseats">${ks.slice(0,80).map(k=>{const st=offState(k);const hp=st.holder?P(st.holder):null;
         return `<div class="srow2"><span>${esc(seatName(k))}</span><small>${hp?`Người nhà: <b>${esc(nameOf(hp))}</b>`:st.vac?'<b class="up">Đang trống</b>':`${esc(st.n)} · ${st.age} tuổi · năng lực ${st.ab}${st.liem<35?' · tiếng tham':''}`}</small></div>`}).join('')}${ks.length>80?`<small class="muted">Và ${ks.length-80} ghế nữa.</small>`:''}</div>`}
-      const pay=T.mil?`Quân bổng khoảng ${money(ARMY[T.ar][1]*0.7*T.mul)}`:`Bổng ${money(SALARY[T.r]*T.mul)}, lộc ngoài ×${T.side}`;
+      const pay=T.mil?`Quân bổng ${money(Math.round(ARMY[T.ar][1]*0.7))}`:`Bổng ${money(Math.round(SALARY[T.r]*(T.sg===0?0.9:1)))}, lộc ngoài ×${T.side}`;
       return `<div class="off ${on?'mine':''}"><div><b>${esc(T.n)}</b> <span class="chip">${TAG[T.tag]}</span><small>${esc(T.d)} ${pay}. Cần ${Object.entries(T.req).map(([k,v])=>`${SN[k]} ${v}`).join(', ')}${T.mil?`, đang ở bậc ${ARMY[T.ar][0]}`:''}. ${esc(T.g||'')}</small>${seatList}</div>
        <div class="who2"><small>${ks.length} ghế${on?` · nhà giữ ${on}`:''}</small><br><button class="btn small ghost" data-qt="${id}">${isO?'Gấp lại':'Xem ghế'}</button></div></div>`}).join('')}</div>`}).join('');
   const provs=DX.REALM;

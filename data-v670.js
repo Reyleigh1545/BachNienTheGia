@@ -69,7 +69,7 @@ D.LAW=[
  {id:'pham_huy',n:'Phạm húy',thien:'Lễ',lv:4,gr:1},{id:'bat_hieu',n:'Bất hiếu',thien:'Lễ',lv:4,gr:1,tc:1},{id:'bat_muc',n:'Bất mục',thien:'Lễ',lv:3,gr:1,tc:1},
  {id:'tron_linh',n:'Trốn lính',thien:'Binh',lv:3,gr:1},{id:'ban_quan_khi',n:'Bán quân khí',thien:'Binh',lv:4,gr:2},{id:'dao_ngu',n:'Đào ngũ',thien:'Binh',lv:3,gr:3},
  {id:'thong_dich',n:'Thông địch',thien:'Binh',lv:5,gr:2,tc:1},{id:'nuoi_binh',n:'Nuôi binh trái phép',thien:'Binh',lv:5,gr:1,tc:1},
- {id:'nhan_hoi_lo',n:'Nhận hối lộ',thien:'Lại',lv:3,gr:3},{id:'dua_hoi_lo',n:'Đưa hối lộ',thien:'Lại',lv:2,gr:1},{id:'gia_van_thu',n:'Giả mạo công văn',thien:'Lại',lv:4,gr:1},
+ {id:'nhan_hoi_lo',n:'Nhận hối lộ',thien:'Lại',lv:3,gr:3},{id:'mua_quan',n:'Mua quan bán tước',thien:'Lại',lv:5,gr:3},{id:'dua_hoi_lo',n:'Đưa hối lộ',thien:'Lại',lv:2,gr:1},{id:'gia_van_thu',n:'Giả mạo công văn',thien:'Lại',lv:4,gr:1},
  {id:'xay_trai',n:'Xây dựng trái phép',thien:'Công',lv:2,gr:1},{id:'lan_dat_cong',n:'Lấn đất công',thien:'Công',lv:3,gr:1},{id:'dao_de',n:'Đào đê trộm nước',thien:'Công',lv:4,gr:1},
  {id:'muu_phan',n:'Mưu phản',thien:'Danh lệ',lv:5,gr:3,tc:1}];
 /* ---------- dự án gia nghiệp: v = cỡ việc (thang CHI), mo = số tháng xây, up = phí duy trì mỗi tháng (cỡ việc), tier = bậc tối thiểu ---------- */
