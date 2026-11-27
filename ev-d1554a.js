@@ -11,9 +11,28 @@ const tenN=n=>D.NAT[n]?D.NAT[n].n:n;const tenP=p=>P[p].n;
 /* mỗi lần mở hay nạp ván phải đặt lại bản đồ theo đúng ván ấy */
 function apNat(st){const M=st&&st.w&&st.w.nat;for(const p in P)P[p].nat=(M&&M[p])||P[p].natGoc}
 const khu=n=>Object.keys(P).filter(p=>P[p].nat===n);
+/* d.1.5.58 (chủ dự án 27/11: "Bản đồ bị rời rạc, phải gắn lại thành 1 cụm"; "đất đổi chủ … từ một nơi xa lắc xa lơ là vô lí"). Một khối đất liền cố định: ô nào gần một khu hoặc một con đường thì là đất, chỗ trũng bên trong được lấp.
+   Mỗi ô đất thuộc khu gần nhất. Hai khu GIÁP RANH khi phần đất của chúng chung một đoạn biên đủ dài: chiến tranh chỉ xét giáp ranh này, đường đi xa chỉ để đi lại */
+const O=5,COT=180,HANG=140;
+const DAT=(function(){const ids=Object.keys(P);const doan=D.ROADS.map(r=>[P[r[0]],P[r[1]]]);const la=[],chu=[];
+  const dDoan=(x,y,a,b)=>{const vx=b.x-a.x,vy=b.y-a.y;let t=((x-a.x)*vx+(y-a.y)*vy)/((vx*vx+vy*vy)||1);t=Math.max(0,Math.min(1,t));const dx=a.x+t*vx-x,dy=a.y+t*vy-y;return dx*dx+dy*dy};
+  for(let j=0;j<HANG;j++){la[j]=[];chu[j]=[];for(let i=0;i<COT;i++){const x=i*O+O/2,y=j*O+O/2;let best=null,bd=1e12;for(const p of ids){const dx=P[p].x-x,dy=P[p].y-y,d=dx*dx+dy*dy;if(d<bd){bd=d;best=p}}chu[j][i]=best;la[j][i]=bd<=60*60||doan.some(z=>dDoan(x,y,z[0],z[1])<=38*38)}}
+  /* lấp chỗ trũng: ô không phải đất mà không thông ra mép bản đồ */
+  const ngoai=[];for(let j=0;j<HANG;j++)ngoai[j]=[];const hang=[];const day=(j,i)=>{if(j<0||i<0||j>=HANG||i>=COT||ngoai[j][i]||la[j][i])return;ngoai[j][i]=1;hang.push([j,i])};
+  for(let i=0;i<COT;i++){day(0,i);day(HANG-1,i)}for(let j=0;j<HANG;j++){day(j,0);day(j,COT-1)}
+  while(hang.length){const [j,i]=hang.pop();day(j+1,i);day(j-1,i);day(j,i+1);day(j,i-1)}
+  for(let j=0;j<HANG;j++)for(let i=0;i<COT;i++)if(!la[j][i]&&!ngoai[j][i])la[j][i]=true;
+  const dem={};const cong=(a,b)=>{if(a===b)return;const k=a<b?a+'|'+b:b+'|'+a;dem[k]=(dem[k]||0)+1};
+  for(let j=0;j<HANG;j++)for(let i=0;i<COT;i++){if(!la[j][i])continue;if(i+1<COT&&la[j][i+1])cong(chu[j][i],chu[j][i+1]);if(j+1<HANG&&la[j+1][i])cong(chu[j][i],chu[j+1][i])}
+  const ke={};ids.forEach(p=>ke[p]=[]);for(const k in dem)if(dem[k]>=4){const [a,b]=k.split('|');ke[a].push(b);ke[b].push(a)}
+  return {la,chu,ke}})();
+const giap=p=>DAT.ke[p]||[];
+/* các khu của một nước có còn liền một khối không, nếu bỏ khu bo và thêm khu them */
+function lien(n,bo,them){const L=Object.keys(P).filter(p=>(P[p].nat===n&&p!==bo)||p===them);if(L.length<2)return true;const co=new Set(L),seen=new Set([L[0]]),h=[L[0]];while(h.length){const a=h.pop();for(const b of giap(a))if(co.has(b)&&!seen.has(b)){seen.add(b);h.push(b)}}return seen.size===L.length}
+const manh=n=>{const co=new Set(khu(n)),seen=new Set();let so=0;for(const p of co){if(seen.has(p))continue;so++;const h=[p];seen.add(p);while(h.length){const a=h.pop();for(const b of giap(a))if(co.has(b)&&!seen.has(b)){seen.add(b);h.push(b)}}}return so};
 const ke=p=>(D.ADJ[p]||[]).map(z=>z[0]);
-function bien(a,b){const out=[];for(const x of khu(a))for(const y of ke(x))if(P[y].nat===b)out.push([x,y]);return out}
-function tienTuyen(i){const b=D.BORDER[i];if(P[b[4]].nat===b[0]&&P[b[5]].nat===b[1])return [b[4],b[5]];const L=bien(b[0],b[1]);if(!L.length)return null;const x=L.filter(z=>!KINH.has(z[0])&&!KINH.has(z[1]));return pk(x.length?x:L)}
+function bien(a,b){const out=[];for(const x of khu(a))for(const y of giap(x))if(P[y].nat===b)out.push([x,y]);return out}
+function tienTuyen(i){const b=D.BORDER[i];if(P[b[4]].nat===b[0]&&P[b[5]].nat===b[1]&&giap(b[4]).includes(b[5]))return [b[4],b[5]];const L=bien(b[0],b[1]);if(!L.length)return null;const x=L.filter(z=>!KINH.has(z[0])&&!KINH.has(z[1]));return pk(x.length?x:L)}
 /* ---------- sức một nước ---------- */
 function vuaCua(n){if(n==='trieu'){const d=S().dyn;return d&&d.k?{tai:d.k.tai,uy:d.k.uy,loan:d.loan||0,tranh:!!d.cr}:{tai:55,uy:55,loan:10}}const v=S().vq&&S().vq[n];return v?{tai:v.vua.tai,uy:v.vua.uy,loan:10,tranh:!!v.tranh}:{tai:55,uy:55,loan:10}}
 function theLucGiup(p,thu){const T=window.BN_TL;if(!T||!p)return 0;let v=0;for(const f of T.o(p)){const nh=T.LOAI[f.loai].nh;if(thu){if(nh==='cuop')v-=f.pow/14;else if(f.loai!=='ta'&&nh!=='giao')v+=f.pow/12}else if(f.loai==='ta'||nh==='giao')v+=f.pow/16}return v}
@@ -26,7 +45,7 @@ function suc(n,w,muc,thu){const k=vuaCua(n);const so=khu(n).length;const goc=GOC
   if(w&&w.gop)v+=cl(w.gop[n]||0,-25,25);v+=theLucGiup(muc,thu);return v}
 /* ---------- mở chiến: phần lớn chỉ là xung đột biên giới, phần còn lại là tuyên chiến ---------- */
 function no(i){const W=S().w,b=D.BORDER[i];const tt=tienTuyen(i);if(!tt){W.ten[i]=b[2];W.ph[i]=0;return 'bo'}
-  const cs=H.w_cause(i,(S().t%12)+1);if(G.chance(cl(0.34+cs.p*0.18,0.34,0.7)))return 'chien';
+  const cs=H.w_cause(i,(S().t%12)+1);if(G.chance(cl(0.34+cs.p*0.18,0.34,0.7)*(S().t<240?0.35:1)))return 'chien'; /* d.1.5.58: hai mươi năm đầu thiên hạ còn yên, hiếm khi tuyên chiến */
   W.xung=W.xung||[];if(W.xung.some(x=>x.i===i))return 'xung';const why=(W.why||{})[i]||cs.why;const x={i,a:b[0],b:b[1],front:tt,until:S().t+R(2,5),why};W.xung.push(x);W.ph[i]=2;W.ten[i]=78;
   H.w_news(`Xung đột biên giới giữa ${tenN(b[0])} và ${tenN(b[1])} ở ${tenP(tt[0])} và ${tenP(tt[1])}, vì ${why}. Hai bên chưa tuyên chiến.`,H.w_rel(b[0],b[1]));
   for(const c of G.alive())if(G.inClan(c)&&c.job==='quan_ngu'&&c.away&&tt.includes(G.placeOf(c))&&G.chance(0.7)){G.enqueue('ev',c.id,{ev:'cx_tran_bien',data:{i,p:G.placeOf(c)}});break}
@@ -37,7 +56,7 @@ function ketXung(x){const W=S().w;const sa=suc(x.a,x,x.front[1],false)+R(-14,14)
   H.w_news(`Xung đột giữa ${tenN(x.a)} và ${tenN(x.b)} lắng xuống: ${tenN(thang)} chiếm thế trên, ${tenN(thua)} phải bồi thường. Biên giới giữ nguyên.`,H.w_rel(x.a,x.b))}
 /* ---------- chiến dịch ---------- */
 const giu=(w,p)=>(w.chiem&&w.chiem[p])||P[p].nat;
-function mucTieu(w,phe){const dich=phe===w.a?w.b:w.a;const out=[];for(const p in P){if(KINH.has(p)||(P[p].nat!==w.a&&P[p].nat!==w.b)||giu(w,p)!==dich)continue;if(ke(p).some(q=>(P[q].nat===w.a||P[q].nat===w.b)&&giu(w,q)===phe))out.push(p)}
+function mucTieu(w,phe){const dich=phe===w.a?w.b:w.a;const out=[];for(const p in P){if(KINH.has(p)||(P[p].nat!==w.a&&P[p].nat!==w.b)||giu(w,p)!==dich)continue;if(giap(p).some(q=>(P[q].nat===w.a||P[q].nat===w.b)&&giu(w,q)===phe))out.push(p)}
   const lay=out.filter(p=>P[p].nat===phe);if(lay.length)return {p:pk(lay),lay:true};if(!out.length)return null;const dau=out.filter(p=>(w.front||[]).includes(p));return {p:pk(dau.length&&Math.random()<0.7?dau:out),lay:false}}
 const chiemCua=(w,phe)=>Object.keys(w.chiem||{}).filter(p=>w.chiem[p]===phe);
 function ghiTran(w,s){w.tran=w.tran||[];w.tran.unshift({t:S().t,s});if(w.tran.length>10)w.tran.pop()}
@@ -57,8 +76,9 @@ function chien(w){if(!w.chiem){w.chiem={};w.gop={};w.next=S().t+R(2,4)}
   if(S().t>=w.until){H.w_endWar(w,G.chance(0.5)?'hai bên đều kiệt sức':'sau nhiều trận giằng co');return true}
   return false}
 /* ---------- khu đổi chủ ---------- */
-const conDuoc=(p,tu)=>!KINH.has(p)&&P[p].nat===tu&&khu(tu).length>IT_NHAT;
-function doiChu(p,sang){const s=S(),W=s.w;const tu=P[p].nat;if(tu===sang||!conDuoc(p,tu))return false;
+/* chuyển được khi: không phải kinh đô, bên mất còn đủ ba khu và vẫn liền một khối, bên được giáp ranh khu ấy */
+const conDuoc=(p,tu,sang)=>!KINH.has(p)&&P[p].nat===tu&&khu(tu).length>IT_NHAT&&giap(p).some(q=>P[q].nat===sang)&&lien(tu,p,null);
+function doiChu(p,sang){const s=S(),W=s.w;const tu=P[p].nat;if(tu===sang||!conDuoc(p,tu,sang))return false;
   /* người nhà đang giữ ghế ở khu này, hoặc giữ ghế nước cũ khi chính quê nhà đổi chủ */
   const nhaMat=s.loc&&s.loc.p===p;const mat=[];
   for(const c of G.alive()){if(!G.inClan(c)||!c.seat||(c.job!=='quan'&&c.job!=='quan_ngu'))continue;const w=H.seatWh(c.seat);if(!w)continue;if(w.p===p||(nhaMat&&P[w.p].nat===tu)){const T=H.seatTm(c.seat)||{};mat.push({pid:c.id,r:T.r||0,ar:T.ar||0,mil:c.job==='quan_ngu',lv:c.lv})}}
@@ -76,9 +96,10 @@ function doiChu(p,sang){const s=S(),W=s.w;const tu=P[p].nat;if(tu===sang||!conDu
   return true}
 /* hết chiến: tuyên chiến thì bản đồ phải đổi */
 function ketCuc(w){const W=S().w;const out=[];const doc=Object.keys(w.chiem||{}).map(p=>({p,sang:w.chiem[p]})).sort(()=>Math.random()-0.5);
-  const dem={};for(const x of doc){if((dem[x.sang]||0)>=2)continue;const tu=P[x.p].nat;if(doiChu(x.p,x.sang)){dem[x.sang]=(dem[x.sang]||0)+1;out.push(`${tenP(x.p)} về ${tenN(x.sang)}`)}}
+  /* hai mươi năm đầu mỗi bên giữ tối đa một khu một cuộc, sau đó hai. Chuyển dần từng khu để đất bên được luôn liền nhau */
+  const toiDa=S().t<240?1:2;const dem={};for(let vong=0;vong<3;vong++)for(const x of doc){if((dem[x.sang]||0)>=toiDa||P[x.p].nat===x.sang)continue;if(doiChu(x.p,x.sang)){dem[x.sang]=(dem[x.sang]||0)+1;out.push(`${tenP(x.p)} về ${tenN(x.sang)}`)}}
   if(!out.length){const sa=suc(w.a,w,null,false)+(w.diem||0)*6+R(-12,12),sb=suc(w.b,w,null,false)+R(-12,12);
-    for(const [thang,thua] of sa>=sb?[[w.a,w.b],[w.b,w.a]]:[[w.b,w.a],[w.a,w.b]]){const L=bien(thang,thua).map(z=>z[1]).filter(p=>conDuoc(p,thua));if(!L.length)continue;const dau=L.filter(p=>(w.front||[]).includes(p));const p=pk(dau.length?dau:L);if(doiChu(p,thang)){out.push(`${tenN(thua)} cắt ${tenP(p)} cho ${tenN(thang)} để cầu hòa`);break}}}
+    for(const [thang,thua] of sa>=sb?[[w.a,w.b],[w.b,w.a]]:[[w.b,w.a],[w.a,w.b]]){const L=bien(thang,thua).map(z=>z[1]).filter(p=>conDuoc(p,thua,thang));if(!L.length)continue;const dau=L.filter(p=>(w.front||[]).includes(p));const p=pk(dau.length?dau:L);if(doiChu(p,thang)){out.push(`${tenN(thua)} cắt ${tenP(p)} cho ${tenN(thang)} để cầu hòa`);break}}}
   if(!out.length){const thang=(w.diem||0)>=0?w.a:w.b,thua=thang===w.a?w.b:w.a;out.push(`${tenN(thua)} không còn đất để cắt, phải nộp cống cho ${tenN(thang)} mười năm`);W.cong=W.cong||[];W.cong.push({tu:thua,cho:thang,den:S().t+120})}
   w.chiem={};return out.join('; ')}
 /* ---------- mỗi tháng ---------- */
@@ -90,7 +111,7 @@ function month(){const s=S();if(!s||!s.w||!H)return;const W=s.w;
   chuyenNha()}
 /* nhà bị cuốn vào chiến sự của nước mình đang ở */
 function chuyenNha(){const s=S(),W=s.w;if(s.journey||(W.cxT||-1e9)>s.t)return;const nat=P[s.loc.p].nat;const w=W.wars.find(z=>z.a===nat||z.b===nat);if(!w||!w.chiem)return;const hd=G.head();if(!hd||hd.away)return;
-  const dich=w.a===nat?w.b:w.a;const here=s.loc.p;const sat=giu(w,here)===dich||ke(here).some(q=>giu(w,q)===dich&&(P[q].nat===nat||(w.chiem||{})[q]))||(w.front||[]).includes(here);
+  const dich=w.a===nat?w.b:w.a;const here=s.loc.p;const sat=giu(w,here)===dich||giap(here).some(q=>giu(w,q)===dich&&(P[q].nat===nat||(w.chiem||{})[q]))||(w.front||[]).includes(here);
   const L=[];if(sat)L.push(['cx_giac_den',hd,0.16]);
   const quan=G.alive().find(c=>G.inClan(c)&&c.job==='quan'&&c.seat&&!c.away&&(()=>{const T=H.seatTm(c.seat);return T&&(T.tag==='dan'||T.tag==='thue')&&(T.r||0)>=2})());if(quan)L.push(['cx_van_luong',quan,0.12]);
   const vo=G.alive().find(c=>G.inClan(c)&&c.job==='quan_ngu'&&(c.lv||0)>=2);if(vo)L.push(['cx_ra_tran',vo,0.16]);
@@ -100,21 +121,20 @@ function chuyenNha(){const s=S(),W=s.w;if(s.journey||(W.cxT||-1e9)>s.t)return;co
 /* ---------- hiển thị ---------- */
 /* lãnh thổ: mỗi điểm trên đất liền thuộc về khu gần nhất, tô màu nước đang giữ khu ấy; vẽ một lần rồi lưu lại cho tới khi đất đổi chủ */
 let NHO=null,KHOA='';
-function lanhTho(){const khoa=Object.keys(P).map(p=>P[p].nat).join();if(khoa===KHOA&&NHO!=null)return NHO;const ids=Object.keys(P);const o=6,R2=60*60,W=900/o,Hh=Math.ceil(700/o);const o2=[];
-  for(let j=0;j<Hh;j++){o2[j]=[];for(let i=0;i<W;i++){const cx=i*o+o/2,cy=j*o+o/2;let best=null,bd=R2;for(const p of ids){const dx=P[p].x-cx,dy=P[p].y-cy,d=dx*dx+dy*dy;if(d<bd){bd=d;best=p}}o2[j][i]=best?P[best].nat:null}}
+function lanhTho(){const khoa=Object.keys(P).map(p=>P[p].nat).join();if(khoa===KHOA&&NHO!=null)return NHO;const {la,chu}=DAT;const nuoc=(j,i)=>j<HANG&&i<COT&&la[j][i]?P[chu[j][i]].nat:null;
   const theo={};let bg='',bo='';
-  for(let j=0;j<Hh;j++){let tu=null,x0=0;for(let i=0;i<=W;i++){const n=i<W?o2[j][i]:null;if(n!==tu){if(tu)(theo[tu]=theo[tu]||[]).push(`M${x0*o} ${j*o}h${(i-x0)*o}v${o}h${-(i-x0)*o}z`);tu=n;x0=i}
-    if(i<W){const a=o2[j][i],r=i+1<W?o2[j][i+1]:null,d=j+1<Hh?o2[j+1][i]:null;
-      if(a){if(!r)bo+=`M${(i+1)*o} ${j*o}v${o}`;else if(r!==a)bg+=`M${(i+1)*o} ${j*o}v${o}`;if(!d)bo+=`M${i*o} ${(j+1)*o}h${o}`;else if(d!==a)bg+=`M${i*o} ${(j+1)*o}h${o}`}
-      else{if(r)bo+=`M${(i+1)*o} ${j*o}v${o}`;if(d)bo+=`M${i*o} ${(j+1)*o}h${o}`}}}}
-  KHOA=khoa;NHO=Object.entries(theo).map(([n,d])=>`<path d="${d.join('')}" fill="${D.NAT[n].col}" fill-opacity="0.42" shape-rendering="crispEdges" pointer-events="none"/>`).join('')+`<path d="${bo}" fill="none" stroke="#7d7360" stroke-width="1" stroke-opacity="0.6" pointer-events="none"/><path d="${bg}" fill="none" stroke="#5a2a1c" stroke-width="2.2" stroke-linecap="square" pointer-events="none"/>`;return NHO}
+  for(let j=0;j<HANG;j++){let tu=null,x0=0;for(let i=0;i<=COT;i++){const n=i<COT?nuoc(j,i):null;if(n!==tu){if(tu)(theo[tu]=theo[tu]||[]).push(`M${x0*O} ${j*O}h${(i-x0)*O}v${O}h${-(i-x0)*O}z`);tu=n;x0=i}
+    if(i<COT){const a=nuoc(j,i),r=nuoc(j,i+1),d=nuoc(j+1,i);
+      if(a){if(!r)bo+=`M${(i+1)*O} ${j*O}v${O}`;else if(r!==a)bg+=`M${(i+1)*O} ${j*O}v${O}`;if(!d)bo+=`M${i*O} ${(j+1)*O}h${O}`;else if(d!==a)bg+=`M${i*O} ${(j+1)*O}h${O}`}
+      else{if(r)bo+=`M${(i+1)*O} ${j*O}v${O}`;if(d)bo+=`M${i*O} ${(j+1)*O}h${O}`}}}}
+  KHOA=khoa;NHO=Object.entries(theo).map(([n,d])=>`<path d="${d.join('')}" fill="${D.NAT[n].col}" fill-opacity="0.42" shape-rendering="crispEdges" pointer-events="none"/>`).join('')+`<path d="${bo}" fill="none" stroke="#6d6350" stroke-width="1.6" stroke-linecap="square" pointer-events="none"/><path d="${bg}" fill="none" stroke="#5a2a1c" stroke-width="2.2" stroke-linecap="square" pointer-events="none"/>`;return NHO}
 function moTa(w){const e=G.esc;const A=chiemCua(w,w.a),B=chiemCua(w,w.b);return `${A.length?`<br><small>${e(tenN(w.a))} đang chiếm: ${A.map(p=>e(tenP(p))).join(', ')}</small>`:''}${B.length?`<br><small>${e(tenN(w.b))} đang chiếm: ${B.map(p=>e(tenP(p))).join(', ')}</small>`:''}${(w.tran||[]).slice(0,3).map(x=>`<br><small class="muted">${e(x.s)}</small>`).join('')}`}
 function cuongVuc(){const e=G.esc;const W=S().w;const tong=Object.values(P).reduce((a,x)=>a+(x.dt||1),0);const L=Object.keys(D.NAT).filter(n=>khu(n).length).map(n=>{const k=khu(n);const dt=k.reduce((a,p)=>a+(P[p].dt||1),0);return {n,so:k.length,pc:Math.round(dt*1000/tong)/10}}).sort((a,b)=>b.pc-a.pc);
   const doi=(W.doi||[]).slice(0,5).map(x=>`<li><small>Năm ${Math.floor(x.t/12)+1}: ${e(tenP(x.p))} từ ${e(tenN(x.tu))} sang ${e(tenN(x.sang))}</small></li>`).join('');
   const xung=(W.xung||[]).map(x=>`<li><small>Xung đột biên giới: ${e(tenN(x.a))} và ${e(tenN(x.b))} ở ${x.front.map(p=>e(tenP(p))).join(', ')}</small></li>`).join('');
   return `${xung?`<ul class="plain">${xung}</ul>`:''}<p class="kvline" style="margin-top:8px"><b>Cương vực</b></p><ul class="plain">${L.map(x=>`<li>${e(tenN(x.n))} · ${x.so} khu · ${x.pc}% đất trong thiên hạ</li>`).join('')}</ul>${doi?`<p class="kvline" style="margin-top:8px"><b>Đất đã đổi chủ</b></p><ul class="plain">${doi}</ul>`:''}`}
 function dauBanDo(){const W=S().w;const out=[];(W.wars||[]).forEach(w=>{for(const p in (w.chiem||{})){const A=P[p];out.push(`<circle cx="${A.x}" cy="${A.y}" r="11" fill="none" stroke="${D.NAT[w.chiem[p]].col}" stroke-width="4" stroke-dasharray="3 3" pointer-events="none"/>`)}});return out.join('')}
-window.BN_CT={bind(g,h){G=g;H=h},tick:mo=>H.w_tension(mo),apNat,bien,tienTuyen,suc,no,dangXung,chien,chienDich,ketCuc,doiChu,month,chuyenNha,moTa,cuongVuc,dauBanDo,lanhTho,khu,KINH};
+window.BN_CT={bind(g,h){G=g;H=h},tick:mo=>H.w_tension(mo),apNat,bien,tienTuyen,suc,no,dangXung,chien,chienDich,ketCuc,doiChu,month,chuyenNha,moTa,cuongVuc,dauBanDo,lanhTho,khu,KINH,giap,manh,DAT};
 /* ================= sự kiện ================= */
 window.EVF.push(g=>{G=g;const {fx,esc,chance}=g;const m=v=>g.mm(v);const FM=v=>g.fmtMoney(v);const N=c=>esc(c.given);
  const W=d=>{const w=d&&S().w.wars.find(z=>z.id===d.wid);return w||null};const dich=(w,d)=>w.a===d.nat?w.b:w.a;
