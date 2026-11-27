@@ -32,7 +32,7 @@ for(const id of ['kn_12','kn_74']){const e=find(id);if(!e||e.__g1528c)continue;e
     return `Có người mách ${esc(c.given)}: một chức ${pn(tl)} béo bở sắp trống. Chỉ cần lo lót đúng chỗ là được, giá ${G.fmtMoney(G.bribe.price(tl))}.${bk?` Cần có người chống lưng: ${esc(bk.n)} chịu đứng ra bảo lãnh.`:''}`};
   e.o=function(c,d){const tl=(c.lv||0)+1;const fee=G.bribe.price(tl);const bk=tl>G.bribe.MAX_FREE?G.bribe.backer(c):null;const win=bk?0.82:0.7;
     return [{l:`Đút lót để được chức ${pn(tl)}${bk?`, nhờ ${bk.n} chống lưng`:''} (${G.fmtMoney(fee)})`,vio:'trugian',c:()=>G.money()>=fee,ax:{thanh:-2,tv:1},
-        f:cc=>{G.S().money-=fee;if(G.chance(win))return 'Chức về tay. Nhưng sổ sách của kẻ nhận bạc có tên mình.'+fx(cc,{lv:1,cor:12});return 'Tiền mất, chức vào tay người trả cao hơn.'+fx(cc,{cor:6,tam:-8})}},
+        f:cc=>{G.S().money-=fee;const used=G.bribe.use(bk,cc);if(G.chance(win))return 'Chức về tay. Nhưng sổ sách của kẻ nhận bạc có tên mình.'+fx(cc,{lv:1,cor:12})+used;return 'Tiền mất, chức vào tay người trả cao hơn.'+fx(cc,{cor:6,tam:-8})+used}},
       {l:'Không màng',ax:{thanh:1,tiet:1},f:cc=>'Giữ được tiếng sạch.'+fx(cc,{liem:3})}]}}}
 /* THẺ NGƯỜI THƯƠNG Ở MỌI BƯỚC TÌNH DUYÊN (chủ dự án 25/11: "thanh mai trúc mã, rồi cái lương duyên gì đó mà người ấy bảo mình về thưa chuyện hoặc hứa hẹn thành công vẫn không có thẻ"): người sắp chọn phải có tên và thẻ bấm xem được; người ấy là chính người sẽ cưới (c.flags.lvP). */
 {const lift={tinh_thanh_mai:()=>G.tierIdx()*3,tinh_tieu_thu:()=>30,tinh_tieu_thu_b:()=>30,tinh_tieu_thu_c:()=>30};

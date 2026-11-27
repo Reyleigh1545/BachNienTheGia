@@ -189,7 +189,9 @@ function bizCalc(b){const S=X.S;
   return {rev:Math.round(rv),wages,mat:Math.round(mat),rent,profit:Math.round(rv-wages-mat-rent),fill,ownerF,cap:Math.round(L[2]*capF)};
 }
 function bizMonth(){const S=X.S;
-  let v=0;S.biz.forEach(b=>{staffTick(b);const c=bizCalc(b);b.last=c;v+=c.profit;
+  let v=0;const th=window.BNHELP&&S.biz.length?BNHELP.find('trade',{noCd:true}):null,tf=window.BNHELP&&S.biz.length?BNHELP.foe('trade'):null; /* d.1.5.44 */
+  if(month()===1){if(th)BNHELP.use(th,'biz','giới thiệu mối hàng, cơ sở của nhà lãi hơn trong năm');if(tf)X.log(`${tf.name} ngầm giành mối, cơ sở của nhà lãi kém đi.`,'hi')}
+  S.biz.forEach(b=>{staffTick(b);const c=bizCalc(b);if(c.profit>0&&(th||tf)){const dv=Math.round(c.profit*((th?0.04*th.lv:0)-(tf?0.04:0)));c.profit+=dv;c.help=dv;c.helpBy=dv>0&&th?th.name:(dv<0&&tf?tf.name:null)}b.last=c;v+=c.profit;
     b.staff.forEach(st=>{st.m=Math.min(120,st.m+(2+st.tl/12)/12);for(const t of [30,60,90])if(st.m>=t&&!st.ms.includes(t)){st.ms.push(t);raiseReq(b,st,t)}});
     autoFill(b);
     if(month()===12&&b.rq&&b.rq.length){const ow=P(b.owner);enqueue('raiseY',ow&&inClan(ow)&&!ow.away&&ow.job==='chu'?ow.id:S.head,{biz:b.id})}});
@@ -221,7 +223,7 @@ function bizDetail(bid){const S=X.S;
   const extra=b.staff.filter(s=>!used.has(s.id)); /* người dư, không còn chỗ (sau khi bán bậc) */
   openModal(`<span class="eyebrow">${esc(B.n)} · bậc ${b.lv+1}/${B.lv.length}</span><h2>${esc(L[0])}</h2>
    <p class="kvline">Của: <b>${esc(bizOwnName(b))}</b> · Người trông: ${o&&inClan(o)?`<b>${esc(nameOf(o))}</b>`:'<span class="down">chưa có ai trông</span>'}</p>
-   <dl class="kv" style="margin-top:6px"><dt>Doanh thu (trần ${money(L[2])})</dt><dd class="num">${money(k.rev)}</dd><dt>Lương người làm</dt><dd class="num down">${money(k.wages)}</dd><dt>Nguyên liệu, hao phí</dt><dd class="num down">${money(k.mat)}</dd><dt>Tiền thuê, thuế chợ</dt><dd class="num down">${money(k.rent)}</dd><dt><b>Lãi tháng</b></dt><dd class="num ${k.profit<0?'down':'up'}"><b>${money(k.profit)}</b></dd><dt>Đủ người</dt><dd class="num">${Math.round(k.fill*100)}%</dd></dl>
+   <dl class="kv" style="margin-top:6px"><dt>Doanh thu (trần ${money(L[2])})</dt><dd class="num">${money(k.rev)}</dd><dt>Lương người làm</dt><dd class="num down">${money(k.wages)}</dd><dt>Nguyên liệu, hao phí</dt><dd class="num down">${money(k.mat)}</dd><dt>Tiền thuê, thuế chợ</dt><dd class="num down">${money(k.rent)}</dd>${k.helpBy?`<dt>${k.help>0?'Mối hàng nhờ':'Bị giành mối bởi'} ${esc(k.helpBy)}</dt><dd class="num ${k.help>0?'up':'down'}">${k.help>0?'+':''}${money(k.help)}</dd>`:''}<dt><b>Lãi tháng</b></dt><dd class="num ${k.profit<0?'down':'up'}"><b>${money(k.profit)}</b></dd><dt>Đủ người</dt><dd class="num">${Math.round(k.fill*100)}%</dd></dl>
    <h3 style="margin:10px 0 0;font-size:14px">Nhân sự</h3>
    <div class="staff">${rowsHTML||'<p class="note">Cơ sở nhỏ, chủ tự làm.</p>'}${extra.map(stRow).join('')}</div>
    ${nx?`<button class="btn" data-expand style="margin-top:8px;width:100%" ${bizFundGet(b)<nx[1]||expandWhy(b)?'disabled':''}><strong>Mở rộng thành ${esc(nx[0])}</strong><small>${money(nx[1])} từ ${esc(bizOwnName(b).toLowerCase())} · trần doanh thu ${money(nx[2])} · thêm ${nx[4].length} chỗ làm${expandWhy(b)?' · <b class="down">'+esc(expandWhy(b))+'</b>':''}</small></button>`:''}

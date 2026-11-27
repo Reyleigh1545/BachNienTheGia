@@ -55,7 +55,7 @@ function illYear(){const s=S();const season=X.EC.season?X.EC.season():null;let p
     try{const PV=(window.D&&window.D.PROV)||{};const pv=PV[s.loc&&s.loc.p];const rg=pv&&pv.r;const add=(k,n)=>{if(DIS[k])for(let i=0;i<n;i++)pool.push(k)};if(rg==='nam'||rg==='tay'){add('sot_ret',3)}else if(rg==='bac'){add('thuong_han',2);add('ho_phoi',2)}else if(rg==='dong'||rg==='trung'){add('sot_ret',1);add('thuong_han',1)}}catch(e){}
     const id=pick(pool);const i=start(p,id);if(!i)return;
     if(i.sev>=2&&popups<1&&X.EC.isCtrl&&X.EC.isCtrl(p)&&X.EVMAP.ill_chua){popups++;enqueue('ev',p.id,{ev:'ill_chua',data:{ill:id}})}
-    else if(i.sev>=2)treat(p,i,chance(0.5)?'lang':'tu')})}
+    else if(i.sev>=2){const mh=window.BNHELP?window.BNHELP.find('med',{who:p}):null;if(mh){treat(p,i,'danhy');window.BNHELP.use(mh,'med',`đến chữa cho ${p.given}`)}else treat(p,i,chance(0.5)?'lang':'tu')}})}
 X.yearly.push(illYear);
 G.ill={start,has,treat,DIS,doctorPower,tick:illTick};
 Object.assign(X.fn,{illTick});

@@ -1329,10 +1329,10 @@ function examPopup(c,stage,round){
   const opts=aps.map(([l,spec,lo,hi])=>({l,s:hi?`Có thể cao hơn hoặc thấp hơn hẳn`:'Chắc chắn, ít bất ngờ',f:c=>{
     let v=0,w=0;for(const k in spec){v+=c[k]*spec[k];w+=Math.abs(spec[k])}
     /* v6.4.1.5.1: điểm mỗi vòng tối đa 100, kể cả cộng danh hiệu; chỉ số nặng ít hơn, cộng danh hiệu còn một nửa */
-    const sc=Math.round(clamp((v/w*0.7+R(0,20)+tsum(c,'exam')*0.5+fameExam(c)+(thanHas('thanhnhan')?2:0)+(thanHas('giamchinh')?2:0))*cond(c)/0.9-stage*5+R(lo,hi),0,100));
+    const sc=Math.round(clamp((v/w*0.7+R(0,20)+tsum(c,'exam')*0.5+fameExam(c)+(thanHas('thanhnhan')?2:0)+(thanHas('giamchinh')?2:0)+(c.flags.exHelp?2*c.flags.exHelp.lv:0))*cond(c)/0.9-stage*5+R(lo,hi),0,100));
     c.exam.cur.push(sc);return `Vòng ${rn}: được ${sc} điểm.`}}));
   if(round===0&&stage<2)opts.push({l:`Mua đề từ kẻ lạ (${money(mm(8+stage*8))})`,s:'Gian lận có thể bị bắt',c:()=>S.money>=mm(8+stage*8),f:c=>{S.money-=mm(8+stage*8);if(chance(0.35)){c.exam=null;return 'Bị bắt quả tang gian lận! Đuổi khỏi trường thi.'+fx(c,{fame:-40,tam:-20,cfame:-15})}c.exam.cheat=12;c.exam.cur.push(clamp(Math.round(c.tri*0.6+30),0,100));return 'Đề trúng y như mua.'}});
-  const warn=c.tam<40||c.suc<50?' Tinh thần và sức khỏe không tốt sẽ kéo điểm xuống.':'';
+  const warn=(c.tam<40||c.suc<50?' Tinh thần và sức khỏe không tốt sẽ kéo điểm xuống.':'')+(round===0&&c.flags.exHelp?` ${esc(c.flags.exHelp.n)} đã chỉ lối làm bài, bài thi sẽ được điểm hơn.`:'');
   choicePopup(c,'Khoa cử',`Kỳ ${EXAM_N[stage]} · vòng ${round+1}/${rs.length}: ${rn}`,`${rd}.${round===0?(stage===2?' Thi Đình không đánh trượt, chỉ xếp hạng.':` Khoa này lấy đỗ theo chỉ tiêu: xếp hạng với ${stage===0?'sĩ tử cả tỉnh':'cử nhân cả nước'}, chỉ vài chục người đầu được đỗ.`):` Điểm các vòng trước: ${c.exam.cur.join(', ')}.`}${warn}`,opts);
   // sau khi chọn: chuyển vòng
   const okWrap=()=>{const b=M.querySelector('[data-ok]');if(!b){setTimeout(okWrap,30);return}const orig=b.onclick;b.onclick=()=>{
@@ -1371,6 +1371,7 @@ function register(c){
   /* v6.4.1: rút tên rồi ghi danh lại thì thi tiếp từ kỳ đang dở, học vị đã đỗ vẫn còn */
   const sv=c.flags.exSave;const st=sv?Math.min(sv.stage,c.degree):0;
   c.exam={stage:st,scores:sv&&st>0?sv.scores.slice(0,st):[]};delete c.flags.exSave;
+  if(window.BNHELP){if(st===0)delete c.flags.exHelp;const h=BNHELP.find('exam',{who:c});if(h){c.flags.exHelp={lv:h.lv,n:h.name};BNHELP.use(h,'exam',`chỉ lối làm bài cho ${c.given} trước khoa thi`)}} /* d.1.5.44 */
   log(`${nameOf(c)} ${st>0?'ghi danh thi tiếp':'ghi danh khoa cử'}.`)}
 function withdrawPopup(c){
   const opts=[];
@@ -1786,8 +1787,11 @@ function bribeBacker(c){
   const f=alive().find(p=>p.id!==c.id&&inClan(p)&&p.job==='quan'&&(p.lv||0)>=6);if(f)return {n:nameOf(f),id:f.id,kind:'nhà'};
   try{const L=Object.values((S.np&&S.np.l)||{}).filter(n=>n.ok!==0&&(n.vai||[]).includes('quy_nhan')&&(n.tier||0)>=5&&(n.rel||0)>=20);if(L.length)return {n:L[0].n,id:L[0].id,kind:'quý nhân'}}catch(e){}
   return null}
+/* d.1.5.44: người chống lưng là quý nhân thân thì nhờ một lần là dùng một phần ân tình */
+function useBacker(bk,c){if(!bk||bk.kind!=='quý nhân'||!window.BNHELP)return '';const n=S.np&&S.np.l[bk.id];return n?BNHELP.use({key:'n:'+n.id,name:n.n,npc:n,lv:(n.rel||0)>=70?2:1},'bribe',`đứng ra chống lưng cho ${c.given}`):''}
 function bribeOk(c,r){return r<=BRIBE_MAX_FREE||!!bribeBacker(c)}
 function officePopup(c){
+  const oh=window.BNHELP?BNHELP.find('office',{who:c}):null,ofe=window.BNHELP?BNHELP.foe('office',{who:c}):null; /* d.1.5.44: quan, quý nhân thân nói giúp; kẻ thù cản */
   const mil=c.job==='quan_ngu';
   const cand=pickSeats(c);
   /* d9.12: không còn ghế khả dĩ thì không hiện hộp chỉ có nút Yên phận (hộp một lựa chọn trơn, mục 6) */
@@ -1797,15 +1801,16 @@ function officePopup(c){
   cand.forEach(({tid,T,key})=>{const st=offState(key);
     const nm=seatName(key);const ph=phTxt(T);
     const spec=mil?{vo:1,tri:0.4,eq:0.4}:{tri:1,eq:0.6,fame:0.4};
-    if(st.vac){const cd=seatCands(key,st);const best=cd.reduce((m,x)=>Math.max(m,x.ab),0);const mine=Math.round(myAb(c)+(c.cong||0)/10);const tgt=clamp(Math.round(55+(mine-best)*1.2-promoPen(c)),10,90);
+    if(st.vac){const cd=seatCands(key,st);const best=cd.reduce((m,x)=>Math.max(m,x.ab),0);const mine=Math.round(myAb(c)+(c.cong||0)/10);const tgt=clamp(Math.round(55+(mine-best)*1.2-promoPen(c)+(oh?5*oh.lv:0)-(ofe?5:0)),10,90);
       opts.push({l:`Xin xét ${nm} (${ph}), đang trống, ${cd.length} người cùng xin`,r:[spec,tgt],y:c=>{if(!assignPost(c,key))return 'Ghế đã có người khác.';delete st.cd;return `Được bổ nhiệm ${nm}!`+fx(c,{fame:8+T.r*4,tam:8})},n:c=>tryWait(c,key,rivalNote(c,key))+fx(c,{tam:-4})})}
     else{const cm=seatCmp(c,st);
-      const p0=cm.out?clamp(0.12+cm.dt/80+cm.dc/300+(st.liem<35?0.1:0)+((qtOf(c).fav||0)/400),0.08,0.7):clamp(0.04+cm.dt/200,0.02,0.2);const p=clamp(p0*(1-promoPen(c)/100),0.01,0.7);
+      const p0=cm.out?clamp(0.12+cm.dt/80+cm.dc/300+(st.liem<35?0.1:0)+((qtOf(c).fav||0)/400),0.08,0.7):clamp(0.04+cm.dt/200,0.02,0.2);const p=clamp(p0*(1-promoPen(c)/100)+(oh?0.05*oh.lv:0)-(ofe?0.03:0),0.01,0.75);
       opts.push({l:`Xin xét thay ${st.n}, ${st.age} tuổi (tài ${cm.tai}, công ${cm.cong}) ở ${nm}, ${ph}`,f:c=>{
         if(!chance(p)||!S.off[key]||S.off[key].vac||S.off[key].holder)return tryWait(c,key,`Triều đình cân nhắc rồi để ${esc(st.n)} ở lại.`)+fx(c,{tam:-3});
         const old=st.n;const sn0=Object.assign({key},st);if(!assignPost(c,key))return 'Ghế đã có người khác.';holderGrudge(sn0,c,'thay');memSet('oan_thay:'+key,480,{n:old});c.flags.wait=null;
         log(`${nameOf(c)} được triều đình cho thay ${old} ở ghế ${nm}.`,'gd');return `Triều đình xét tài và công của ${esc(c.given)} hơn ${esc(old)}, cho thay. ${esc(old)} được điều đi nơi khác.`+fx(c,{fame:8+T.r*4,tam:8})}})}
   });
+  if(oh)opts.forEach(o=>['y','n','nn','f'].forEach(k=>{const fn=o[k];if(typeof fn==='function')o[k]=c=>String(fn(c)||'')+BNHELP.use(oh,'office',`nói giúp ${c.given} khi xin xét`)}));
   /* hặc tội và lo lót: nhằm vào ghế có người ở trên cùng danh sách */
   const top=cand.find(x=>{const s=offState(x.key);return !s.vac&&!s.holder});
   if(top){const tkey=top.key,tT=top.T,tst=offState(tkey),tnm=seatName(tkey);const cost=bribePrice(tT.r);const bk=tT.r>BRIBE_MAX_FREE?bribeBacker(c):null;
@@ -1814,7 +1819,7 @@ function officePopup(c){
       n:c=>{c.flags.noPromoUntil=S.t+24;return 'Bị phản đòn, mang tiếng hãm hại đồng liêu.'+fx(c,{fame:-15,tam:-10})},
       nn:c=>{if(c.lv>0&&!mil)c.lv=Math.max(0,c.lv-1);return 'Bị giáng một bậc vì vu cáo.'+fx(c,{fame:-25,tam:-15})}});
     if(bribeOk(c,tT.r))opts.push({l:`Lo lót thượng quan để chen ghế ${tnm}, thay ${tst.n}${bk?`, nhờ ${bk.n} chống lưng`:''} (${money(cost)})`,c:()=>S.money>=cost,f:c=>{S.money-=cost;
-      if(chance(bk?0.55:0.35)&&assignPost(c,tkey))return `Thượng quan điều ${tst.n} đi nơi khác, nhường ghế cho mình.`+fx(c,{liem:-10});return 'Tiền mất, ghế vẫn chưa đến lượt.'+fx(c,{liem:-5})}})}
+      const used=useBacker(bk,c);if(chance(bk?0.55:0.35)&&assignPost(c,tkey))return `Thượng quan điều ${tst.n} đi nơi khác, nhường ghế cho mình.`+fx(c,{liem:-10})+used;return 'Tiền mất, ghế vẫn chưa đến lượt.'+fx(c,{liem:-5})+used}})}
   opts.push({l:mil?'Ở lại đồn hiện tại':'Yên phận với chức hiện tại',f:c=>{c.flags.noPromoUntil=S.t+18;return 'Làm tốt việc trước mắt.'+fx(c,{m:1})}});
   const here=seatOfC(c);const w=c.flags.wait&&seatTm(c.flags.wait.key)?` Mình đang trong danh sách chờ ghế ${esc(seatName(c.flags.wait.key))}.`:'';
   choicePopup(c,mil?'Quân ngũ':'Hoạn lộ',mil?'Xin chức võ':'Đường thăng tiến',`${esc(c.given)} đang ${mil?'giữ':'làm'} ${esc(here?seatName(here):(mil?ARMY[c.lv][0]:RANKS[c.lv]))}${mil?'':` (${rankTxt(c)})`}. Các ghế bên dưới xếp từ cao xuống thấp.${w}`,opts);
@@ -2201,7 +2206,9 @@ function tradeReturn(c0,tr,probe){
   const fameB=Math.min(0.15,((c?c.fame:0)+S.fame*0.1)/2000);
   let risk=r.risk*(c?(1.2-c.vo/200-Math.min(0.2,c.m/600)):1.1)*(S.war?1.4:1)*(season()==='dong'&&(r.sea||r.war)?1.3:1)*(S.epi?1.2:1);
   const spoil=w_spoil(tr.good,r.mo);const val0=tr.qty*(tr.pv||priceOf(tr.good))*(1+((tr.sv||r.sell[tr.good]||1)-1)*w_damp(tr.good)*(r.fr||1))*(1-spoil)*(rule('trongthuong')?1.08:1)*(rule('trongnong')?0.95:1)*(0.92+Math.random()*0.25+sk*0.32+fameB)*(S.epi&&tr.good==='duoc'?1.4:1)*(S.war&&['lua','sat','muoi'].includes(tr.good)?1.15:1);
-  const val=val0+Math.max(0,val0-tr.cost)*0.5; /* 24/11 chủ dự án trả lời câu 1: lãi chuyến buôn tăng thêm 50% nữa (phần lãi gộp trên vốn nhân 1,5; không đụng phần lỗ) */
+  let val=val0+Math.max(0,val0-tr.cost)*0.5; /* 24/11 chủ dự án trả lời câu 1: lãi chuyến buôn tăng thêm 50% nữa (phần lãi gộp trên vốn nhân 1,5; không đụng phần lỗ) */
+  let helpLine=''; /* d.1.5.44: người quen, họ thân làm nghề buôn giúp chuyến hàng; kẻ thù ép giá */
+  if(!probe&&window.BNHELP){const th=BNHELP.find('trade',{who}),tf=BNHELP.foe('trade',{who});if(th){val+=tr.cost*0.05*th.lv;risk*=1-0.15*th.lv;helpLine+=BNHELP.use(th,'trade','chỉ mối mua rẻ, bán được giá, đường đi an toàn hơn')}if(tf){val-=tr.cost*0.05;helpLine+=`<span class="fx"><span class="down">${esc(tf.name)} ngầm ép giá</span></span>`;log(`${tf.name} ngầm ép giá chuyến buôn.`,'hi')}}
   const toll=Math.round(tr.cost*(0.01+0.02*r.mo+0.04*(r.cross||0))*tollOff());
   const fee=tr.hired?Math.max(0,(val-toll-tr.cost)*0.2):0;
   const got=Math.max(0,Math.round(val-fee-toll));
@@ -2209,7 +2216,7 @@ function tradeReturn(c0,tr,probe){
   const buyable=Object.entries(r.buy);
   /* v6.4.1.7: Thiên hạ đệ nhất tiêu trong họ thì chuyến buôn hiếm khi gặp nạn, Thương Thánh thì bớt một phần */
   if(chance(risk*(thanHas('detieu')?0.2:1)*(thanHas('thuongthanh')?0.8:1))){
-    return choicePopup(who,'Đi buôn chuyến','Gặp nạn trên đường về',`Đoàn hàng ${esc(r.n.toLowerCase())} gặp ${pick(['cướp núi','bão lớn','quan ải sách nhiễu','dịch bệnh trong đoàn','hải tặc'])}.`,[
+    return choicePopup(who,'Đi buôn chuyến','Gặp nạn trên đường về',`Đoàn hàng ${esc(r.n.toLowerCase())} gặp ${pick(['cướp núi','bão lớn','quan ải sách nhiễu','dịch bệnh trong đoàn','hải tặc'])}.${helpLine}`,[
       {l:'Liều giữ hàng',r:[{vo:1,eq:0.5},60],y:x=>`Giữ được hàng, thu ${money(got)}.`+fx(x,{money:got,m:2,fame:5}),n:x=>'Mất trắng, người bị thương.'+fx(x,{suc:-R(15,30),hpMax:-R(0,3),tam:-15}),nn:x=>'Mất trắng, suýt mất mạng.'+fx(x,{suc:-R(30,45),hpMax:-R(3,6),tam:-20})},
       {l:'Bỏ bớt hàng giữ mạng',f:x=>`Cứu được một phần, thu ${money(got*0.4)}.`+fx(x,{money:Math.round(got*0.4),tam:-6})}]);
   }
@@ -2218,7 +2225,7 @@ function tradeReturn(c0,tr,probe){
     {l:'Găm hàng chờ giá lên',r:[{eq:1,tri:1},60],y:x=>`Giá lên đúng lúc, thu ${money(got*1.15)}.`+fx(x,{money:Math.round(got*1.15),m:2,tam:8}),n:x=>`Giá rớt, chỉ thu ${money(got*0.8)}.`+fx(x,{money:Math.round(got*0.8),tam:-6})}];
   buyable.forEach(([g,m00])=>{const m0=+(1-(1-m00)*(r.fr||1)*w_damp(g)).toFixed(2);opts.push({l:`Bán xong, mua ${GOODS[g].n.toLowerCase()} giá rẻ (×${m0}) mang về kho`,s:'Hàng về kho, có thể bán ở nhà hoặc chở đi nơi khác',f:x=>{const q=Math.floor(got*0.7/(priceOf(g)*m0));S.kho[g]=(S.kho[g]||0)+q;return `Mang về ${fmt(q)} ${GOODS[g].u} ${GOODS[g].n.toLowerCase()}, cộng ${money(got*0.3)} tiền mặt.`+fx(x,{money:Math.round(got*0.3),m:2})}})});
   opts.push({l:'Biếu quan sở tại để kết giao',f:x=>`Thu ${money(got*0.85)}, quen thêm người có thế lực.`+fx(x,{money:Math.round(got*0.85),fame:8,eq:2,hung:2})});
-  choicePopup(who,'Đi buôn chuyến','Hàng về đến nơi',`${c?esc(c.given):'Lái buôn thuê'} đưa ${fmt(tr.qty)} ${GOODS[tr.good].u} ${GOODS[tr.good].n.toLowerCase()} tới ${esc(r.n.toLowerCase())}. Bán được khoảng ${money(got)} (vốn ${money(tr.cost)}, đã trừ lộ phí và thuế ải ${money(toll)}${spoil>0.015?`, hàng hao hụt ${Math.round(spoil*100)}%`:''}${fee?`, tiền công lái buôn ${money(fee)}`:''}).`,opts);
+  choicePopup(who,'Đi buôn chuyến','Hàng về đến nơi',`${c?esc(c.given):'Lái buôn thuê'} đưa ${fmt(tr.qty)} ${GOODS[tr.good].u} ${GOODS[tr.good].n.toLowerCase()} tới ${esc(r.n.toLowerCase())}. Bán được khoảng ${money(got)} (vốn ${money(tr.cost)}, đã trừ lộ phí và thuế ải ${money(toll)}${spoil>0.015?`, hàng hao hụt ${Math.round(spoil*100)}%`:''}${fee?`, tiền công lái buôn ${money(fee)}`:''}).${helpLine}`,opts);
 }
 function sellKho(g,pct){const q=Math.floor((S.kho[g]||0)*pct);if(!q)return;const drop=Math.min(0.6,q*GOODS[g].p/200000);const v=Math.round(q*priceOf(g)*0.95*(1-drop/2));S.kho[g]-=q;S.money+=v;S.mk[g]=Math.max(0.45,mk(g)-drop);log(`Bán ${fmt(q)} ${GOODS[g].u} ${GOODS[g].n.toLowerCase()} ở chợ nhà, thu ${money(v)}.`);render();save()}
 
@@ -2784,11 +2791,12 @@ function toIncome(){return 0} /* d8: tô thu theo mùa gặt trong farmMonth; to
 function toEst(){const F=S.farm;const n=farmArea();if(!n)return 0;return Math.round(n*CROPS.lua.y*0.9*TOLV[F.to==null?1:F.to][1]*mk('lua')/12*(S.disaster?(S.disaster.crop||0.6):1))}
 
 /* ---------- dòng tiền hằng tháng ---------- */
+function aidMonth(){if(!window.BNHELP||S.money>=mm(3)||(S.aidT||-1e9)>S.t-12)return;const h=BNHELP.find('aid');if(!h)return;const g=Math.round(6*h.lv*60*MM_THU[mmTier()]);S.money+=g;S.aidT=S.t;BNHELP.use(h,'aid',`gửi ${money(g)} đỡ nhà lúc túng thiếu`)} /* d.1.5.44 */
 function econMonth(){
   ensureEcon();
   const main=mainHH();const L={in:{},out:{},t:S.t};const add=(o,k,v)=>{v=Math.round(v);if(v)o[k]=(o[k]||0)+v};
   const m0=S.money;
-  const farmV=farmMonth();bizMonth();
+  const farmV=farmMonth();bizMonth();aidMonth();
   const tp=titlePay(),to=toIncome();
   S.money+=tp+to+farmV;add(L.in,'tuoc',tp);add(L.in,'to',to);add(L.in,'mua',farmV);
   {const u=projUpkeep();if(u>0){S.money-=u;add(L.out,'duan',u)}} /* v6.7.0-d2: duy trì dự án gia nghiệp */
@@ -4905,10 +4913,11 @@ function matchmaker(c,opts){
   const fee=opts.free?0:mm(1.5);if(S.money<fee)return;
   const st=standOf(c);
   const outOk=!opts.noOut&&c.g==='nữ'&&!isHead(c)&&!c.inLaw&&!married(c);
+  const mh=window.BNHELP?BNHELP.find('match',{who:c}):null,mf=window.BNHELP?BNHELP.foe('match',{who:c}):null; /* d.1.5.44 */
   const mkCand=up=>{const p=mkMatch(c,{up,g:c.g==='nam'?'nữ':'nam'});ensurePersona(p);
     const q=(p.tri+p.vo+p.mi+p.eq)/4;
     p.needT=clamp(p.famT+(up>0.5?1:0),0,6);p.needF=Math.max(0,Math.round((q-48)*3+p.famT*6));
-    p.fee=Math.round(mm(q/5+p.famT*0.5)*(1-Math.min(c.mi,100)/250)*(clanLv()>=3?0.6:1));
+    p.fee=Math.round(mm(q/5+p.famT*0.5)*(1-Math.min(c.mi,100)/250)*(clanLv()>=3?0.6:1)*(mh?1-0.1*mh.lv:1)*(mf?1.1:1));if(mh)['tri','vo','mi','eq'].forEach(k=>{p[k]=Math.round(p[k]+3*mh.lv)});
     return p};
   /* chỉ giữ mối cưới được: đủ gia thế, danh vọng, đủ tiền sính lễ (sau khi trả bà mối), hoặc gả được nếu là con gái */
   const elig=p=>(tierIdx()>=p.needT&&(c.fame+S.fame*0.2)>=p.needF&&S.money-fee>=p.fee)||(outOk&&tierIdx()+1>=p.needT);
@@ -4917,6 +4926,7 @@ function matchmaker(c,opts){
   for(let k=0;k<16&&list.length<3;k++){const p=mkCand([-0.9,0,0.9,-1.4,0.4][k%5]);if(elig(p))list.push(p)}
   if(!list.length){infoPopup(c,opts.eyebrow2||'Hôn sự','Chưa có mối hợp',`Bà mối đi hỏi một vòng nhưng chưa có mối nào hợp với nhà mình lúc này (gia thế, danh vọng hay sính lễ còn chưa tới). Chưa mất công bà mối.`);return}
   S.money-=fee;
+  if(mh)BNHELP.use(mh,'match',`nói giúp với bà mối cho ${c.given}`);
   Object.keys(CAND).forEach(k=>delete CAND[k]);list.forEach(p=>{p._cand=1;CAND[p.id]=p});
   let idx=0,msg='',failLines='';const gone=list.map(()=>false);
   const ok=p=>tierIdx()>=p.needT&&(c.fame+S.fame*0.2)>=p.needF&&S.money>=p.fee;
@@ -4924,7 +4934,7 @@ function matchmaker(c,opts){
   const fxl=a=>`<span class="fx">${a.map(([k,t])=>`<span class="${k}">${t}</span>`).join('')}</span>`;
   /* hộp kết quả (cùng khuôn kết quả sự kiện): lời kể + dòng cộng trừ + nút Tiếp tục */
   function resultBox(p,title,text,lines,after){
-    openModal(`${hdrEv(c,p)}<span class="eyebrow">${opts.eyebrow||('Bà mối · đã trả '+money(fee))}</span><h2>${title}</h2>
+    openModal(`${hdrEv(c,p)}<span class="eyebrow">${opts.eyebrow||('Bà mối · đã trả '+money(fee))}${mh?` · ${esc(mh.name)} nói giúp`:''}</span><h2>${title}</h2>
      <div class="result"><p>${text}</p>${fxl(lines)}</div>
      <div class="choices"><button class="btn primary" data-ok>Tiếp tục</button></div>`,false,'mm');
     M.querySelector('[data-ok]').onclick=()=>{closeModal();after()}}
@@ -4945,7 +4955,7 @@ function matchmaker(c,opts){
     resultBox(p,p._pt?'Hôn sự thành':'Hôn sự do mai mối',text,lines,go)}
   /* làm quen thành: hợp ý nhau, người chơi đồng ý rồi mới cưới */
   function agreeBox(p,pre){const n=esc(p.given);
-    openModal(`${hdrEv(c,p)}<span class="eyebrow">${opts.eyebrow||('Bà mối · đã trả '+money(fee))}</span><h2>Hợp ý nhau</h2>
+    openModal(`${hdrEv(c,p)}<span class="eyebrow">${opts.eyebrow||('Bà mối · đã trả '+money(fee))}${mh?` · ${esc(mh.name)} nói giúp`:''}</span><h2>Hợp ý nhau</h2>
      <div class="result"><p>${n} và ${esc(c.given)} trò chuyện rất hợp, người nào cũng ưng ý người kia. Hai nhà đã có ý, chỉ chờ mình gật đầu là định ngày cưới.</p>${fxl(pre.concat([['up','Hai người hợp ý nhau']]))}</div>
      <div class="choices"><button class="btn primary" data-yes><strong>Đồng ý, định ngày cưới</strong><small>Sính lễ ${money(p.fee)}</small></button><button class="btn ghost" data-no>Chưa vội, để dịp khác</button></div>`,false,'mm');
     M.querySelector('[data-yes]').onclick=()=>finish(p,'good');
@@ -4971,11 +4981,11 @@ function matchmaker(c,opts){
       if(q('[data-o]'))q('[data-o]').onclick=()=>{marryOut(c,p);closeModal()};
       q('[data-x]').onclick=()=>{closeModal();if(opts.after&&opts.none){let h='';try{h=opts.none()||''}catch(e){}infoPopup(c,opts.eyebrow2||'Hôn sự','Chưa ưng ai',h)}}};
     if(gone[idx]){
-      openModal(`${hdrEv(c,p)}<span class="eyebrow">${opts.eyebrow||('Bà mối · đã trả '+money(fee))}</span><h2>Mối không thành</h2>
+      openModal(`${hdrEv(c,p)}<span class="eyebrow">${opts.eyebrow||('Bà mối · đã trả '+money(fee))}${mh?` · ${esc(mh.name)} nói giúp`:''}</span><h2>Mối không thành</h2>
        <div class="result"><p>${msg}</p>${failLines}</div>
        <div class="choices">${!lastOne?btn('data-next','Nghe bà mối nói mối khác',''):''}<button class="btn ghost" data-x>Thôi, chưa ưng ai</button></div>`,false,'mm');
       bind();return}
-    openModal(`${hdrEv(c,p)}<span class="eyebrow">${opts.eyebrow||('Bà mối · đã trả '+money(fee))}</span><h2>${opts.title||'Mối lương duyên'} ${idx+1}/${list.length}</h2>
+    openModal(`${hdrEv(c,p)}<span class="eyebrow">${opts.eyebrow||('Bà mối · đã trả '+money(fee))}${mh?` · ${esc(mh.name)} nói giúp`:''}</span><h2>${opts.title||'Mối lương duyên'} ${idx+1}/${list.length}</h2>
      <div class="mmbody"><p>${st>=7?'Nhà mình danh giá nên bà mối đem đến mối cao.':st>=4?'Nhà mình có tiếng nên mối khá hơn người thường.':'Nhà mình bình dân nên mối vừa sức.'} Bà mối nói về <b>${esc(nameOf(p))}</b>: ${age(p)} tuổi, ${esc(jobName(p).toLowerCase())}, ${famLine(p)}${p._pt?', người trong lòng của mình':''}.</p>
      <p class="muted">Bấm vào thẻ ở trên để xem thêm về ${p.g==='nữ'?'cô ấy':'anh ấy'}. Sính lễ ${money(p.fee)}. Hiện có ${money(S.money)}.</p></div>
      <div class="choices">
@@ -5375,7 +5385,8 @@ const G={totalIncome:()=>totalIncome(),romOk:c=>romOk(c),romP:c=>romP(c),ROM_OPE
   _v633:{HOUSE_DEF,hdef,house,houseName,houseRel,houseAlly,houseKid,vil,vilLog,vd,vAdd,kPow,vFlag,vStance,vilRoutes,vilReady,vilEnd,vilStart,vilQuan,vilFighters,vilYears,vPick,pickWho,KIEN,DUY,KRANK,achieve,cf,vBranch,vFi,VBR,hinfo,hnear,houseRefs,giftNorm,w_wed,w_mo,NEAR_MO,HOUSE_TIER},
   _v62:{willPopup,chunoPopup,debtTick,expelPopup2,doExpel,tumatPopup,oanPopup,tranhviPopup,ruleSlots,ruleWhy,addRule,dropRule,keugoiPopup,thiencoPopup,gateCheck,ttlPopup,wishPick,wishScore,obey,ctxOk,CTX,v62Month,v62Year,loveTick,outsTick,divorcePopup,vuotsinhPopup,rulepropPopup,ruleforcePopup,rulechgPopup,pieceF,jobDig,minDig}};
 /* v6.4.1.1: cổng riêng cho trang admin (admin.js). Bản thường không dùng tới */
-G.brief=personBrief;Object.assign(G,{askOk,traders,bribe:{price:bribePrice,backer:bribeBacker,ok:bribeOk,MAX_FREE:BRIBE_MAX_FREE},talent:c=>{if(!c)return false;try{if(pot(c,'tri')>=90||pot(c,'vo')>=90)return true;if(tsum(c,'exam')>=5||tsum(c,'growAll')>0)return true;const u=tsum2(c,'capUp');return Object.values(u).some(x=>x>0)}catch(e){return false}},candReg:(p,rel)=>{if(p){p._cand=1;if(rel)p._relTxt=rel;CAND[p.id]=p}return p},proFix,npTakeSeat,npFreeSeat,npSeatLost,potLine,placeOf,houseFor,houseSur,localOfficer,officerDepose,houseRel:(id,d)=>houseRel(id,d),provName:p=>provN(p)});G._adm={brief:personBrief,xYear,xfn:ENGX.fn,tradeProbe:(c,tr)=>tradeReturn(c,tr,true),tradeRoutes:()=>routes(),tradePrice:g=>priceOf(g),wishPick,meets,setJob,JH_G,bigAvail:c=>bigAvail(c),bigDone:c=>bigDone(c),bigStart:(c,id)=>{const b=BIGS.find(x=>x.id===id);c.viec={id:b.id,start:S.t,end:S.t};},gbApply,avatarSVG,deathPopup,clanSupport,metaImport,phamSeats,letterLv,letterAdd,letterDue,letterLines,startScreen,historyMenu,personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
+if(window.BNHELP)window.BNHELP.bind({S:()=>S,log,G});
+G.brief=personBrief;Object.assign(G,{askOk,traders,bribe:{use:useBacker,price:bribePrice,backer:bribeBacker,ok:bribeOk,MAX_FREE:BRIBE_MAX_FREE},talent:c=>{if(!c)return false;try{if(pot(c,'tri')>=90||pot(c,'vo')>=90)return true;if(tsum(c,'exam')>=5||tsum(c,'growAll')>0)return true;const u=tsum2(c,'capUp');return Object.values(u).some(x=>x>0)}catch(e){return false}},candReg:(p,rel)=>{if(p){p._cand=1;if(rel)p._relTxt=rel;CAND[p.id]=p}return p},proFix,npTakeSeat,npFreeSeat,npSeatLost,potLine,placeOf,houseFor,houseSur,localOfficer,officerDepose,houseRel:(id,d)=>houseRel(id,d),provName:p=>provN(p)});G._adm={brief:personBrief,xYear,xfn:ENGX.fn,tradeProbe:(c,tr)=>tradeReturn(c,tr,true),tradeRoutes:()=>routes(),tradePrice:g=>priceOf(g),wishPick,meets,setJob,JH_G,bigAvail:c=>bigAvail(c),bigDone:c=>bigDone(c),bigStart:(c,id)=>{const b=BIGS.find(x=>x.id===id);c.viec={id:b.id,start:S.t,end:S.t};},gbApply,avatarSVG,deathPopup,clanSupport,metaImport,phamSeats,letterLv,letterAdd,letterDue,letterLines,startScreen,historyMenu,personalSpend,crRes,wp:{year:wpYear,list:WP,card:wpCard,win:wpWin},openSheet,led:LEDAPI,isCtrl,rivalNote,holderGrudge,offState,purgeYear,seatTm,promoWhy,assignPost,bacOf,tigOk,land:()=>({tot:landTotal(),fld:farmArea(),clr:clrN(),use:projUsedAc(),wild:wildAcres(),right:landRight()}),pageRuong,farmMonth,projWhy,projDef,projSize,toEst,income,prob,monthlyPerson,kidLearn,natOf,pot,growDim,growStat,natGrowth,SCHOOL,mkPerson,childOf,waitTick,waitFill,pickSeats,termAuto,officePopup,canPromote,lawPopup,lawCase,lawApply,projStart,projMonth,projYear,projOn,arcStart,arcEnd,arcMonth,arcPool,finishGame,worldInit,historyMenu,metaEnd,migrate,rivalTick,hhSweep,schoolAuto,doBirth,enqueue,isCtrl,autoSplit,farBranch,branchName,DX,seatWh,newBranch,dischargePopup,whereP,lqSync,isArmyKid,kinhOff,postPopup,assignPost,eligibleWhy,previewScore,advance,render,renderTop,save,nextPopup,closeModal,modalOpen,eligible,EVENTS:()=>EVENTS,EVMAP:()=>EVMAP,migrate,
   getSel:()=>sel,setSel:v=>{sel=v},running:()=>running,speed:()=>speed,setRun:(r,sp)=>{running=!!r;if(sp)speed=sp;renderTop()},
   setS:st=>{S=st;sel=P(sel)?sel:S.head;O.hidden=true;M.innerHTML='';render();nextPopup()},page:()=>page,ensurePersona};
 {const X={get S(){return S},R,chance,log,alive,inClan,P,head,later,enqueue,mm,mmF,nameOf,shuf,pick,clamp,provN,qtLog,age,fx,esc,money,dateStr,openModal,closeModal,infoPopup,inKinh,BIGS,get M(){return M},get EVENTS(){return EVENTS},get EVMAP(){return EVMAP},get DRY(){return DRY},get RELTR(){return RELTR},get mapProv(){return mapProv},get mapSel(){return mapSel},get qKind(){return qKind},get qOpenB(){return qOpenB},get qOpenT(){return qOpenT},get qProv(){return qProv},EC:{traders,mainHH,alive,inClan,isCtrl,esc,HH,P,RULES,chance,nextPopup,money,mm,enqueue,head,G,addRel,leaveSeat,setJob,addStat,log,nameOf,choicePopup,dOf,tuocCheck,cf,landDelta,age,WP,openModal,metaEnd,qtLog,infoPopup,gbLine,finishGame,tierNow,clamp,memSet,hdrEv,TIERS,famLine,closeModal,projOn,inheritTitle,inMain,fmt,fundAdd,spouseOf,gameOver,usU,usSteps,bar,US_N,shuf,usActors,R,clanSupport,court,US_COST,qtOf,qtSentence,qtAdd,kType,tmOf,home,homeP,PROV,US_START,usTarget,pmOpen,ARMY,thanHolder,elderOf,kin,relOf,isHead,canPunish,VWORK,vlv,ensurePersona,axv,VICES,rule,addHabit,HABITS,isVice,dropHabit,TK,tierIdx,married,KIN_N,FAME_SELF,cutVice,fx,shiftAx,VTXT,tsum,ledAdd,memAdd,yrs,qtDismiss,qtConfiscate,QT,die,LAWM,memHas,ROLES,stAge,ageEff,stfSnap,stfRemove,BIZ,stfEvent,STACC,stfHazard,BIZX,pick,wealth,giftRecent,M,save,vget,FAR_RE,BRK100,hashN,gateCap,charge,BRK_MID,SN,window,nextGate,hardCap,has,addTrait,achieve,dynEns,provN,relW,mkGiven,SURN,FACK,famProvs,inKinh,baseFollow,mkCfg,FM_CAP,projOf,projAc,wildAcres,projDef,projCost,projLed,projK,projN,projCap,HOUSE_DEF,termYears,house,hdef,relBase,houseName,clanSucc,w_news,hnear,outsiderName,w_mo,NEAR_MO,w_closed,SEATS,w_clans,I,hinfo,HOUSE_TIER,REGIONS,houseRelTxt,staffEff,skv,viceWork,offV,season,thanHas,staffTick,raiseReq,month,relJob,relNames,jobM,BM_NEED,JOBS,qlOf,QL_NEED,ownPerson,fundGet,stHealthTxt,ROLE_ST,bizOwnName,expandWhy,WPOL,bizHH,mgrWhy,jobName,MGR_QL,render,modalOpen,hirePopup,confirmBox,expandBiz,sellBiz,becomeChu,qtH,facN,CRIME_N,clanQuan,courtTick,mkStaff,wageFor,prob,popOpt,runOpt,letterAdd,letterLvEv,stt,AXKW,kidsOf,newBranch,ENGX,AUTO_K,vioOf,ruleG,obey,optOk,optTook,ruleHit,bizOf,wishOf,meets,jobFit,passion,interviewPopup,pathPopup,working,JOBMETA,growStat,gbItems,meta,U2,seatOfC,GPK,rinfo,w_genClan,LED_CAP,memP,mFind,LAB_RULES,MEM_CAP,ARC,arcSt,metaFlag,houseAlly,vilQuan,vilFighters,kPow,vAdd,KIEN,DUY,vWPick,KPOW,D_ok,vilReady,VBR,pickWho,routes,KRANK,cardInfo,avatarSVG,npGet,ID_N,ID_P,npCard,TRAITS,axLabels,setLabel,expressed,innateMap,innateGenes,catchUpYoung,capOf,viceAlert,BORDER,VILL63,w_sea,homeNat,NAT,w_rel,pairName63,DIS,disActive,clanLv,mmt,COMPOUND_SUR,HOUSE_TITLE,CTR63,cHeadFull,cname,GOODS,locP,mk,moveBlock,locName,w_label,dateStr,w_clan,giftPopup,giftNorm,cnameU,w_wealthTxt,NPCJ63,npcLv,w_kidJob,CJOB63,mkMatch,mkSpouse,marryOut,w_ensure,expenses,headBSync,w633Month,ctierC,relation,selfPerks,TUOC,ctChips,isOff,awayText,realTraits,traitChip,habChips,viceChips,axChips,statBlock,STATS,natOf,awayFromHome,whereP,keepTxt,offOf,CLANOFF,obeyWord,willTxt,thoughts,income,sideIncome,postOf,QST_N,selfEmp,pieceJob,nextReq,SCHOOL,bigAvail,BIGS,promoWhy,canOwn,canOpenAny,bizSkillWhy,OFFJ,EXAM_N,prefFocus,sideInc,FOCUS,affordFocus,focusCost,focusHold,loveNow,remarryOk,HOMES,hhCount,loveWord,wantsKid,spList,spTag,relWord,hKeep,mmn,viceOf,viceBy,SM,earnOf,mapSVG,tierName,tierScore,fameWhy,famLuck,TUOC_CONG,TIER_GATE,perksCard,thoiTheCard,famCard,usCard,wpCard,courtCard,CTRL_N,ctrlLv,uyWord,ensureEcon,EXPECT,econEst,clanKeeps,FLOWN,hhExpense,homeSVG,LIFE,GOP,clanFormed,offHolder,offOk,branches,branchLeader,vacantHomes,bookSweep,booksOf,landTotal,farmArea,clrN,projUsedAc,allocated,CROPS,landRight,landCost,toEst,TOLV,REG,projCard,priceOf,maxTrips,inPost,DX,seatWh,followers,seatTm,seatName,rankTxt,phTxt,OFFICES,RANKS,SALARY,offState,w_provPanel,w_situation,bizCalc,bizStaffInfo,clanTuoc,RULEREQ,RULEX_CONFLICT,vioAdd,RULE_HATE,dropRule,addRule,houseSur,npAge,npNew,FUNRE,CTX,protect,laborOk,ctStat,STITLE,ctRank,confer,ctEvents,CT_P,uid,rollGenes,rollTraitGenes,randomTraits,pot,innateStats,ensureNat,rollHealthTitle,NPC_TC,sphAdd,inlawLink,MS,STARTJOBS,jobOk,fitPick,setLove,usedGivens,MMID,FMID,MGIV,FGIV,standOf,miLoss,MTAL,innate,mjobFor,setNpcJob,STF_KEY,staffInit,KT_N,famEnsure,crRes,famPerson,ERA_A,ERA_B,famReign,dynSnap,later,crMonth,kingT,fundOf,kidCap},yearly:ENGX.yearly,fn:ENGX.fn};(window.ENGX||[]).forEach(f=>{try{f(X)}catch(e){console.error(e)}});Object.assign(G._adm,ENGX.fn)} /* d9.10: nạp engine-x.js */

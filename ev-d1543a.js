@@ -97,9 +97,15 @@ const KHO={
 
 /* ===== tranh chấp làm ăn: người buôn bán gánh, được nhờ gia chủ ra mặt ===== */
 for(const id of window.BN_DISPUTE){const e=find(id);if(!e||e.__g1543d)continue;e.__g1543d=1;const o0=e.o;
- e.o=function(c,d){const L=(typeof o0==='function'?o0.call(this,c,d):o0)||[];const h=G.P(S().head);
+ e.o=function(c,d){let L=(typeof o0==='function'?o0.call(this,c,d):o0)||[];const h=G.P(S().head);
+  const foeI=d&&d.rr&&d.rr.t?G.rel.info(d.rr):null;const ah=window.BNHELP?window.BNHELP.find('ally',{who:c,not:foeI&&foeI.name}):null; /* d.1.5.44: đồng minh đứng về phía nhà */
+  if(ah)L=L.concat([{l:`Nhờ ${ah.name} đứng về phía nhà`,f:()=>{if(foeI){foeI.rel0(10);foeI.addOan(-12)}return `${esc(ah.name)} đứng ra nói giúp, bên kia phải nhường.`+window.BNHELP.use(ah,'ally','đứng về phía nhà trong cuộc tranh chấp',{autoRel:1})}}]);
   if(!h||c.id===h.id||(d&&d.byHead)||h.away)return L;
   return L.concat([{l:'Nhờ gia chủ ra mặt',f:()=>{G.enqueue('ev',h.id,{ev:id,data:Object.assign({},d,{byHead:1,_force:1})},true);return `${esc(c.given)} trình việc lên gia chủ ${esc(h.given)}.`}}])}}
+/* d.1.5.44: thầy thuốc quen thân ở cùng nơi đến chữa như danh y; thân từ 70 thì không lấy tiền */
+{const e=find('ill_chua');if(e&&!e.__g1544){e.__g1544=1;const o0=e.o;
+ e.o=function(c,d){const L=(typeof o0==='function'?o0.call(this,c,d):o0)||[];const mh=window.BNHELP?window.BNHELP.find('med',{who:c}):null;const i=(c.ill||[]).find(x=>x.id===(d&&d.ill));if(!mh||!i)return L;const cost=mh.lv>1?0:m(2);
+  return [{l:`Mời ${mh.name} chữa${cost?` (${FM(cost)})`:''}`,c:()=>G.money()>=cost,f:cc=>{G.ill.treat(cc,i,'danhy');return `${esc(mh.name)} đến tận nhà xem mạch, kê đơn, ở lại theo dõi.`+(cost?fx(cc,{money:-cost,suc:3,tam:2}):fx(cc,{suc:3,tam:3}))+window.BNHELP.use(mh,'med',`đến chữa cho ${cc.given}`)}}].concat(L)}}}
 /* sự kiện xin giúp vô danh: không bốc nữa */
 for(const id of window.BN_OFF){const e=find(id);if(e)e.c=()=>false}
 });
