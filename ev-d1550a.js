@@ -70,7 +70,9 @@ function year(){if(!ensure())return;const V=S().vq;NATS.forEach(n=>namTriVi(V[n]
   const quan=G.alive().filter(p=>G.inClan(p)&&!p.away&&(p.job==='quan'||p.job==='quan_ngu'));
   if(d.tranh&&!S().vqPhe){const c=quan.sort((a,b)=>(b.lv||0)-(a.lv||0))[0];if(c&&(c.lv||0)>=2&&G.chance(0.4))G.enqueue('ev',c.id,{ev:'vq_vuong_tu_moi',data:{nat,tu:pk(d.tranh)}});}
   const kinh=quan.find(p=>(p.lv||0)>=3&&G.placeOf(p)===d.kinh);if(kinh&&G.chance(0.16))G.enqueue('ev',kinh.id,{ev:'vq_yen_vuong',data:{nat}});
-  const h=G.head();if(h&&G.tierIdx()>=3&&G.chance(0.07))G.enqueue('ev',h.id,{ev:'vq_the_gia_moi',data:{nat,gi:R(0,2)}})}
+  const h=G.head();if(h&&G.tierIdx()>=3&&G.chance(0.07))G.enqueue('ev',h.id,{ev:'vq_the_gia_moi',data:{nat,gi:R(0,2)}});
+  /* d.1.5.53: vương nữ kén phò mã trong những nhà có tiếng */
+  const cn=d.cong.find(x=>!x.dead&&!x.wed&&x.age>=16&&x.age<=24);if(cn&&G.tierIdx()>=3&&(S().vqPmT||-1e9)<=S().t&&G.chance(0.12)){const trai=G.alive().find(c=>G.inClan(c)&&!c.away&&c.g==='nam'&&!G.married(c)&&c.spouse==null&&G.age(c)>=18&&G.age(c)<=30&&((c.degree||0)>=1||(c.tri||0)>=95||(c.vo||0)>=95));if(trai){S().vqPmT=S().t+120;G.enqueue('ev',trai.id,{ev:'vq_phu_ma',data:{nat,cn:cn.n}})}}}
 /* khung "Vương triều" ở trang Thế giới */
 function panel(p){const nat=window.D.PROV[p]&&window.D.PROV[p].nat;if(!NATS.includes(nat))return '';const V=ensure();if(!V)return '';const d=V[nat];const e=G.esc;
   const who=x=>`<b>${e(x.n)}</b>, ${x.age} tuổi`;const taiw=v=>v>=80?'rất cao':v>=65?'cao':v>=45?'vừa':'thấp';

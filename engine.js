@@ -845,7 +845,8 @@ function promoPen(c){const b=bacOf(c);let pen=clamp((b-3)*2.2,0,32);const q=c.qt
 /* ứng viên cạnh tranh một ghế trống: một đến ba người, chốt một lần theo ghế; chỉ thành NPC thật khi thắng */
 function seatCands(key,st){if(st.cd&&st.cd.length)return st.cd;const n=R(1,3);st.cd=[];for(let i=0;i<n;i++)st.cd.push({n:pick(SURN)+' '+mkGiven('nam'),age:R(30,58),ab:clamp(Math.round((st.ab||60)+R(-10,12)),30,140)});
   /* d9.10: thế gia cũng tham gia tranh ghế (mục 12): một ứng viên là người của một thế gia, mạnh hơn mặt bằng */
-  if(typeof HOUSE_DEF!=='undefined'&&HOUSE_DEF.length&&chance(0.3)){const hd=pick(HOUSE_DEF);const i=R(0,st.cd.length-1);st.cd[i]={n:hd.sur+' '+mkGiven('nam'),age:R(32,56),ab:clamp(Math.round((st.ab||60)+R(4,16)),30,140),house:hd.id}}
+  const wn=seatWh(key),nc=wn&&PROV[wn.p]?PROV[wn.p].nat:'trieu';const hdL=typeof HOUSE_DEF!=='undefined'?HOUSE_DEF.filter(h=>PROV[h.p]&&PROV[h.p].nat===nc):[]; /* d.1.5.53: người nước nào làm quan nước đó */
+  if(hdL.length&&chance(0.3)){const hd=pick(hdL);const i=R(0,st.cd.length-1);st.cd[i]={n:hd.sur+' '+mkGiven('nam'),age:R(32,56),ab:clamp(Math.round((st.ab||60)+R(4,16)),30,140),house:hd.id}}
   return st.cd}
 function holderNp(st){if(st.np&&npGet(st.np))return npGet(st.np);const np=npNew({n:st.n,g:'nam',age:st.age||50,role:'quan',f:st.f});st.np=np.id;return np}
 /* người đương chức bị thay hoặc bị hặc thành NPC thật nhớ mối oán với người đã thay họ */
@@ -1032,6 +1033,7 @@ if(typeof document!=='undefined')document.addEventListener('click',e=>{const b=e
 function relSnap(...a){return ENGX.fn.relSnap(...a)}
 function relDiffTxt(...a){return ENGX.fn.relDiffTxt(...a)}
 function choicePopup(c,eyebrow,title,text,opts,arc,data,evId){
+  if(window.BN_LOI){title=window.BN_LOI(title);text=window.BN_LOI(text)} /* d.1.5.53: ở tiểu quốc vua chỉ xưng vương */
   if(DRY)return;
   data=data||{};
   if(AUTO_C&&AUTO_C===c){AUTO_C=null;if(autoChoice(c,title,opts,data))return}
@@ -1115,6 +1117,7 @@ const pview=(p,sz)=>`<span class="pview" role="button" tabindex="0" data-pcard="
 function kinStrip(...a){return ENGX.fn.kinStrip(...a)}
 if(typeof document!=='undefined')document.addEventListener('click',e=>{if(U2())return;const b=e.target.closest&&e.target.closest('[data-pcard]');if(!b||!S)return;e.preventDefault();e.stopPropagation();try{if(b.closest('.evband')){personBrief(b.dataset.pcard)}else{openSheet(b.dataset.pcard);SH().classList.add('top')}}catch(er){console.error(er)}},true); /* d9.7: hồ sơ mở từ thẻ nổi lên trên hộp sự kiện (trước nằm sau, không xem không tắt được) */
 function infoPopup(c,eyebrow,title,text,after,other){
+  if(window.BN_LOI){title=window.BN_LOI(title);text=window.BN_LOI(text)}
   if(DRY)return;
   openModal(`${c?hdrEv(c,other):''}<span class="eyebrow">${eyebrow}</span><h2>${esc(title)}</h2><p>${text}</p><div class="choices"><button class="btn primary" data-ok>Tiếp tục</button></div>`);
   M.querySelector('[data-ok]').onclick=()=>{if(after)after();if(S&&!S.over)closeModal()};
@@ -5138,9 +5141,9 @@ const HOUSE_DEF=[
     kids:[['Hoàng Nam','nam',26],['Lam Anh','nữ',19],['Bảo Vũ','nam',12]]},
   {id:'vu',sur:'Vũ',given:'Quang Tuấn',age:58,tr:'khéo léo',p:'thien_kinh',kind:'quan',tier:6,fame:320,wealth:85,title:'Thượng thư bộ Lại',seat:'kinh thành Thiên Kinh',job:'quan văn',
     kids:[['Minh Triết','nam',31],['Thanh Vân','nữ',22],['Quang Huy','nam',15]]},
-  {id:'duong',sur:'Dương',given:'Văn Phương',age:61,tr:'nhân hậu',p:'duoc_coc',kind:'thuoc',tier:5,fame:235,wealth:66,title:'Thái y lệnh',seat:'Dược Cốc',job:'quan văn, thầy thuốc',
+  {id:'duong',sur:'Dương',given:'Văn Phương',age:61,tr:'nhân hậu',p:'duoc_coc',kind:'thuoc',tier:5,fame:235,wealth:66,title:'Y gia đệ nhất Dược Cốc',seat:'Dược Cốc',job:'thầy thuốc',
     kids:[['Tuệ Lâm','nữ',27],['Văn Thảo','nam',20],['Bích Hạnh','nữ',14]]},
-  {id:'kieu',sur:'Kiều',given:'Quang Duy',age:46,tr:'phóng khoáng',p:'bach_sa',kind:'vo',tier:5,fame:215,wealth:70,title:'Thủy sư đô đốc trấn Bạch Sa',seat:'cảng Bạch Sa',job:'quan võ, thủy quân',
+  {id:'kieu',sur:'Kiều',given:'Quang Duy',age:46,tr:'phóng khoáng',p:'bach_sa',kind:'vo',tier:5,fame:215,wealth:70,title:'Chủ đội thuyền Bạch Sa',seat:'cảng Bạch Sa',job:'thủy thương, thuyền chiến',
     kids:[['Hải Yến','nữ',21],['Quang Hải','nam',17]]}];
 const HOUSE_TIER={4:'Danh gia',5:'Thế gia',6:'Danh môn vọng tộc'};
 const hdef=id=>HOUSE_DEF.find(d=>d.id===id);
