@@ -262,8 +262,8 @@ function pageBando(){const S=X.S;const mapProv=X.mapProv;
   const p=mapProv&&PROV[mapProv]?mapProv:S.loc.p;
   return `<div class="grid2"><section class="card mapcard48"><div class="mapwrap mapwrap48">${mapSVG(p)}</div>${S.journey?`<p class="note"><b>Cả nhà đang trên đường tới ${esc(PROV[S.journey.to].n)}</b>, còn khoảng ${S.journey.left} tháng.</p>`:''}
    <p class="note" style="margin-top:6px">Màu đất và màu chấm là nước đang cai quản. Vòng nét đứt là khu đang bị chiếm. Vòng đỏ: tiền tuyến. Đường đỏ, cam: căng thẳng đang leo thang. Vòng vàng: thiên tai. Đường nét đứt là đường biển. Đường đỏ đậm là lộ trình tới nơi đang chọn. Tam giác đỏ là ổ cướp mạnh, ô vuông tím là võ lâm, danh gia, bộ tộc.</p></section>
-   <section class="card">${w_provPanel(p)}</section>${window.BN_TL?window.BN_TL.panel(p):''}${window.BN_CD?window.BN_CD.panel(p):''}${window.BN_TK?window.BN_TK.panel(p):''}
-   <section class="card" style="grid-column:1/-1">${w_situation()}</section>${window.BN_VQ?window.BN_VQ.panel(p):''}</div>`}
+   <section class="card">${w_provPanel(p)}</section>${window.BN_TL?window.BN_TL.panel(p):''}${window.BN_TK?window.BN_TK.panel(p):''}
+   ${window.BN_VQ?window.BN_VQ.panel(p):''}</div>`}
 function pageKinhdoanh(){const S=X.S;
   const can=alive().filter(p=>!p.away&&age(p)>=16).flatMap(p=>Object.keys(BIZ).filter(t=>canOwn(p,t)).map(t=>[p,t]));
   const rows=S.biz.map(b=>{const B=BIZ[b.type],L=B.lv[b.lv];const o=P(b.owner);const k=b.last||bizCalc(b);const si=bizStaffInfo(b);return {b,B,L,o,k,si}});

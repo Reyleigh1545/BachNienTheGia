@@ -131,9 +131,11 @@ function w_ourKind(){const hd=head();return hd?w_jobKind(hd):'nong'}
 function w_khoFee(){const S=X.S;let v=0;for(const g in S.kho){if(['lua','ngo'].includes(g))continue;const q=S.kho[g]||0;if(q>=1)v+=q*GOODS[g].p*0.002}
   if(v>=1)S.money-=Math.round(v)}
 function w_priceTable(p,h){
-  const goods=Object.keys(GOODS);
-  return `<div class="ptab"><div class="ph"><span>Hàng</span><span>Giá ở đây</span>${p!==h?'<span>So với nhà</span>':'<span></span>'}</div>${goods.map(g=>{const v=locP(p,g);const ratio=v/locP(h,g);
-    return `<div><span>${GOODS[g].n}</span><span class="num">${money(GOODS[g].p*v*mk(g))}</span>${p!==h?`<span class="num ${ratio>=1.12?'up':ratio<=0.88?'down':''}">×${ratio.toFixed(2)}</span>`:'<span></span>'}</div>`}).join('')}</div>`}
+  /* d.1.5.60: chỉ hiện giá thứ nhà đã biết */
+  const goods=Object.keys(GOODS).filter(g=>!window.BN_BIET||window.BN_BIET.coGia(p,g));
+  if(!goods.length)return '<p class="note">Chưa nghe được giá cả gì ở đây.</p>';
+  return `<div class="ptab"><div class="ph"><span>Hàng</span><span>Giá ở đây</span>${p!==h?'<span>So với nhà</span>':'<span></span>'}</div>${goods.map(g=>{const v=locP(p,g);const ratio=v/locP(h,g);const soNha=!window.BN_BIET||window.BN_BIET.coGia(h,g);
+    return `<div><span>${GOODS[g].n}</span><span class="num">${money(GOODS[g].p*v*mk(g))}</span>${p!==h?(soNha?`<span class="num ${ratio>=1.12?'up':ratio<=0.88?'down':''}">×${ratio.toFixed(2)}</span>`:'<span class="num muted">chưa rõ</span>'):'<span></span>'}</div>`}).join('')}</div>`}
 function w_provPanel(p){const S=X.S;
   const W=S.w,h=S.loc.p,P0=PROV[p],N0=NAT[P0.nat];const RT=routes().find(r=>r.id===p);
   const front=w_front()[p];const dmg=W.dmg[p]||0;const dz=W.dis.filter(d=>d.provs.includes(p)&&S.t<d.until);
@@ -145,7 +147,7 @@ function w_provPanel(p){const S=X.S;
    <h2>${esc(P0.n)}</h2>
    <p class="kvline"><span class="chip" style="background:${N0.col};color:#fff">${esc(N0.n)}</span><span class="chip">${{kinh:'Kinh đô',phu:'Phủ lớn',cang:'Cảng',bien:'Ải biên giới',lang:'Vùng nông thôn'}[P0.k]}</span><span class="chip">${esc(REGIONS[P0.r].n)}</span>${tags.join(' ')}</p>
    <p class="kvline">${esc(P0.d)}</p>
-   ${war?`<p class="kvline down">Chiến sự: ${esc(w_warName(war))}, còn khoảng ${Math.max(0,war.until-S.t)} tháng.</p>`:''}
+   ${war?`<p class="kvline down">Đang có chiến sự: ${esc(w_warName(war))}.</p>`:''}
    ${w_priceTable(p,h)}
    ${p!==h&&RT&&RT.war?'<p class="kvline down">Đường tới đây đang đóng vì chiến sự.</p>':''}
    <div class="acts" style="margin-top:10px">
@@ -202,7 +204,7 @@ function w_wed(id){const S=X.S;
   opts.push({l:'Thôi',f:()=>''});choicePopup(hd,'Thông gia',`Hỏi thông gia ${cname(c)}`,`Nhà có tiếng thì cưới gả cũng thành chuyện đáng bàn.`,opts)}
 function w63Month(mo){const EVMAP=X.EVMAP;const S=X.S;
   if(!S.w)w_ensure(S);
-  w_tension(mo);w_dis(mo);w_home();if(window.BN_TK)window.BN_TK.month(); /* d.1.5.55: chuyện Thiên Kinh */
+  w_tension(mo);w_dis(mo);w_home();if(window.BN_TK)window.BN_TK.month(); /* d.1.5.55: chuyện Thiên Kinh */if(window.BN_BIET)window.BN_BIET.month();
   if(S.t%12===0)w_clansYear();
   if(S.war&&mo%3===0){const lv=Math.round(expenses().total*0.1);if(lv>0){S.money-=lv;if(mo===3)log(`Thuế binh năm nay: ${money(lv*4)}.`)}}
   if(S.war&&S.war.near===0){const hd=head();if(hd&&chance(0.05))enqueue('ev',hd.id,{ev:pick(['w63_giac_tran','w63_giac_tran','w63_chay_loan','w63_thue_luong'])})}

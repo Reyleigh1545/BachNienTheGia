@@ -2227,7 +2227,8 @@ function swOf(r,g){tpEns();const k=r.n+'|'+g;if(S.tp.sw[k]==null){const amp=0.14
     if(S.war&&['lua','sat','muoi'].includes(g))v+=0.15;if(S.epi&&g==='duoc')v+=0.25;if(S.disaster&&['lua','ngo'].includes(g))v+=0.15;if(season()==='dong'&&['che','duoc'].includes(g))v+=0.08;
     S.tp.sw[k]=clamp(+v.toFixed(2),0.65,1.8)}return S.tp.sw[k]}
 const sellOf=(r,g)=>+((r.sell[g]||1)*swOf(r,g)).toFixed(2);
-const tinGia=r=>{const L=Object.keys(GOODS).map(g=>[g,swOf(r,g)]);const hot=L.filter(x=>x[1]>=1.2).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>GOODS[x[0]].n.toLowerCase());const cold=L.filter(x=>x[1]<=0.85).sort((a,b)=>a[1]-b[1]).slice(0,2).map(x=>GOODS[x[0]].n.toLowerCase());
+const bietGia=(r,g)=>!window.BN_BIET||window.BN_BIET.coGia(r,g);
+const tinGia=r=>{const L=Object.keys(GOODS).filter(g=>bietGia(r,g)).map(g=>[g,swOf(r,g)]);const hot=L.filter(x=>x[1]>=1.2).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>GOODS[x[0]].n.toLowerCase());const cold=L.filter(x=>x[1]<=0.85).sort((a,b)=>a[1]-b[1]).slice(0,2).map(x=>GOODS[x[0]].n.toLowerCase());
   return (hot.length?`Tin giá: đang hời ${hot.join(', ')}.`:'Tin giá: chưa có mặt hàng nào đặc biệt hời.')+(cold.length?` Đang rớt giá: ${cold.join(', ')}.`:'')};
 const tradeCapMul=c=>c?clamp(1+(c.job==='chu'?Math.max(c.m,40):c.m)/55,1,3):1;
 function tradePopup(){
@@ -2243,11 +2244,11 @@ function tradePopup(){
     const sellM=1+(sellOf(r,st.good)-1)*w_damp(st.good)*(r.fr||1);
     openModal(`<span class="eyebrow">Thương mại</span><h2>Đi buôn chuyến</h2>
     <div class="field"><label>Người đi buôn</label><select class="sel" id="tw">${traders.map(p=>`<option value="${p.id}" ${st.who===p.id?'selected':''}>${esc(nameOf(p))} · EQ ${Math.floor(p.eq)} · thông thạo ${Math.floor(p.m)} · danh vọng ${Math.round(p.fame)}</option>`).join('')}<option value="hire" ${st.who==='hire'?'selected':''}>Thuê lái buôn bên ngoài · ăn 20% tiền lãi, tay nghề trung bình</option></select></div>
-    <div class="field"><label>Tuyến</label><select class="sel" id="tr">${RT.map((x,i)=>`<option value="${i}" ${st.route===i?'selected':''}>${x.n} · ${x.mo} tháng · rủi ro ${Math.round(x.risk*100)}%${x.mm?` · cần thông thạo ${x.mm}`:''}${x.war?' · đang đóng vì chiến sự':''}</option>`).join('')}</select><p class="note">${r.d} Đắt hơn ở nhà: ${Object.entries(r.sell).map(([g,v])=>`${GOODS[g].n} ×${v}`).join(', ')||'không có gì'}.${Object.keys(r.buy).length?` Rẻ hơn ở nhà, mua mang về: ${Object.entries(r.buy).map(([g,v])=>`${GOODS[g].n} ×${v}`).join(', ')}.`:''}</p></div>
+    <div class="field"><label>Tuyến</label><select class="sel" id="tr">${RT.map((x,i)=>`<option value="${i}" ${st.route===i?'selected':''}>${x.n} · ${x.mo} tháng · rủi ro ${Math.round(x.risk*100)}%${x.mm?` · cần thông thạo ${x.mm}`:''}${x.war?' · đang đóng vì chiến sự':''}</option>`).join('')}</select><p class="note">${r.d} ${(()=>{const d=Object.entries(r.sell).filter(([g])=>bietGia(r,g)),m=Object.entries(r.buy).filter(([g])=>bietGia(r,g));return d.length||m.length?(d.length?`Đắt hơn ở nhà: ${d.map(([g,v])=>`${GOODS[g].n} ×${v}`).join(', ')}.`:'')+(m.length?` Rẻ hơn ở nhà, mua mang về: ${m.map(([g,v])=>`${GOODS[g].n} ×${v}`).join(', ')}.`:''):'Chưa nghe được giá cả ở đó, buôn một chuyến mới biết.'})()}</p></div>
     <div class="field"><label>Hàng mang đi</label><div class="seg"><button class="btn" data-src="buy" aria-pressed="${st.src==='buy'}">Bỏ vốn mua hàng</button><button class="btn" data-src="kho" aria-pressed="${st.src==='kho'}">Lấy hàng trong kho</button></div>
-    <select class="sel" id="tg">${Object.entries(GOODS).map(([k,g])=>`<option value="${k}" ${st.good===k?'selected':''}>${g.n} · giá nhà ${money(priceOf(k))}/${g.u}${st.src==='kho'?` · kho có ${fmt(S.kho[k]||0)}`:''} · nơi đến ×${sellOf(r,k).toFixed(2)}</option>`).join('')}</select><p class="note">${tinGia(r)}</p></div>
+    <select class="sel" id="tg">${Object.entries(GOODS).map(([k,g])=>`<option value="${k}" ${st.good===k?'selected':''}>${g.n} · giá nhà ${money(priceOf(k))}/${g.u}${st.src==='kho'?` · kho có ${fmt(S.kho[k]||0)}`:''} · nơi đến ${bietGia(r,k)?'×'+sellOf(r,k).toFixed(2):'chưa rõ giá'}</option>`).join('')}</select><p class="note">${tinGia(r)}</p></div>
     <div class="field"><label>Lượng: ${st.pct}%</label><div class="seg">${[25,50,75,100].map(v=>`<button class="btn" data-pct="${v}" aria-pressed="${st.pct===v}">${v}%</button>`).join('')}</div>
-    <p class="note">${st.src==='kho'?`Mang ${fmt(qty)} ${GOODS[st.good].u} từ kho gia tộc.`:`Bỏ vốn ${money(cap)} mua ${fmt(qty)} ${GOODS[st.good].u}. Vốn tối đa của tuyến với người này: ${money(r.cap*tradeCapMul(c))}.`} Ước bán được khoảng ${money(qty*priceOf(st.good)*sellM)}, còn tùy thời vận, mùa màng, dịch bệnh, chiến sự và danh vọng.</p></div>
+    <p class="note">${st.src==='kho'?`Mang ${fmt(qty)} ${GOODS[st.good].u} từ kho gia tộc.`:`Bỏ vốn ${money(cap)} mua ${fmt(qty)} ${GOODS[st.good].u}. Vốn tối đa của tuyến với người này: ${money(r.cap*tradeCapMul(c))}.`} ${bietGia(r,st.good)?`Ước bán được khoảng ${money(qty*priceOf(st.good)*sellM)}, còn tùy thời vận, mùa màng, dịch bệnh, chiến sự và danh vọng.`:'Chưa biết giá nơi đến nên không ước được tiền bán.'}</p></div>
     <div class="choices"><button class="btn primary" data-go ${routeOk&&qty>0?'':'disabled'}>Lên đường</button><button class="btn ghost" data-x>Thôi</button></div>`);
     const q=s=>M.querySelector(s);
     q('#tw').onchange=e=>{st.who=e.target.value;draw()};q('#tr').onchange=e=>{st.route=+e.target.value;draw()};q('#tg').onchange=e=>{st.good=e.target.value;draw()};
@@ -2265,10 +2266,12 @@ function tradeReturn(c0,tr,probe){
   const sk=c?((c.eq+c.tri*0.5)/150+c.m/200+tsum(c,'trade')):tr.skill/120;
   const fameB=Math.min(0.15,((c?c.fame:0)+S.fame*0.1)/2000);
   let risk=r.risk*(c?(1.2-c.vo/200-Math.min(0.2,c.m/600)):1.1)*(S.war?1.4:1)*(season()==='dong'&&(r.sea||r.war)?1.3:1)*(S.epi?1.2:1);
+  if(window.BN_BIET&&!probe)window.BN_BIET.buon(r,tr.good);
   const spoil=w_spoil(tr.good,r.mo);const val0=tr.qty*(tr.pv||priceOf(tr.good))*(1+((tr.sv||r.sell[tr.good]||1)-1)*w_damp(tr.good)*(r.fr||1))*(1-spoil)*(rule('trongthuong')?1.08:1)*(rule('trongnong')?0.95:1)*(0.92+Math.random()*0.25+sk*0.32+fameB)*(S.epi&&tr.good==='duoc'?1.4:1)*(S.war&&['lua','sat','muoi'].includes(tr.good)?1.15:1);
   let val=val0+Math.max(0,val0-tr.cost)*0.5; /* 24/11 chủ dự án trả lời câu 1: lãi chuyến buôn tăng thêm 50% nữa (phần lãi gộp trên vốn nhân 1,5; không đụng phần lỗ) */
   const tlP=(window.BN_TL&&r.prov)?((window.D.route(S.loc.p,r.prov,month())||{}).di||[]):[S.loc.p];const tlN=window.BN_TL?window.BN_TL.nguyHiem(tlP):{them:0,gap:[]};risk=Math.min(0.9,risk+tlN.them); /* d.1.5.51: thế lực trên đường */
   let helpLine=''; /* d.1.5.44: người quen, họ thân làm nghề buôn giúp chuyến hàng; kẻ thù ép giá */
+  if(!probe&&window.BN_BIET&&tlN.gap&&tlN.gap[0])window.BN_BIET.hocTl(tlN.gap[0]);
   if(!probe&&tlN.che)helpLine+=`<span class="fx"><span class="up">${esc(tlN.che.n)} cho người đi kèm qua địa bàn</span></span>`;
   if(!probe&&window.BNHELP){const th=BNHELP.find('trade',{who}),tf=BNHELP.foe('trade',{who});if(th){val+=tr.cost*0.05*th.lv;risk*=1-0.15*th.lv;helpLine+=BNHELP.use(th,'trade','chỉ mối mua rẻ, bán được giá, đường đi an toàn hơn')}if(tf){val-=tr.cost*0.05;helpLine+=`<span class="fx"><span class="down">${esc(tf.name)} ngầm ép giá</span></span>`;log(`${tf.name} ngầm ép giá chuyến buôn.`,'hi')}}
   const toll=Math.round(tr.cost*(0.01+0.02*r.mo+0.04*(r.cross||0))*tollOff());
@@ -5502,6 +5505,7 @@ if(window.BNHELP)window.BNHELP.bind({S:()=>S,log,G});
 if(window.BN_VQ){window.BN_VQ.bind(G);G.vq=window.BN_VQ}
 if(window.BN_CD){window.BN_CD.bind(G,{offState,seatWh,seatTm,seatName,holderNp,npGet,officerDepose,mkHolder,famEnsure,famPerson,court,qtOf,qtAdd,qtJoin,qtLog,memP,dynEns,inKinh,placeOf,OFFICES,DX,FAC,FACK});G.cd=window.BN_CD}
 if(window.BN_TL){window.BN_TL.bind(G);G.tl=window.BN_TL}
+if(window.BN_BIET){window.D.GOODS=GOODS;window.BN_BIET.bind(G)}
 G.hdef=hdef;G.npHouse=npHouse;
 if(window.BN_TK){window.BN_TK.bind(G,{famEnsure,qtAdd,qtOf,qtJoin,memP,famPerson,court,officerDepose,npGet,npFam,npHouse});G.tk=window.BN_TK}
 if(window.BN_CT){window.BN_CT.bind(G,{w_cause:(i,mo)=>ENGX.fn.w_cause(i,mo),w_tension:mo=>w_tension(mo),w_news,w_rel,w_endWar,seatWh,seatTm,leaveSeat,npGet,startMove,qtAdd});G.ct=window.BN_CT}
