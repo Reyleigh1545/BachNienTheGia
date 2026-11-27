@@ -6,7 +6,7 @@ function w_new(){const W={ten:{},ph:{},wars:[],dis:[],sk:{},dmg:{},clans:{},news
 function w_startProv(reg){const L=Object.keys(PROV).filter(id=>PROV[id].r===reg&&PROV[id].k==='lang'&&PROV[id].nat!=='hai_minh');return pick(L.length?L:Object.keys(PROV).filter(id=>PROV[id].r===reg))}
 function w_setLoc(p,t,v){const S=X.S;const P0=PROV[p];S.loc={p,t:t||0,v:v||pick(VILL63)};S.region=P0.r;(REGIONS[S.region].unlock||[]).forEach(k=>{if(!S.farm.unlock.includes(k))S.farm.unlock.push(k)})}
 function w_shock(p,g,f,cap){const S=X.S;const W=S.w;W.sk[p]=W.sk[p]||{};W.sk[p][g]=clamp((W.sk[p][g]||1)*f,0.6,cap||2.6)}
-function w_mo(a,b){const A=PROV[a],B=PROV[b];const d=Math.hypot(A.x-B.x,(A.y-B.y)*1.1);return Math.max(1,Math.round(d/(w_sea(a,b)?58:40)))}
+function w_mo(a,b){const r=window.D.route(a,b,X.S&&X.S.t!=null?(X.S.t%12)+1:null);return r?Math.max(1,Math.round(r.thang)):9} /* d.1.5.49: số tháng theo đường đi thật trên bản đồ */
 function w_front(){const S=X.S;const W=S.w;const o={};W.wars.forEach(w=>{o[w.front[0]]=1;o[w.front[1]]=1});return o}
 function w_closed(p){const S=X.S;const W=S.w;const fr=w_front();if(fr[p]&&(W.dmg[p]||0)>=25)return true;const hn=homeNat(),dn=PROV[p].nat;return W.wars.some(w=>(w.a===hn&&w.b===dn)||(w.b===hn&&w.a===dn))}
 function w_warRisk(p){const S=X.S;const W=S.w;const hn=homeNat(),dn=PROV[p].nat;let r=0;W.wars.forEach(w=>{if([w.a,w.b].includes(hn)||[w.a,w.b].includes(dn))r+=0.07});return Math.min(0.2,r)}
@@ -35,7 +35,7 @@ function w_tension(mo){const S=X.S;
     if(W.wars.some(w=>w.i===i))return;
     const hos=b[3]*(NAT[b[0]].hos+NAT[b[1]].hos)/2;let t=W.ten[i],ph=W.ph[i]||0;
     if(ph===0){ /* êm ả: thỉnh thoảng có biến cố */
-      t+=(b[2]-t)*0.08;const cs=w_cause(i,mo);if(!cs.truce&&chance(0.0042*hos*(1.15+cs.p))){t=R(54,70);W.ph[i]=1;W.why=W.why||{};W.why[i]=cs.why;w_news(`Tin đồn: ${pairName63(i)} xô xát ở biên giới vì ${cs.why}.`,w_rel(b[0],b[1]))}
+      t+=(b[2]-t)*0.08;const cs=w_cause(i,mo);if(!cs.truce&&chance(0.0095*hos*(1.15+cs.p))){t=R(54,70);W.ph[i]=1;W.why=W.why||{};W.why[i]=cs.why;w_news(`Tin đồn: ${pairName63(i)} xô xát ở biên giới vì ${cs.why}.`,w_rel(b[0],b[1]))}
     }else{ /* leo thang hoặc hạ nhiệt */
       const cs=w_cause(i,mo);t+=chance(Math.min(0.7,0.47+0.05*(hos-1)+0.07*cs.p))?R(0,6):-R(0,5);
       if(t>=72&&ph===1){W.ph[i]=2;w_news(`${pairName63(i)} điều quân đến sát biên giới, hai bên chuẩn bị chiến tranh. Gốc việc: ${(W.why||{})[i]||cs.why}.`,w_rel(b[0],b[1]));
@@ -65,7 +65,7 @@ function w_dis(mo){const S=X.S;
       d.provs.forEach(p=>DIS[d.k].g.forEach(g=>w_shock(p,g,1+0.15*d.sev+0.1,2.6)))}});
   for(const k in DIS){const D0=DIS[k];if(!D0.mo.includes(mo))continue;
     for(const r in D0.w){if(W.dis.some(x=>x.k===k&&x.r===r))continue;
-      if(chance(0.0145*D0.w[r])){const pr=Object.keys(PROV).filter(p=>PROV[p].r===r);const n=Math.min(pr.length,R(2,3));const provs=pr.slice().sort(()=>Math.random()-0.5).slice(0,n);
+      if(chance(0.0145*D0.w[r])){const TER={lu:['song','dongbang','ho','dam'],bao:['bien'],cat:['samac'],lam:['rung','dam'],tuyet:['tuyet','thao'],chau:['dongbang','thao']}[k];const pr=Object.keys(PROV).filter(p=>PROV[p].r===r&&(!TER||window.D.hasDH(p,TER)));if(!pr.length)continue;const n=Math.min(pr.length,R(2,3));const provs=pr.slice().sort(()=>Math.random()-0.5).slice(0,n);
         const x=Math.random();const sev=x<0.5?1:x<0.85?2:3;const since=S.t+(D0.warn?1:0);
         W.dis.push({id:W.did++,k,r,provs,since,until:since+R(D0.d[0],D0.d[1]),sev,warned:0});}}}
   /* chiếu xuống nhà mình */

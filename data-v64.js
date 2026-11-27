@@ -10,8 +10,9 @@ D.NAT.trieu.n='Đại Nguyễn';
 D.NAT.trieu.d='Triều Đại Nguyễn do Nguyễn Thành Trung dựng nên, có ải biên giới Bắc và Tây.';
 
 /* ---------- nơi đặt chức ---------- */
-const RP=['nhan_mon','thien_kinh','hoai_thuy','lac_giang','hai_khau','ngoc_mon'];
-const CNT={nhan_mon:{F:1,C:2,H:3},thien_kinh:{F:2,C:1,H:4},hoai_thuy:{F:2,C:2,H:5},lac_giang:{F:2,C:2,H:6},hai_khau:{F:1,C:2,H:4},ngoc_mon:{F:1,C:2,H:3}};
+const RP=Object.keys(D.PROV).filter(p=>D.PROV[p].nat==='trieu'); /* d.1.5.49: 16 khu của Đại Nguyễn trên bản đồ 48 khu */
+const CNT0={nhan_mon:{F:1,C:2,H:3},thien_kinh:{F:2,C:1,H:4},hoai_thuy:{F:2,C:2,H:5},lac_giang:{F:2,C:2,H:6},hai_khau:{F:1,C:2,H:4},ngoc_mon:{F:1,C:2,H:3}};
+const CNTK={kinh:{F:2,C:1,H:4},phu:{F:2,C:2,H:5},cang:{F:1,C:2,H:4},bien:{F:1,C:2,H:3},lang:{F:1,C:2,H:4}};const CNT={};RP.forEach(p=>{CNT[p]=CNT0[p]||CNTK[D.PROV[p].k]});
 const BO=[['lai','Lại'],['ho','Hộ'],['le','Lễ'],['binh','Binh'],['hinh','Hình'],['cong','Công']];
 const SYL1=['Thanh','Bình','An','Phong','Long','Vân','Lam','Hà','Hưng','Phúc','Thái','Vĩnh','Gia','Kim','Ngọc','Bảo','Đông','Tây','Nam','Bắc','Trường','Quảng','Nghĩa','Định','Tuy','Hoa','Lạc','Mộc','Sơn','Thủy'];
 const SYL2=['Lâm','Điền','Khê','Dương','Nguyên','Phố','Lĩnh','Xuyên','Thành','Hải','Giang','Châu','Thôn','Hà','Cốc','Sa','Nhai','Trì','Bạc','Đài','Quan','Phong','Ninh','Hòa','Yên'];
@@ -23,7 +24,7 @@ UNITS.K={k:'K',t:'K',p:'thien_kinh',n:'Kinh sư'};
 BO.forEach(([id,n])=>{const k='B:'+id;UNITS[k]={k,t:'B',p:'thien_kinh',n:'bộ '+n,s:id};UL.B.push(k)});
 RP.forEach(p=>{const nm=D.PROV[p].n.replace(/ quan$/,'');const k='P:'+p;UNITS[k]={k,t:'P',p,n:nm,s:p};UL.P.push(k)});
 RP.forEach(p=>{['F','C','H'].forEach(t=>{for(let i=0;i<CNT[p][t];i++){const k=`${t}:${p}:${i}`;UNITS[k]={k,t,p,n:mkName(),s:p};UL[t].push(k)}})});
-['nhan_mon','ngoc_mon'].forEach(p=>{const k='A:'+p;UNITS[k]={k,t:'A',p,n:D.PROV[p].n.replace(/ quan$/,''),s:p};UL.A.push(k)});
+RP.filter(p=>D.PROV[p].k==='bien').forEach(p=>{const k='A:'+p;UNITS[k]={k,t:'A',p,n:D.PROV[p].n.replace(/ quan$/,''),s:p};UL.A.push(k)});
 UNITS['G:hai_khau']={k:'G:hai_khau',t:'G',p:'hai_khau',n:'Hải Khẩu',s:'hai_khau'};UL.G.push('G:hai_khau');
 D.UNITS=UNITS;D.UNIT_LIST=UL;D.BO=BO;D.REALM=RP;
 

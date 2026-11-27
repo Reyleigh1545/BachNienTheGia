@@ -18,6 +18,8 @@ them('lu_lut lut_canh_bao lut_b lut_c c631_tam_song v61_ca_tranh dn_13 dn_17 cau
 /* ruộng đất, việc làng: không có trong thành */
 them('c631_tien_cu_huong_truong nong631_ruong_cong nong631_khai_hoang t_n_khai_hoang t_n_ly_truong t_n_hoi_lang t_n_trau_de t_n_hu_vang ch_trau_de nong_cuong_hao v61_ta_dien_tron c16_cau_mua n633_nong_gieng n633_nong_sau f633_gieng kn_gieng_nuoc_ngot tp631_go_lim dh_66 lw_21',{khongThanh:1});
 const G0=()=>window.BNTG;
+/* d.1.5.49: nhóm địa hình lấy từ bản đồ */
+if(window.D&&window.D.hasDH){const lay=l=>Object.keys(window.D.PROV).filter(p=>window.D.hasDH(p,l));NH.bien=lay(['bien']);NH.samac=lay(['samac']);NH.tuyet=lay(['tuyet']);NH.nui=lay(['nui','rung'])}
 function ok(id,c){const d=DIA[id];if(!d)return true;const G=G0();if(!G||!c)return true;let p=null;try{p=G.placeOf(c)}catch(e){}if(!p)return true;
   if(d.can&&!NH[d.can].includes(p))return false;if(d.khongSaMac&&NH.samac.includes(p))return false;if(d.khongThanh){const L=G.S().loc;if(L&&L.t===2)return false}return true}
 window.BN_DIA={list:DIA,ok,nhom:NH};

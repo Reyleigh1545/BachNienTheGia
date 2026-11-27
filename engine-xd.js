@@ -260,8 +260,8 @@ function pageQuan(){const S=X.S;const qKind=X.qKind;const qOpenB=X.qOpenB;const 
 function pageBando(){const S=X.S;const mapProv=X.mapProv;
   if(!S.w)w_ensure(S);
   const p=mapProv&&PROV[mapProv]?mapProv:S.loc.p;
-  return `<div class="grid2"><section class="card"><div class="mapwrap">${mapSVG(p)}</div>
-   <p class="note" style="margin-top:6px">Màu chấm là nước cai quản. Vòng đỏ: tiền tuyến. Đường đỏ, cam: căng thẳng đang leo thang. Vòng vàng: thiên tai. Đường gạch: tuyến buôn tới nơi đang chọn.</p></section>
+  return `<div class="grid2"><section class="card mapcard48"><div class="mapwrap mapwrap48">${mapSVG(p)}</div>${S.journey?`<p class="note"><b>Cả nhà đang trên đường tới ${esc(PROV[S.journey.to].n)}</b>, còn khoảng ${S.journey.left} tháng.</p>`:''}
+   <p class="note" style="margin-top:6px">Màu chấm là nước cai quản. Vòng đỏ: tiền tuyến. Đường đỏ, cam: căng thẳng đang leo thang. Vòng vàng: thiên tai. Đường nét đứt là đường biển. Đường đỏ đậm là lộ trình tới nơi đang chọn.</p></section>
    <section class="card">${w_provPanel(p)}</section>
    <section class="card" style="grid-column:1/-1">${w_situation()}</section></div>`}
 function pageKinhdoanh(){const S=X.S;
