@@ -132,11 +132,20 @@ return [
   const pick=(follow)=>(c,d)=>{const pt=(w.tinh&&w.tinh.pt&&!w.tinh.don&&w.tinh.st>=1)?w.tinh.pt:null;G.matchmaker(w,{free:1,noOut:1,pt,eyebrow:'Hôn sự trong tháng phép',title:'Chọn người cưới',eyebrow2:'Quân ngũ',title2:'Đám cưới trong tháng phép',
     after:sp=>{w.flags.dinhhon=0;w.flags.phepT=S().t;if(!sp)return 'Chưa chọn được ai.';if(follow)sp.away={type:'follow',of:w.id,p:null};return (follow?`Đám cưới vội trong tháng phép. ${esc(sp.given)} theo ${N(w)} ra trại.`:`Cưới xong được nửa tháng, ${N(w)} lại lên đường. ${esc(sp.given)} ở nhà chờ.`)+fx(w,{tam:follow?12:8})},
     none:()=>{w.flags.phepT=S().t;return 'Chưa ưng ai, hôn sự gác lại đến kỳ phép sau.'+fx(w,{tam:-2})}})};
-  if(hon){o.push({l:'Nhân dịp phép chọn người cưới, cưới xong đưa vợ theo doanh trại',go:pick(true)},
-    {l:'Nhân dịp phép chọn người cưới, vợ ở lại quê nhà',go:pick(false)})}
+  const theo=!!(G.dt&&G.dt.duocDuaVo(w)); /* d.1.5.65: từ Thiên hộ mới có chỗ cho vợ con trong doanh */
+  const hp=w.flags.honP;
+  if(hon&&hp&&w.flags.dinhhon){const cuoi=di=>cc=>{const sp=G.mkSpouse(w,false,hp);w.flags.dinhhon=0;delete w.flags.honP;w.flags.phepT=S().t;if(!sp)return 'Mối ấy không thành.';if(di)sp.away={type:'follow',of:w.id,p:null};return `${N(w)} cưới ${esc(sp.given)}, người đã định hôn.${di?' Vợ theo ra trại.':' Vợ ở lại quê nhà.'}`+fx(w,{tam:di?12:8})};
+    if(theo)o.push({l:`Cưới ${hp.given}, cưới xong đưa vợ theo doanh trại`,f:cuoi(true)});o.push({l:`Cưới ${hp.given}, vợ ở lại quê nhà`,f:cuoi(false)})}
+  else if(hon){if(theo)o.push({l:'Nhân dịp phép chọn người cưới, cưới xong đưa vợ theo doanh trại',go:pick(true)});o.push({l:'Nhân dịp phép chọn người cưới, vợ ở lại quê nhà',go:pick(false)})}
   if(s&&!s.away){o.push({l:'Vợ chồng đoàn tụ một tháng',f:c=>{w.flags.phepT=S().t;return 'Một tháng ngắn ngủi mà quý.'+fx(w,{tam:10})+fx(s,{tam:8})}},
-    {l:'Lần này đưa vợ con theo luôn',f:c=>{const kids=G.kidsOf(w).filter(k=>G.inClan(k)&&G.age(k)<16&&!k.away);[s,...kids].forEach(p=>{p.away={type:'follow',of:w.id,p:null}});w.flags.phepT=S().t;return 'Cả nhà nhỏ theo người lính ra trại.'+fx(w,{tam:8})}})}
-  o.push({l:'Về thăm nhà vài hôm rồi đi',f:c=>{w.flags.phepT=S().t;return 'Cơm nhà, mấy hôm là hết phép.'+fx(w,{tam:5})}});return o}},
+    {l:'Lần này đưa vợ con theo luôn',c:()=>!!(G.dt&&G.dt.duocDuaVo(w)),f:c=>{const kids=G.kidsOf(w).filter(k=>G.inClan(k)&&G.age(k)<16&&!k.away);[s,...kids].forEach(p=>{p.away={type:'follow',of:w.id,p:null}});w.flags.phepT=S().t;return 'Cả nhà nhỏ theo người lính ra trại.'+fx(w,{tam:8})}})}
+  /* d.1.5.65: phép là dịp có thật nên luôn có hộp; người không còn ai ở quê thì không có "cơm nhà" */
+  const coNha=!!(G.dt&&G.dt.nguoiLonONha(w).length);const xong=()=>{w.flags.phepT=S().t};
+  if(coNha)o.push({l:'Về ở với người nhà cho trọn tháng',f:c=>{xong();return 'Cơm nhà, chuyện cũ chuyện mới, một tháng trôi nhanh.'+fx(w,{tam:10,suc:6})}});
+  o.push({l:'Nghỉ cho lại sức',f:c=>{xong();return 'Ngủ đẫy giấc, ăn uống tử tế, vết cũ đỡ nhức.'+fx(w,{suc:14,tam:5})}});
+  if((w.parents||[]).every(id=>{const q=P(id);return !q||q.dead!=null}))o.push({l:'Đi viếng mộ cha mẹ',f:c=>{xong();return 'Cỏ đã cao quá gối. Đốt nén nhang, ngồi tới chiều.'+fx(w,{tam:6,eq:2})}});
+  else o.push({l:'Dạo chơi mấy phiên chợ rồi quay lại sớm',f:c=>{xong();return 'Được vài ngày thảnh thơi.'+fx(w,{tam:6,eq:1})}});
+  return o}},
 {id:'lq_vo_nho',t:'Vợ lính ở quê',k:'Quân ngũ',cd:60,g:'nữ',c:c=>{const s=G.spouseOf(c);return !!s&&G.inClan(s)&&s.job==='quan_ngu'&&s.away&&s.away.type==='army'&&!c.away},
  x:c=>`Chồng đi lính đã lâu, ${N(c)} một mình lo việc nhà, đêm đêm nhớ chồng.`,
  o:c=>{const v=m(2);const s=G.spouseOf(c);return [{l:'Viết thư gửi lên doanh trại',f:c=>'Lá thư đi mấy tháng mới tới.'+fx(c,{tam:4})},
