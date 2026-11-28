@@ -174,13 +174,13 @@ function deathPopup(c,cause){const S=X.S;
   const inh=inheritTitle(c);const fk=inMain(c)?'clan':c.hh;const fmny=()=>fk==='clan'||!S.hh[fk]?S.money:S.hh[fk].money; /* d9.6 Q14: người ở chi họ thì lo tang bằng quỹ chi của mình */
   openModal(`${hdrEv(c,(()=>{const sp=c.spouse!=null?P(c.spouse):null;return sp&&sp.dead==null&&!sp.left?sp:null})())}<span class="eyebrow">Tang sự</span><h2>${esc(nameOf(c))} qua đời</h2>
    <p>${esc(nameOf(c))} ${esc(cause)} ở tuổi ${age(c)}.${inh} ${wasHead?'Gia tộc cần người kế nghiệp.':''}</p>
-   <p class="muted">Danh vọng của người mất: ${fmt(f)}. Gia thế hiện là ${esc(TIERS[tn][0].toLowerCase())}. Người đời xét theo cả thân phận người mất lẫn địa vị gia tộc: nhà có tiếng mà làm sơ sài thì mang tiếng bạc bẽo, nhà nhỏ mà phô trương thì bị chê cười.</p>
-   <div class="choices">${['Sơ sài','Trung bình','Trang trọng'].map((n,i)=>`<button class="btn" data-f="${i}" ${fmny()<costs[i]&&i?'disabled':''}><strong>${n} · ${money(costs[i])}</strong><small>${i===exp?'Vừa với thân phận và gia thế':i<exp?'Thấp hơn thân phận, gia tộc mất danh vọng':'Cao hơn thân phận, bị chê phô trương'}</small></button>`).join('')}</div>`);
+   <p class="muted">Danh vọng của người mất: ${fmt(f)}. Gia thế hiện là ${esc(TIERS[tn][0].toLowerCase())}. Người đời xét theo cả thân phận người mất lẫn địa vị gia tộc: nhà có tiếng mà làm sơ sài thì mang tiếng bạc bẽo, nhà lo hậu hơn phận mình thì được tiếng hiếu nghĩa, người sống cũng ấm lòng.</p>
+   <div class="choices">${['Sơ sài','Trung bình','Trang trọng'].map((n,i)=>`<button class="btn" data-f="${i}" ${fmny()<costs[i]&&i?'disabled':''}><strong>${n} · ${money(costs[i])}</strong><small>${i===exp?'Vừa với thân phận và gia thế':i<exp?'Thấp hơn thân phận, gia tộc mất danh vọng':'Hậu hơn thân phận, thêm tiếng thơm'}</small></button>`).join('')}</div>`);
   X.M.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const i=+b.dataset.f;const poor=fmny()<costs[exp];fundAdd(fk,-costs[i]); /* d9.4: nhà không đủ tiền cho mức xứng thì người ta thông cảm */
-    const diff=i-exp;let d=0;if(diff<0)d=-(Math.max(5,f*0.2))*(-diff);else if(diff>0&&f<25)d=-4*diff;else if(diff===0)d=Math.max(1,f*0.05)*(i+1);
+    const diff=i-exp;let d=0;if(diff<0)d=-(Math.max(5,f*0.2))*(-diff);else d=Math.max(1,f*0.05)*(exp+1)+2*diff; /* d.1.5.64: hậu hơn thì không còn bị chê phô trương, thêm danh vọng */
     if(poor&&d<-12)d=-12;
     cf(d,d>=0?'Tang lễ xứng đáng':poor?'Tang lễ sơ sài vì nhà túng thiếu':'Tang lễ không xứng thân phận');
-    if(diff<0&&exp>=1&&!poor)memSet('tang_bac',120,{n:c.given});else if(i===2&&diff>=0&&tn>=2)memSet('tang_hau',120,{n:c.given}); /* v6.7.0-d4: mức tang lễ để lại dấu cho sự kiện sau */S.on=clamp(S.on+(diff<0?-4:2),0,100);
+    if(diff<0&&exp>=1&&!poor)memSet('tang_bac',120,{n:c.given});else if(i===2&&diff>=0&&tn>=2)memSet('tang_hau',120,{n:c.given}); /* v6.7.0-d4: mức tang lễ để lại dấu cho sự kiện sau */S.on=clamp(S.on+(diff<0?-4:2+2*diff),0,100);if(diff>0)alive().filter(q=>inClan(q)&&!q.away&&q.id!==c.id&&q.hh===c.hh).forEach(q=>addStat(q,'tam',3*diff));
     log(`Tang lễ ${['sơ sài','vừa phải','trang trọng'][i]} cho ${nameOf(c)}. Danh vọng gia tộc ${d>=0?'+':''}${Math.round(d)}.`,d<0?'hi':'gd');
     const sp=spouseOf(c);if(sp)sp.wantChild=false;
     if(!alive().length){gameOver();return}
@@ -194,16 +194,17 @@ function weddingPopup(c,p,free){const S=X.S;
   const fin=i=>{const diff=i-exp;let d=0,tam=0;
     if(diff<0){d=-(2+Math.abs(diff)*2+(tn>=3?2:0));tam=-4*Math.abs(diff)}
     else if(diff===0){d=2+i*2;tam=4}
-    else{d=tn<=1?-2*diff:1+diff;tam=6}
+    else{d=2+exp*2+2*diff;tam=4+3*diff} /* d.1.5.64 (chủ dự án duyệt 28/11: tiêu nhiều hơn thì lợi nhiều hơn) */
     if(i<=0&&tn<=1){d=Math.max(d,0);tam=Math.max(tam,2)}
     cf(d,d>=0?'Hôn lễ chu đáo':'Hôn lễ kém phần thể diện');
-    c.love=p.love=clamp((c.love||50)+(diff<0?-6*Math.abs(diff):diff===0?4:3),0,100);
+    c.love=p.love=clamp((c.love||50)+(diff<0?-6*Math.abs(diff):4+3*diff),0,100);
+    if(diff>0){const th=((S.w&&S.w.clans&&S.w.clans[S.loc.p])||[]).find(z=>z.sur===p.surname);if(th)th.rel=clamp((th.rel||0)+5*diff,-100,100)} /* thông gia là một họ trong vùng thì thân thêm */
     if(diff<0&&fam>=tn)memSet('cuoi_so',120,{n:p.given,s:p.surname});else if(i===2&&diff>=0)memSet('cuoi_hau',120,{n:p.given,s:p.surname});addStat(c,'tam',tam);addStat(p,'tam',tam);S.on=clamp(S.on+(diff<0?-2:1),0,100);
     log(`Hôn lễ ${names[i].toLowerCase()} của ${nameOf(c)} và ${nameOf(p)}. Danh vọng gia tộc ${d>=0?'+':''}${d}.`,d<0?'hi':'gd')};
   if(!isCtrl(c)){const i=Math.min(exp,S.money>=costs[exp]?exp:0);S.money-=Math.min(costs[i],Math.max(0,S.money));fin(i);setTimeout(nextPopup,0);return}
   openModal(`${hdrEv(c,p)}<span class="eyebrow">Hôn lễ</span><h2>${esc(nameOf(c))} và ${esc(nameOf(p))} thành thân</h2>
-   <p>Nhà mình thuộc hàng ${esc(TIERS[tn][0].toLowerCase())}; ${p.famT!=null?'nhà bên kia '+famLine(p):'hai bên'}. Cỗ bàn, rước dâu lớn nhỏ thế nào còn do gia chủ định. Làm sơ sài thì mang tiếng nhà có mà keo, làm quá thì chê phô trương.</p>
-   <div class="choices">${names.map((n,i)=>`<button class="btn" data-w="${i}" ${S.money<costs[i]&&i?'disabled':''}><strong>${n} · ${money(costs[i])}</strong><small>${i===exp?'Vừa với gia thế':i<exp?'Thấp hơn gia thế, mất thể diện':'Cao hơn gia thế, bị chê phô trương'}</small></button>`).join('')}</div>`);
+   <p>Nhà mình thuộc hàng ${esc(TIERS[tn][0].toLowerCase())}; ${p.famT!=null?'nhà bên kia '+famLine(p):'hai bên'}. Cỗ bàn, rước dâu lớn nhỏ thế nào còn do gia chủ định. Làm sơ sài thì mang tiếng nhà có mà keo, làm hậu thì thêm thể diện và ấm lòng đôi bên.</p>
+   <div class="choices">${names.map((n,i)=>`<button class="btn" data-w="${i}" ${S.money<costs[i]&&i?'disabled':''}><strong>${n} · ${money(costs[i])}</strong><small>${i===exp?'Vừa với gia thế':i<exp?'Thấp hơn gia thế, mất thể diện':'Hậu hơn gia thế, thêm tiếng thơm'}</small></button>`).join('')}</div>`);
   X.M.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const i=+b.dataset.w;S.money-=costs[i];fin(i);closeModal()})}
 
 Object.assign(X.fn,{deathPopup,weddingPopup});

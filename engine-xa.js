@@ -228,7 +228,7 @@ function brkEndPopup(c){const S=X.S;const b=c.brk;if(!b){setTimeout(nextPopup,0)
     if(b.k==='suc'){c.cap.suc=Math.min(hardCap(c,'suc'),Math.max(c.cap.suc,g)+R(3,6))}
     if(p.gain&&!has(c,p.gain)){addTrait(c,p.gain);extra=` Được đặc tính <b>${T.n}</b>: ${esc(T.d.toLowerCase())}.`}
     extra+=g===150?` Phàm nhân chỉ đến 150, nay giới hạn ${N.toLowerCase()} mở tới 200.`:` Giới hạn ${N.toLowerCase()} mở tới ${c.gate[b.k]}.`;
-    achieve(c,`vượt ngưỡng ${N.toLowerCase()} ${g}`);
+    /* d.1.5.63: vượt mốc chỉ số không còn đòi thưởng */
     return infoPopup(c,'Đột phá',`${N} vượt ngưỡng`,`Sau ${b.end-b.start} tháng ${esc(p.l.toLowerCase())}, ${esc(c.given)} ngộ ra điều trước giờ chưa thấy.${extra}`+fx(c,{[b.k]:R(4,9),over:1,fame:8+Math.round(score-100)/2,tam:10}))}
   c.ms[b.k]=(c.ms[b.k]||[]).filter(x=>x!==100);c.msRetry[b.k]=S.t+R(10,22);if(c.msQ)c.msQ[b.k]=null;if(g===150&&c.flags)c.flags['tc_'+b.k]=0;
   const hurt=['vo','suc'].includes(b.k)&&chance(0.3);

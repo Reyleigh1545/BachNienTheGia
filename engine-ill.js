@@ -18,7 +18,8 @@ const DIS={
  thuong_noi:{n:'Thương nội',sev:2,dur:[3,9],d:3,mort:0.004,ch:0.3,sea:null},
  viem_phoi:{n:'Viêm phổi',sev:3,dur:[2,5],d:6,mort:0.03,ch:0.35,sea:null},
  gay_xuong:{n:'Gãy xương',sev:2,dur:[2,4],d:3,mort:0,ch:0.1,sea:null},
- hoa_lieu:{n:'Bệnh hoa liễu',sev:1,dur:[6,18],d:1,mort:0.001,ch:0.2,sea:null}
+ hoa_lieu:{n:'Bệnh hoa liễu',sev:1,dur:[6,18],d:1,mort:0.001,ch:0.2,sea:null},
+ chua_dut:{n:'Bệnh chưa dứt',sev:2,dur:[3,6],d:3,mort:0.003,ch:0.2,sea:null}
 };
 const ills=c=>c.ill||(c.ill=[]);
 function start(c,id,o){o=o||{};const D=DIS[id];if(!D||!c||c.dead!=null)return null;if(ills(c).some(i=>i.id===id))return null;
@@ -31,15 +32,17 @@ function doctorOf(c,d){let best=null,bv=-1;alive().forEach(p=>{if(!inClan(p)||p.
 const khaNang=bs=>Math.round(Math.max(25,Math.min(85,35+(bs.m||0)*0.4+((bs.tri||50)-60)*0.3))); /* tỉ lệ chữa được, theo tay nghề người chữa */
 /* sức chữa khi chữa được: luôn thấp hơn danh y (0,8) */
 const sucNha=bs=>Math.max(0.35,Math.min(0.7,0.25+(bs.m||0)/250+(bs.tri||50)/600));
+/* d.1.5.63 (chủ dự án 28/11: "người nhà chữa ra kết quả bại nhưng bệnh lại khỏi"): chữa hỏng thì bệnh kéo dài thêm; chuyện bệnh chưa ghi vào người thì ghi thành bệnh chưa dứt */
+const dayDua=(cc,i,tr)=>{const keo=z=>{z.tr=Math.max(z.tr||0,tr);if(z.until<900000)z.until=Math.max(z.until,S().t)+R(3,5)};if(i)keo(i);else if((cc.ill||[]).length)cc.ill.forEach(keo);else{const z=start(cc,'chua_dut');if(z)z.tr=tr}};
 /* thầy thuốc tự chữa (chủ dự án 27/11: "bệnh nhẹ có thể tự chữa cho mình, bệnh nặng thì không"): nhẹ là mức 1, 2; từ mức 3 hoặc đang mắc bệnh nặng khác thì không. Vẫn gieo xúc xắc, kém người khác chữa 10 điểm */
 function optTu(c,o){o=o||{};if(!c||(c.job!=='y'&&c.job!=='nguy')||age(c)<16||c.away||o.nang||o.i&&o.i.sev>=3||(c.ill||[]).some(z=>z.sev>=3))return null;const i=o.i;const fxx=X.fx||X.EC.fx;
   const chua=z=>{const pw=Math.max(0.3,sucNha(c)-0.1);z.tr=Math.max(z.tr||0,pw);if(z.until<900000)z.until=Math.min(z.until,S().t+Math.max(1,Math.round((z.until-S().t)*(1-pw*0.6))))};
   return {l:'Tự bắt mạch, bốc thuốc cho mình',r:[{_p:1},Math.max(20,khaNang(c)-10)],y:cc=>{if(i)chua(i);else (cc.ill||[]).forEach(chua);if((cc.m||0)<100)cc.m=(cc.m||0)+1;return 'Thuốc đúng bệnh, người nhẹ dần.'+fxx(cc,{suc:-2,tam:2})},
-    n:cc=>{if(i)i.tr=Math.max(i.tr||0,0.15);return 'Người đang ốm thì bắt mạch cho mình cũng kém chuẩn, uống mấy thang không chuyển.'+fxx(cc,{suc:-R(4,9),tam:-4})}}}
+    n:cc=>{dayDua(cc,i,0.15);return 'Người đang ốm thì bắt mạch cho mình cũng kém chuẩn, uống mấy thang không chuyển.'+fxx(cc,{suc:-R(4,9),tam:-4})}}}
 function doctorPower(c){const bs=doctorOf(c);return bs?sucNha(bs):0}
 function optNha(c,bs,o){o=o||{};const i=o.i;const fxx=X.fx||X.EC.fx,them=X.EC.addStat;const ten=esc(bs.given);return {l:`Để ${bs.given}, thầy thuốc trong nhà, chữa`,r:[{_p:1},khaNang(bs)],
   y:cc=>{if(i)treat(cc,i,'nha',bs);else (cc.ill||[]).forEach(z=>treat(cc,z,'nha',bs));them(bs,'tam',3);if((bs.m||0)<100)bs.m=(bs.m||0)+1;return `${ten} bắt mạch, bốc thuốc, thức mấy đêm liền. Bệnh lui.`+fxx(cc,{suc:o.lon?-4:-1,tam:3})},
-  n:cc=>{if(i)i.tr=Math.max(i.tr||0,0.2);them(bs,'tam',-8);return `${ten} làm hết sức mà bệnh không chuyển, đành bó tay.`+fxx(cc,{suc:-(o.lon?R(12,22):R(5,12)),tam:-6})}}}
+  n:cc=>{dayDua(cc,i,0.2);them(bs,'tam',-8);return `${ten} làm hết sức mà bệnh không chuyển, đành bó tay.`+fxx(cc,{suc:-(o.lon?R(12,22):R(5,12)),tam:-6})}}}
 /* điều trị: how = 'tu' | 'lang' | 'danhy' | 'nha' | 'cung'; trả về mô tả ngắn */
 function treat(c,i,how,bs){const pw={tu:0.15,lang:0.45,danhy:0.8,nha:bs?sucNha(bs):doctorPower(c),cung:0.05}[how]||0;i.tr=Math.max(i.tr||0,pw);
   if(pw>=0.4&&i.until<900000)i.until=Math.min(i.until,S().t+Math.max(1,Math.round((i.until-S().t)*(1-pw*0.6))));return pw}
@@ -61,7 +64,7 @@ function illYear(){const s=S();const season=X.EC.season?X.EC.season():null;let p
   alive().filter(p=>inClan(p)&&p.dead==null).forEach(p=>{const a=age(p);const sickT=(G.TRAITS&&G.has?(G.has(p,'omyeu')?1.6:G.has(p,'bachdoc')?0.1:1):1);
     const base=(0.05+(a>=55?0.05:0)+(a<6?0.04:0)+(p.suc<40?0.05:0))*sickT*(G.healthMul?G.healthMul(p):1);
     if(!chance(base))return;
-    let pool=Object.keys(DIS).filter(k=>{const D=DIS[k];if(D.old&&a<55)return false;if(k==='dai'||k==='gay_xuong'||k==='thuong_noi'||k==='hoa_lieu'||k==='viem_phoi')return false;return true});
+    let pool=Object.keys(DIS).filter(k=>{const D=DIS[k];if(D.old&&a<55)return false;if(k==='chua_dut'||k==='dai'||k==='gay_xuong'||k==='thuong_noi'||k==='hoa_lieu'||k==='viem_phoi')return false;return true});
     if(a>=60)pool=pool.concat(['dau_lung','tim','dau_lung']);
     /* d9.12: bệnh theo vùng đất nhà ở (w63_dis_lu và các thiên tai vùng đã có địa lý; bệnh vặt cũng cần): rừng núi phía nam và tây nhiều sốt rét; phía bắc lạnh nhiều thương hàn, ho phổi; vùng sông nước nhiều tả, kiết lỵ */
     try{const PV=(window.D&&window.D.PROV)||{};const pv=PV[s.loc&&s.loc.p];const rg=pv&&pv.r;const add=(k,n)=>{if(DIS[k])for(let i=0;i<n;i++)pool.push(k)};if(rg==='nam'||rg==='tay'){add('sot_ret',3)}else if(rg==='bac'){add('thuong_han',2);add('ho_phoi',2)}else if(rg==='dong'||rg==='trung'){add('sot_ret',1);add('thuong_han',1)}}catch(e){}
