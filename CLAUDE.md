@@ -914,6 +914,39 @@ Chủ dự án sửa bản đầu, chép nguyên văn:
 
 *Hiểu của Claude:* duyệt bảng làng, trấn, thành; trẻ ở làng được gửi lên trấn hay thành trọ học, không phải dời nhà.
 
+**Test 2 (chủ dự án, 28/11; save họ Cao năm 63 chơi tay, năm 101 cho admin chạy tiếp). Chép nguyên văn:**
+> "Chỉ số trên thẻ con nuôi hiện ra trước khi nhận nuôi khác xa so với khi đã nhận nuôi về"
+> "Tại sao trong nhà có người làm quan sống ở nơi khác nhưng  muốn chuyển nhà tới nơi đó lại phải bắt người kia từ quan"
+> "Người nhà chữa ra kết quả  bại nhưng bệnh lại khỏi"
+> "Cốt truyện họ Phạm bị sai lệch một đoạn vì Kiên lên ghế  nhất phẩm"
+> "Khi  trao quyền gia chủ cho một người con đang làm quan ở nhà thì người đó bị gọi về nhà luôn, chỉ chọn bán hoặc cho thuê gia nghiệp ở xa, nhưng khi đã chuyển  về rồi thì chức quan ở nơi đó lại vẫn còn"
+> "Tiền triều đình cấp để đi đường cũng không thể quá nhiều, cũng không thể quá ít, chỉ cấp một khoản theo chức quan và theo quãng đường, không thể như trong save  hơn 100 bạc là quá nhiều"
+> "Một số sự kiện có việc rất cao nhưng tiền bỏ ra và thu về lại rất thấp"
+> "Bỏ thưởng khi chỉ số đạt mốc đi, chỉ ban thưởng khi nhận được danh hiệu, người nhà ở xa, không ở nhà thì không ban thưởng được vì ở xa."
+> "Một số sự kiện, cốt truyện và kỳ ngộ không nên xuất hiện nhiều hơn 1 lần trong gia đình"
+> "Thăng chức  nay không thưởng nữa, chỉ ai làm quan mới được thưởng"
+> "Xem lại cách xét thăng chức quan, tài hơn, công hơn nhưng vẫn thua"
+> "Sao đi đường giang hồ, đủ võ lực, đủ tiếng tăm danh vọng rồi vẫn không thăng cấp lên được, lại cũng không mở ra sự kiện danh hiệu, mất hết cả quyền lợi"
+> "Các việc mà tăng mức tiền theo mức nhà phải mang lại lợi ích  lớn hơn khi tiền cần tiêu  nhiều hơn, như cưới xin, tang lễ, chăm thai, mất càng nhiều tiền thì càng tốt."
+
+*Kết quả kiểm (28/11), **chưa sửa, chờ chủ dự án bảo làm**:*
+1. **Con nuôi, lỗi đúng.** `kidOffer` đưa lên thẻ NPC **trung bình gen** (tiềm năng) như chỉ số hiện tại; `kidTake` gọi `adopt`, `mkPerson` tạo chỉ số hiện tại mới.
+2. **Dời tới chỗ người nhà làm quan, lỗi đúng.** `moveBlock` chặn mọi lần dời hễ có **một người bất kỳ** đang giữ chức, không xét nơi đến.
+3. **Người nhà chữa bại mà khỏi, đúng theo mã.** Nhánh bại chỉ hạ sức khỏe, vẫn đặt `tr=0.2`, bệnh nhẹ tự hết sau một, hai tháng và ghi "đã khỏi"; sự kiện bệnh không có `c.ill` thì bại không để lại bệnh nào. Save không lưu kết quả xúc xắc nên không đối chiếu được trong save.
+4. **Họ Phạm, thấy trong save.** Lịch thăng của Kiên tính theo năm ván, cốt truyện mở ở năm 47 nên "Kiên vào nội các" và "nhận hàm Thái sư" dồn ngay lúc mở; Kiên chết năm 54, chuỗi `pm_*` chạy tới năm 100 (`arcs.pm.K.ok=0`).
+5. **Trao quyền cho con đang làm quan xa, lỗi đúng.** `becomeHead` đổi hộ và hỏi bán nhà nhưng không đụng tới ghế, chức.
+6. **Tiền đi đường, lỗi của Claude ở d.1.5.59.** Cấp = phí dời cả nhà (có một phần tư giá nhà) + **toàn bộ chi tiêu cả nhà** × số tháng. Save: 124 bạc cho **một tháng** đường, trong khi nhà dư khoảng 35 bạc mỗi tháng.
+7. **Việc lớn tiền nhỏ.** Tiền sự kiện nhân theo bậc nhà thang NHẸ (tối đa ×7), không theo phẩm quan hay tầm việc; quỹ nhà trong save 1.531 đến 3.105 bạc nên khoản vài bạc vô nghĩa. Chưa liệt kê từng sự kiện.
+8, 10. **Khen thưởng.** `achieve` được gọi ở mốc chỉ số tự nhận đặc tính, đột phá, lên bậc mọi nghề, được nhận thẳng, đỗ thi, thăng quan, danh hiệu; **không xét người ở xa**. Save năm 101: 158 hộp khen thưởng, 154 cho người không làm quan.
+9. **Lặp trong một nhà.** Năm 63 chơi tay: 9 kỳ ngộ lặp. Năm 101: 65 kỳ ngộ lặp (Cây thuốc quý 7 lần), bước tình duyên `tinh_hoi_xuan_b` 17 lần trên 8 người.
+11. **Xét thay người giữ ghế.** Hơn cả tài lẫn công thì tỉ lệ vẫn khởi từ 12% cộng thêm theo mức hơn, trần 70%, rồi trừ sức ép cạnh tranh; thường còn khoảng 20 đến 45%, hộp không cho biết.
+12. **Giang hồ không lên bậc, lỗi gốc.** Vòng xét thăng bậc hằng tháng (`engine.js`, `canPromote` trong vòng `alive()`) chỉ xét người **không đi xa**, trừ lính; từ d9.6 người đi giang hồ là "đi xa". Save: Cao Thanh Tài võ 165, danh vọng 306, vẫn Lãng khách. Việc đòi bậc Hiệp sĩ trở lên mất theo. Đường danh hiệu võ chưa kiểm hết.
+13. **Tiền nhiều lợi nhiều.** Là yêu cầu thiết kế. Mới xem chăm thai: mức đắt chỉ giảm thêm một nấc rủi ro. Cưới, tang cần lập bảng khi làm.
+
+*Cần chủ dự án trả lời trước khi làm:* (a) đỗ khoa cử còn được khen thưởng không, quan võ có tính là "làm quan" không; (b) mục 9: Claude đề xuất cốt truyện và kỳ ngộ mỗi nhà một lần một ván, việc đời thường (ốm, hàng xóm, vợ chồng) vẫn lặp; (c) tiền đi đường: đề xuất bổng một tháng của phẩm nhậm × (số tháng đường + 1); (d) xét thay ghế: đề xuất hơn cả tài lẫn công thì từ 50% đến 85% và hộp ghi mức khả năng bằng chữ.
+
+*Phân tích thêm của Claude từ save (chưa phải yêu cầu):* tỉ lệ sự kiện lần đầu gặp theo 20 năm giảm 90% → 71% → 38% (chơi tay); trong 880 sự kiện của save chơi tay, bốn hệ thống mới (Thiên Kinh, thế lực, triều đình `cd_*` mới, chiến tranh `cx_*`) chỉ hiện 9 lần; dòng tiền cuối ván thu khoảng 51 bạc, chi 16 bạc mỗi tháng. Save auto năm 101 đạt kết T11 và chơi tiếp được; bot để 15 người lớn không việc, chỉ một quan thấp nên **không dùng để đo cân bằng**. `tools/evreport.js` treo với save 101 năm.
+
 (không có ý nào đang chờ khác. Các ý 23/11 đã làm ở d9.8 và d9.9 và chuyển thành luật: giao diện hộp sự kiện và hồ sơ ở mục 7, giang hồ ở mục 6, Thiên cơ ở mục 3, việc lớn ở mục 3, gia bảo ở mục 6, hệ số kỳ ngộ ở mục 5, cưới nhân phép của lính ở mục 3.)
 
 ---
@@ -1073,6 +1106,12 @@ Chủ dự án sửa bản đầu, chép nguyên văn:
 ---
 
 78. **Vẽ trang phục cổ phải tả kiểu cắt (28/11).** chỉ ghi tên nghề và "jacket" thì model vẽ sơ mi cài cúc, mũ cảnh sát. **Lời nhắc phải tả kiểu cắt cổ trang** (áo vạt chéo, cổ tròn cài vai, mũ sa đen hai cánh chuồn), tả thứ cần có, và vẫn phải soi bằng mắt từng tấm.
+
+79. **Thêm kiểu "đi xa" mới thì rà mọi chỗ lọc `away` (28/11).** Người đi giang hồ bị coi là đi xa nên mất hẳn đường lên bậc từ d9.6 mà bot không báo. Cách quét: tìm mọi `!c.away`, `c.away?` và hỏi từng chỗ với từng kiểu `away`.
+80. **Thẻ xem trước phải là đúng con người sẽ nhận (28/11).** Con nuôi hiện tiềm năng như chỉ số thật rồi tạo người mới. Cách quét: mọi chỗ tạo người "xem trước" rồi tạo lại.
+81. **Kết quả thua phải để lại hậu quả khớp lời kể (28/11).** "Bệnh không chuyển" mà tháng sau tự khỏi.
+82. **Lịch theo năm ván phải chịu được chuỗi mở muộn, và người chết phải chặn bước sau (28/11, họ Phạm).**
+83. **Luật chặn "hễ có một người" phải xét nơi đến và người liên quan (28/11, dời nhà, đổi gia chủ).** Đổi chỗ ở hay vai của ai thì rà ghế, chức, nơi làm của người đó.
 
 ## 12. Kế hoạch tương lai (dự định, **chưa phải luật**; chủ dự án duyệt hoặc đổi trước khi làm, mục 0.4)
 
