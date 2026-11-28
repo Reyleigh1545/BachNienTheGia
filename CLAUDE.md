@@ -982,6 +982,19 @@ Chủ dự án sửa bản đầu, chép nguyên văn:
 **Kết quả d.1.5.64 (28/11), xong mục 7, 13 và mở danh hiệu.** Thử ở game: quan Nhất phẩm việc quan ra đúng 0,5 · 2 · 6 · 12 tháng bổng, người thường và việc nhà không đổi, 315 sự kiện được tính là việc quan; lính và quan ở xa nhận danh hiệu không qua hộp cảnh; cưới và tang mỗi mức cao hơn đều lợi hơn; 600 ca sinh mỗi loại: sinh khó 17%, 13%, 7%, mẹ mất sức 9,7 · 9,1 · 4,3. `fulltest` 19 mục không lỗi, quét ngoặc đơn sạch, không id trùng, ba lượt bot không lỗi. **Chưa chơi tay.**
 *Cần để ý:* khoản **phải chi** trong việc quan cũng tăng theo bổng. Người mai mối từ nhà vô danh không có điểm thông gia để cộng. Việc ngoài quan trường có cỡ lớn mà tiền ít **chưa sửa**.
 
+**Nghề binh và quan võ (chủ dự án, 28/11, sau save họ Thôi năm 10), chép nguyên văn:**
+> "những cái mà mày nói về việc được thăng làm cao thủ rồi nhất lưu cao thủ tao không hề được nhận, không biết  từ đâu mà có, nhà định hôn sự tao cũng không hề biết, vì mày nên hiểu, nhân vật khởi đầu mất cha mất mẹ, mồ côi hoàn toàn, có họ hàng xa thì cũng có thể chấp nhận, nút bà mối giờ thay vì mở lại như bình thường nhưng phải khác so với bình thường, ít lựa chọn, 2 lần về phép mà mày nhắc tới tao không hề gặp trong save, và tao thấy  một điều là tâm trạng của người đi lính luôn thấp, không có cách nào tăng lên vì nhà cửa  và mức sống không ảnh hưởng tới người đi lính, thêm nữa, sống trong doanh trại, sống cùng bao nhiêu người, bách hộ thì vẫn chưa có  nhà cửa được cấp riêng nên không thể gặp những sự kiện khác, quanh năm trong doanh trại, trải máu ngoài sa trường thì không thể có những vụ việc đấy xảy ra. Tao muốn sau này khi người làm lính thu được nhiều chiến công, thì khi kết thúc chiến sự, được xét công lao, nếu đủ để phong tước, thăng chức thì ban cho, có tước thì ban nhà cửa ở kinh đô, thấp nhất là tứ hợp viện để chuyển về đó sống, nếu chưa thành  gia lập thất, có thể được ban cho một cô nương 18 tuổi xinh đẹp tài hoa để lập gia thất, nhưng tất cả cũng không phải cố định sẽ được, nếu có kẻ khác có quan hệ tốt hơn, bản thân đắc tội cấp trên, quan gia khác thì các phần thưởng sẽ bị cản trở ( trừ tước vị ), có thể là trì hoãn lâu dài hoặc trực tiếp bị cướp  mất. Trước tiên cùng tăng thêm chiều sâu cho nghề binh, quan võ trước đã, về sau tao sẽ thử từng đường. Mày còn ý tưởng nào khác  dựa trên ý tưởng trên cùng những vốn liếng lâu nay thì đề xuất ra"
+
+*Kết quả kiểm (28/11), **chưa sửa, chờ chủ dự án bảo làm**:*
+- **Claude báo sai:** lấy chuyện từ nhật ký rồi kể như người chơi đã gặp. Trong 45 hộp của save không có hộp danh hiệu, hôn sự hay về phép nào.
+- **Danh hiệu ngầm:** `ctTick` gọi thẳng `confer`, chỉ ghi nhật ký. **Do d.1.5.64 mở cho lính** (trước đó lính bị bỏ qua); nhánh tự gọi tên bậc thấp vốn cũng không có hộp với mọi người. Người ấy là gia chủ nên cũng không có hộp thưởng.
+- **Định hôn ngầm:** `lqYear` cho mọi lính chưa vợ 20% mỗi năm "Gia tộc đã định hôn sự", chỉ ghi nhật ký, **không xét có người lớn nào trong nhà không**.
+- **Về phép ngầm:** chưa định hôn thì `lq_phep` chỉ có một lựa chọn nên bị ghi thẳng nhật ký; lời kể "cơm nhà" dù không còn ai ở nhà.
+- **Tâm trạng lính, đúng:** `moodTarget` chặn trần 60 rồi trừ 4, chiến tranh trừ 8, nghề trừ 8; nhà tốt, mức sống cao không kéo lên quá trần, **nhà tồi vẫn kéo xuống**.
+- **Chuyện nhà lọt vào doanh trại, đúng và trái luật mục 4:** save có Láng giềng đến chơi, Thư từ xa, Quan huyện đặt thuế phụ, Xây cung điện, Nạn châu chấu (nuôi gà vịt), Sứ giả đi ngang, Mang lễ lấy lòng, Thầy lang rong. Gốc: các việc này gửi thẳng cho gia chủ, không qua bộ lọc người đi xa.
+
+**Đề xuất của Claude cho nghề binh và quan võ (chờ duyệt, chưa làm).** Bản đầy đủ gửi trong cuộc trò chuyện 28/11. Đợt 1 nền đời lính: doanh trại theo cấp, đội và thượng quan là người thật, tâm trạng và hồi sức riêng, chỉ gặp chuyện quân, mọi thay đổi đời có hộp, bà mối doanh trại ít lựa chọn. Đợt 2: sổ công từng cuộc chiến, hết chiến thì xét công, cản trở (trừ tước). Đợt 3: ban nhà ở kinh, tứ hôn, đời quan võ thời bình. Đợt 4: thương tật, quân tâm, công cao bị nghi, đồng đội và con cháu họ quay lại.
+
 (không có ý nào đang chờ khác. Các ý 23/11 đã làm ở d9.8 và d9.9 và chuyển thành luật: giao diện hộp sự kiện và hồ sơ ở mục 7, giang hồ ở mục 6, Thiên cơ ở mục 3, việc lớn ở mục 3, gia bảo ở mục 6, hệ số kỳ ngộ ở mục 5, cưới nhân phép của lính ở mục 3.)
 
 ---
@@ -1147,6 +1160,11 @@ Chủ dự án sửa bản đầu, chép nguyên văn:
 81. **Kết quả thua phải để lại hậu quả khớp lời kể (28/11).** "Bệnh không chuyển" mà tháng sau tự khỏi.
 82. **Lịch theo năm ván phải chịu được chuỗi mở muộn, và người chết phải chặn bước sau (28/11, họ Phạm).**
 83. **Luật chặn "hễ có một người" phải xét nơi đến và người liên quan (28/11, dời nhà, đổi gia chủ).** Đổi chỗ ở hay vai của ai thì rà ghế, chức, nơi làm của người đó.
+
+84. **Nhật ký không phải thứ người chơi đã thấy (28/11, họ Thôi).** Khi kể lại ván của chủ dự án chỉ dùng **danh sách hộp đã hiện** (`S.evl`); điều chỉ có trong nhật ký phải nói rõ là ghi ngầm.
+85. **Việc đổi đời người ta không được ghi ngầm (28/11).** Danh hiệu, định hôn, thăng chức, ban thưởng phải có hộp. Mở một đường mới (d.1.5.64 mở danh hiệu cho lính) thì phải xem người chơi thấy gì.
+86. **Người khởi đầu mồ côi, không có "gia tộc" nào lo thay (28/11).** Cách quét: lời nhắc "gia tộc", "cả nhà", "người nhà", "ở quê" phải kiểm có người thật.
+87. **Việc gửi thẳng cho gia chủ phải xét gia chủ đang ở đâu (28/11).** Gia chủ có thể đang ở doanh trại.
 
 ## 12. Kế hoạch tương lai (dự định, **chưa phải luật**; chủ dự án duyệt hoặc đổi trước khi làm, mục 0.4)
 
