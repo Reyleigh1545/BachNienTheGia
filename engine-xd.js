@@ -63,7 +63,7 @@ function sheetHTML(c){const S=X.S;
   if(a>=16){
     h+=`<div class="dsec"><h3>Hôn nhân</h3>`;
     const sp=spouseOf(c);
-    if(!sp||!inClan(sp)){const rm=remarryOk(c);h+=`<div class="acts"><span class="kvline">${sp&&sp.dead!=null?'Góa bụa':c.flags.divorced?'Đã ly hôn':'Chưa lập gia thất'}${rm?'':' · giữ tiết theo gia quy'}</span><button class="btn small" data-do="mai" ${S.money<mm(1.5)||c.away||!rm?'disabled':''}>Bà mối · ${money(mm(1.5),1)}</button></div>`}
+    if(!sp||!inClan(sp)){const rm=remarryOk(c);h+=`<div class="acts"><span class="kvline">${sp&&sp.dead!=null?'Góa bụa':c.flags.divorced?'Đã ly hôn':'Chưa lập gia thất'}${rm?'':' · giữ tiết theo gia quy'}</span>${(()=>{const D=X.EC.G.dt;if(D&&D.linh(c)){const w=D.moiWhy(c)||(!rm?'đang giữ tiết':'');return `<button class="btn small" data-do="mai" ${S.money<mm(1.5)||w?'disabled':''}>Mối nơi đóng quân · ${money(mm(1.5),1)}</button>${w?`<small class="muted">${esc(w)}</small>`:''}`}return `<button class="btn small" data-do="mai" ${S.money<mm(1.5)||c.away||!rm?'disabled':''}>Bà mối · ${money(mm(1.5),1)}</button>`})()}</div>${X.EC.G.dt&&X.EC.G.dt.linh(c)?`<p class="kvline muted">Chỗ ở: ${esc(X.EC.G.dt.choO(c))}</p>`:''}`}
     else{
       const wife=c.g==='nữ'?c:sp;const hcap=HOMES[HH(wife.hh).home].cap;const room=hhCount(wife.hh)<hcap;const wa=age(wife);const want=c.wantChild||sp.wantChild;
       h+=`<div class="kvline">Bạn đời <button class="lnk" data-sel="${sp.id}">${esc(nameOf(sp))}</button>, ${age(sp)} tuổi · ${loveWord(c.love??50)}</div>${(c.love??50)<35&&head()?`<div class="acts"><button class="btn small ghost" data-do="ly">Phân xử vợ chồng</button></div>`:''}`;
@@ -372,7 +372,7 @@ function ctTick(c){const S=X.S;
   if((c.flags.ctWait||0)>S.t)return;
   /* v6.3.4: đủ chỉ số lâu mà vẫn chưa gặp dịp thì người đời cũng tự gọi tên ở các bậc thấp, khỏi chờ mãi */
   ctPending(c).forEach(([k,i])=>{if((c.flags['ctF_'+k]||0)>S.t)return;const key='ctS_'+k+i;if(c.flags[key]==null)c.flags[key]=S.t;
-    if(i<=4&&S.t-c.flags[key]>=30+12*i){if(confer(c,k,i))delete c.flags[key]}});
+    if(i<=4&&S.t-c.flags[key]>=30+12*i){if(confer(c,k,i)){delete c.flags[key];if(X.EC.G.dt)X.EC.G.dt.baoDanhHieu(c,k,i)}}});
   const L=ctPending(c).filter(([k])=>!((c.flags['ctF_'+k]||0)>S.t));if(!L.length)return;
   const [k,i0]=pick(L);
   const okEv=j=>ctEvents(k,j).filter(e=>{try{return !e.c||e.c(c)}catch(err){return false}});
@@ -383,7 +383,7 @@ function ctTick(c){const S=X.S;
   if(!chance(p))return;
   const ok=okEv(i);if(!ok.length)return;
   /* người ở doanh trại hay nhậm chức nơi xa không gặp được cảnh ở quê (mục 4): được gọi danh hiệu thẳng, nhà nghe tin sau */
-  if(xa){if(confer(c,k,i)){delete c.flags['ctS_'+k+i];c.flags.ctWait=S.t+R(6,10)}return}
+  if(xa){if(confer(c,k,i)){delete c.flags['ctS_'+k+i];c.flags.ctWait=S.t+R(6,10);if(X.EC.G.dt)X.EC.G.dt.baoDanhHieu(c,k,i)}return}
   let tot=ok.reduce((a,e)=>a+(e.w||1),0),r=Math.random()*tot,ev=ok[0];for(const e of ok){r-=(e.w||1);if(r<=0){ev=e;break}}
   c.seen[ev.id]=S.t;S.evLast=S.evLast||{};S.evLast[ev.id]=S.t;S.evn=S.evn||{};S.evn[ev.id]=(S.evn[ev.id]||0)+1;
   c.flags.ctWait=S.t+R(6,10);

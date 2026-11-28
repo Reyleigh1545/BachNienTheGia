@@ -8,7 +8,7 @@ window.ENGX.push(X=>{
 const {R,chance,log,alive,inClan,P,pick,clamp,later,enqueue,age,esc,mm}=X;
 const G=X.EC.G;const S=()=>X.S;
 const root=()=>{const s=S();s.np=s.np||{n:0,l:{}};s.rg=s.rg||{e:{},yc:0,yt:-1};return s};
-const VAI={ban_than:'bạn thân',an_nhan:'ân nhân',quy_nhan:'quý nhân',ket_nghia:'anh em kết nghĩa',thay:'thầy',mon_sinh:'môn sinh',doi_thu:'đối thủ',nguoi_thuong:'người thương',khach:'khách quen',cao_nhan:'cao nhân',an_si:'ẩn sĩ',lang_gieng:'láng giềng',huong_truong:'hương trưởng',quen:'người quen',tinh_dich:'tình địch',thuong_nhan:'thương nhân',thay_thuoc:'thầy thuốc',tuong:'tướng',thuoc_ha:'thuộc hạ',phe_chu:'người đứng đầu phe',nguoi_lam:'người làm',quan:'quan lại',quyen_the:'kẻ có thế'};
+const VAI={dong_doi:'đồng đội',thuong_quan:'thượng quan',ban_than:'bạn thân',an_nhan:'ân nhân',quy_nhan:'quý nhân',ket_nghia:'anh em kết nghĩa',thay:'thầy',mon_sinh:'môn sinh',doi_thu:'đối thủ',nguoi_thuong:'người thương',khach:'khách quen',cao_nhan:'cao nhân',an_si:'ẩn sĩ',lang_gieng:'láng giềng',huong_truong:'hương trưởng',quen:'người quen',tinh_dich:'tình địch',thuong_nhan:'thương nhân',thay_thuoc:'thầy thuốc',tuong:'tướng',thuoc_ha:'thuộc hạ',phe_chu:'người đứng đầu phe',nguoi_lam:'người làm',quan:'quan lại',quyen_the:'kẻ có thế'};
 const NG={ban_than:'bạn từ thuở nhỏ',an_nhan:'người từng nhận ơn nhà',quy_nhan:'người có thế',ket_nghia:'kết nghĩa',thay:'thầy',cao_nhan:'cao nhân ẩn mình',an_si:'ẩn sĩ',thay_thuoc:'thầy thuốc',doi_thu:'kẻ có hiềm khích'};
 /* ---------- sổ người quen ---------- */
 function ensure(c,o){o=o||{};const s=root();
