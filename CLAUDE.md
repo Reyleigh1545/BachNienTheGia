@@ -947,6 +947,11 @@ Chủ dự án sửa bản đầu, chép nguyên văn:
 
 *Phân tích thêm của Claude từ save (chưa phải yêu cầu):* tỉ lệ sự kiện lần đầu gặp theo 20 năm giảm 90% → 71% → 38% (chơi tay); trong 880 sự kiện của save chơi tay, bốn hệ thống mới (Thiên Kinh, thế lực, triều đình `cd_*` mới, chiến tranh `cx_*`) chỉ hiện 9 lần; dòng tiền cuối ván thu khoảng 51 bạc, chi 16 bạc mỗi tháng. Save auto năm 101 đạt kết T11 và chơi tiếp được; bot để 15 người lớn không việc, chỉ một quan thấp nên **không dùng để đo cân bằng**. `tools/evreport.js` treo với save 101 năm.
 
+**Trả lời bốn câu của Test 2 (chủ dự án, 28/11), chép nguyên văn:**
+> "1. đỗ khoa cử vẫn thưởng, quan võ cũng tính nhưng vì quan võ ở xa nên không thưởng trực tiếp ngay mà gửi tiền qua sau khi nghe tin; 2. Được; 3. Được; 4. Không cần sửa nữa, cứ giữ như cũ đi. Kiểm tra xem đã tạo được ảnh chưa, tạo thêm ảnh"
+
+*Hiểu của Claude:* khen thưởng chỉ còn cho **danh hiệu, đỗ khoa cử, quan được thăng** (cả quan võ; quan võ ở xa thì **nghe tin rồi gửi tiền sau**, không có hộp thưởng tại chỗ); bỏ thưởng ở mốc chỉ số và thăng chức nghề thường; người ở xa khác không thưởng. Chống lặp và tiền đi đường theo đề xuất. **Mục 11 (xét thay ghế) giữ nguyên như cũ, không sửa.** Phần sửa lỗi **chưa được bảo làm**.
+
 (không có ý nào đang chờ khác. Các ý 23/11 đã làm ở d9.8 và d9.9 và chuyển thành luật: giao diện hộp sự kiện và hồ sơ ở mục 7, giang hồ ở mục 6, Thiên cơ ở mục 3, việc lớn ở mục 3, gia bảo ở mục 6, hệ số kỳ ngộ ở mục 5, cưới nhân phép của lính ở mục 3.)
 
 ---
