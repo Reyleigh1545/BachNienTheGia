@@ -69,7 +69,8 @@ G.arc.def('pm',{name:'Ân oán họ Phạm',gap:[16,34], /* d9.12: 4-9 tháng ->
   const [txt,up2]=pick(okL);let fxh='';for(const k in up2){G.arc.add('pm',k,up2[k]);const lb=TOUCHLAB[k];if(lb)fxh+=`<span class="${lb[1]}">${lb[0]} ${lb[1]==='up'?'+':'-'}${up2[k]}</span>`}return {t:txt,fx:fxh?`<span class="fx">${fxh}</span>`:''}},
  start:()=>{const s=S();return (s.t>=96&&hasQuan()&&chance(s.t>=120?0.06:0.04))||(s.t>=300&&G.tierIdx()>=3&&chance(0.04))}, /* d9.12: thêm đường mở thứ hai: nhà từ Hương thân trở lên sau năm 25 dù chưa có quan văn, để ván nào cũng gặp họ Phạm (save 84 năm mở năm 77) */
  onStart:a=>{const w=(S().wr&&S().wr.pm)||{};a.fl.org=w.org||pick(['ruong','so','hon','buon']);a.fl.kind=w.kind||pick(['nguy','manh','muu']);
-  const gy=Math.floor(S().t/12);  a.K={n:'Phạm Trung Kiên',g:'Kiên',age:24+gy,rank:0,pow:R(18,24),life:R(70,88),ok:1,sched:[72,192,312,408,504],lag:0};
+  const gy=Math.floor(S().t/12);  /* d.1.5.63 (chủ dự án 28/11: "cốt truyện họ Phạm bị sai lệch một đoạn vì Kiên lên ghế nhất phẩm"): mở muộn thì Kiên không già quá 48, vào nội các sớm nhất 10 năm sau khi chuyện mở, Thái sư 8 năm sau đó */
+  const s4=Math.max(408,S().t+120);a.K={n:'Phạm Trung Kiên',g:'Kiên',age:Math.min(24+gy,48),rank:0,pow:R(18,24),life:R(78,90),ok:1,sched:[72,192,312,s4,Math.max(504,s4+96)],lag:0};
   a.D={n:'Nguyễn Thành Duy',age:R(28,34),link:0,ok:1};
   a.H={};a.c={pf:0,wit:0,all:0,pw:8,dt:12,ky:0,lo:0,hn:0,fail:0};
   try{const nk=G.led.np.new({n:a.K.n,g:'nam',age:a.K.age,role:'pham',f:'pham'}),nd=G.led.np.new({n:a.D.n,g:'nam',age:a.D.age,role:'duy',f:'pham'});a.K.np=nk.id;a.D.np=nd.id;const nh=G.led.np.new({n:'Phạm Xuân Huấn',g:'nam',age:84,role:'pham',f:'pham'});nh.ok=0;nh.dead=S().t-12*R(4,12)}catch(e){} /* d8: nhân vật cốt truyện cũng nằm trong sổ NPC để kiểm tên và tuổi */
@@ -80,7 +81,10 @@ G.arc.def('pm',{name:'Ân oán họ Phạm',gap:[16,34], /* d9.12: 4-9 tháng ->
   /* năm: tuổi, quyền lực của Kiên, tuổi thọ */
   if(s.t%12===0){K.age++;a.D.age++;a.c.ky=Math.max(0,(a.c.ky||0)-3);a.c.lo=Math.max(0,(a.c.lo||0)-2); /* Kiên nguôi dần, tin lộ cũ đi */
     if(K.ok)K.pow=Math.min(100,K.pow+R(0,2)+(K.rank>=3?1:0));
-    if(K.ok&&K.age>=K.life&&!a.fl.kdie){a.fl.kdie=1;K.ok=0;if(a.ch>=2&&!a.end)G.later(G.head(),'pm_n1',R(1,3))}}
+    if(K.ok&&K.age>=K.life&&!a.fl.kdie){if(a.ch<2)K.life=K.age+R(6,12); /* d.1.5.63: chuyện còn ở chương một thì Kiên chưa mất, vì chưa có người nối */
+      else{a.fl.kdie=1;a.fl.kdieT=s.t;K.ok=0;if(!a.end)G.later(G.head(),'pm_n1',R(1,3))}}}
+  /* d.1.5.63: Kiên mất mà chưa có người nối thì các bước chính đợi lại; lỡ mất hộp thì sau ba năm tự có người nối */
+  if(!K.ok&&!a.end&&a.fl.kdie){a.next=Math.max(a.next,s.t+3);if(s.t-(a.fl.kdieT||s.t)>=36){const g=G.mkGiven('nam');a.K={n:'Phạm Bá '+g,g:'Bá '+g,age:30,rank:Math.max(0,(K.rank||0)-1),pow:Math.max(20,(K.pow||20)-15),life:30+R(25,40),ok:1,sched:[0,0,0,0,0].map((_,i)=>s.t+(i+1)*96),lag:0};a.fl.kdie=0;a.fl.succ=(a.fl.succ||0)+1}return}
   /* lịch lên chức của Kiên: không phụ thuộc người chơi */
   if(K.ok&&K.rank<5&&s.t>=K.sched[K.rank]+(K.lag||0)&&a.ch>=1&&!s.war){K.rank++;K.pow=Math.min(100,K.pow+6);G.later(G.head(),'pm_r'+K.rank,R(1,2));if(K.rank===4)a.fl.nhat=s.t;if(K.rank===5)a.fl.r5T=s.t}
   if(K.ok&&K.rank>=5&&a.fl.r5T&&!a.fl.r6&&!a.end&&s.t>=a.fl.r5T+60&&!s.war){a.fl.r6=1;G.later(G.head(),'pm_r6',R(1,3))}

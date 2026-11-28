@@ -55,9 +55,11 @@ function laterNpc(n,c,evId,months,extra){const a=n&&n.born!=null?Math.floor((S()
 function kidOffer(c,d,o){o=o||{};const g=o.g||(chance(0.5)?'nam':'nữ');const a=o.age!=null?o.age:R(3,8);const kid=G.mkPerson({g,age:a,young:true,surname:c.surname});
   const avg=k=>Math.round(((kid.gn&&kid.gn[k]?kid.gn[k][0]+kid.gn[k][1]:100)/2));d.kid={g,a,given:kid.given,gn:kid.gn,tg:kid.tg};
   const n=ensure(c,{vai:['quen'],name:kid.surname+' '+kid.given,g,age:a,st:{tri:avg('tri'),vo:avg('vo'),mi:avg('mi'),eq:avg('eq')},nghe:o.nghe||(a<=1?'trẻ sơ sinh, chưa nơi nương tựa':'trẻ '+a+' tuổi, chưa nơi nương tựa'),tier:1,rel:0,why:o.why||'cần người nuôi',noHouse:true});
+  /* d.1.5.63 (chủ dự án 28/11: "chỉ số trên thẻ con nuôi hiện ra trước khi nhận nuôi khác xa so với khi đã nhận"): thẻ đọc n.now là chỉ số thật lúc này; nhận thì giữ đúng các số ấy */
+  const KS=['tri','vo','suc','mi','eq','tam','duyen'];d.kid.now={};KS.forEach(k=>d.kid.now[k]=kid[k]);d.kid.cap=Object.assign({},kid.cap);n.now={tri:kid.tri,vo:kid.vo,mi:kid.mi,eq:kid.eq};
   d.npc=n.id;d.pot=G.potLine?G.potLine(kid):'';return n}
-function kidTake(c,d){const k=G.adopt(c,{age:d.kid.a,g:d.kid.g,given:d.kid.given,gn:d.kid.gn,tg:d.kid.tg});const n=d.npc?get(d.npc):null;if(n){n.ok=0}return k}
-function kidAway(c,d,how,months){const n=d.npc?get(d.npc):null;if(!n)return null;n.guard=how||'người nuôi';n.gt=1;n.rel=Math.max(n.rel||0,5);const a=Math.floor((S().t-n.born)/12);laterNpc(n,c,'np_tre_thu',a<5?(6-a)*12+R(0,12):(months||R(10,24)),{how:n.guard});return n}
+function kidTake(c,d){const k=G.adopt(c,{age:d.kid.a,g:d.kid.g,given:d.kid.given,gn:d.kid.gn,tg:d.kid.tg});if(d.kid.now){Object.assign(k,d.kid.now);k.cap=Object.assign({},d.kid.cap)}const n=d.npc?get(d.npc):null;if(n){n.ok=0}return k}
+function kidAway(c,d,how,months){const n=d.npc?get(d.npc):null;if(!n)return null;delete n.now; /* ở nơi khác thì lớn lên theo đời sống người ngoài */n.guard=how||'người nuôi';n.gt=1;n.rel=Math.max(n.rel||0,5);const a=Math.floor((S().t-n.born)/12);laterNpc(n,c,'np_tre_thu',a<5?(6-a)*12+R(0,12):(months||R(10,24)),{how:n.guard});return n}
 /* ---------- đồ thị quan hệ (cạnh có kiểu) ---------- */
 const K=(a,b,k)=>a+'|'+b+'|'+k;
 function rgSet(a,b,k,d,why){const s=root();const key=K(a,b,k);const e=s.rg.e[key]||(s.rg.e[key]={w:0,t:S().t,why:[]});e.w=clamp(e.w+d,-100,100);e.t=S().t;if(why){e.why.push(String(why).slice(0,60));if(e.why.length>4)e.why.shift()}return e.w}

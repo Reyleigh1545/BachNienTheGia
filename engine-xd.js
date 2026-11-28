@@ -316,11 +316,11 @@ function ruleMonth(){const S=X.S;
   if(rule('nghiadien')){if(S.lastNet>0)S.money-=Math.round(S.lastNet*0.05);branches().forEach(id=>{const h=S.hh[id];if(h.money<0&&S.money>-h.money+mm(2)){S.money+=h.money;log(`Nghĩa điền giúp ${h.name} trả ${money(-h.money)} nợ.`,'gd');h.money=0}})}}
 function npCardInfo(n){const p=npPseudo(n);return {id:n.id,np:1,g:n.g,age:age(p),dead:n.ok===0,name:n.n,tuoc:'',sub:(n.vaiTxt||'người quen'),inc:null,incTxt:'',av:avatarSVG(p,76),title:n.nghe||''}}
 function npPseudo(n){const S=X.S;const w=String(n.n).split(' ');return {id:n.id,surname:w[0],given:w.slice(1).join(' ')||w[0],g:n.g,born:n.born,job:n.job||'none',lv:n.lv||0,tam:50,tuoc:0,dead:n.ok===0?(n.dead==null?S.t:n.dead):null,flags:{},_np:1,_nghe:n.nghe,_vai:n.vai}}
-function npSum(n){const t=n.st;return t?[['trí',t.tri],['võ',t.vo],['mị',t.mi],['EQ',t.eq]].filter(x=>x[1]!=null).map(x=>x[0]+' '+Math.round(x[1])).join(', '):''}
+function npSum(n){const t=n.now||n.st;return t?[['trí',t.tri],['võ',t.vo],['mị',t.mi],['EQ',t.eq]].filter(x=>x[1]!=null).map(x=>x[0]+' '+Math.round(x[1])).join(', '):''}
 function npCard(n,solo){const p=npPseudo(n);const a=age(p);const sub=(n.vaiTxt||'người quen');return `<button type="button" class="evcard npcard${solo?' solo':''}" data-ncard="${n.id}" title="Bấm để xem người này${n.nghe?': '+esc(n.nghe):''}"><span class="evav">${avatarSVG(p,solo?72:52)}<span class="evage">${a}</span></span><span class="evtx"><b>${esc(n.n)}</b><small>${esc(sub)}</small></span></button>`}
 function npSheet(id){const S=X.S;const n=npGet(id);if(!n||typeof document==='undefined')return;const old=document.getElementById('npov');if(old)old.remove();
   const p=npPseudo(n);const a=age(p);const rel=n.rel||0;const rt=rel>=45?'thân thiết':rel>=20?'có tình':rel>=0?'bình thường':rel>=-25?'lạnh nhạt':'có hiềm khích';
-  const traits=(typeof G!=='undefined'&&G.npc&&n.sub)?G.npc.desc(n):'';const st=n.st||{};const past=(n.past||[]).slice(-3).map(x=>x.x).filter(Boolean);
+  const traits=(typeof G!=='undefined'&&G.npc&&n.sub)?G.npc.desc(n):'';const st=n.now||n.st||{};const past=(n.past||[]).slice(-3).map(x=>x.x).filter(Boolean);
   const rows=[n.loc?['Đang ở',provN(n.loc)]:null,n.house?['Thuộc',houseSur(n.house)+' Gia']:null,(()=>{try{const F=n.fid&&S.np.hs&&S.np.hs[n.fid];const ms=F?F.mem.filter(i=>i!==n.id).map(i=>npGet(i)).filter(x=>x&&x.ok!==0&&!(x.parent===n.id)).slice(0,3).map(x=>esc(x.n)):[];return ms.length?['Cùng họ',ms.join(', ')]:null}catch(e){return null}})(),(()=>{try{const ks=(n.fam&&n.fam.kl||[]).map(i=>npGet(i)).filter(x=>x&&x.ok!==0).slice(0,4).map(x=>esc(x.n.split(' ').slice(1).join(' '))+' · '+npAge(x)+' tuổi');return ks.length?['Con',ks.join('; ')]:null}catch(e){return null}})(),traits?['Nét nổi bật',traits]:null,npSum(n)?['Tài',npSum(n)]:null,['Với nhà mình',rt],n.cond?['Tình cảnh',n.cond]:null,past.length?['Từng trải',past.join('; ')]:null].filter(Boolean);
   const d=document.createElement('div');d.id='npov';d.className='npov';
   d.innerHTML=`<div class="npbox" role="dialog" aria-label="Hồ sơ người quen"><button type="button" class="npx" aria-label="Đóng">×</button><div class="nphead"><span class="npav">${avatarSVG(p,84)}</span><div><b>${esc(n.n)}</b><small>${a} tuổi${n.ok===0?' · đã mất':''} · ${esc(n.vaiTxt||'người quen')}</small></div></div>${n.nghe?`<p class="npdesc">${esc(n.nghe)}</p>`:''}${rows.map(r=>`<div class="nprow"><span>${esc(r[0])}</span><b>${esc(r[1])}</b></div>`).join('')}</div>`;
@@ -366,7 +366,7 @@ function ctPending(c){const o=[];for(const [k] of STATS){const r=ctRaw(c,k),h=ct
 function ctNote(c){const L=ctPending(c);if(!L.length||c.dead!=null)return '';
   return L.map(([k,i])=>`${SN[k]} đã đủ sức nhận danh hiệu <b>${esc(STITLE[k][i][1])}</b>, đang chờ dịp được người đời công nhận.`).join(' ')}
 function ctTick(c){const S=X.S;
-  if(c.dead!=null||age(c)<14||c.brk||c.away||!inClan(c))return;
+  if(c.dead!=null||age(c)<14||c.brk||c.away&&c.away.type!=='jh'||!inClan(c))return; /* d.1.5.63: người đi giang hồ vẫn được người đời gọi danh hiệu */
   if((c.flags.ctWait||0)>S.t)return;
   /* v6.3.4: đủ chỉ số lâu mà vẫn chưa gặp dịp thì người đời cũng tự gọi tên ở các bậc thấp, khỏi chờ mãi */
   ctPending(c).forEach(([k,i])=>{if((c.flags['ctF_'+k]||0)>S.t)return;const key='ctS_'+k+i;if(c.flags[key]==null)c.flags[key]=S.t;
