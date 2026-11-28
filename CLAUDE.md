@@ -968,6 +968,10 @@ Chủ dự án sửa bản đầu, chép nguyên văn:
 **Kết quả d.1.5.63 (28/11; chủ dự án: "để chuyện tạo ảnh ngày mai đi, làm sửa lỗi trước").** Đã sửa mục 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 của Test 2; **mục 11 giữ nguyên** theo lời chủ dự án. Thử trong game từng mục đều đạt; `fulltest` 22 mục không lỗi, quét ngoặc đơn sạch, không id trùng, ba lượt bot không lỗi (một lượt gồm ba nhà, hai nhà tuyệt tự). **Chưa chơi tay.** Tự đặt: Kiên tối đa 48 tuổi lúc mở, cách 10 và 8 năm, thọ 78 đến 90; chữa hỏng thêm 3 đến 5 tháng; tin từ xa sau 1 đến 3 tháng.
 *Chưa làm, chờ hỏi:* người đi lính và quan ở xa **vẫn không được xét danh hiệu** (chỉ mở cho giang hồ). **Mục 7 và 13 chờ chủ dự án duyệt bảng.**
 
+**Đề xuất mục 7 và 13 của Test 2 (28/11, chờ chủ dự án duyệt, chưa làm).**
+- **Mục 7:** sự kiện việc quan: tiền = số lớn hơn giữa mức hiện tại và **bổng của người ấy × số tháng theo cỡ việc** (nhỏ 0,5 · vừa 2 · lớn 6 · đại 12). Không tính theo phần trăm quỹ vì đã bỏ ở mục 9. Việc ngoài quan trường chưa có đề xuất.
+- **Mục 13:** chi mức cao hơn thì lợi **không bao giờ ít hơn** mức thấp. Cưới: bỏ trừ khi chi vượt mức hợp; mỗi bậc cao hơn thêm danh vọng gia tộc +2, tình cảm vợ chồng và tâm trạng +3, quan hệ nhà thông gia +5. Tang: bỏ chê phô trương; mỗi bậc cao hơn thêm danh vọng, ổn định +2, tâm trạng người nhà +3. Dưới mức hợp vẫn bị trừ như cũ. Chăm thai: bồi bổ giảm rủi ro sinh khó 6 điểm, thầy thuốc 12 điểm, hiện là 3 và 6; thầy thuốc theo dõi thì mẹ mất sức chỉ còn một nửa.
+
 (không có ý nào đang chờ khác. Các ý 23/11 đã làm ở d9.8 và d9.9 và chuyển thành luật: giao diện hộp sự kiện và hồ sơ ở mục 7, giang hồ ở mục 6, Thiên cơ ở mục 3, việc lớn ở mục 3, gia bảo ở mục 6, hệ số kỳ ngộ ở mục 5, cưới nhân phép của lính ở mục 3.)
 
 ---
