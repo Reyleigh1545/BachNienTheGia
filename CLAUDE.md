@@ -995,6 +995,18 @@ Chủ dự án sửa bản đầu, chép nguyên văn:
 
 **Đề xuất của Claude cho nghề binh và quan võ (chờ duyệt, chưa làm).** Bản đầy đủ gửi trong cuộc trò chuyện 28/11. Đợt 1 nền đời lính: doanh trại theo cấp, đội và thượng quan là người thật, tâm trạng và hồi sức riêng, chỉ gặp chuyện quân, mọi thay đổi đời có hộp, bà mối doanh trại ít lựa chọn. Đợt 2: sổ công từng cuộc chiến, hết chiến thì xét công, cản trở (trừ tước). Đợt 3: ban nhà ở kinh, tứ hôn, đời quan võ thời bình. Đợt 4: thương tật, quân tâm, công cao bị nghi, đồng đội và con cháu họ quay lại.
 
+**Trả lời bốn câu về nghề binh và ý thứ năm: nữ nhân được ban tước (chủ dự án, 28/11), chép nguyên văn:**
+> "1. Cả 2; 2. Được; 3. Có thể về ở luôn hoặc chọn ở lại trong quân ngũ, nhà vẫn giữ; 4. Được; 5. Thêm một ý, sau này mọi nữ nhân có công được ban tước thì tước giao về cho chồng, nếu chồng ở rể hoặc chưa có chồng thì tước ban cho cha, nếu cha vốn đã có tước, thì chuyển thành điểm công trạng, nếu đủ để thăng cấp tiếp theo thì thăng, nếu không đủ thì chuyển thành thưởng cho nữ nhân đó, mày nên tra cứu thử các kiểu ban thưởng cho nữ nhân thời xưa"
+
+*Đã chốt:* xét công sau cả chiến tranh tuyên chiến lẫn xung đột biên giới (xung đột thưởng nhỏ); gia chủ được ban nhà kinh thì cả nhà dời, người khác lập chi ở kinh; hết chiến được **về ở hẳn hoặc ở lại quân ngũ, nhà vẫn giữ**; bà mối doanh trại như đề xuất. **Chưa được bảo làm.**
+*Còn chờ hỏi về ý thứ năm:* (a) công đổi thành điểm là cộng cho người đang có tước, và không đủ thăng thì không cộng mà thưởng cho người nữ; (b) chồng (không ở rể) đã có tước thì xử như cha có tước; (c) nữ không còn cha, chưa chồng (kể cả người khởi đầu là nữ mồ côi), hoặc góa, thì tước về ai; (d) kế tước và gia chủ nữ giữ tước (mục 4) **không đổi**, luật mới chỉ áp cho tước ban vì công.
+
+*Tra cứu (28/11), chỉ ghi điều nguồn có nói:*
+- Minh, Thanh: vợ, mẹ quan được phong hiệu theo phẩm: nhất và nhị phẩm "phu nhân", tam "thục nhân", tứ "cung nhân", ngũ "nghi nhân", lục "an nhân", thất đến cửu "nhụ nhân"; nhất phẩm phong ba đời, nhị và tam hai đời, tứ đến thất một đời, bát và cửu chỉ bản thân; chồng đã mất mà được phong nhờ con cháu thì thêm chữ "thái". https://zh.wikipedia.org/zh-hans/%E5%A4%96%E5%91%BD%E5%A6%87 và https://zh.wikipedia.org/zh-hans/%E6%B8%85%E4%BB%A3%E6%95%A3%E9%9A%8E%E5%B0%81%E8%B4%88%E8%A1%A8
+- Nguyễn: vợ quan nhất phẩm "phu nhân", nhị phẩm "phu nhân" sau đổi "đoan nhân", tam phẩm "thục nhân"; hiệu mệnh phụ không kèm lương bổng. https://vi.wikipedia.org/wiki/M%E1%BB%87nh_ph%E1%BB%A5
+- Tiết phụ: nhà nước từ thời Lê ban danh hiệu, kèm tiền và vật theo mức. https://jshou.edu.vn/houjs/article/download/211/194/650 . Thanh có xin cấp bạc dựng phường và lập đền tiết hiếu, địa phương có nơi ban biển. **Số bạc, lụa cụ thể chưa kiểm được.**
+- Nữ cầm quân: Tần Lương Ngọc được vua Nam Minh ban tước hầu. https://en.wikipedia.org/wiki/Qin_Liangyu ; Tiển phu nhân thế kỷ sáu được phong hiệu phu nhân. https://wikipedia.com/wiki/Lady_Xian
+
 (không có ý nào đang chờ khác. Các ý 23/11 đã làm ở d9.8 và d9.9 và chuyển thành luật: giao diện hộp sự kiện và hồ sơ ở mục 7, giang hồ ở mục 6, Thiên cơ ở mục 3, việc lớn ở mục 3, gia bảo ở mục 6, hệ số kỳ ngộ ở mục 5, cưới nhân phép của lính ở mục 3.)
 
 ---
