@@ -366,7 +366,9 @@ function ctPending(c){const o=[];for(const [k] of STATS){const r=ctRaw(c,k),h=ct
 function ctNote(c){const L=ctPending(c);if(!L.length||c.dead!=null)return '';
   return L.map(([k,i])=>`${SN[k]} đã đủ sức nhận danh hiệu <b>${esc(STITLE[k][i][1])}</b>, đang chờ dịp được người đời công nhận.`).join(' ')}
 function ctTick(c){const S=X.S;
-  if(c.dead!=null||age(c)<14||c.brk||c.away&&c.away.type!=='jh'||!inClan(c))return; /* d.1.5.63: người đi giang hồ vẫn được người đời gọi danh hiệu */
+  /* d.1.5.64 (chủ dự án 28/11: "mở cả"): lính và quan ở xa cũng được xét danh hiệu */
+  const xa=c.away&&c.away.type!=='jh';
+  if(c.dead!=null||age(c)<14||c.brk||!inClan(c)||xa&&!['quan','quan_ngu','nguy'].includes(c.job))return;
   if((c.flags.ctWait||0)>S.t)return;
   /* v6.3.4: đủ chỉ số lâu mà vẫn chưa gặp dịp thì người đời cũng tự gọi tên ở các bậc thấp, khỏi chờ mãi */
   ctPending(c).forEach(([k,i])=>{if((c.flags['ctF_'+k]||0)>S.t)return;const key='ctS_'+k+i;if(c.flags[key]==null)c.flags[key]=S.t;
@@ -380,6 +382,8 @@ function ctTick(c){const S=X.S;
   const p=CT_P[i]*(0.6+c.duyen/100)*(1+famLuck()/200)*(1+clamp(c.fame/400,0,1))*(1+Math.min(1,0.4*(gap-1)));
   if(!chance(p))return;
   const ok=okEv(i);if(!ok.length)return;
+  /* người ở doanh trại hay nhậm chức nơi xa không gặp được cảnh ở quê (mục 4): được gọi danh hiệu thẳng, nhà nghe tin sau */
+  if(xa){if(confer(c,k,i)){delete c.flags['ctS_'+k+i];c.flags.ctWait=S.t+R(6,10)}return}
   let tot=ok.reduce((a,e)=>a+(e.w||1),0),r=Math.random()*tot,ev=ok[0];for(const e of ok){r-=(e.w||1);if(r<=0){ev=e;break}}
   c.seen[ev.id]=S.t;S.evLast=S.evLast||{};S.evLast[ev.id]=S.t;S.evn=S.evn||{};S.evn[ev.id]=(S.evn[ev.id]||0)+1;
   c.flags.ctWait=S.t+R(6,10);
